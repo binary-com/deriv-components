@@ -1,19 +1,12 @@
 {
     "name": "deriv-components",
     "version": "0.0.1",
-    "description": "A react components library made for Deriv.",
-    "main": "dist/cjs/index.js",
-    "module": "dist/esm/index.js",
-    "exports": {
-        ".": {
-            "import": "./dist/mjs/index.js",
-            "require": "./dist/cjs/index.js"
-        }
-    },
+    "description": "A UI library developed by Deriv",
+    "main": "index.js",
     "scripts": {
-        "build": "rm -rf dist/* && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
-        "prepare": "npm run build",
-        "test": "jest --watch"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "storybook": "start-storybook -p 6006",
+        "build-storybook": "build-storybook"
     },
     "repository": {
         "type": "git",
@@ -21,9 +14,9 @@
     },
     "keywords": [
         "react",
-        "components",
         "library",
-        "deriv"
+        "deriv",
+        "ui"
     ],
     "author": "Deriv",
     "license": "MIT",
@@ -32,17 +25,15 @@
     },
     "homepage": "https://github.com/binary-com/deriv-components#readme",
     "devDependencies": {
-        "@types/jest": "^27.4.0",
-        "@types/react": "^17.0.38",
-        "@types/react-dom": "^17.0.11",
-        "@typescript-eslint/eslint-plugin": "^5.10.0",
-        "@typescript-eslint/parser": "^5.10.0",
-        "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-prettier": "^4.0.0",
-        "eslint-plugin-react": "^7.28.0",
-        "jest": "^27.4.7",
+        "@babel/core": "^7.16.10",
+        "@storybook/addon-actions": "^6.5.0-alpha.21",
+        "@storybook/addon-essentials": "^6.5.0-alpha.21",
+        "@storybook/addon-links": "^6.5.0-alpha.21",
+        "@storybook/react": "^6.5.0-alpha.21",
+        "babel-loader": "^8.2.3",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "typescript": "^4.5.4"
+        "storybook-builder-vite": "^0.1.13",
+        "vite": "^2.7.13"
     }
 }
