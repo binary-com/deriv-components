@@ -1,7 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react';
-
 import type { Meta, Story } from '@storybook/react';
-
 import { Button as ButtonComponent } from '../';
 
 export default {
