@@ -8,3 +8,4 @@ export default {
 } as Meta<typeof Button>;
 
 const Template: Story<ButtonProps> = (args) => <Button {...args} />;
+export const ButtonStory = Template.bind({});

@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { styled } from 'goober';
 
 const StyledButton = styled('button')`
@@ -9,6 +9,7 @@ const StyledButton = styled('button')`
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variants?: string;
+    children: ReactNode;
 }
 
 export const Button = ({ children, ...props }: ButtonProps) => {
