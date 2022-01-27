@@ -7,7 +7,7 @@ export default {
 } as Meta<ButtonHTMLAttributes<HTMLButtonElement>>;
 
 const Template: Story<ButtonHTMLAttributes<HTMLButtonElement>> = (args) => (
-    <ButtonComponent size="small" colour="primary" {...args}>
+    <ButtonComponent size="medium" colour="secondary" {...args}>
         Example button
     </ButtonComponent>
 );
