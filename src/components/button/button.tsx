@@ -1,11 +1,15 @@
 import type { ButtonHTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     size: 'small' | 'medium' | 'large';
     colour: 'primary' | 'primary-light' | 'secondary' | 'tertiary';
 }
 
 const StyledButton = styled.button<ButtonProps>`
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     border-radius: 4px;
 

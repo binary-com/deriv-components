@@ -1,15 +1,16 @@
-import type { ButtonHTMLAttributes } from 'react';
 import type { Meta, Story } from '@storybook/react';
-import { Button as ButtonComponent } from '..';
+import type { ButtonProps } from '../button';
+import Button from '../button';
 
 export default {
     title: 'Button',
-} as Meta<ButtonHTMLAttributes<HTMLButtonElement>>;
+} as Meta<ButtonProps>;
 
-const Template: Story<ButtonHTMLAttributes<HTMLButtonElement>> = (args) => (
-    <ButtonComponent size="medium" colour="secondary" {...args}>
-        Example button
-    </ButtonComponent>
-);
+const Template: Story<ButtonProps> = (args) => <Button {...args}>Example button</Button>;
 
-export const Button = Template.bind({});
+export const ButtonComponent = Template.bind({});
+ButtonComponent.args = {
+    colour: 'primary',
+    size: 'small',
+    disabled: false,
+};
