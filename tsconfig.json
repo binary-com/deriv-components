@@ -10,8 +10,9 @@
         "moduleResolution": "Node",
         "noEmit": true,
         "strict": true,
-        "target": "esnext"
+        "target": "esnext",
+        "useDefineForClassFields": true
     },
     "include": ["src", "*.d.ts"],
-    "exclude": ["node_modules", "dist"]
+    "exclude": ["node_modules", "dist", "*.css"]
 }

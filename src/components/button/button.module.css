@@ -1,0 +1,13 @@
+.btn {
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+}
+
+.size_s {
+    padding: 3px 6px;
+}
+
+.size_m {
+    padding: 10px 16px;
+}

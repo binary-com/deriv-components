@@ -1,27 +1,13 @@
 import path from 'path';
 import { defineConfig } from 'vite';
+import sassDts from 'vite-plugin-sass-dts';
 import dts from 'vite-dts';
+import react from '@vitejs/plugin-react';
+import reactRefresh from '@vitejs/plugin-react-refresh';
 
 const isExternal = (id: string) => !id.startsWith('.') && !path.isAbsolute(id);
 
-interface CSSModulesOptions {
-    scopeBehaviour?: 'global' | 'local';
-    globalModulePaths?: RegExp[];
-    generateScopedName?: string | ((name: string, filename: string, css: string) => string);
-    hashPrefix?: string;
-    /**
-     * default: null
-     */
-    localsConvention?: 'camelCase' | 'camelCaseOnly' | 'dashes' | 'dashesOnly' | null;
-}
-
 export default defineConfig(() => ({
-    css: {
-        postcss: {},
-    },
-    esbuild: {
-        jsxInject: "import React from 'react'",
-    },
     build: {
         lib: {
             entry: path.resolve(__dirname, 'src/index.tsx'),
@@ -31,5 +17,16 @@ export default defineConfig(() => ({
             external: isExternal,
         },
     },
-    plugins: [dts()],
+    plugins: [
+        dts(),
+        react({
+            include: '**/*.tsx',
+        }),
+        reactRefresh({
+            include: '**/*.tsx',
+        }),
+        sassDts({
+            allGenerate: true,
+        }),
+    ],
 }));
