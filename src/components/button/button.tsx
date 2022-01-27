@@ -1,14 +1,12 @@
 import type { ButtonHTMLAttributes } from 'react';
-import classes from './button.module.css';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    size: 'small' | 'medium' | 'large';
+    colour: 'primary' | 'primary-light' | 'secondary' | 'tertiary';
+}
 
-const Button = ({ children, ...props }: ButtonProps) => {
-    return (
-        <button className={classes.size_m} {...props}>
-            {children}
-        </button>
-    );
+const Button = ({ children, size, colour, ...props }: ButtonProps) => {
+    return <button {...props}>{children}</button>;
 };
 
 export default Button;
