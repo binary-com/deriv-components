@@ -1,5 +1,5 @@
 {
-    "name": "deriv-components",
+    "name": "@deriv/deriv-components",
     "version": "0.0.2",
     "description": "A UI library developed by Deriv",
     "main": "./dist/deriv-components.es.js",
