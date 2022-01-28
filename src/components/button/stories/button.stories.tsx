@@ -4,9 +4,6 @@ import Button from '../button';
 
 export default {
     title: 'Button',
-    parameters: {
-        // docs: readme,
-    },
     argTypes: {
         color: {
             control: {
@@ -15,7 +12,6 @@ export default {
                     primary: 'primary',
                     primary_light: 'primary-light',
                     secondary: 'secondary',
-                    tertiary: 'tertiary',
                 },
             },
         },
@@ -34,10 +30,26 @@ export default {
 
 const Template: Story<ButtonProps> = (args) => <Button {...args}>Example button</Button>;
 
-export const Default = Template.bind({});
-Default.args = {
+export const Primary = Template.bind({});
+Primary.args = {
     block: false,
     color: 'primary',
-    size: 'small',
+    size: 'medium',
+    disabled: false,
+};
+
+export const PrimaryLight = Template.bind({});
+PrimaryLight.args = {
+    block: false,
+    color: 'primary-light',
+    size: 'medium',
+    disabled: false,
+};
+
+export const Secondary = Template.bind({});
+Secondary.args = {
+    block: false,
+    color: 'secondary',
+    size: 'medium',
     disabled: false,
 };
