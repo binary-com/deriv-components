@@ -3,7 +3,8 @@ import styled, { css } from 'styled-components';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     size: 'small' | 'medium' | 'large';
-    colour: 'primary' | 'primary-light' | 'secondary' | 'tertiary';
+    color: 'primary' | 'primary-light' | 'secondary' | 'tertiary';
+    block: boolean;
 }
 
 const StyledButton = styled.button<ButtonProps>`
@@ -12,7 +13,7 @@ const StyledButton = styled.button<ButtonProps>`
     justify-content: center;
     border: none;
     border-radius: 4px;
-
+    width: ${({ block }) => (block ? '100%' : 'fit-content')};
     ${({ size }) => {
         switch (size) {
             case 'small':
@@ -32,9 +33,8 @@ const StyledButton = styled.button<ButtonProps>`
                 `;
         }
     }}
-
-    ${({ colour }) => {
-        switch (colour) {
+    ${({ color }) => {
+        switch (color) {
             case 'primary':
                 return css`
                     background-color: #ff444f;
@@ -79,7 +79,7 @@ const StyledButton = styled.button<ButtonProps>`
                     padding: 3px 8px;
                 `;
         }
-    }}
+    }};
 `;
 
 const Button = ({ children, ...props }: ButtonProps) => {

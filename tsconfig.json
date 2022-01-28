@@ -14,5 +14,5 @@
         "useDefineForClassFields": true
     },
     "include": ["src", "*.d.ts"],
-    "exclude": ["node_modules", "dist", "*.css"]
+    "exclude": ["node_modules", "dist", "*.md"]
 }

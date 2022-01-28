@@ -3,7 +3,7 @@ import { defineConfig } from 'vite';
 import dts from 'vite-dts';
 import react from '@vitejs/plugin-react';
 
-const isExternal = (id: string) => !id.startsWith('.') && !path.isAbsolute(id);
+const isExternal = (id: string) => (!id.startsWith('.') && !path.isAbsolute(id)) || id.endsWith('.md');
 
 export default defineConfig(() => ({
     build: {
