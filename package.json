@@ -1,6 +1,6 @@
 {
     "name": "deriv-components",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A UI library developed by Deriv",
     "main": "./dist/deriv-components.es.js",
     "module": "./dist/deriv-components.es.js",
@@ -12,7 +12,7 @@
         "build:watch": "vite build --watch",
         "prepare": "npm run build"
     },
-    "types": "./dist/deriv-components.d.js",
+    "types": "./dist/deriv-components.es.d.ts",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/binary-com/deriv-components.git"
