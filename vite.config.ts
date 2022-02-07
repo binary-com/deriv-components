@@ -15,13 +15,6 @@ export default defineConfig(() => ({
             external: isExternal,
         },
     },
-    css: {
-        preprocessorOptions: {
-            scss: {
-                additionalData: `@import "./styles/reset.scss"; @import "./styles/fonts.scss"; @import "./styles/global.scss";`,
-            },
-        },
-    },
     plugins: [
         dts(),
         react({
