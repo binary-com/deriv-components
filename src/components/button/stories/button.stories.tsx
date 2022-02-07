@@ -13,6 +13,14 @@ export default {
                 defaultValue: { summary: false },
             },
         },
+        dark: {
+            description: 'If set to `true`, button color will be set to dark theme.',
+            defaultValue: false,
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+            },
+        },
         color: {
             control: {
                 type: 'select',
@@ -20,10 +28,10 @@ export default {
                     primary: 'primary',
                     primary_light: 'primary-light',
                     secondary: 'secondary',
+                    tertiary: 'tertiary',
                 },
             },
-            description:
-                '`color` props sets the different color scheme for the button. Available options: `primary` | `primary-light` | `secondary`',
+            description: '`color` controls the color sets of the button.',
             defaultValue: 'primary',
             table: {
                 type: { summary: 'string' },
@@ -37,6 +45,7 @@ export default {
                     small: 'small',
                     medium: 'medium',
                     large: 'large',
+                    hero: 'hero',
                 },
             },
             description:
@@ -62,6 +71,7 @@ const Template: Story<ButtonProps> = (args) => <Button {...args}>Example button<
 export const Primary = Template.bind({});
 Primary.args = {
     block: false,
+    dark: false,
     color: 'primary',
     size: 'medium',
     disabled: false,
@@ -70,6 +80,7 @@ Primary.args = {
 export const PrimaryLight = Template.bind({});
 PrimaryLight.args = {
     block: false,
+    dark: false,
     color: 'primary-light',
     size: 'medium',
     disabled: false,
@@ -78,7 +89,17 @@ PrimaryLight.args = {
 export const Secondary = Template.bind({});
 Secondary.args = {
     block: false,
+    dark: false,
     color: 'secondary',
+    size: 'medium',
+    disabled: false,
+};
+
+export const Tertiary = Template.bind({});
+Tertiary.args = {
+    block: false,
+    dark: false,
+    color: 'tertiary',
     size: 'medium',
     disabled: false,
 };
