@@ -5,6 +5,7 @@
     "main": "./dist/deriv-components.es.js",
     "module": "./dist/deriv-components.es.js",
     "scripts": {
+        "start": "npm run storybook",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
         "build": "vite build",
