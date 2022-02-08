@@ -1,1 +1,2 @@
-export { Button } from './components/button';
+export * from './components/core';
+export * from './components/wallet';
