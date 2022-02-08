@@ -1,1 +1,1 @@
-export { default as AppModal } from './modal/';
+export { default as AppModal } from './modal/modal';
