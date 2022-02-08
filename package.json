@@ -36,7 +36,6 @@
         "@storybook/addon-essentials": "^6.5.0-alpha.36",
         "@storybook/addon-links": "^6.5.0-alpha.36",
         "@storybook/react": "^6.5.0-alpha.36",
-        "@types/styled-components": "^5.1.21",
         "@vitejs/plugin-react": "^1.1.4",
         "babel-loader": "^8.2.3",
         "classnames": "^2.3.1",
