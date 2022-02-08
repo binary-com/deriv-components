@@ -1,6 +1,6 @@
 {
     "name": "@deriv/components",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "A UI library developed by Deriv",
     "main": "./dist/components.es.js",
     "module": "./dist/components.es.js",
@@ -38,12 +38,14 @@
         "@storybook/react": "^6.5.0-alpha.36",
         "@vitejs/plugin-react": "^1.1.4",
         "babel-loader": "^8.2.3",
-        "classnames": "^2.3.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "sass": "^1.49.7",
         "storybook-builder-vite": "^0.1.14",
         "vite": "^2.7.13",
         "vite-dts": "^1.0.4"
+    },
+    "dependencies": {
+        "classnames": "^2.3.1"
     }
 }
