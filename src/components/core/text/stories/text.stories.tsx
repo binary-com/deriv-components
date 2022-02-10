@@ -1,5 +1,5 @@
 import type { Story } from '@storybook/react';
-import { TextProps, type_array } from '../text';
+import { TextProps, type_array, align_array } from '../text';
 import Text from '../text';
 
 export default {
@@ -12,6 +12,9 @@ export default {
     argTypes: {
         type: {
             control: { type: 'select', options: type_array },
+        },
+        align: {
+            control: { type: 'select', options: align_array },
         },
     },
 };
@@ -56,4 +59,5 @@ Controls.args = {
     as: 'p',
     type: 'hero',
     bold: true,
+    align: 'left',
 };
