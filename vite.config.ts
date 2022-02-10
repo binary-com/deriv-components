@@ -2,6 +2,7 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-dts';
 import react from '@vitejs/plugin-react';
+import injectCSS from './inject-css';
 
 const isExternal = (id: string) => !id.startsWith('.') && !path.isAbsolute(id);
 
@@ -20,5 +21,6 @@ export default defineConfig(() => ({
         react({
             include: '**/*.tsx',
         }),
+        injectCSS(),
     ],
 }));
