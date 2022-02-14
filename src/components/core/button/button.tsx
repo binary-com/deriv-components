@@ -2,10 +2,12 @@ import type { ButtonHTMLAttributes } from 'react';
 import classNames from 'classnames';
 import css from './button.module.scss';
 
+export const button_size_type = ['small', 'medium', 'large', 'hero'];
+export const button_color_type = ['primary', 'primary-light', 'secondary', 'tertiary'];
+
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    size?: 'small' | 'medium' | 'large' | 'hero';
-    color?: 'primary' | 'primary-light' | 'secondary' | 'tertiary';
-    variant?: 'general' | 'hero';
+    size?: typeof button_size_type[number];
+    color?: typeof button_color_type[number];
     block?: boolean;
     dark?: boolean;
 }
