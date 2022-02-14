@@ -3,10 +3,6 @@ import { TextProps, type_array, align_array } from '../text';
 import Text from '../text';
 
 export default {
-    /* 👇 The title prop is optional.
-     * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
-     * to learn how to generate automatic titles
-     */
     title: 'Text',
     component: Text,
     argTypes: {
