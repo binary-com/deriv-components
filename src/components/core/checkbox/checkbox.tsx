@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, ReactNode, HtmlHTMLAttributes } from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { CheckIcon, MinusIcon } from '@radix-ui/react-icons';
 import classNames from 'classnames';
@@ -7,12 +7,11 @@ import css from './checkbox.module.scss';
 export const CheckBox = CheckboxPrimitive.Root;
 export const CheckBoxIndicator = CheckboxPrimitive.Indicator;
 
-export interface CheckboxProps {
+export interface CheckboxProps extends HtmlHTMLAttributes<HTMLInputElement> {
     dark?: boolean;
     indetermine?: boolean;
     check?: boolean;
     size?: 'default' | 'small';
-    children: ReactNode;
 }
 
 const Checkbox = ({ children, dark, indetermine, check, size = 'default', ...props }: CheckboxProps) => {
