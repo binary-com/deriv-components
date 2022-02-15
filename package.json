@@ -51,7 +51,6 @@
     },
     "dependencies": {
         "@radix-ui/react-checkbox": "^0.1.4",
-        "@radix-ui/react-icons": "^1.0.3",
         "classnames": "^2.3.1"
     }
 }
