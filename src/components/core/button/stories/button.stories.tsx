@@ -1,6 +1,6 @@
 import type { Meta, Story } from '@storybook/react';
 import type { ButtonProps } from '../button';
-import Button from '../button';
+import Button, { button_color_type, button_size_type } from '../button';
 
 export default {
     title: 'Button',
@@ -24,12 +24,7 @@ export default {
         color: {
             control: {
                 type: 'select',
-                options: {
-                    primary: 'primary',
-                    primary_light: 'primary-light',
-                    secondary: 'secondary',
-                    tertiary: 'tertiary',
-                },
+                options: button_color_type,
             },
             description: '`color` controls the color sets of the button.',
             defaultValue: 'primary',
@@ -41,12 +36,7 @@ export default {
         size: {
             control: {
                 type: 'select',
-                options: {
-                    small: 'small',
-                    medium: 'medium',
-                    large: 'large',
-                    hero: 'hero',
-                },
+                options: button_size_type,
             },
             description:
                 "`size` actually controls the padding of the button. It will always fit to it's children size and align it to the center.",
