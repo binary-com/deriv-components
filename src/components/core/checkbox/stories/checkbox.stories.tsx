@@ -53,7 +53,7 @@ export const Light = Template.bind({});
 Light.args = {
     children: 'Label',
     dark: false,
-    check: false,
+    check: true,
     size: 'default',
 };
 
@@ -61,7 +61,7 @@ export const Dark = Template.bind({});
 Dark.args = {
     children: 'Label',
     dark: true,
-    check: false,
+    check: true,
     size: 'default',
 };
 
@@ -69,6 +69,6 @@ export const Indetermine = Template.bind({});
 Indetermine.args = {
     children: 'Label',
     dark: true,
-    indetermine: false,
+    indetermine: true,
     size: 'default',
 };

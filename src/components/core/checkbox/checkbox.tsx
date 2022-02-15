@@ -1,11 +1,11 @@
 import { useState, ReactNode, HtmlHTMLAttributes } from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import { CheckIcon, MinusIcon } from '@radix-ui/react-icons';
 import classNames from 'classnames';
 import css from './checkbox.module.scss';
+import CheckIconSVG from '../../../images/svg/checkbox-icon.svg';
+import CheckIndetermineIconSVG from '../../../images/svg/checkbox-indetermine-icon.svg';
 
 export const CheckBox = CheckboxPrimitive.Root;
-export const CheckBoxIndicator = CheckboxPrimitive.Indicator;
 
 export interface CheckboxProps extends HtmlHTMLAttributes<HTMLInputElement> {
     dark?: boolean;
@@ -21,12 +21,10 @@ const Checkbox = ({ children, dark, indetermine, check, size = 'default', ...pro
                 defaultChecked={check}
                 className={classNames(css.checkbox, dark && css.dark, check && css.check, indetermine && css.check)}
             >
-                <CheckBoxIndicator>
-                    <>
-                        {check && <CheckIcon />}
-                        {indetermine && <MinusIcon />}
-                    </>
-                </CheckBoxIndicator>
+                <>
+                    {check && <img src={CheckIconSVG} alt="" />}
+                    {indetermine && <img src={CheckIndetermineIconSVG} alt="" />}
+                </>
             </CheckBox>
             <label className={classNames(css[size], dark ? css.text_dark : css.text_light)}>{children}</label>
         </div>
