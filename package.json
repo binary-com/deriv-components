@@ -33,6 +33,7 @@
         "@babel/core": "^7.16.10",
         "@node-minify/clean-css": "^6.2.0",
         "@node-minify/core": "^6.2.0",
+        "@radix-ui/react-checkbox": "^0.1.4",
         "@storybook/addon-actions": "^6.5.0-alpha.36",
         "@storybook/addon-docs": "^6.5.0-alpha.36",
         "@storybook/addon-essentials": "^6.5.0-alpha.36",
@@ -50,7 +51,6 @@
         "vite-dts": "^1.0.4"
     },
     "dependencies": {
-        "@radix-ui/react-checkbox": "^0.1.4",
         "classnames": "^2.3.1"
     }
 }
