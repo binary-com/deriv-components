@@ -53,7 +53,7 @@ const config = (env: EnvConfig): Configuration => {
                         {
                             loader: 'file-loader',
                             options: {
-                                name: '[name].[ext]',
+                                name: 'assets/[name].[hash].[ext]',
                             },
                         },
                     ],
