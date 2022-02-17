@@ -58,6 +58,7 @@
         "webpack-dev-server": "^4.7.4"
     },
     "dependencies": {
+        "@radix-ui/react-checkbox": "^0.1.4",
         "classnames": "^2.3.1"
     }
 }

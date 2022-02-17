@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+}
+
+.checkbox {
+    all: unset;
+    background-color: transparent;
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #999999;
+    transition: all 0.15s ease-in;
+    margin-right: 8px;
+}
+.dark {
+    border: 2px solid #6e6e6e;
+}
+.check {
+    border: 2px solid #ff444f;
+    background-color: #ff444f;
+}
+.check_icon {
+    color: #ffffff;
+    width: 12px;
+    height: 9px;
+}
+.indetermine_icon {
+    color: #ffffff;
+    width: 12px;
+}
+.default {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+}
+.small {
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+}
+.text_light {
+    color: #c2c2c2;
+}
+.text_dark {
+    color: #333333;
+}
