@@ -50,6 +50,7 @@
         "vite-dts": "^1.0.4"
     },
     "dependencies": {
+        "@radix-ui/react-checkbox": "^0.1.4",
         "classnames": "^2.3.1"
     }
 }
