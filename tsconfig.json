@@ -3,7 +3,7 @@
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "isolatedModules": true,
+        "isolatedModules": false,
         "jsx": "react-jsx",
         "lib": ["dom", "esnext", "dom.iterable"],
         "module": "esnext",
@@ -11,7 +11,13 @@
         "noEmit": true,
         "strict": true,
         "target": "esnext",
-        "useDefineForClassFields": true
+        "useDefineForClassFields": true,
+        "sourceMap": true
+    },
+    "ts-node": {
+        "compilerOptions": {
+            "module": "CommonJS"
+        }
     },
     "include": ["src", "*.d.ts"],
     "exclude": ["node_modules", "dist", "*.md"]
