@@ -2,16 +2,16 @@
     "name": "@deriv/components",
     "version": "0.0.4",
     "description": "A UI library developed by Deriv",
-    "main": "./dist/components.es.js",
-    "module": "./dist/components.es.js",
-    "types": "./dist/components.es.d.ts",
+    "main": "./dist/cjs/components.js",
+    "module": "./dist/es/components.js",
     "scripts": {
         "start": "npm run storybook",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
-        "build": "webpack build",
+        "build": "npm run clean && webpack build --env modules='cjs' && webpack build --env modules='es'",
         "build:watch": "webpack build --watch",
-        "prepare": "npm run build"
+        "prepare": "npm run build",
+        "clean": "rimraf dist/*"
     },
     "repository": {
         "type": "git",
@@ -44,6 +44,7 @@
         "@types/react": "^17.0.39",
         "@types/webpack": "^5.28.0",
         "babel-loader": "^8.2.3",
+        "fork-ts-checker-webpack-plugin": "^7.2.1",
         "hash-generator": "^0.1.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",

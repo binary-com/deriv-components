@@ -11,7 +11,8 @@
         "noEmit": true,
         "strict": true,
         "target": "esnext",
-        "useDefineForClassFields": true
+        "useDefineForClassFields": true,
+        "sourceMap": true
     },
     "ts-node": {
         "compilerOptions": {
