@@ -21,11 +21,15 @@
 .check {
     border: 2px solid #ff444f;
     background-color: #ff444f;
-    img {
-        color: #ffffff;
-        width: 12px;
-        height: 9px;
-    }
+}
+.check_icon {
+    color: #ffffff;
+    width: 12px;
+    height: 9px;
+}
+.indetermine_icon {
+    color: #ffffff;
+    width: 12px;
 }
 .default {
     font-size: 14px;

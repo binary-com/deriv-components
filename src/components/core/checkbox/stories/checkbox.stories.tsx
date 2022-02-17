@@ -6,7 +6,7 @@ export default {
     title: 'Checkbox',
     argTypes: {
         dark: {
-            description: 'If set to `dark`, checkbox border and text will set to `dark` theme  ',
+            description: 'If set to `true`, checkbox border and text will be set to `dark` theme',
             defaultValue: `dark`,
             table: {
                 type: { summary: 'boolean' },
@@ -14,7 +14,8 @@ export default {
             },
         },
         indetermine: {
-            description: 'If set to `true`, it will show `indetermine` checkbox',
+            description:
+                'If set to `true`, checkbox will be in the `indeterminate` state. Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#attr-indeterminate',
             defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
@@ -37,7 +38,7 @@ export default {
                     small: 'small',
                 },
             },
-            description: 'If set to `small`, checkbox will show small checkbox and label.',
+            description: 'Controls the sizing of the checkbox and label.',
             defaultValue: 'default',
             table: {
                 type: { summary: 'string' },
