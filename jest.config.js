@@ -9,4 +9,5 @@ module.exports = {
         '^.+\\.(ts|tsx)$': 'ts-jest',
         '.+\\.(css|styl|less|sass|scss)$': 'jest-css-modules-transform',
     },
+    collectCoverageFrom: ['./src/**/*.{ts,tsx}', '!**/node_modules/**', '!**/vendor/**'],
 };
