@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
+        "baseUrl": "src",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "isolatedModules": false,
@@ -12,7 +13,11 @@
         "strict": true,
         "target": "esnext",
         "useDefineForClassFields": true,
-        "sourceMap": true
+        "sourceMap": true,
+        "types": ["jest"],
+        "paths": {
+            "test-setup": ["test-setup"]
+        }
     },
     "ts-node": {
         "compilerOptions": {
