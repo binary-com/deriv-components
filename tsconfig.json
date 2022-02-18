@@ -14,7 +14,7 @@
         "target": "esnext",
         "useDefineForClassFields": true,
         "sourceMap": true,
-        "types": ["jest"],
+        "types": ["node", "jest"],
         "paths": {
             "test-setup": ["test-setup"]
         }
