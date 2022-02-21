@@ -2,14 +2,14 @@ import type { Story } from '@storybook/react';
 import type { TabsProps } from '../tabs';
 import Tabs from '../tabs';
 import Tab from '../tab';
-import DepositIconLight from '../../../../images/svg/modal/ic-deposit-light.svg';
-import WithdrawIconLight from '../../../../images/svg/modal/ic-withdraw-light.svg';
-import TransferIconLight from '../../../../images/svg/modal/ic-transfer-light.svg';
-import TransactionIconLight from '../../../../images/svg/modal/ic-transactions-light.svg';
-import DepositIconDark from '../../../../images/svg/modal/ic-deposit-dark.svg';
-import WithdrawIconDark from '../../../../images/svg/modal/ic-withdraw-dark.svg';
-import TransferIconDark from '../../../../images/svg/modal/ic-transfer-dark.svg';
-import TransactionIconDark from '../../../../images/svg/modal/ic-transactions-dark.svg';
+import DepositIconLight from '@assets/svg/modal/ic-deposit-light.svg';
+import WithdrawIconLight from '@assets/svg/modal/ic-withdraw-light.svg';
+import TransferIconLight from '@assets/svg/modal/ic-transfer-light.svg';
+import TransactionIconLight from '@assets/svg/modal/ic-transactions-light.svg';
+import DepositIconDark from '@assets/svg/modal/ic-deposit-dark.svg';
+import WithdrawIconDark from '@assets/svg/modal/ic-withdraw-dark.svg';
+import TransferIconDark from '@assets/svg/modal/ic-transfer-dark.svg';
+import TransactionIconDark from '@assets/svg/modal/ic-transactions-dark.svg';
 
 export default {
     title: 'Tabs',

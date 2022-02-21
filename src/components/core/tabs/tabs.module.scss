@@ -1,9 +1,16 @@
+.tabs {
+    position: relative;
+}
+
 .list {
     list-style-type: none;
     padding-left: 0;
     display: flex;
 
     @media (max-width: 992px) {
+        position: absolute;
+        left: 0;
+        transition: all ease-in-out 0.3s;
         overflow-x: auto;
     }
 }
