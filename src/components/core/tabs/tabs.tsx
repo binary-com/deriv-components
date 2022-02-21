@@ -10,13 +10,14 @@ export interface TabsProps {
 }
 
 const Tabs = ({ children, active_index = 0, contained, dark }: TabsProps) => {
+    const tabs_ref = useRef<HTMLUListElement | null>(null);
     const active_tab_ref = useRef<HTMLLIElement | null>(null);
     const [active_tab_index, setActiveTabIndex] = useState(active_index);
 
     const scrollIntoActiveTab = () => {
         const active_tab_bounds = active_tab_ref?.current?.getBoundingClientRect();
 
-        if (active_tab_bounds) window.scrollTo(active_tab_bounds.left, active_tab_bounds.y);
+        if (active_tab_bounds) tabs_ref?.current?.scrollTo(active_tab_bounds.left, active_tab_bounds.y);
     };
 
     useEffect(() => {
@@ -33,7 +34,7 @@ const Tabs = ({ children, active_index = 0, contained, dark }: TabsProps) => {
 
     return (
         <div className={css.tabs}>
-            <ul className={css.list}>
+            <ul className={css.list} ref={tabs_ref}>
                 {children?.map((child: any, idx: number) => {
                     const { icon, label } = child.props;
                     const active = idx === active_tab_index;
