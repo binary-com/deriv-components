@@ -27,6 +27,7 @@ const Tabs = ({ children, active_index = 0, contained, dark }: TabsProps) => {
 
                     return (
                         <Tab
+                            key={idx}
                             icon={icon}
                             active={idx === active_tab_index}
                             contained={contained}

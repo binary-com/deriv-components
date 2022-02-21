@@ -14,7 +14,7 @@
 
     &.active {
         background-color: transparent;
-        border-bottom: 2px solid red;
+        border-bottom: 2px solid #ff444f;
     }
 }
 
@@ -24,6 +24,7 @@
 
     &:hover {
         background-color: rgba(255, 255, 255, 0.4);
+        border-radius: 16px 16px 0 0;
     }
 
     &.active {
@@ -42,7 +43,7 @@
 
     &.active {
         background-color: transparent;
-        border-bottom: 2px solid red;
+        border-bottom: 2px solid #ff444f;
     }
 
     &.contained {
@@ -54,6 +55,7 @@
         &.active {
             background-color: #0e0e0e;
             border-bottom: unset;
+            color: #fff;
         }
     }
 }
