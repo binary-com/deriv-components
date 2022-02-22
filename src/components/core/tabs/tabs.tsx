@@ -1,6 +1,7 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactElement, useEffect, useRef, useState } from 'react';
 import type { HtmlHTMLAttributes } from 'react';
 import classNames from 'classnames';
+import type { TabProps } from './tab';
 import Tab from './tab';
 import css from './tabs.module.scss';
 
@@ -8,7 +9,7 @@ export interface TabsProps extends HtmlHTMLAttributes<HTMLDivElement> {
     active_index?: number;
     contained?: boolean;
     dark?: boolean;
-    children?: ReactNode[];
+    children?: ReactElement<TabProps> | ReactElement<TabProps>[];
 }
 
 const Tabs = ({ children, active_index = 0, contained, dark, ...props }: TabsProps) => {
