@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useRef, useState } from 'react';
+import { Children, ReactElement, useEffect, useRef, useState } from 'react';
 import type { HtmlHTMLAttributes } from 'react';
 import classNames from 'classnames';
 import type { TabProps } from './tab';
@@ -39,7 +39,7 @@ const Tabs = ({ children, active_index = 0, contained, dark, ...props }: TabsPro
         <div className={classNames(css.tabs, dark && css.dark)} {...props}>
             <div className={css.header}>
                 <ul className={css.list} ref={tabs_ref}>
-                    {children?.map((child: any, idx: number) => {
+                    {Children.map(children, (child: any, idx: number) => {
                         const { icon, label } = child.props;
                         const active = idx === active_tab_index;
 
@@ -59,7 +59,7 @@ const Tabs = ({ children, active_index = 0, contained, dark, ...props }: TabsPro
                 </ul>
             </div>
             <div className={css.content}>
-                {children?.map((child: any, idx: number) => {
+                {Children.map(children, (child: any, idx: number) => {
                     if (idx === active_tab_index) return child.props.children;
                 })}
             </div>
