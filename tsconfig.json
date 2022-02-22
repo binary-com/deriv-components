@@ -16,7 +16,8 @@
         "sourceMap": true,
         "types": ["node", "jest"],
         "paths": {
-            "test-setup": ["test-setup"]
+            "test-setup": ["test-setup"],
+            "@styles/*": ["styles/*"],
         }
     },
     "ts-node": {
