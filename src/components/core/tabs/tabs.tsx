@@ -1,15 +1,17 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
+import type { HtmlHTMLAttributes } from 'react';
+import classNames from 'classnames';
 import Tab from './tab';
 import css from './tabs.module.scss';
 
-export interface TabsProps {
+export interface TabsProps extends HtmlHTMLAttributes<HTMLDivElement> {
     active_index?: number;
     contained?: boolean;
     dark?: boolean;
     children?: ReactNode[];
 }
 
-const Tabs = ({ children, active_index = 0, contained, dark }: TabsProps) => {
+const Tabs = ({ children, active_index = 0, contained, dark, ...props }: TabsProps) => {
     const tabs_ref = useRef<HTMLUListElement | null>(null);
     const active_tab_ref = useRef<HTMLLIElement | null>(null);
     const [active_tab_index, setActiveTabIndex] = useState(active_index);
@@ -33,26 +35,28 @@ const Tabs = ({ children, active_index = 0, contained, dark }: TabsProps) => {
     }, [active_tab_index]);
 
     return (
-        <div className={css.tabs}>
-            <ul className={css.list} ref={tabs_ref}>
-                {children?.map((child: any, idx: number) => {
-                    const { icon, label } = child.props;
-                    const active = idx === active_tab_index;
+        <div className={classNames(css.tabs, dark && css.dark)} {...props}>
+            <div className={css.header}>
+                <ul className={css.list} ref={tabs_ref}>
+                    {children?.map((child: any, idx: number) => {
+                        const { icon, label } = child.props;
+                        const active = idx === active_tab_index;
 
-                    return (
-                        <Tab
-                            active={active}
-                            active_tab_ref={active ? active_tab_ref : null}
-                            contained={contained}
-                            dark={dark}
-                            icon={icon}
-                            key={idx}
-                            label={label}
-                            onClick={() => setActiveTabIndex(idx)}
-                        />
-                    );
-                })}
-            </ul>
+                        return (
+                            <Tab
+                                active={active}
+                                ref={active ? active_tab_ref : null}
+                                contained={contained}
+                                dark={dark}
+                                icon={icon}
+                                key={idx}
+                                label={label}
+                                onClick={() => setActiveTabIndex(idx)}
+                            />
+                        );
+                    })}
+                </ul>
+            </div>
             <div className={css.content}>
                 {children?.map((child: any, idx: number) => {
                     if (idx === active_tab_index) return child.props.children;

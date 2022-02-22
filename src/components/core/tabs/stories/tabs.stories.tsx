@@ -39,10 +39,18 @@ export default {
 const Template: Story<TabsProps> = (args) => {
     return (
         <Tabs {...args}>
-            <Tab icon={args.dark ? DepositIconDark : DepositIconLight} label="Deposit"></Tab>
-            <Tab icon={args.dark ? WithdrawIconDark : WithdrawIconLight} label="Withdraw"></Tab>
-            <Tab icon={args.dark ? TransferIconDark : TransferIconLight} label="Transfer"></Tab>
-            <Tab icon={args.dark ? TransactionIconDark : TransactionIconLight} label="Transactions"></Tab>
+            <Tab icon={args.dark ? DepositIconDark : DepositIconLight} label="Deposit">
+                Deposit
+            </Tab>
+            <Tab icon={args.dark ? WithdrawIconDark : WithdrawIconLight} label="Withdraw">
+                Withdraw
+            </Tab>
+            <Tab icon={args.dark ? TransferIconDark : TransferIconLight} label="Transfer">
+                Transfer
+            </Tab>
+            <Tab icon={args.dark ? TransactionIconDark : TransactionIconLight} label="Transactions">
+                Transactions
+            </Tab>
         </Tabs>
     );
 };
