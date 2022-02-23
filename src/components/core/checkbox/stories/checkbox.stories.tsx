@@ -53,23 +53,26 @@ const Template: Story<CheckboxProps> = (args) => <Checkbox {...args}>{args.child
 export const Light = Template.bind({});
 Light.args = {
     children: 'Label',
+    size: 'default',
     dark: false,
     check: true,
-    size: 'default',
+    indetermine: false,
 };
 
 export const Dark = Template.bind({});
 Dark.args = {
     children: 'Label',
+    size: 'default',
     dark: true,
     check: true,
-    size: 'default',
+    indetermine: false,
 };
 
 export const Indetermine = Template.bind({});
 Indetermine.args = {
     children: 'Label',
+    size: 'default',
     dark: true,
     indetermine: true,
-    size: 'default',
+    check: false,
 };
