@@ -18,6 +18,8 @@
         "paths": {
             "test-setup": ["test-setup"],
             "@assets/*": ["images/*"],
+            "@core/*": ["components/core/*"],
+            "@wallet/*": ["components/wallet/*"],
         }
     },
     "ts-node": {

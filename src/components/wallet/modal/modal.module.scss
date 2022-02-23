@@ -1,0 +1,106 @@
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+.header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 24px 40px 0;
+    height: 136px;
+    background: linear-gradient(109.45deg, #f0efef 7.02%, #e2dfdf 74.64%);
+
+    @media (max-width: 992px) {
+        height: 120px;
+        padding: 16px;
+        background: #d6dadb;
+    }
+}
+
+.title {
+    font-size: 16px;
+    line-height: 24px;
+
+    @media (max-width: 992px) {
+        font-size: 14px;
+        line-height: 20px;
+    }
+}
+
+.subtitle {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 36px;
+
+    @media (max-width: 992px) {
+        font-size: 18px;
+        line-height: 26px;
+    }
+}
+
+.image_wrapper {
+    display: flex;
+    align-items: start;
+}
+
+.logo {
+    margin: 8px 18px;
+
+    @media (max-width: 992px) {
+        margin-right: 6px;
+    }
+}
+
+.close {
+    cursor: pointer;
+    z-index: 2;
+}
+
+.body {
+    flex: 1;
+}
+
+.tabs {
+    margin: -64px 40px 0;
+}
+
+.message {
+    padding: 16px;
+    background: #ec3f3f;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.dark {
+    & .header {
+        color: #fff;
+        background: linear-gradient(109.45deg, #5e5e5e 7.02%, #2e2d2d 74.64%);
+    }
+
+    & .body {
+        background-color: #000;
+        color: #fff;
+    }
+}
+
+.ellipse {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    & svg {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}

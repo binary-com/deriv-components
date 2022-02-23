@@ -1,5 +1,19 @@
-const Modal = () => {
-    return <div>Hello Worldo</div>;
+import { ReactElement } from 'react';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+import ModalBody from './modal-body';
+import ModalTrigger from './modal-trigger';
+
+export const Dialog = DialogPrimitive.Root;
+
+export interface ModalProps {
+    children?: ReactElement[];
+}
+
+const WalletModal = ({ children }: ModalProps) => {
+    return <Dialog>{children}</Dialog>;
 };
 
-export default Modal;
+WalletModal.Trigger = ModalTrigger;
+WalletModal.Body = ModalBody;
+
+export default WalletModal;

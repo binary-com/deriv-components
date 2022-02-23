@@ -17,4 +17,5 @@ module.exports = {
 
         return config;
     },
+    staticDirs: ['../src/images/svg'],
 };
