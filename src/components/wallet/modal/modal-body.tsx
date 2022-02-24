@@ -49,22 +49,24 @@ const ModalBody = ({ children, balance, currency, dark, logo, supported, wallet_
                             <img className={css.close} src={dark ? CloseIconDark : CloseIconLight} />
                         </DialogClose>
                     </div>
-                    <div className={css.ellipse}>
+                    <div className={css.ellipse_wrapper}>
                         {wallets.map((wallet, idx) => {
                             if (wallet['name'] === wallet_name)
                                 return (
                                     <div key={idx}>
                                         <Icon
-                                            color={dark ? '#0E0E0E' : wallet['color']}
-                                            name="ic-circle"
-                                            width="59"
-                                            height="136"
+                                            className={css.ellipse}
+                                            custom_color={dark ? '#0E0E0E' : wallet['color']}
+                                            icon="ic-circle"
+                                            width={59}
+                                            height={136}
                                         />
                                         <Icon
-                                            color={dark ? '#0E0E0E' : wallet['color']}
-                                            name="ic-ellipse"
-                                            width="183"
-                                            height="44"
+                                            className={css.circle}
+                                            custom_color={dark ? '#0E0E0E' : wallet['color']}
+                                            icon="ic-ellipse"
+                                            width={183}
+                                            height={44}
                                         />
                                     </div>
                                 );
@@ -73,7 +75,12 @@ const ModalBody = ({ children, balance, currency, dark, logo, supported, wallet_
                 </div>
                 <div className={css.body}>{children}</div>
                 <div className={classNames(css.footer)}>
-                    {!supported && <div className={css.message}>{getModalMessage().WALLET_UNSUPPORTED}</div>}
+                    {!supported && (
+                        <div className={classNames(css.message)}>
+                            <Icon className={css.warning} icon="ic-warning" />
+                            {getModalMessage().WALLET_UNSUPPORTED}
+                        </div>
+                    )}
                 </div>
             </div>
         </DialogContent>

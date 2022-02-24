@@ -82,7 +82,7 @@ export default {
             description: 'Sets the wallet logo and background.',
         },
         supported: {
-            description: 'If set to `true`, an error message will be displayed on the footer.',
+            description: 'If set to `false`, a warning message will be shown on the footer.',
             defaultValue: true,
             table: {
                 type: { summary: 'boolean' },
@@ -100,13 +100,6 @@ const Template: Story<ModalBodyProps> = (args) => {
         <React.Fragment>
             <WalletModal>
                 <WalletModal.Trigger>
-                    <div
-                        onClick={() => {
-                            setActiveTabIndex(0);
-                        }}
-                    >
-                        Deposit
-                    </div>
                     <div
                         onClick={() => {
                             setActiveTabIndex(2);

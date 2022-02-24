@@ -56,7 +56,7 @@
     margin: 8px 18px;
 
     @media (max-width: 992px) {
-        margin-right: 6px;
+        width: 82px;
     }
 }
 
@@ -71,14 +71,24 @@
 
 .tabs {
     margin: -64px 40px 0;
+
+    ul {
+        position: relative;
+    }
 }
 
 .message {
     padding: 16px;
-    background: #ec3f3f;
+    background-color: #ec3f3f;
     font-weight: normal;
     font-size: 14px;
     line-height: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.warning {
+    margin-right: 8px;
 }
 
 .dark {
@@ -93,14 +103,27 @@
     }
 }
 
-.ellipse {
+.ellipse_wrapper {
     position: absolute;
     top: 0;
     right: 0;
+}
 
-    & svg {
-        position: absolute;
-        top: 0;
-        right: 0;
+.ellipse,
+.circle {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.ellipse {
+    @media (max-width: 992px) {
+        width: 50px;
+    }
+}
+
+.circle {
+    @media (max-width: 992px) {
+        width: 128px;
     }
 }
