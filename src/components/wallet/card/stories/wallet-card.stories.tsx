@@ -1,4 +1,4 @@
-import type { Story } from '@storybook/react';
+import type { Meta, Story } from '@storybook/react';
 import { WalletCardProps, wallet_card_sizes } from '../wallet-card';
 import WalletCard from '../wallet-card';
 
@@ -116,7 +116,7 @@ export default {
             description: 'Sets the wallet name.',
         },
     },
-};
+} as Meta<WalletCardProps>;
 
 const Template: Story<WalletCardProps> = (args) => <WalletCard {...args}/>;
 

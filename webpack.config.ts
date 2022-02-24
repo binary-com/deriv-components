@@ -1,6 +1,7 @@
 import { ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin/lib/plugin';
 import path from 'path';
 import { Configuration } from 'webpack';
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 type EnvConfig = {
     modules: 'cjs' | 'es';
@@ -62,6 +63,7 @@ const config = (env: EnvConfig): Configuration => {
         },
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
+            plugins: [new TsconfigPathsPlugin()],
         },
         output: {
             path: path.resolve(__dirname, 'dist'),
