@@ -3,7 +3,7 @@ import Button from './button';
 
 describe('Button Component', () => {
     it('Renders properly', () => {
-        const button = render(<Button />);
+        const button = render(<Button>Button</Button>);
         expect(button).toBeTruthy();
     });
 });

@@ -8,7 +8,7 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         colors: {
             // source from tokens
             white: '#ffffff',
-            coral: 'eb3e48',
+            coral: '#eb3e48',
         },
     },
     media: {
