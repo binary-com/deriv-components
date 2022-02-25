@@ -42,7 +42,3 @@ export const wallets = [
     { name: 'WeChat Pay', color: '#39A935' },
     { name: 'Zingpay', color: '#A8E2C1' },
 ];
-
-export const getModalMessage = () => ({
-    WALLET_UNSUPPORTED: 'Wallet is no longer supported by Deriv.',
-});

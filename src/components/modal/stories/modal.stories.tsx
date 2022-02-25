@@ -31,6 +31,16 @@ export default {
                 defaultValue: { summary: false },
             },
         },
+        message: {
+            description: 'If set, the message will be displayed on the footer.',
+        },
+        message_type: {
+            control: {
+                type: 'select',
+                options: ['information', 'warning', 'success', 'error'],
+            },
+            description: 'Sets the background and icon of the message.',
+        },
         wallet_name: {
             control: {
                 type: 'select',
@@ -81,14 +91,6 @@ export default {
             },
             description: 'Sets the wallet logo and background.',
         },
-        supported: {
-            description: 'If set to `false`, a warning message will be shown on the footer.',
-            defaultValue: true,
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: true },
-            },
-        },
     },
 } as Meta<ModalBodyProps>;
 
@@ -137,6 +139,47 @@ Wallet.args = {
     balance: '10,0000.00',
     currency: 'USD',
     dark: false,
-    supported: true,
+    message: '',
+    message_type: '',
+    wallet_name: 'Astropay',
+};
+
+export const Informative = Template.bind({});
+Informative.args = {
+    balance: '10,0000.00',
+    currency: 'USD',
+    dark: false,
+    message: 'Message goes here.',
+    message_type: 'information',
+    wallet_name: 'Banxa',
+};
+
+export const Warning = Template.bind({});
+Warning.args = {
+    balance: '10,0000.00',
+    currency: 'USD',
+    dark: false,
+    message: 'Deposit is temporarily unavailable.',
+    message_type: 'warning',
+    wallet_name: 'Perfect Money',
+};
+
+export const Success = Template.bind({});
+Success.args = {
+    balance: '10,0000.00',
+    currency: 'USD',
+    dark: false,
+    message: 'Message goes here.',
+    message_type: 'success',
+    wallet_name: 'OnlineNaira',
+};
+
+export const Error = Template.bind({});
+Error.args = {
+    balance: '10,0000.00',
+    currency: 'USD',
+    dark: false,
+    message: 'Advcash is no longer supported by Deriv.',
+    message_type: 'error',
     wallet_name: 'Advcash',
 };

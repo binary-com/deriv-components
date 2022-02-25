@@ -79,16 +79,31 @@
 
 .message {
     padding: 16px;
-    background-color: #ec3f3f;
     font-weight: normal;
     font-size: 14px;
     line-height: 20px;
     display: flex;
     align-items: center;
+
+    & .icon {
+        margin-right: 8px;
+    }
+}
+
+.information {
+    background-color: #377cfc;
 }
 
 .warning {
-    margin-right: 8px;
+    background-color: #ffad3a;
+}
+
+.success {
+    background-color: #4bb4b3;
+}
+
+.error {
+    background-color: #ec3f3f;
 }
 
 .dark {
@@ -100,6 +115,14 @@
     & .body {
         background-color: #000;
         color: #fff;
+    }
+
+    & .success {
+        background-color: #00a79e;
+    }
+
+    & .danger {
+        background-color: #cc2e3d;
     }
 }
 

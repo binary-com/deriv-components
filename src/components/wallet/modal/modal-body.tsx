@@ -1,17 +1,17 @@
 import { ReactElement } from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import classNames from 'classnames';
-import { getModalMessage, wallets } from './wallets';
+import { wallets } from './wallets';
 import css from './modal.module.scss';
 import Icon from './icon';
 import CloseIconLight from '@assets/svg/modal/ic-close-light.svg';
 import CloseIconDark from '@assets/svg/modal/ic-close-dark.svg';
 
-export interface DialogContentProps {
+interface DialogContentProps {
     children: ReactElement;
 }
 
-export const DialogContent = ({ children, ...props }: DialogContentProps) => (
+const DialogContent = ({ children, ...props }: DialogContentProps) => (
     <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay />
         <DialogPrimitive.Content {...props}>{children}</DialogPrimitive.Content>
@@ -26,11 +26,12 @@ export interface ModalBodyProps {
     currency?: string;
     dark?: boolean;
     logo?: string;
-    supported?: boolean;
+    message?: string;
+    message_type?: string;
     wallet_name?: string;
 }
 
-const ModalBody = ({ children, balance, currency, dark, logo, supported, wallet_name }: ModalBodyProps) => {
+const ModalBody = ({ children, balance, currency, dark, logo, message, message_type, wallet_name }: ModalBodyProps) => {
     return (
         <DialogContent>
             <div className={classNames(css.content, dark && css.dark)}>
@@ -74,11 +75,11 @@ const ModalBody = ({ children, balance, currency, dark, logo, supported, wallet_
                     </div>
                 </div>
                 <div className={css.body}>{children}</div>
-                <div className={classNames(css.footer)}>
-                    {!supported && (
-                        <div className={classNames(css.message)}>
-                            <Icon className={css.warning} icon="ic-warning" />
-                            {getModalMessage().WALLET_UNSUPPORTED}
+                <div className={css.footer}>
+                    {message && (
+                        <div className={classNames(css.message, css[`${message_type}`])}>
+                            <Icon className={css.icon} icon={`ic-${message_type}`} />
+                            {message}
                         </div>
                     )}
                 </div>
