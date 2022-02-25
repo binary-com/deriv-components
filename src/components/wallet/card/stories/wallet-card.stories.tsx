@@ -6,7 +6,7 @@ export default {
     title: 'WalletCard',
     argTypes: {
         background_image: {
-            description: 'Sets the wallet background image source.',
+            description: 'Sets the wallet background image.',
             defaultValue: undefined,
             table: {
                 type: { summary: 'string' },
@@ -46,7 +46,7 @@ export default {
             },
         },
         logo: {
-            description: 'Sets the wallet logo source.',
+            description: 'Sets the payment method logo on the card.',
                 defaultValue: undefined,
                 table: {
                     type: { summary: 'string' },
@@ -66,6 +66,10 @@ export default {
             },
         },
         wallet_name: {
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: undefined },
+            },
             control: {
                 type: 'select',
                 options: [
@@ -113,7 +117,7 @@ export default {
                     'Zingpay',
                 ],
             },
-            description: 'Sets the wallet name.',
+            description: 'Sets the payment method name on the card.',
         },
     },
 } as Meta<WalletCardProps>;
@@ -122,112 +126,144 @@ const Template: Story<WalletCardProps> = (args) => <WalletCard {...args}/>;
 
 export const LightLargeWithBalance = Template.bind({});
 LightLargeWithBalance.args = {
+    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
     faded: false,
+    logo: '',
     size: 'large',
     wallet_name: '[Name]',
 };
 
 export const LightMediumWithBalance = Template.bind({});
 LightMediumWithBalance.args = {
+    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
     faded: false,
+    logo: '',
     size: 'medium',
     wallet_name: '[Name]',
 };
 
 export const LightSmall = Template.bind({});
 LightSmall.args = {
+    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
     faded: false,
+    logo: '',
     size: 'small',
     wallet_name: '[Name]',
 };
 
 export const LightLargeWithoutBalance = Template.bind({});
 LightLargeWithoutBalance.args = {
+    background_image: '',
+    balance: '',
+    currency: '',
     dark: false,
     faded: false,
+    logo: '',
     size: 'large',
     wallet_name: '[Name]',
 };
 
 export const LightMediumWithoutBalance = Template.bind({});
 LightMediumWithoutBalance.args = {
+    background_image: '',
+    balance: '',
+    currency: '',
     dark: false,
     faded: false,
+    logo: '',
     size: 'medium',
     wallet_name: '[Name]',
 };
 
 export const DarkLargeWithBalance = Template.bind({});
 DarkLargeWithBalance.args = {
+    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
     faded: false,
+    logo: '',
     size: 'large',
     wallet_name: '[Name]',
 };
 
 export const DarkMediumWithBalance = Template.bind({});
 DarkMediumWithBalance.args = {
+    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
     faded: false,
+    logo: '',
     size: 'medium',
     wallet_name: '[Name]',
 };
 
 export const DarkSmall = Template.bind({});
 DarkSmall.args = {
+    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
     faded: false,
+    logo: '',
     size: 'small',
     wallet_name: '[Name]',
 };
 
 export const DarkLargeWithoutBalance = Template.bind({});
 DarkLargeWithoutBalance.args = {
+    background_image: '',
+    balance: '',
+    currency: '',
     dark: true,
     faded: false,
+    logo: '',
     size: 'large',
     wallet_name: '[Name]',
 };
 
 export const DarkMediumWithoutBalance = Template.bind({});
 DarkMediumWithoutBalance.args = {
+    background_image: '',
+    balance: '',
+    currency: '',
     dark: true,
     faded: false,
+    logo: '',
     size: 'medium',
     wallet_name: '[Name]',
 };
 
 export const FadedLight = Template.bind({});
 FadedLight.args = {
+    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
     faded: true,
+    logo: '',
     size: 'large',
     wallet_name: '[Name]',
 };
 
 export const FadedDark = Template.bind({});
 FadedDark.args = {
+    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
     faded: true,
+    logo: '',
     size: 'large',
     wallet_name: '[Name]',
 };
