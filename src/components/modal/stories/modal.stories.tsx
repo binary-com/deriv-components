@@ -159,7 +159,7 @@ Warning.args = {
     balance: '10,0000.00',
     currency: 'USD',
     dark: false,
-    message: 'Deposit is temporarily unavailable.',
+    message: 'Transfer is temporarily unavailable.',
     message_type: 'warning',
     wallet_name: 'Perfect Money',
 };

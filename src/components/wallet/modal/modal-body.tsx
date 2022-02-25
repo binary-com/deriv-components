@@ -18,7 +18,7 @@ const DialogContent = ({ children, ...props }: DialogContentProps) => (
     </DialogPrimitive.Portal>
 );
 
-export const DialogClose = DialogPrimitive.Close;
+const DialogClose = DialogPrimitive.Close;
 
 export interface ModalBodyProps {
     balance?: string;

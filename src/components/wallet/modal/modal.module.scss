@@ -75,6 +75,10 @@
     ul {
         position: relative;
     }
+
+    @media (max-width: 992px) {
+        margin: -64px 16px 0;
+    }
 }
 
 .message {
