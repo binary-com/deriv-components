@@ -18,6 +18,8 @@
         "paths": {
             "test-setup": ["test-setup"],
             "@styles/*": ["styles/*"],
+            "@assets/*": ["images/*"],
+            "@emotion/core": ["types/emotion.d.ts"],
         }
     },
     "ts-node": {
