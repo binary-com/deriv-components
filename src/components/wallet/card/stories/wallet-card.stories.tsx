@@ -5,14 +5,6 @@ import WalletCard from '../wallet-card';
 export default {
     title: 'WalletCard',
     argTypes: {
-        background_image: {
-            description: 'Sets the wallet background image.',
-            defaultValue: undefined,
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: undefined },
-            },
-        },
         balance: {
             description: 'Sets the wallet balance.',
             defaultValue: undefined,
@@ -126,7 +118,6 @@ const Template: Story<WalletCardProps> = (args) => <WalletCard {...args}/>;
 
 export const LightLargeWithBalance = Template.bind({});
 LightLargeWithBalance.args = {
-    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
@@ -138,7 +129,6 @@ LightLargeWithBalance.args = {
 
 export const LightMediumWithBalance = Template.bind({});
 LightMediumWithBalance.args = {
-    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
@@ -150,7 +140,6 @@ LightMediumWithBalance.args = {
 
 export const LightSmall = Template.bind({});
 LightSmall.args = {
-    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
@@ -162,7 +151,6 @@ LightSmall.args = {
 
 export const LightLargeWithoutBalance = Template.bind({});
 LightLargeWithoutBalance.args = {
-    background_image: '',
     balance: '',
     currency: '',
     dark: false,
@@ -174,7 +162,6 @@ LightLargeWithoutBalance.args = {
 
 export const LightMediumWithoutBalance = Template.bind({});
 LightMediumWithoutBalance.args = {
-    background_image: '',
     balance: '',
     currency: '',
     dark: false,
@@ -186,7 +173,6 @@ LightMediumWithoutBalance.args = {
 
 export const DarkLargeWithBalance = Template.bind({});
 DarkLargeWithBalance.args = {
-    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
@@ -198,7 +184,6 @@ DarkLargeWithBalance.args = {
 
 export const DarkMediumWithBalance = Template.bind({});
 DarkMediumWithBalance.args = {
-    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
@@ -210,7 +195,6 @@ DarkMediumWithBalance.args = {
 
 export const DarkSmall = Template.bind({});
 DarkSmall.args = {
-    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
@@ -222,7 +206,6 @@ DarkSmall.args = {
 
 export const DarkLargeWithoutBalance = Template.bind({});
 DarkLargeWithoutBalance.args = {
-    background_image: '',
     balance: '',
     currency: '',
     dark: true,
@@ -234,7 +217,6 @@ DarkLargeWithoutBalance.args = {
 
 export const DarkMediumWithoutBalance = Template.bind({});
 DarkMediumWithoutBalance.args = {
-    background_image: '',
     balance: '',
     currency: '',
     dark: true,
@@ -246,7 +228,6 @@ DarkMediumWithoutBalance.args = {
 
 export const FadedLight = Template.bind({});
 FadedLight.args = {
-    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
@@ -258,7 +239,6 @@ FadedLight.args = {
 
 export const FadedDark = Template.bind({});
 FadedDark.args = {
-    background_image: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
