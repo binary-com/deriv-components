@@ -4,6 +4,7 @@ import BackgroundTemplate from '@assets/svg/card/background-template.svg';
 import LogoPlaceholderLight from '@assets/svg/card/ic-logo-placeholder-light.svg';
 import LogoPlaceholderDark from '@assets/svg/card/ic-logo-placeholder-dark.svg';
 import { useEffect, useState, useRef } from 'react';
+import Text from '@core/text/text';
 
 export const wallet_card_sizes = ['small', 'medium', 'large'];
 
@@ -60,16 +61,20 @@ const WalletCard = ({
         if (size !== 'small' && balance) {
             return (
                 <div>
-                    <div className={css.title}>
+                    <Text as="div" type="extra-small" bold={false}>
                         {wallet_name} {currency} wallet
-                    </div>
-                    <div className={css.balance}>
+                    </Text>
+                    <Text as="div" type="paragraph-2" bold>
                         {balance} {currency}
-                    </div>
+                    </Text>
                 </div>
             );
         } else if (size !== 'small' && !balance) {
-            return <div className={css.title__large}>{wallet_name} wallet</div>;
+            return (
+                <Text as="div" type="paragraph-2" bold={false}>
+                    {wallet_name} wallet
+                </Text>
+            );
         }
     };
 
@@ -87,7 +92,7 @@ const WalletCard = ({
             {is_content_shown && (
                 <div className={css.card_content}>
                     <img className={css.logo} src={payment_method_logo} alt={'payment_method_logo'} />
-                    <div>{getCardInfo()}</div>
+                    {getCardInfo()}
                 </div>
             )}
         </div>
