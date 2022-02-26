@@ -44,7 +44,7 @@ const WalletCard = ({
                 circle.setAttribute('fill', pattern_color),
             );
         }
-        if (object_ref.current && div_ref.current && svg) {
+        if (div_ref.current && div_ref.current === object_ref.current?.parentNode && svg) {
             setSVG(svg);
             div_ref.current.appendChild(svg);
             object_ref.current.parentNode?.removeChild(object_ref.current);
@@ -85,7 +85,7 @@ const WalletCard = ({
             </div>
             {/* show card content only after the background svg has loaded:  */}
             {svg && (
-                <div className={css.inner_wrapper}>
+                <div className={css.card_content}>
                     <img className={css.logo} src={payment_method_logo} alt={'payment_method_logo'} />
                     <div>{getCardInfo()}</div>
                 </div>
