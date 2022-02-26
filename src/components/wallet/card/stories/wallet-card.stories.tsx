@@ -5,6 +5,60 @@ import WalletCard from '../wallet-card';
 export default {
     title: 'WalletCard',
     argTypes: {
+        background_color: {
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: undefined },
+            },
+            control: {
+                type: 'select',
+                options: [
+                    '#FF5F00',
+                    '#00AF7E',
+                    '#1A8FFF',
+                    '#FF0000',
+                    '#93A6AD',
+                    '#23BDAE',
+                    '#B6CDED',
+                    '#F7931B',
+                    '#333333',
+                    '#10D078',
+                    '#3C58C6',
+                    '#1A8FFF',
+                    '#FF444F',
+                    '#184977',
+                    '#52567F',
+                    '#F6931C',
+                    '#A9C51A',
+                    '#016AB6',
+                    '#FF671F',
+                    '#A5A8A9',
+                    '#EB001B',
+                    '#EB001B',
+                    '#8DC640',
+                    '#E87701',
+                    '#008751',
+                    '#E20613',
+                    '#9A6BFC',
+                    '#979797',
+                    '#008AC9',
+                    '#F3BA0C',
+                    '#EF1515',
+                    '#6C2556',
+                    '#303992',
+                    '#F25822',
+                    '#009393',
+                    '#0EE06E',
+                    '#2775CA',
+                    '#1A1F71',
+                    '#1A1F71',
+                    '#0068A3',
+                    '#39A935',
+                    '#A8E2C1',
+                ],
+            },
+            description: 'Sets the card background color (different for each payment method).',
+        },
         balance: {
             description: 'Sets the wallet balance.',
             defaultValue: undefined,
@@ -39,19 +93,18 @@ export default {
         },
         logo: {
             description: 'Sets the payment method logo on the card.',
-                defaultValue: undefined,
-                table: {
-                    type: { summary: 'string' },
-                    defaultValue: { summary: undefined },
-                },
+            defaultValue: undefined,
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: undefined },
+            },
         },
         size: {
             control: {
                 type: 'select',
                 options: wallet_card_sizes,
             },
-            description:
-                "Controls the sizing of the wallet card.",
+            description: 'Controls the sizing of the wallet card.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'large' },
@@ -114,10 +167,11 @@ export default {
     },
 } as Meta<WalletCardProps>;
 
-const Template: Story<WalletCardProps> = (args) => <WalletCard {...args}/>;
+const Template: Story<WalletCardProps> = (args) => <WalletCard {...args} />;
 
 export const LightLargeWithBalance = Template.bind({});
 LightLargeWithBalance.args = {
+    background_color: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
@@ -129,6 +183,7 @@ LightLargeWithBalance.args = {
 
 export const LightMediumWithBalance = Template.bind({});
 LightMediumWithBalance.args = {
+    background_color: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
@@ -140,6 +195,7 @@ LightMediumWithBalance.args = {
 
 export const LightSmall = Template.bind({});
 LightSmall.args = {
+    background_color: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
@@ -151,6 +207,7 @@ LightSmall.args = {
 
 export const LightLargeWithoutBalance = Template.bind({});
 LightLargeWithoutBalance.args = {
+    background_color: '',
     balance: '',
     currency: '',
     dark: false,
@@ -162,6 +219,7 @@ LightLargeWithoutBalance.args = {
 
 export const LightMediumWithoutBalance = Template.bind({});
 LightMediumWithoutBalance.args = {
+    background_color: '',
     balance: '',
     currency: '',
     dark: false,
@@ -173,6 +231,7 @@ LightMediumWithoutBalance.args = {
 
 export const DarkLargeWithBalance = Template.bind({});
 DarkLargeWithBalance.args = {
+    background_color: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
@@ -184,6 +243,7 @@ DarkLargeWithBalance.args = {
 
 export const DarkMediumWithBalance = Template.bind({});
 DarkMediumWithBalance.args = {
+    background_color: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
@@ -195,6 +255,7 @@ DarkMediumWithBalance.args = {
 
 export const DarkSmall = Template.bind({});
 DarkSmall.args = {
+    background_color: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
@@ -206,6 +267,7 @@ DarkSmall.args = {
 
 export const DarkLargeWithoutBalance = Template.bind({});
 DarkLargeWithoutBalance.args = {
+    background_color: '',
     balance: '',
     currency: '',
     dark: true,
@@ -217,6 +279,7 @@ DarkLargeWithoutBalance.args = {
 
 export const DarkMediumWithoutBalance = Template.bind({});
 DarkMediumWithoutBalance.args = {
+    background_color: '',
     balance: '',
     currency: '',
     dark: true,
@@ -228,6 +291,7 @@ DarkMediumWithoutBalance.args = {
 
 export const FadedLight = Template.bind({});
 FadedLight.args = {
+    background_color: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
@@ -239,6 +303,7 @@ FadedLight.args = {
 
 export const FadedDark = Template.bind({});
 FadedDark.args = {
+    background_color: '',
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
