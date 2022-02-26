@@ -48,9 +48,9 @@ const WalletCard = ({
         if (div_ref.current && div_ref.current === object_ref.current?.parentNode && svg) {
             div_ref.current.appendChild(svg);
             object_ref.current.parentNode?.removeChild(object_ref.current);
-            // show card content once the background svg has loaded:
-            if (!is_content_shown) setIsContentShown(true);
         }
+        // show card content when the background svg has loaded:
+        if (!is_content_shown) setIsContentShown(true);
     };
 
     useEffect(() => {
@@ -79,10 +79,9 @@ const WalletCard = ({
     };
 
     return (
-        <div className={classNames(css.container, css[size], dark && css.dark, faded && css.faded)}>
-            <div id="background" ref={div_ref} className={css.background}>
+        <div data-testid='wallet-card' className={classNames(css.container, css[size], dark && css.dark, faded && css.faded)}>
+            <div ref={div_ref} className={css.background}>
                 <object
-                    id="svg_object"
                     ref={object_ref}
                     type="image/svg+xml"
                     data={BackgroundTemplate}
