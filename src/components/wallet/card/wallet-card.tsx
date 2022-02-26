@@ -28,7 +28,7 @@ const WalletCard = ({
     size = 'large',
     wallet_name,
 }: WalletCardProps) => {
-    const [svg, setSVG] = useState<SVGSVGElement>();
+    const [is_content_shown, setIsContentShown] = useState<boolean>(false);
     const payment_method_logo = logo || (dark ? LogoPlaceholderDark : LogoPlaceholderLight);
     const div_ref = useRef<HTMLDivElement>(null);
     const object_ref = useRef<HTMLObjectElement>(null);
@@ -45,14 +45,15 @@ const WalletCard = ({
             );
         }
         if (div_ref.current && div_ref.current === object_ref.current?.parentNode && svg) {
-            setSVG(svg);
             div_ref.current.appendChild(svg);
             object_ref.current.parentNode?.removeChild(object_ref.current);
+            // show card content once the background svg has loaded:
+            if (!is_content_shown) setIsContentShown(true);
         }
     };
 
     useEffect(() => {
-        if (svg) updateBackground();
+        if (is_content_shown) updateBackground();
     }, [background_color, dark]);
 
     const getCardInfo = () => {
@@ -83,8 +84,7 @@ const WalletCard = ({
                     onLoad={updateBackground}
                 ></object>
             </div>
-            {/* show card content only after the background svg has loaded:  */}
-            {svg && (
+            {is_content_shown && (
                 <div className={css.card_content}>
                     <img className={css.logo} src={payment_method_logo} alt={'payment_method_logo'} />
                     <div>{getCardInfo()}</div>
