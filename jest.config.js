@@ -8,6 +8,12 @@ module.exports = {
     transform: {
         '^.+\\.(ts|tsx)$': 'ts-jest',
         '.+\\.(css|styl|less|sass|scss)$': 'jest-css-modules-transform',
+        "^.+\\.svg$": "<rootDir>/svgTransform.js",
     },
     collectCoverageFrom: ['./src/**/*.{ts,tsx}', '!**/node_modules/**', '!**/vendor/**'],
+    moduleNameMapper: {
+        "^@assets/(.*)$": "<rootDir>/src/images/$1",
+        "^@core/(.*)$": "<rootDir>/src/components/core/$1",
+        "^@wallet/(.*)$": "<rootDir>/src/components/wallet/$1",
+      }
 };
