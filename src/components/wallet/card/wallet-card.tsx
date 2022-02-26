@@ -53,7 +53,7 @@ const WalletCard = ({
 
     useEffect(() => {
         if (svg) updateBackground();
-    }, [background_color, dark, svg]);
+    }, [background_color, dark]);
 
     const getCardInfo = () => {
         if (size !== 'small' && balance) {
