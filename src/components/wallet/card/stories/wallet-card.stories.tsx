@@ -1,116 +1,84 @@
 import type { Meta, Story } from '@storybook/react';
-import { WalletCardProps, wallet_card_sizes } from '../wallet-card';
+import { WalletCardProps } from '../wallet-card';
 import WalletCard from '../wallet-card';
 
 export default {
     title: 'WalletCard',
+    parameters: { controls: { sort: 'alpha' } },
     argTypes: {
-        background_color: {
+        active: {
+            description:
+                'Optional. If set to `true`, the wallet card border is highlighted in red by setting CSS "outline" property, and a check icon appears. Turned off for faded state.',
+            defaultValue: false,
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: undefined },
+                type: { summary: 'boolean | undefined' },
+                defaultValue: { summary: false },
             },
-            control: {
-                type: 'select',
-                options: [
-                    '#FF5F00',
-                    '#00AF7E',
-                    '#1A8FFF',
-                    '#FF0000',
-                    '#93A6AD',
-                    '#23BDAE',
-                    '#B6CDED',
-                    '#F7931B',
-                    '#333333',
-                    '#10D078',
-                    '#3C58C6',
-                    '#1A8FFF',
-                    '#FF444F',
-                    '#184977',
-                    '#52567F',
-                    '#F6931C',
-                    '#A9C51A',
-                    '#016AB6',
-                    '#FF671F',
-                    '#A5A8A9',
-                    '#EB001B',
-                    '#EB001B',
-                    '#8DC640',
-                    '#E87701',
-                    '#008751',
-                    '#E20613',
-                    '#9A6BFC',
-                    '#979797',
-                    '#008AC9',
-                    '#F3BA0C',
-                    '#EF1515',
-                    '#6C2556',
-                    '#303992',
-                    '#F25822',
-                    '#009393',
-                    '#0EE06E',
-                    '#2775CA',
-                    '#1A1F71',
-                    '#1A1F71',
-                    '#0068A3',
-                    '#39A935',
-                    '#A8E2C1',
-                ],
-            },
-            description: 'Sets the card background color (different for each payment method).',
         },
-        balance: {
-            description: 'Sets the wallet balance.',
+        background_colors: {
+            description:
+                'Optional. Sets background colors of the card (different for each payment method). ' +
+                '"primary" applies to its top-left & bottom-right corners. "secondary" applies to its top-right corner.',
             defaultValue: undefined,
             table: {
-                type: { summary: 'string' },
+                expanded: true,
+                type: { summary: '{ primary: string; secondary?: string; } | undefined' },
+                defaultValue: { summary: undefined },
+            },
+        },
+        balance: {
+            description: 'Optional. Sets the wallet balance.',
+            defaultValue: undefined,
+            table: {
+                type: { summary: 'string | undefined' },
                 defaultValue: { summary: undefined },
             },
         },
         currency: {
-            description: 'Sets the wallet currency.',
+            description: 'Optional. Sets the wallet currency.',
             defaultValue: undefined,
             table: {
-                type: { summary: 'string' },
+                type: { summary: 'string | undefined' },
                 defaultValue: { summary: undefined },
             },
         },
         dark: {
-            description: 'If set to `true`, the wallet card color will be set to dark theme.',
+            description: 'Optional. If set to `true`, the wallet card color will be set to dark theme.',
             defaultValue: false,
             table: {
-                type: { summary: 'boolean' },
+                type: { summary: 'boolean | undefined' },
                 defaultValue: { summary: false },
             },
         },
         faded: {
-            description: 'If set to `true`, the wallet card opacity will be set to 0.7 and hover effect will be off.',
+            description: 'Optional. If set to `true`, the wallet card opacity is set to 0.7 and hover effect is off.',
             defaultValue: false,
             table: {
-                type: { summary: 'boolean' },
+                type: { summary: 'boolean | undefined' },
                 defaultValue: { summary: false },
             },
         },
         logo: {
-            description: 'Sets the payment method logo on the card.',
+            description: 'Optional. Accepts an image path (URL). Sets the payment method logo on the card.',
             defaultValue: undefined,
             table: {
-                type: { summary: 'string' },
+                type: { summary: 'string | undefined' },
                 defaultValue: { summary: undefined },
             },
         },
         size: {
+            description: 'Optional. Controls the sizing of the wallet card.',
             control: {
-                type: 'select',
-                options: wallet_card_sizes,
+                type: 'radio',
+                options: ['small', 'medium', 'large'],
             },
-            description: 'Controls the sizing of the wallet card.',
             table: {
-                type: { summary: 'string' },
+                type: { summary: '"small" | "medium" | "large" | undefined' },
                 defaultValue: { summary: 'large' },
             },
         },
         wallet_name: {
+            description: 'Required. Sets a payment method name on the card.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: undefined },
@@ -162,7 +130,6 @@ export default {
                     'Zingpay',
                 ],
             },
-            description: 'Sets the payment method name on the card.',
         },
     },
 } as Meta<WalletCardProps>;
@@ -171,7 +138,8 @@ const Template: Story<WalletCardProps> = (args) => <WalletCard {...args} />;
 
 export const LightLargeWithBalance = Template.bind({});
 LightLargeWithBalance.args = {
-    background_color: '',
+    active: false,
+    background_colors: { primary: '', secondary: '' },
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
@@ -183,7 +151,8 @@ LightLargeWithBalance.args = {
 
 export const LightMediumWithBalance = Template.bind({});
 LightMediumWithBalance.args = {
-    background_color: '',
+    active: false,
+    background_colors: { primary: '', secondary: '' },
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
@@ -195,7 +164,8 @@ LightMediumWithBalance.args = {
 
 export const LightSmall = Template.bind({});
 LightSmall.args = {
-    background_color: '',
+    active: false,
+    background_colors: { primary: '', secondary: '' },
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
@@ -207,7 +177,8 @@ LightSmall.args = {
 
 export const LightLargeWithoutBalance = Template.bind({});
 LightLargeWithoutBalance.args = {
-    background_color: '',
+    active: false,
+    background_colors: { primary: '', secondary: '' },
     balance: '',
     currency: '',
     dark: false,
@@ -219,7 +190,8 @@ LightLargeWithoutBalance.args = {
 
 export const LightMediumWithoutBalance = Template.bind({});
 LightMediumWithoutBalance.args = {
-    background_color: '',
+    active: false,
+    background_colors: { primary: '', secondary: '' },
     balance: '',
     currency: '',
     dark: false,
@@ -231,7 +203,8 @@ LightMediumWithoutBalance.args = {
 
 export const DarkLargeWithBalance = Template.bind({});
 DarkLargeWithBalance.args = {
-    background_color: '',
+    active: false,
+    background_colors: { primary: '', secondary: '' },
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
@@ -243,7 +216,8 @@ DarkLargeWithBalance.args = {
 
 export const DarkMediumWithBalance = Template.bind({});
 DarkMediumWithBalance.args = {
-    background_color: '',
+    active: false,
+    background_colors: { primary: '', secondary: '' },
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
@@ -255,7 +229,8 @@ DarkMediumWithBalance.args = {
 
 export const DarkSmall = Template.bind({});
 DarkSmall.args = {
-    background_color: '',
+    active: false,
+    background_colors: { primary: '', secondary: '' },
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
@@ -267,7 +242,8 @@ DarkSmall.args = {
 
 export const DarkLargeWithoutBalance = Template.bind({});
 DarkLargeWithoutBalance.args = {
-    background_color: '',
+    active: false,
+    background_colors: { primary: '', secondary: '' },
     balance: '',
     currency: '',
     dark: true,
@@ -279,7 +255,8 @@ DarkLargeWithoutBalance.args = {
 
 export const DarkMediumWithoutBalance = Template.bind({});
 DarkMediumWithoutBalance.args = {
-    background_color: '',
+    active: false,
+    background_colors: { primary: '', secondary: '' },
     balance: '',
     currency: '',
     dark: true,
@@ -289,9 +266,10 @@ DarkMediumWithoutBalance.args = {
     wallet_name: '[Name]',
 };
 
-export const FadedLight = Template.bind({});
-FadedLight.args = {
-    background_color: '',
+export const FadedLightLarge = Template.bind({});
+FadedLightLarge.args = {
+    active: false,
+    background_colors: { primary: '', secondary: '' },
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
@@ -301,14 +279,67 @@ FadedLight.args = {
     wallet_name: '[Name]',
 };
 
-export const FadedDark = Template.bind({});
-FadedDark.args = {
-    background_color: '',
+export const FadedDarkMedium = Template.bind({});
+FadedDarkMedium.args = {
+    active: false,
+    background_colors: { primary: '', secondary: '' },
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
     faded: true,
     logo: '',
+    size: 'medium',
+    wallet_name: '[Name]',
+};
+
+export const FadedDarkSmall = Template.bind({});
+FadedDarkSmall.args = {
+    active: false,
+    background_colors: { primary: '', secondary: '' },
+    balance: '0.00',
+    currency: '[Currency]',
+    dark: true,
+    faded: true,
+    logo: '',
+    size: 'small',
+    wallet_name: '[Name]',
+};
+
+export const ActiveLightLarge = Template.bind({});
+ActiveLightLarge.args = {
+    active: true,
+    background_colors: { primary: '', secondary: '' },
+    balance: '0.00',
+    currency: '[Currency]',
+    dark: false,
+    faded: false,
+    logo: '',
     size: 'large',
+    wallet_name: '[Name]',
+};
+
+export const ActiveDarkMedium = Template.bind({});
+ActiveDarkMedium.args = {
+    active: true,
+    background_colors: { primary: '', secondary: '' },
+    balance: '0.00',
+    currency: '[Currency]',
+    dark: true,
+    faded: false,
+    logo: '',
+    size: 'medium',
+    wallet_name: '[Name]',
+};
+
+export const ActiveDarkSmall = Template.bind({});
+ActiveDarkSmall.args = {
+    active: true,
+    background_colors: { primary: '', secondary: '' },
+    balance: '0.00',
+    currency: '[Currency]',
+    dark: true,
+    faded: false,
+    logo: '',
+    size: 'small',
     wallet_name: '[Name]',
 };

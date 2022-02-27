@@ -3,24 +3,28 @@ import css from './wallet-card.module.scss';
 import BackgroundTemplate from '@assets/svg/card/background-template.svg';
 import LogoPlaceholderLight from '@assets/svg/card/ic-logo-placeholder-light.svg';
 import LogoPlaceholderDark from '@assets/svg/card/ic-logo-placeholder-dark.svg';
+import CheckIcon from '@assets/svg/card/ic-check.svg';
 import { useEffect, useState, useRef } from 'react';
 import Text from '@core/text/text';
 
-export const wallet_card_sizes = ['small', 'medium', 'large'];
-
 export interface WalletCardProps {
-    background_color?: string;
+    active?: boolean;
+    background_colors?: {
+        primary: string;
+        secondary?: string;
+    };
     balance?: string;
     currency?: string;
     dark?: boolean;
     faded?: boolean;
     logo?: string;
-    size?: typeof wallet_card_sizes[number];
-    wallet_name?: string;
+    size?: 'small' | 'medium' | 'large';
+    wallet_name: string;
 }
 
 const WalletCard = ({
-    background_color,
+    active,
+    background_colors,
     balance,
     currency,
     dark,
@@ -37,13 +41,16 @@ const WalletCard = ({
     const updateBackground = () => {
         // here we set a fill and pattern colors of svg & extract it from non-zoomable object:
         const fill_color = dark ? '#252525' : '#fff';
-        const pattern_color = background_color || (dark ? '#323738' : '#d6dadb');
+        const pattern_color_primary = background_colors?.primary || (dark ? '#323738' : '#d6dadb');
+        const pattern_color_secondary = background_colors?.secondary || (dark ? '#323738' : '#d6dadb');
         const svg = object_ref.current?.contentDocument?.querySelector('svg') || div_ref.current?.querySelector('svg');
         if (svg) {
             svg.querySelectorAll('path')[0].setAttribute('fill', fill_color);
-            svg.querySelectorAll('circle').forEach((circle: SVGCircleElement) =>
-                circle.setAttribute('fill', pattern_color),
-            );
+            svg.querySelectorAll('circle').forEach((circle: SVGCircleElement, index: number) => {
+                if (index === 1) {
+                    circle.setAttribute('fill', pattern_color_secondary);
+                } else circle.setAttribute('fill', pattern_color_primary);
+            });
         }
         if (div_ref.current && div_ref.current === object_ref.current?.parentNode && svg) {
             div_ref.current.appendChild(svg);
@@ -55,9 +62,9 @@ const WalletCard = ({
 
     useEffect(() => {
         if (is_content_shown) updateBackground();
-    }, [background_color, dark]);
+    }, [background_colors, dark]);
 
-    const getCardInfo = () => {
+    const getCardText = () => {
         if (size !== 'small' && balance) {
             return (
                 <div>
@@ -79,7 +86,16 @@ const WalletCard = ({
     };
 
     return (
-        <div data-testid='wallet-card' className={classNames(css.container, css[size], dark && css.dark, faded && css.faded)}>
+        <div
+            data-testid="wallet-card"
+            className={classNames(
+                css.container,
+                css[size],
+                dark && css.dark,
+                active && is_content_shown && css.active,
+                faded && css.faded,
+            )}
+        >
             <div ref={div_ref} className={css.background}>
                 <object
                     ref={object_ref}
@@ -88,10 +104,13 @@ const WalletCard = ({
                     onLoad={updateBackground}
                 ></object>
             </div>
+            {active && !faded && is_content_shown && (
+                <img className={css.active__icon} src={CheckIcon} alt={'active_icon'} />
+            )}
             {is_content_shown && (
                 <div className={css.card_content}>
                     <img className={css.logo} src={payment_method_logo} alt={'payment_method_logo'} />
-                    {getCardInfo()}
+                    {getCardText()}
                 </div>
             )}
         </div>
