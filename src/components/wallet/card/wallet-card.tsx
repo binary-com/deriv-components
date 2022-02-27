@@ -28,15 +28,20 @@ const WalletCard = ({ active, balance, currency, dark, faded, size = 'large', wa
         // here we set a fill and pattern colors of svg & extract it from non-zoomable object:
         const fill_color = dark ? '#252525' : '#fff';
         const pattern_color_default = dark ? '#323738' : '#d6dadb';
-        const pattern_color_primary = wallets_data[wallet_name]?.colors.primary || pattern_color_default;
-        const pattern_color_secondary = wallets_data[wallet_name]?.colors.secondary || pattern_color_default;
+        const pattern_color_bottom_right = wallets_data[wallet_name]?.colors.bottom_right || pattern_color_default;
         const svg = object_ref.current?.contentDocument?.querySelector('svg') || div_ref.current?.querySelector('svg');
         if (svg) {
             svg.querySelectorAll('path')[0].setAttribute('fill', fill_color);
             svg.querySelectorAll('circle').forEach((circle: SVGCircleElement, index: number) => {
-                if (index === 1) {
-                    circle.setAttribute('fill', pattern_color_secondary);
-                } else circle.setAttribute('fill', pattern_color_primary);
+                // 1st svg circle colors the bottom-right corner, 2nd - top-right corner, 3rd - top-left corner of the card:
+                if (index === 0) circle.setAttribute('fill', pattern_color_bottom_right);
+                else if (index === 1)
+                    circle.setAttribute('fill', wallets_data[wallet_name]?.colors.top_right || pattern_color_default);
+                else if (index === 2)
+                    circle.setAttribute(
+                        'fill',
+                        wallets_data[wallet_name]?.colors.top_left || pattern_color_bottom_right,
+                    );
             });
         }
         if (div_ref.current && div_ref.current === object_ref.current?.parentNode && svg) {
