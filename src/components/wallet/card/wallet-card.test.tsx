@@ -4,12 +4,10 @@ import WalletCard from './wallet-card';
 describe('WalletCard Component', () => {
     const props = {
         active: false,
-        background_colors: undefined,
         balance: '',
         currency: '',
         dark: false,
         faded: false,
-        logo: '',
         size: '',
         wallet_name: '[Name]',
     };

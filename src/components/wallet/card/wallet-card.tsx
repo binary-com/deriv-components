@@ -6,43 +6,30 @@ import LogoPlaceholderDark from '@assets/svg/card/ic-logo-placeholder-dark.svg';
 import CheckIcon from '@assets/svg/card/ic-check.svg';
 import { useEffect, useState, useRef } from 'react';
 import Text from '@core/text/text';
+import { wallets_data } from '@wallet/wallets_data';
 
 export interface WalletCardProps {
     active?: boolean;
-    background_colors?: {
-        primary: string;
-        secondary?: string;
-    };
     balance?: string;
     currency?: string;
     dark?: boolean;
     faded?: boolean;
-    logo?: string;
     size?: 'small' | 'medium' | 'large';
     wallet_name: string;
 }
 
-const WalletCard = ({
-    active,
-    background_colors,
-    balance,
-    currency,
-    dark,
-    faded,
-    logo,
-    size = 'large',
-    wallet_name,
-}: WalletCardProps) => {
+const WalletCard = ({ active, balance, currency, dark, faded, size = 'large', wallet_name }: WalletCardProps) => {
     const [is_content_shown, setIsContentShown] = useState<boolean>(false);
-    const payment_method_logo = logo || (dark ? LogoPlaceholderDark : LogoPlaceholderLight);
+    const logo = wallets_data[wallet_name]?.logo || (dark ? LogoPlaceholderDark : LogoPlaceholderLight);
     const div_ref = useRef<HTMLDivElement>(null);
     const object_ref = useRef<HTMLObjectElement>(null);
 
     const updateBackground = () => {
         // here we set a fill and pattern colors of svg & extract it from non-zoomable object:
         const fill_color = dark ? '#252525' : '#fff';
-        const pattern_color_primary = background_colors?.primary || (dark ? '#323738' : '#d6dadb');
-        const pattern_color_secondary = background_colors?.secondary || (dark ? '#323738' : '#d6dadb');
+        const pattern_color_default = dark ? '#323738' : '#d6dadb';
+        const pattern_color_primary = wallets_data[wallet_name]?.colors.primary || pattern_color_default;
+        const pattern_color_secondary = wallets_data[wallet_name]?.colors.secondary || pattern_color_default;
         const svg = object_ref.current?.contentDocument?.querySelector('svg') || div_ref.current?.querySelector('svg');
         if (svg) {
             svg.querySelectorAll('path')[0].setAttribute('fill', fill_color);
@@ -62,7 +49,7 @@ const WalletCard = ({
 
     useEffect(() => {
         if (is_content_shown) updateBackground();
-    }, [background_colors, dark]);
+    }, [wallet_name, dark]);
 
     const getCardText = () => {
         if (size !== 'small' && balance) {
@@ -109,7 +96,7 @@ const WalletCard = ({
             )}
             {is_content_shown && (
                 <div className={css.card_content}>
-                    <img className={css.logo} src={payment_method_logo} alt={'payment_method_logo'} />
+                    <img className={css.logo} src={logo} alt={'payment_method_logo'} />
                     {getCardText()}
                 </div>
             )}
