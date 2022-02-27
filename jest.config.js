@@ -16,5 +16,5 @@ module.exports = {
         '^@core/(.*)$': '<rootDir>/src/components/core/$1',
         '^@wallet/(.*)$': '<rootDir>/src/components/wallet/$1',
     },
-    setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+    setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };
