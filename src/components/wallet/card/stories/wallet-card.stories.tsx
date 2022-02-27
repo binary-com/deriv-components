@@ -67,6 +67,7 @@ export default {
             control: {
                 type: 'select',
                 options: [
+                    'universal',
                     '1ForYou',
                     'Advcash',
                     'Airtm',

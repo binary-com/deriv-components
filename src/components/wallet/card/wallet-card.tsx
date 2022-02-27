@@ -26,11 +26,11 @@ const WalletCard = ({ active, balance, currency, dark, faded, size = 'large', wa
 
     const updateBackground = () => {
         // here we set a fill and pattern colors of svg & extract it from non-zoomable object:
-        const fill_color = dark ? '#252525' : '#fff';
         const pattern_color_default = dark ? '#323738' : '#d6dadb';
         const svg = object_ref.current?.contentDocument?.querySelector('svg') || div_ref.current?.querySelector('svg');
         if (svg) {
-            svg.querySelectorAll('path')[0].setAttribute('fill', fill_color);
+            svg.querySelectorAll('path')[0].setAttribute('fill', dark ? '#252525' : '#fff');
+            svg.querySelector('#squares')?.setAttribute('fill', dark ? '#fff' : '#0E0E0E');
             svg.querySelectorAll('circle').forEach((circle: SVGCircleElement, index: number) => {
                 // primary color is for the 1st circle in the bottom-right corner & for the 3rd circle in the top-left corner,
                 // 2nd circle in the top-right corner has secondary color:
