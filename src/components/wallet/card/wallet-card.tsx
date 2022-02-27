@@ -92,7 +92,7 @@ const WalletCard = ({
                 css.container,
                 css[size],
                 dark && css.dark,
-                active && is_content_shown && css.active,
+                active && !faded && is_content_shown && css.active,
                 faded && css.faded,
             )}
         >
