@@ -16,6 +16,8 @@ export interface CheckboxProps extends HtmlHTMLAttributes<HTMLInputElement> {
 
 const Checkbox = ({ children, dark, indetermine, check, size = 'default', ...props }: CheckboxProps) => {
     const [checked, setChecked] = useState(false);
+    const icon_src = check ? CheckIconSVG : indetermine && CheckIndetermineIconSVG;
+    const icon_class = check ? 'check_icon' : indetermine && 'indetermine_icon';
 
     return (
         <div className={css.container} {...props}>
@@ -23,8 +25,7 @@ const Checkbox = ({ children, dark, indetermine, check, size = 'default', ...pro
                 defaultChecked={check || checked}
                 className={classNames(css.checkbox, dark && css.dark, check && css.check, indetermine && css.check)}
             >
-                {check && <img src={CheckIconSVG} className={check && 'check_icon'} />}
-                {indetermine && <img src={CheckIndetermineIconSVG} className={indetermine && 'indetermine_icon'} />}
+                {icon_src && icon_class && <img src={icon_src} className={icon_class} />}
             </CheckBox>
             <label
                 className={classNames(css[size], dark ? css.text_dark : css.text_light)}
