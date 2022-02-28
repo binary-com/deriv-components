@@ -17,7 +17,7 @@
         "types": ["node", "jest"],
         "paths": {
             "test-setup": ["test-setup"],
-            "@styles/*": ["styles/*"],
+            "Styles/*": ["styles/*"],
             "@assets/*": ["images/*"],
         }
     },

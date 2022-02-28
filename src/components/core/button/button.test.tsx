@@ -6,4 +6,8 @@ describe('Button Component', () => {
         const button = render(<Button>Button</Button>);
         expect(button).toBeTruthy();
     });
+    it('Renders children correctly', () => {
+        const { container } = render(<Button>This is the button children</Button>);
+        expect(container.textContent).toBe('This is the button children');
+    });
 });

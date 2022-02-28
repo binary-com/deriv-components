@@ -1,6 +1,6 @@
 import type * as Stitches from '@stitches/react';
-import { styled } from '@styles/stitches.config';
-import { modifyVariantsForStory } from '@styles/type-utils';
+import { styled } from 'Styles/stitches.config';
+import { modifyVariantsForStory } from 'Styles/type-utils';
 
 const Button = styled('button', {
     display: 'inline-flex',

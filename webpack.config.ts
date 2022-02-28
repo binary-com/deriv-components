@@ -63,7 +63,7 @@ const config = (env: EnvConfig): Configuration => {
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
             alias: {
-                '@styles': path.resolve(__dirname, 'src/styles'),
+                'Styles': path.resolve(__dirname, 'src/styles'),
             },
         },
         output: {
