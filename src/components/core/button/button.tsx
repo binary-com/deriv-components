@@ -155,6 +155,9 @@ type NativeButtonProps = React.ComponentPropsWithoutRef<'button'>;
 
 // Only export/use these in Storybook since they are just for the Stitchs x SB handshake
 // Can be here or in the story
+// We need to Omit css as Emotions global css typedef clashes with the Stitches css typedef
+// Storybook currently uses v10+ of Emotion, this issue is fixed in Emotion v11+
+// TODO: Remove Omit once Storybook's Emotion is running on v11+
 type ButtonVariantProps = Stitches.VariantProps<typeof Button> & Omit<NativeButtonProps, 'css'>;
 interface ButtonProps extends ButtonVariantProps {}
 // Use this as the type in Story; i.e. `ComponentMeta<typeof ButtonStory>`
