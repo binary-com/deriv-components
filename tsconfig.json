@@ -18,6 +18,7 @@
         "paths": {
             "test-setup": ["test-setup"],
             "Styles/*": ["styles/*"],
+            // TODO: Remove @ to replace with Capitalisation to avoid conflicts with node modules
             "@assets/*": ["images/*"],
         }
     },
