@@ -1,7 +1,7 @@
 import { ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin/lib/plugin';
+import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import path from 'path';
 import { Configuration, ResolvePluginInstance } from 'webpack';
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 type EnvConfig = {
     modules: 'cjs' | 'es';
