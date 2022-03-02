@@ -1,9 +1,9 @@
-import type { Meta, Story } from '@storybook/react';
-import type { ButtonProps } from '../button';
-import Button, { button_color_type, button_size_type } from '../button';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import Button, { button_color_type, button_size_type, ButtonStory } from '../button';
 
 export default {
     title: 'Button',
+    component: Button,
     argTypes: {
         block: {
             description: 'If set to `true`, button width will be full-width relative to the container size.',
@@ -54,9 +54,9 @@ export default {
             },
         },
     },
-} as Meta<ButtonProps>;
+} as ComponentMeta<typeof ButtonStory>;
 
-const Template: Story<ButtonProps> = (args) => <Button {...args}>Example button</Button>;
+const Template: ComponentStory<typeof ButtonStory> = (args) => <Button {...args}>{args.children}</Button>;
 
 export const Primary = Template.bind({});
 Primary.args = {
@@ -65,6 +65,7 @@ Primary.args = {
     color: 'primary',
     size: 'medium',
     disabled: false,
+    children: 'Button',
 };
 
 export const PrimaryLight = Template.bind({});
@@ -74,6 +75,7 @@ PrimaryLight.args = {
     color: 'primary-light',
     size: 'medium',
     disabled: false,
+    children: 'Button',
 };
 
 export const Secondary = Template.bind({});
@@ -83,6 +85,7 @@ Secondary.args = {
     color: 'secondary',
     size: 'medium',
     disabled: false,
+    children: 'Button',
 };
 
 export const Tertiary = Template.bind({});
@@ -92,4 +95,5 @@ Tertiary.args = {
     color: 'tertiary',
     size: 'medium',
     disabled: false,
+    children: 'Button',
 };

@@ -1,11 +1,19 @@
-import type { Story } from '@storybook/react';
-import { TextProps, type_array, align_array } from '../text';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { TextStory, type_array, align_array } from '../text';
 import Text from '../text';
 
 export default {
     title: 'Text',
     component: Text,
     argTypes: {
+        as: {
+            description: 'The HTML element to render as.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'p' },
+            },
+            control: 'none',
+        },
         type: {
             control: { type: 'select', options: type_array },
             description:
@@ -23,14 +31,6 @@ export default {
                 defaultValue: { summary: 'left' },
             },
         },
-        as: {
-            description: 'The HTML element to render as.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'p' },
-            },
-            control: 'none',
-        },
         bold: {
             description: 'If set to `true`, text will bolded.',
             table: {
@@ -39,12 +39,13 @@ export default {
             },
         },
     },
-};
+} as ComponentMeta<typeof TextStory>;
 
-export const Controls: Story<TextProps> = (args) => <Text {...args}>{args.children}</Text>;
+const Template: ComponentStory<typeof TextStory> = (args) => <Text {...args}>{args.children}</Text>;
+
+export const Controls = Template.bind({});
 Controls.args = {
     children: 'Text',
-    as: 'p',
     type: 'subtitle-1',
     bold: true,
     align: 'left',
