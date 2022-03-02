@@ -51,6 +51,7 @@
         "@types/react": "^17.0.39",
         "@types/webpack": "^5.28.0",
         "babel-loader": "^8.2.3",
+        "file-loader": "^6.2.0",
         "fork-ts-checker-webpack-plugin": "^7.2.1",
         "hash-generator": "^0.1.0",
         "jest": "^27.5.1",
