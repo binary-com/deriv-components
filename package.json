@@ -1,6 +1,6 @@
 {
     "name": "@deriv/components",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A UI library developed by Deriv",
     "main": "./dist/cjs/components.js",
     "module": "./dist/es/components.js",
