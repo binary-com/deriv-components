@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import css from './wallet-card.module.scss';
-import BackgroundTemplate from '@assets/svg/card/background-template.svg';
+import DefaultBackground from '@assets/svg/card/default-background.svg';
+import DemoBackground from '@assets/svg/card/demo-background.svg';
 import LogoPlaceholderLight from '@assets/svg/card/ic-logo-placeholder-light.svg';
 import LogoPlaceholderDark from '@assets/svg/card/ic-logo-placeholder-dark.svg';
 import CheckIcon from '@assets/svg/card/ic-check.svg';
@@ -13,30 +14,36 @@ export interface WalletCardProps {
     balance?: string;
     currency?: string;
     dark?: boolean;
+    demo?: boolean;
     faded?: boolean;
     size?: 'small' | 'medium' | 'large';
     wallet_name: string;
 }
 
-const WalletCard = ({ active, balance, currency, dark, faded, size = 'large', wallet_name }: WalletCardProps) => {
+const WalletCard = ({ active, balance, currency, dark, demo, faded, size = 'large', wallet_name }: WalletCardProps) => {
     const [is_content_shown, setIsContentShown] = useState<boolean>(false);
     const logo = wallets_data[wallet_name]?.logo || (dark ? LogoPlaceholderDark : LogoPlaceholderLight);
     const div_ref = useRef<HTMLDivElement>(null);
     const object_ref = useRef<HTMLObjectElement>(null);
 
     const updateBackground = () => {
-        // here we set a fill and pattern colors of svg & extract it from non-zoomable object:
-        const pattern_color_default = dark ? '#323738' : '#d6dadb';
+        // here we set a background and pattern colors of svg & extract the svg from non-zoomable object:
+        const default_primary_color = dark ? '#303030' : '#CFCFCF';
+        const default_secondary_color = dark ? '#323738' : '#d6dadb';
+        const custom_primary_color = demo ? '#FF6444' : wallets_data[wallet_name]?.colors.primary;
+        const custom_secondary_color = demo ? '#FF444F' : wallets_data[wallet_name]?.colors.secondary;
         const svg = object_ref.current?.contentDocument?.querySelector('svg') || div_ref.current?.querySelector('svg');
         if (svg) {
-            svg.querySelectorAll('path')[0].setAttribute('fill', dark ? '#252525' : '#fff');
-            svg.querySelector('#squares')?.setAttribute('fill', dark ? '#fff' : '#0E0E0E');
+            svg.querySelectorAll('path')[0].setAttribute('fill', dark ? '#151717' : '#fff');
+            if (!demo && wallet_name.toLowerCase() !== 'demo') {
+                svg.querySelectorAll('path')[1]?.setAttribute('stroke', dark ? '#fff' : '#0E0E0E');
+            }
             svg.querySelectorAll('circle').forEach((circle: SVGCircleElement, index: number) => {
                 // primary color is for the 1st circle in the bottom-right corner & for the 3rd circle in the top-left corner,
                 // 2nd circle in the top-right corner has secondary color:
                 if (index === 1) {
-                    circle.setAttribute('fill', wallets_data[wallet_name]?.colors.secondary || pattern_color_default);
-                } else circle.setAttribute('fill', wallets_data[wallet_name]?.colors.primary || pattern_color_default);
+                    circle.setAttribute('fill', custom_secondary_color || default_secondary_color);
+                } else circle.setAttribute('fill', custom_primary_color || default_primary_color);
             });
         }
         if (div_ref.current && div_ref.current === object_ref.current?.parentNode && svg) {
@@ -49,14 +56,14 @@ const WalletCard = ({ active, balance, currency, dark, faded, size = 'large', wa
 
     useEffect(() => {
         if (is_content_shown) updateBackground();
-    }, [wallet_name, dark]);
+    }, [wallet_name, dark, demo]);
 
     const getCardText = () => {
         if (size !== 'small' && balance) {
             return (
                 <div>
                     <Text as="div" type="extra-small" bold={false}>
-                        {wallet_name} {currency} wallet
+                        {demo ? 'Demo' : wallet_name} {currency} wallet
                     </Text>
                     <Text as="div" type="paragraph-2" bold>
                         {balance} {currency}
@@ -66,7 +73,7 @@ const WalletCard = ({ active, balance, currency, dark, faded, size = 'large', wa
         } else if (size !== 'small' && !balance) {
             return (
                 <Text as="div" type="paragraph-2" bold={false}>
-                    {wallet_name} wallet
+                    {demo ? 'Demo' : wallet_name} wallet
                 </Text>
             );
         }
@@ -87,7 +94,7 @@ const WalletCard = ({ active, balance, currency, dark, faded, size = 'large', wa
                 <object
                     ref={object_ref}
                     type="image/svg+xml"
-                    data={BackgroundTemplate}
+                    data={demo || wallet_name.toLowerCase() === 'demo' ? DemoBackground : DefaultBackground}
                     onLoad={updateBackground}
                 ></object>
             </div>
