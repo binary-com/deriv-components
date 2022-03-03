@@ -29,6 +29,10 @@ export const wallets_data: TWalletsData = {
         colors: { primary: '#FF0000', secondary: '#FF0743' },
         logo: '',
     },
+    AUD: {
+        colors: { primary: '#0DB43D', secondary: '#FFCD00' },
+        logo: '',
+    },
     Banxa: {
         colors: { primary: '#23BDAE', secondary: '#147ABB' },
         logo: '',
@@ -69,10 +73,6 @@ export const wallets_data: TWalletsData = {
         colors: { primary: '#98D000', secondary: '#EAFF68' },
         logo: '',
     },
-    Doughflow: {
-        colors: { primary: '#4BB4B3', secondary: '#377CFC' },
-        logo: '',
-    },
     Dragonpay: {
         colors: { primary: '#FFCE0E', secondary: '#BB1A20' },
         logo: '',
@@ -85,8 +85,16 @@ export const wallets_data: TWalletsData = {
         colors: { primary: '#52567F', secondary: '#828CAD' },
         logo: '',
     },
+    EUR: {
+        colors: { primary: '#283991', secondary: '#F8D12E' },
+        logo: '',
+    },
     Fasapay: {
         colors: { primary: '#F6931C', secondary: '#4873AC' },
+        logo: '',
+    },
+    GBP: {
+        colors: { primary: '#283991', secondary: '#F44336' },
         logo: '',
     },
     Help2Pay: {
@@ -197,6 +205,10 @@ export const wallets_data: TWalletsData = {
         colors: { primary: '#CE0E2D', secondary: '#007078' },
         logo: '',
     },
+    USD: {
+        colors: { primary: '#F44336', secondary: '#283991' },
+        logo: '',
+    },
     'USD Coin': {
         colors: { primary: '#2775CA', secondary: '#224CE1' },
         logo: '',
@@ -226,7 +238,7 @@ export const wallets_data: TWalletsData = {
         logo: '',
     },
     Xpay: {
-        // linearGradient #paint_linear_xpay is declared in svg template
+        // linearGradient #paint_linear_xpay should be added inside defs in default-background.svg
         colors: { primary: 'url(#paint_linear_xpay)', secondary: '#FFB422' },
         logo: '',
     },
