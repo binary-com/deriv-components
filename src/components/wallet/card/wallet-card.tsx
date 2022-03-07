@@ -23,6 +23,7 @@ export interface WalletCardProps {
 const WalletCard = ({ active, balance, currency, dark, demo, faded, size = 'large', wallet_name }: WalletCardProps) => {
     const [is_content_shown, setIsContentShown] = useState<boolean>(false);
     const logo = wallets_data[wallet_name]?.logo || (dark ? LogoPlaceholderDark : LogoPlaceholderLight);
+    const background = demo || wallet_name.toLowerCase() === 'demo' ? DemoBackground : DefaultBackground;
     const div_ref = useRef<HTMLDivElement>(null);
     const object_ref = useRef<HTMLObjectElement>(null);
 
@@ -33,6 +34,10 @@ const WalletCard = ({ active, balance, currency, dark, demo, faded, size = 'larg
         const custom_primary_color = demo ? '#FF6444' : wallets_data[wallet_name]?.colors.primary;
         const custom_secondary_color = demo ? '#FF444F' : wallets_data[wallet_name]?.colors.secondary;
         const svg = object_ref.current?.contentDocument?.querySelector('svg') || div_ref.current?.querySelector('svg');
+        if (div_ref.current && object_ref.current && div_ref.current === object_ref.current?.parentNode && svg) {
+            div_ref.current.appendChild(svg);
+            object_ref.current.style.display = 'none';
+        }
         if (svg) {
             svg.querySelectorAll('path')[0].setAttribute('fill', dark ? '#151717' : '#fff');
             if (!demo && wallet_name.toLowerCase() !== 'demo') {
@@ -46,17 +51,29 @@ const WalletCard = ({ active, balance, currency, dark, demo, faded, size = 'larg
                 } else circle.setAttribute('fill', custom_primary_color || default_primary_color);
             });
         }
-        if (div_ref.current && div_ref.current === object_ref.current?.parentNode && svg) {
-            div_ref.current.appendChild(svg);
-            object_ref.current.parentNode?.removeChild(object_ref.current);
-        }
         // show card content when the background svg has loaded:
         if (!is_content_shown) setIsContentShown(true);
     };
 
+    const getBackground = () => {
+        const previous_svg = div_ref.current?.querySelector('svg');
+
+        if (div_ref.current && previous_svg && div_ref.current === previous_svg?.parentNode) {
+            div_ref.current.removeChild(previous_svg);
+        }
+        if (object_ref.current) {
+            object_ref.current.style.display = 'block';
+            object_ref.current.setAttribute('data', background);
+        }
+    };
+
+    useEffect(() => {
+        if (is_content_shown) getBackground();
+    }, [wallet_name, demo]);
+
     useEffect(() => {
         if (is_content_shown) updateBackground();
-    }, [wallet_name, dark, demo]);
+    }, [dark]);
 
     const getCardText = () => {
         if (size !== 'small' && balance) {
@@ -91,12 +108,7 @@ const WalletCard = ({ active, balance, currency, dark, demo, faded, size = 'larg
             )}
         >
             <div ref={div_ref} className={css.background}>
-                <object
-                    ref={object_ref}
-                    type="image/svg+xml"
-                    data={demo || wallet_name.toLowerCase() === 'demo' ? DemoBackground : DefaultBackground}
-                    onLoad={updateBackground}
-                ></object>
+                <object ref={object_ref} type="image/svg+xml" data={background} onLoad={updateBackground}></object>
             </div>
             {active && !faded && is_content_shown && (
                 <img className={css.active__icon} src={CheckIcon} alt={'active_icon'} />

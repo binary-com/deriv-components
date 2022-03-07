@@ -238,7 +238,8 @@ export const wallets_data: TWalletsData = {
         logo: '',
     },
     Xpay: {
-        // linearGradient #paint_linear_xpay should be added inside defs in default-background.svg
+        // primary color is linear-gradient(90deg, #DFA770 0%, #DB9D60 100%),
+        // so a respective linearGradient with id "paint_linear_xpay" has been added inside <defs> in default-background.svg
         colors: { primary: 'url(#paint_linear_xpay)', secondary: '#FFB422' },
         logo: '',
     },
