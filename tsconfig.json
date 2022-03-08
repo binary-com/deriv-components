@@ -9,11 +9,13 @@
         "lib": ["dom", "esnext", "dom.iterable"],
         "module": "esnext",
         "moduleResolution": "Node",
-        "noEmit": true,
         "strict": true,
         "target": "esnext",
         "useDefineForClassFields": true,
         "sourceMap": true,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "outDir": "dist",
         "types": ["node", "jest"],
         "paths": {
             "test-setup": ["test-setup"],
@@ -30,5 +32,5 @@
         }
     },
     "include": ["src", "*.d.ts"],
-    "exclude": ["node_modules", "dist", "*.md"]
+    "exclude": ["node_modules", "dist", "*.md", "**/*.stories.tsx", "./src/test-setup.tsx"]
 }
