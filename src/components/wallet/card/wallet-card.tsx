@@ -2,12 +2,85 @@ import classNames from 'classnames';
 import css from './wallet-card.module.scss';
 import DefaultBackground from '@assets/svg/card/default-background.svg';
 import DemoBackground from '@assets/svg/card/demo-background.svg';
-import LogoPlaceholderLight from '@assets/svg/card/ic-logo-placeholder-light.svg';
-import LogoPlaceholderDark from '@assets/svg/card/ic-logo-placeholder-dark.svg';
+import SmallBackground from '@assets/svg/card/small-background.svg';
 import CheckIcon from '@assets/svg/card/ic-check.svg';
 import { useEffect, useState, useRef } from 'react';
 import Text from '@core/text/text';
-import { wallets_data } from '@wallet/wallets_data';
+import SVG from 'react-inlinesvg';
+
+type TWalletCardData = {
+    [key: string]: {
+        colors: {
+            primary: string;
+            secondary: string;
+        };
+        default_currency: string;
+        display_name: string;
+    };
+};
+
+const wallet_card_data: TWalletCardData = {
+    aud: {
+        colors: { primary: '#0DB43D', secondary: '#FFCD00' },
+        default_currency: 'AUD',
+        display_name: 'AUD',
+    },
+    bitcoin: {
+        colors: { primary: '#F7931B', secondary: '#F7C71B' },
+        default_currency: 'BTC',
+        display_name: 'Bitcoin',
+    },
+    demo: {
+        colors: { primary: '#FF6444', secondary: '#FF444F' },
+        default_currency: 'USD',
+        display_name: 'Demo',
+    },
+    deriv_p2p: {
+        colors: { primary: '#FF444F', secondary: '#FF6444' },
+        default_currency: 'USD',
+        display_name: 'Deriv P2P',
+    },
+    ethereum: {
+        colors: { primary: '#52567F', secondary: '#828CAD' },
+        default_currency: 'ETH',
+        display_name: 'Ethereum',
+    },
+    eur: {
+        colors: { primary: '#283991', secondary: '#F8D12E' },
+        default_currency: 'EUR',
+        display_name: 'EUR',
+    },
+    gbp: {
+        colors: { primary: '#283991', secondary: '#F44336' },
+        default_currency: 'GBP',
+        display_name: 'GBP',
+    },
+    litecoin: {
+        colors: { primary: '#A5A8A9', secondary: '#C1CCCF' },
+        default_currency: 'LTC',
+        display_name: 'Litecoin',
+    },
+    payment_agent: {
+        colors: { primary: '#979797', secondary: '#B2C2C4' },
+        default_currency: 'USD',
+        display_name: 'Payment Agent',
+    },
+    tether: {
+        colors: { primary: '#009393', secondary: '#04D9D9' },
+        default_currency: 'USDT',
+        display_name: 'Tether',
+    },
+    usd: {
+        colors: { primary: '#F44336', secondary: '#283991' },
+        default_currency: 'USD',
+        display_name: 'USD',
+    },
+    usd_coin: {
+        colors: { primary: '#2775CA', secondary: '#224CE1' },
+        default_currency: 'USDC',
+        display_name: 'USD Coin',
+    },
+};
 
 export interface WalletCardProps {
     active?: boolean;
@@ -15,37 +88,49 @@ export interface WalletCardProps {
     currency?: string;
     dark?: boolean;
     demo?: boolean;
+    disabled?: boolean;
     faded?: boolean;
     size?: 'small' | 'medium' | 'large';
     wallet_name: string;
 }
 
-const WalletCard = ({ active, balance, currency, dark, demo, faded, size = 'large', wallet_name }: WalletCardProps) => {
+const WalletCard = ({
+    active,
+    balance,
+    currency,
+    dark,
+    demo,
+    disabled,
+    faded,
+    size = 'large',
+    wallet_name,
+}: WalletCardProps) => {
     const [is_content_shown, setIsContentShown] = useState<boolean>(false);
-    const logo = wallets_data[wallet_name]?.logo || (dark ? LogoPlaceholderDark : LogoPlaceholderLight);
-    const background = demo || wallet_name.toLowerCase() === 'demo' ? DemoBackground : DefaultBackground;
+    const logo_src = `./modal/lg-${wallet_name?.replace('_', '-')}-${dark ? 'dark' : 'light'}.svg`;
+    const background =
+        size === 'small' ? SmallBackground : demo || wallet_name === 'demo' ? DemoBackground : DefaultBackground;
+    const fiat_wallets = ['aud', 'eur', 'gbp', 'usd'];
+    const wallet_title = wallet_card_data[wallet_name]?.display_name || wallet_name;
+    const wallet_currency = currency || wallet_card_data[wallet_name]?.default_currency;
     const div_ref = useRef<HTMLDivElement>(null);
-    const object_ref = useRef<HTMLObjectElement>(null);
 
     const updateBackground = () => {
-        // here we set a background and pattern colors of svg & extract the svg from non-zoomable object:
+        // here we set background and pattern colors of svg background:
         const default_primary_color = dark ? '#303030' : '#CFCFCF';
         const default_secondary_color = dark ? '#323738' : '#d6dadb';
-        const custom_primary_color = demo ? '#FF6444' : wallets_data[wallet_name]?.colors.primary;
-        const custom_secondary_color = demo ? '#FF444F' : wallets_data[wallet_name]?.colors.secondary;
-        const svg = object_ref.current?.contentDocument?.querySelector('svg') || div_ref.current?.querySelector('svg');
-        if (div_ref.current && object_ref.current && div_ref.current === object_ref.current?.parentNode && svg) {
-            div_ref.current.appendChild(svg);
-            object_ref.current.style.display = 'none';
-        }
+        const custom_primary_color = demo ? '#FF6444' : wallet_card_data[wallet_name]?.colors.primary;
+        const custom_secondary_color = demo ? '#FF444F' : wallet_card_data[wallet_name]?.colors.secondary;
+        const svg = div_ref.current?.querySelector('svg');
         if (svg) {
             svg.querySelectorAll('path')[0].setAttribute('fill', dark ? '#151717' : '#fff');
-            if (!demo && wallet_name.toLowerCase() !== 'demo') {
+            if (!demo && wallet_name !== 'demo' && size !== 'small') {
                 svg.querySelectorAll('path')[1]?.setAttribute('stroke', dark ? '#fff' : '#0E0E0E');
             }
             svg.querySelectorAll('circle').forEach((circle: SVGCircleElement, index: number) => {
-                // primary color is for the 1st circle in the bottom-right corner & for the 3rd circle in the top-left corner,
-                // 2nd circle in the top-right corner has secondary color:
+                // For large & medium size background: Primary color paints the 1st circle in the bottom-right corner & the 3rd circle in the top-left corner,
+                // and Secondary color paints the 2nd circle in the top-right corner,
+                // For small size background: Primary color paints the 1st circle on the left side of the background,
+                // and Secondary color paints the 2nd circle on the right side of the background:
                 if (index === 1) {
                     circle.setAttribute('fill', custom_secondary_color || default_secondary_color);
                 } else circle.setAttribute('fill', custom_primary_color || default_primary_color);
@@ -55,42 +140,27 @@ const WalletCard = ({ active, balance, currency, dark, demo, faded, size = 'larg
         if (!is_content_shown) setIsContentShown(true);
     };
 
-    const getBackground = () => {
-        const previous_svg = div_ref.current?.querySelector('svg');
-
-        if (div_ref.current && previous_svg && div_ref.current === previous_svg?.parentNode) {
-            div_ref.current.removeChild(previous_svg);
-        }
-        if (object_ref.current) {
-            object_ref.current.style.display = 'block';
-            object_ref.current.setAttribute('data', background);
-        }
-    };
-
-    useEffect(() => {
-        if (is_content_shown) getBackground();
-    }, [wallet_name, demo]);
-
     useEffect(() => {
         if (is_content_shown) updateBackground();
-    }, [dark]);
+    }, [dark, wallet_name, demo]);
 
     const getCardText = () => {
         if (size !== 'small' && balance) {
             return (
                 <div>
                     <Text as="div" type="extra-small" bold={false}>
-                        {demo ? 'Demo' : wallet_name} {currency} wallet
+                        {demo ? 'Demo' : wallet_title} {fiat_wallets.every((f) => wallet_name !== f) && wallet_currency}{' '}
+                        wallet
                     </Text>
                     <Text as="div" type="paragraph-2" bold>
-                        {balance} {currency}
+                        {balance} {wallet_currency}
                     </Text>
                 </div>
             );
         } else if (size !== 'small' && !balance) {
             return (
                 <Text as="div" type="paragraph-2" bold={false}>
-                    {demo ? 'Demo' : wallet_name} wallet
+                    {demo ? 'Demo' : wallet_title} wallet
                 </Text>
             );
         }
@@ -103,19 +173,43 @@ const WalletCard = ({ active, balance, currency, dark, demo, faded, size = 'larg
                 css.container,
                 css[size],
                 dark && css.dark,
-                active && !faded && is_content_shown && css.active,
+                disabled && css.disabled,
+                active && !disabled && is_content_shown && css.active,
                 faded && css.faded,
             )}
         >
             <div ref={div_ref} className={css.background}>
-                <object ref={object_ref} type="image/svg+xml" data={background} onLoad={updateBackground}></object>
+                <SVG
+                    src={background}
+                    viewBox={size === 'small' ? '0 0 64 40' : '0 0 240 144'}
+                    preserveAspectRatio="none"
+                    width="100%"
+                    height="100%"
+                    onLoad={updateBackground}
+                />
             </div>
-            {active && !faded && is_content_shown && (
+            {active && !disabled && is_content_shown && (
                 <img className={css.active__icon} src={CheckIcon} alt={'active_icon'} />
             )}
             {is_content_shown && (
                 <div className={css.card_content}>
-                    <img className={css.logo} src={logo} alt={'payment_method_logo'} />
+                    {wallet_card_data[wallet_name] ? (
+                        <div
+                            className={classNames(css.logo, css[`logo__${wallet_name}`])}
+                            aria-label="payment_method_logo"
+                        >
+                            <SVG
+                                src={logo_src}
+                                width="100%"
+                                height="100%"
+                                preProcessor={(code) =>
+                                    !code.includes('viewBox') ? code.replace('svg', 'svg viewBox="0 0 64 40"') : code
+                                }
+                            />
+                        </div>
+                    ) : (
+                        <div className={classNames(css.logo, css.logo__placeholder)}></div>
+                    )}
                     {getCardText()}
                 </div>
             )}

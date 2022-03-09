@@ -24,11 +24,30 @@ export default {
             },
         },
         currency: {
-            description: 'Optional. Sets the wallet currency.',
+            description:
+                'Optional. Sets the wallet currency. If undefined, a default currency will be applied: ' +
+                'AUD for "aud" wallet, EUR for "eur" wallet, GBP for "gbp" wallet, USD for "usd"/"demo"/"deriv_p2p"/"payment_agent" wallets, ' +
+                'BTC for "bitcoin", ETH for "ethereum", LTC for "litecoin", USDT for "tether", USDC for "usd_coin".',
             defaultValue: undefined,
             table: {
                 type: { summary: 'string | undefined' },
                 defaultValue: { summary: undefined },
+            },
+            control: {
+                type: 'select',
+                options: [
+                    '', // required to clear currency and see the default one for each wallet_name
+                    'AUD',
+                    'EUR',
+                    'GBP',
+                    'USD',
+                    'BTC',
+                    'ETH',
+                    'LTC',
+                    'USDT',
+                    'eUSDT',
+                    'USDC',
+                ],
             },
         },
         dark: {
@@ -41,16 +60,26 @@ export default {
         },
         demo: {
             description:
-                'Optional. If set to `true`, sets a special "demo" background. A control for it is disabled here intentionally. Please use the "Demo" wallet_name instead.',
+                'Optional. If set to `true`, sets a special "demo" background. A control for it is disabled here intentionally. Please use the "demo" wallet_name instead.',
             defaultValue: false,
             table: {
                 type: { summary: 'boolean | undefined' },
                 defaultValue: { summary: false },
             },
-            control: false, // a "Demo" wallet can be selected by choosing the "Demo" wallet_name
+            control: false, // a "Demo" wallet can be selected by choosing the "demo" wallet_name
+        },
+        disabled: {
+            description:
+                'Optional. If set to `true`, the wallet card opacity is set to 0.32. A disabled card has no hover effect and cannot be in active state.',
+            defaultValue: false,
+            table: {
+                type: { summary: 'boolean | undefined' },
+                defaultValue: { summary: false },
+            },
         },
         faded: {
-            description: 'Optional. If set to `true`, the wallet card opacity is set to 0.7 and hover effect is off.',
+            description:
+                'Optional. If set to `true`, the wallet card opacity is set to 0.72. A faded card has hover effect and can be in active state.',
             defaultValue: false,
             table: {
                 type: { summary: 'boolean | undefined' },
@@ -69,7 +98,7 @@ export default {
             },
         },
         wallet_name: {
-            description: 'Required. Sets a payment method name, logo and background color of the card.',
+            description: 'Required. Sets a wallet (payment method) name, logo and background color of the card.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: undefined },
@@ -77,66 +106,19 @@ export default {
             control: {
                 type: 'select',
                 options: [
-                    'universal', // non-existent, default color sheme applies
-                    '1ForYou',
-                    'Advcash',
-                    'Airtm',
-                    'ApplePay',
-                    'AstroPay',
-                    'AUD',
-                    'Banxa',
-                    'Beyonic',
-                    'Bitcoin',
-                    'Boleto',
-                    'Changelly',
-                    'Credit/debit',
-                    'Demo',
-                    'Deriv P2P',
-                    'Diners Club',
-                    'Directa24',
-                    'Dragonpay',
-                    'Dragon Phoenix',
-                    'Ethereum',
-                    'EUR',
-                    'Fasapay',
-                    'GBP',
-                    'Help2Pay',
-                    'Instant bank transfer',
-                    'iWallet',
-                    'JCB',
-                    'Jenius',
-                    'Jeton',
-                    'Litecoin',
-                    'Maestro',
-                    'Mastercard',
-                    'Neteller',
-                    'NganLuong',
-                    'OnlineNaira',
-                    'OXXO',
-                    'Pay Livre',
-                    'Payment Agent',
-                    'Paymero',
-                    'PayRetailers',
-                    'paysafecard',
-                    'PayTrust88',
-                    'Perfect Money',
-                    'Qiwi',
-                    'Skrill',
-                    'SPEI',
-                    'Sticpay',
-                    'Tether',
-                    'Trustly',
-                    'UnionPay',
-                    'USD',
-                    'USD Coin',
-                    'VISA',
-                    'VISA Electron',
-                    'WebMoney',
-                    'WeChat Pay',
-                    'Wyre',
-                    'Xanpool',
-                    'Xpay',
-                    'ZingPay',
+                    '[Name]', // non-existent, applies default color sheme and logo placeholder
+                    'aud',
+                    'bitcoin',
+                    'demo',
+                    'deriv_p2p',
+                    'ethereum',
+                    'eur',
+                    'gbp',
+                    'litecoin',
+                    'payment_agent',
+                    'tether',
+                    'usd',
+                    'usd_coin',
                 ],
             },
         },
@@ -145,160 +127,160 @@ export default {
 
 const Template: Story<WalletCardProps> = (args) => <WalletCard {...args} />;
 
-export const LightLargeWithBalance = Template.bind({});
-LightLargeWithBalance.args = {
+export const DefaultLightLarge = Template.bind({});
+DefaultLightLarge.args = {
     active: false,
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'large',
     wallet_name: '[Name]',
 };
 
-export const LightMediumWithBalance = Template.bind({});
-LightMediumWithBalance.args = {
+export const DefaultLightMedium = Template.bind({});
+DefaultLightMedium.args = {
     active: false,
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'medium',
     wallet_name: '[Name]',
 };
 
-export const LightSmall = Template.bind({});
-LightSmall.args = {
+export const DefaultLightSmall = Template.bind({});
+DefaultLightSmall.args = {
     active: false,
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'small',
     wallet_name: '[Name]',
 };
 
-export const LightLargeWithoutBalance = Template.bind({});
-LightLargeWithoutBalance.args = {
+export const DefaultLightLargeWithoutBalance = Template.bind({});
+DefaultLightLargeWithoutBalance.args = {
     active: false,
     balance: '',
-    currency: '',
+    currency: undefined,
     dark: false,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'large',
     wallet_name: '[Name]',
 };
 
-export const LightMediumWithoutBalance = Template.bind({});
-LightMediumWithoutBalance.args = {
+export const DefaultLightMediumWithoutBalance = Template.bind({});
+DefaultLightMediumWithoutBalance.args = {
     active: false,
     balance: '',
-    currency: '',
+    currency: undefined,
     dark: false,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'medium',
     wallet_name: '[Name]',
 };
 
-export const DarkLargeWithBalance = Template.bind({});
-DarkLargeWithBalance.args = {
+export const DefaultDarkLarge = Template.bind({});
+DefaultDarkLarge.args = {
     active: false,
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'large',
     wallet_name: '[Name]',
 };
 
-export const DarkMediumWithBalance = Template.bind({});
-DarkMediumWithBalance.args = {
+export const DefaultDarkMedium = Template.bind({});
+DefaultDarkMedium.args = {
     active: false,
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'medium',
     wallet_name: '[Name]',
 };
 
-export const DarkSmall = Template.bind({});
-DarkSmall.args = {
+export const DefaultDarkSmall = Template.bind({});
+DefaultDarkSmall.args = {
     active: false,
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'small',
     wallet_name: '[Name]',
 };
 
-export const DarkLargeWithoutBalance = Template.bind({});
-DarkLargeWithoutBalance.args = {
+export const DefaultDarkLargeWithoutBalance = Template.bind({});
+DefaultDarkLargeWithoutBalance.args = {
     active: false,
     balance: '',
-    currency: '',
+    currency: undefined,
     dark: true,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'large',
     wallet_name: '[Name]',
 };
 
-export const DarkMediumWithoutBalance = Template.bind({});
-DarkMediumWithoutBalance.args = {
+export const DefaultDarkMediumWithoutBalance = Template.bind({});
+DefaultDarkMediumWithoutBalance.args = {
     active: false,
     balance: '',
-    currency: '',
+    currency: undefined,
     dark: true,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'medium',
     wallet_name: '[Name]',
 };
 
-export const FadedLightLarge = Template.bind({});
-FadedLightLarge.args = {
+export const FiatCurrencyDarkLarge = Template.bind({});
+FiatCurrencyDarkLarge.args = {
     active: false,
-    balance: '0.00',
-    currency: '[Currency]',
-    dark: false,
+    balance: '50.00',
+    currency: undefined,
+    dark: true,
     demo: undefined,
-    faded: true,
+    disabled: false,
+    faded: false,
     size: 'large',
-    wallet_name: '[Name]',
+    wallet_name: 'usd',
 };
 
-export const FadedDarkMedium = Template.bind({});
-FadedDarkMedium.args = {
+export const DemoDarkLarge = Template.bind({});
+DemoDarkLarge.args = {
     active: false,
     balance: '0.00',
-    currency: '[Currency]',
+    currency: undefined,
     dark: true,
     demo: undefined,
-    faded: true,
-    size: 'medium',
-    wallet_name: '[Name]',
-};
-
-export const FadedDarkSmall = Template.bind({});
-FadedDarkSmall.args = {
-    active: false,
-    balance: '0.00',
-    currency: '[Currency]',
-    dark: true,
-    demo: undefined,
-    faded: true,
-    size: 'small',
-    wallet_name: '[Name]',
+    disabled: false,
+    faded: false,
+    size: 'large',
+    wallet_name: 'demo',
 };
 
 export const ActiveLightLarge = Template.bind({});
@@ -308,6 +290,7 @@ ActiveLightLarge.args = {
     currency: '[Currency]',
     dark: false,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'large',
     wallet_name: '[Name]',
@@ -320,6 +303,7 @@ ActiveDarkMedium.args = {
     currency: '[Currency]',
     dark: true,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'medium',
     wallet_name: '[Name]',
@@ -332,31 +316,86 @@ ActiveDarkSmall.args = {
     currency: '[Currency]',
     dark: true,
     demo: undefined,
+    disabled: false,
     faded: false,
     size: 'small',
     wallet_name: '[Name]',
 };
 
-export const DemoLightLarge = Template.bind({});
-DemoLightLarge.args = {
+export const FadedLightLarge = Template.bind({});
+FadedLightLarge.args = {
     active: false,
     balance: '0.00',
     currency: '[Currency]',
     dark: false,
     demo: undefined,
-    faded: false,
+    disabled: false,
+    faded: true,
     size: 'large',
-    wallet_name: 'Demo',
+    wallet_name: '[Name]',
 };
 
-export const DemoDarkLarge = Template.bind({});
-DemoDarkLarge.args = {
+export const FadedDarkMedium = Template.bind({});
+FadedDarkMedium.args = {
     active: false,
     balance: '0.00',
     currency: '[Currency]',
     dark: true,
     demo: undefined,
+    disabled: false,
+    faded: true,
+    size: 'medium',
+    wallet_name: '[Name]',
+};
+
+export const FadedDarkSmall = Template.bind({});
+FadedDarkSmall.args = {
+    active: false,
+    balance: '0.00',
+    currency: '[Currency]',
+    dark: true,
+    demo: undefined,
+    disabled: false,
+    faded: true,
+    size: 'small',
+    wallet_name: '[Name]',
+};
+
+export const DisabledLightLarge = Template.bind({});
+DisabledLightLarge.args = {
+    active: false,
+    balance: '0.00',
+    currency: '[Currency]',
+    dark: false,
+    demo: undefined,
+    disabled: true,
     faded: false,
     size: 'large',
-    wallet_name: 'Demo',
+    wallet_name: '[Name]',
+};
+
+export const DisabledDarkMedium = Template.bind({});
+DisabledDarkMedium.args = {
+    active: false,
+    balance: '0.00',
+    currency: '[Currency]',
+    dark: true,
+    demo: undefined,
+    disabled: true,
+    faded: false,
+    size: 'medium',
+    wallet_name: '[Name]',
+};
+
+export const DisabledDarkSmall = Template.bind({});
+DisabledDarkSmall.args = {
+    active: false,
+    balance: '0.00',
+    currency: '[Currency]',
+    dark: true,
+    demo: undefined,
+    disabled: true,
+    faded: false,
+    size: 'small',
+    wallet_name: '[Name]',
 };

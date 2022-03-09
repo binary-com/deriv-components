@@ -26,9 +26,8 @@
         box-sizing: border-box;
         border-radius: inherit;
 
-        &:not(.faded *):hover {
+        &:not(.disabled *):hover {
             background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.16) 100%);
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05), 0px 16px 20px rgba(0, 0, 0, 0.05);
         }
     }
 
@@ -37,7 +36,7 @@
             color: #ffffff;
         }
 
-        .card_content:not(.faded *):hover,
+        .card_content:not(.disabled *):hover,
         &.active .card_content {
             background: linear-gradient(180deg, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.16) 100%);
         }
@@ -58,8 +57,8 @@
             height: 16px;
 
             &:not(.small *) {
-                top: 16px;
-                right: 16px;
+                top: calc(50% - 32px / 2);
+                right: calc(50% - 32px / 2);
                 width: 32px;
                 height: 32px;
             }
@@ -67,13 +66,35 @@
     }
 
     &.faded {
-        opacity: 0.7;
+        opacity: 0.72;
+    }
+
+    &.disabled {
+        opacity: 0.32;
     }
 
     .logo {
         width: 64px;
         height: 40px;
         border-radius: 4px;
+
+        &__aud:not(.small *),
+        &__eur:not(.small *),
+        &__gbp:not(.small *),
+        &__usd:not(.small *) {
+            position: relative;
+            top: -4px;
+            left: -16px;
+
+            @media (max-width: 992px) {
+                top: -3px;
+                left: -12px;
+            }
+        }
+
+        &__placeholder {
+            background-color: #333;
+        }
     }
 
     &.small {
