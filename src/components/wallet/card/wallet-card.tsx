@@ -185,6 +185,17 @@ const WalletCard = ({
                     width="100%"
                     height="100%"
                     onLoad={updateBackground}
+                    preProcessor={(code) => {
+                        // A workaround to ensure that main elements' ids in svg <defs> are unique to avoid issues with rendering in Storybook Docs:
+                        const unique_id = size !== 'small' ? '1' : demo || wallet_name === 'demo' ? '2' : '3';
+                        return code
+                            .replace('url(#a)', `url(#a${unique_id})`)
+                            .replace('id="a"', `id="a${unique_id}"`)
+                            .replace('url(#b)', `url(#b${unique_id})`)
+                            .replace('id="b"', `id="b${unique_id}"`)
+                            .replace('url(#c)', `url(#c${unique_id})`)
+                            .replace('id="c"', `id="c${unique_id}"`);
+                    }}
                 />
             </div>
             {active && !disabled && is_content_shown && (
