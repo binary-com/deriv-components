@@ -145,7 +145,7 @@ const WalletCard = ({
     }, [dark, wallet_name, demo]);
 
     const getCardText = () => {
-        if (size !== 'small' && balance) {
+        if (balance) {
             return (
                 <div>
                     <Text as="div" type="extra-small" bold={false}>
@@ -157,13 +157,12 @@ const WalletCard = ({
                     </Text>
                 </div>
             );
-        } else if (size !== 'small' && !balance) {
-            return (
-                <Text as="div" type="paragraph-2" bold={false}>
-                    {demo ? 'Demo' : wallet_title} wallet
-                </Text>
-            );
         }
+        return (
+            <Text as="div" type="paragraph-2" bold={false}>
+                {demo ? 'Demo' : wallet_title} wallet
+            </Text>
+        );
     };
 
     return (
@@ -210,7 +209,7 @@ const WalletCard = ({
                     ) : (
                         <div className={classNames(css.logo, css.logo__placeholder)}></div>
                     )}
-                    {getCardText()}
+                    {size !== 'small' && getCardText()}
                 </div>
             )}
         </div>
