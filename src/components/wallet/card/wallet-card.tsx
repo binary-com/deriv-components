@@ -115,7 +115,7 @@ const WalletCard = ({
     const div_ref = useRef<HTMLDivElement>(null);
 
     const updateBackground = () => {
-        // here we set background and pattern colors of svg background:
+        // here we set background and pattern colors of svg background (svgs must be optimized with svgo):
         const default_primary_color = dark ? '#303030' : '#CFCFCF';
         const default_secondary_color = dark ? '#323738' : '#d6dadb';
         const custom_primary_color = demo ? '#FF6444' : wallet_card_data[wallet_name]?.colors.primary;
@@ -186,15 +186,20 @@ const WalletCard = ({
                     height="100%"
                     onLoad={updateBackground}
                     preProcessor={(code) => {
-                        // A workaround to ensure that main elements' ids in svg <defs> are unique to avoid issues with rendering in Storybook Docs:
-                        const unique_id = size !== 'small' ? '1' : demo || wallet_name === 'demo' ? '2' : '3';
-                        return code
-                            .replace('url(#a)', `url(#a${unique_id})`)
-                            .replace('id="a"', `id="a${unique_id}"`)
-                            .replace('url(#b)', `url(#b${unique_id})`)
-                            .replace('id="b"', `id="b${unique_id}"`)
-                            .replace('url(#c)', `url(#c${unique_id})`)
-                            .replace('id="c"', `id="c${unique_id}"`);
+                        // A workaround to ensure that important ids in svg <defs> are unique to avoid issues with rendering in Storybook Docs:
+                        let updated_svg_string = code;
+                        const custom_id = size !== 'small' ? '1' : demo || wallet_name === 'demo' ? '2' : '3';
+                        [
+                            ['#a)', `#a${custom_id})`],
+                            ['"a"', `"a${custom_id}"`],
+                            ['#b)', `#b${custom_id})`],
+                            ['"b"', `"b${custom_id}"`],
+                            ['#c)', `#c${custom_id})`],
+                            ['"c"', `"c${custom_id}"`],
+                        ].forEach((el) => {
+                            updated_svg_string = updated_svg_string.replace(el[0], el[1]);
+                        });
+                        return updated_svg_string;
                     }}
                 />
             </div>
@@ -212,9 +217,18 @@ const WalletCard = ({
                                 src={logo_src}
                                 width="100%"
                                 height="100%"
-                                preProcessor={(code) =>
-                                    !code.includes('viewBox') ? code.replace('svg', 'svg viewBox="0 0 64 40"') : code
-                                }
+                                preProcessor={(code) => {
+                                    let updated_svg_string = code;
+                                    const unique_id = Math.floor(Math.random() * 11) + 1;
+                                    // Adding a unique id to logo's linearGradient in svg <defs> to ensure correct rendering & setting viewBox if missing:
+                                    updated_svg_string = updated_svg_string.replaceAll(
+                                        /paint([0-9]+)_linear([_0-9]+)/g,
+                                        `plinear${unique_id}`,
+                                    );
+                                    return !updated_svg_string.includes('viewBox')
+                                        ? updated_svg_string.replace('svg', 'svg viewBox="0 0 64 40"')
+                                        : updated_svg_string;
+                                }}
                             />
                         </div>
                     ) : (
