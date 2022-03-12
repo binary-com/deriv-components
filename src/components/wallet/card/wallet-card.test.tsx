@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from 'test-setup';
+import { render, screen } from 'test-setup';
 import WalletCard from './wallet-card';
 import React from 'react';
 

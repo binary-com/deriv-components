@@ -165,6 +165,12 @@ const WalletCard = ({
         );
     };
 
+    const getSvgWithUniqueIds = (code: string) => {
+        // A workaround to ensure that important ids in svg <defs> are unique to avoid issues with rendering in Storybook Docs:
+        const unique_id = Math.floor(Math.random() * 1000);
+        return code.replaceAll(/id="/g, `id="${unique_id}`).replaceAll(/url\(#/g, `url(#${unique_id}`);
+    };
+
     return (
         <div
             data-testid="wallet-card"
@@ -185,22 +191,7 @@ const WalletCard = ({
                     width="100%"
                     height="100%"
                     onLoad={updateBackground}
-                    preProcessor={(code) => {
-                        // A workaround to ensure that important ids in svg <defs> are unique to avoid issues with rendering in Storybook Docs:
-                        let updated_svg_string = code;
-                        const custom_id = size !== 'small' ? '1' : demo || wallet_name === 'demo' ? '2' : '3';
-                        [
-                            ['#a)', `#a${custom_id})`],
-                            ['"a"', `"a${custom_id}"`],
-                            ['#b)', `#b${custom_id})`],
-                            ['"b"', `"b${custom_id}"`],
-                            ['#c)', `#c${custom_id})`],
-                            ['"c"', `"c${custom_id}"`],
-                        ].forEach((el) => {
-                            updated_svg_string = updated_svg_string.replace(el[0], el[1]);
-                        });
-                        return updated_svg_string;
-                    }}
+                    preProcessor={(code) => getSvgWithUniqueIds(code)}
                 />
             </div>
             {active && !disabled && is_content_shown && (
@@ -218,13 +209,7 @@ const WalletCard = ({
                                 width="100%"
                                 height="100%"
                                 preProcessor={(code) => {
-                                    let updated_svg_string = code;
-                                    const unique_id = Math.floor(Math.random() * 11) + 1;
-                                    // Adding a unique id to logo's linearGradient in svg <defs> to ensure correct rendering & setting viewBox if missing:
-                                    updated_svg_string = updated_svg_string.replaceAll(
-                                        /paint([0-9]+)_linear([_0-9]+)/g,
-                                        `plinear${unique_id}`,
-                                    );
+                                    const updated_svg_string = getSvgWithUniqueIds(code);
                                     return !updated_svg_string.includes('viewBox')
                                         ? updated_svg_string.replace('svg', 'svg viewBox="0 0 64 40"')
                                         : updated_svg_string;
