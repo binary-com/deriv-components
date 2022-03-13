@@ -120,7 +120,7 @@ const WalletCard = ({
         const default_secondary_color = dark ? '#323738' : '#d6dadb';
         const custom_primary_color = demo ? '#FF6444' : wallet_card_data[wallet_name]?.colors.primary;
         const custom_secondary_color = demo ? '#FF444F' : wallet_card_data[wallet_name]?.colors.secondary;
-        const svg = div_ref.current?.querySelector('svg');
+        const svg = div_ref.current?.querySelector('#background');
         if (svg) {
             svg.querySelectorAll('path')[0].setAttribute('fill', dark ? '#151717' : '#fff');
             if (!demo && wallet_name !== 'demo' && size !== 'small') {
@@ -173,6 +173,7 @@ const WalletCard = ({
 
     return (
         <div
+            ref={div_ref}
             data-testid="wallet-card"
             className={classNames(
                 css.container,
@@ -183,17 +184,17 @@ const WalletCard = ({
                 faded && css.faded,
             )}
         >
-            <div ref={div_ref} className={css.background}>
-                <SVG
-                    src={background}
-                    viewBox={size === 'small' ? '0 0 64 40' : '0 0 240 144'}
-                    preserveAspectRatio="none"
-                    width="100%"
-                    height="100%"
-                    onLoad={updateBackground}
-                    preProcessor={(code) => getSvgWithUniqueIds(code)}
-                />
-            </div>
+            <SVG
+                className={css.background}
+                src={background}
+                id={'background'}
+                viewBox={size === 'small' ? '0 0 64 40' : '0 0 240 144'}
+                preserveAspectRatio="none"
+                width="100%"
+                height="100%"
+                onLoad={updateBackground}
+                preProcessor={(code) => getSvgWithUniqueIds(code)}
+            />
             {active && !disabled && is_content_shown && (
                 <img className={css.active__icon} src={CheckIcon} alt={'active_icon'} />
             )}
