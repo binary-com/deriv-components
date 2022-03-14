@@ -93,10 +93,6 @@
         width: 64px;
         border-radius: 4px;
 
-        .background {
-            border-radius: inherit;
-        }
-
         .card_content {
             transform: translate3d(0, -44.4px, 0);
             padding: 5px 8px;
@@ -113,10 +109,6 @@
         width: 200px;
         height: 120px;
         border-radius: 8px;
-
-        .background {
-            border-radius: inherit;
-        }
 
         .card_content {
             transform: translate3d(0, -124.4px, 0);
@@ -146,13 +138,8 @@
         height: 144px;
         border-radius: 8px;
 
-        .background {
-            border-radius: inherit;
-        }
-
         .card_content {
             transform: translate3d(0, -148.5px, 0);
-
             padding: 16px;
 
             @media (max-width: 992px) {
