@@ -7,6 +7,7 @@ import CheckIcon from '@assets/svg/card/ic-check.svg';
 import { useEffect, useState, useRef } from 'react';
 import Text from '@core/text/text';
 import SVG from 'react-inlinesvg';
+import { v4 } from 'uuid';
 
 type TWalletCardData = {
     [key: string]: {
@@ -167,7 +168,7 @@ const WalletCard = ({
 
     const getSvgWithUniqueIds = (code: string) => {
         // A workaround to ensure that important ids in svg <defs> are unique to avoid issues with rendering in Storybook Docs:
-        const unique_id = Math.floor(Math.random() * 1000);
+        const unique_id = v4();
         return code.replaceAll(/id="/g, `id="${unique_id}`).replaceAll(/url\(#/g, `url(#${unique_id}`);
     };
 
