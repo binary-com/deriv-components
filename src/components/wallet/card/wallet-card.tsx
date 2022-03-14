@@ -169,7 +169,7 @@ const WalletCard = ({
     const getSvgWithUniqueIds = (code: string) => {
         // A workaround to ensure that important ids in svg <defs> are unique to avoid issues with rendering in Storybook Docs:
         const unique_id = v4();
-        return code.replaceAll(/id="/g, `id="${unique_id}`).replaceAll(/url\(#/g, `url(#${unique_id}`);
+        return code.replace(/id="/g, `id="${unique_id}`).replace(/url\(#/g, `url(#${unique_id}`);
     };
 
     return (
