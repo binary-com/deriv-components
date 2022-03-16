@@ -4,7 +4,7 @@
     "description": "A UI library developed by Deriv",
     "main": "./dist/cjs/components.js",
     "module": "./dist/es/components.js",
-    "types": "./dist/index.d.ts",
+    "types": "./dist/src/index.d.ts",
     "scripts": {
         "start": "npm run storybook",
         "storybook": "start-storybook -p 6006",
