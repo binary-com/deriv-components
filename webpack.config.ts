@@ -11,8 +11,7 @@ const config = (env: EnvConfig): Configuration => {
     const modules = env.modules || 'cjs';
     return {
         mode: 'production',
-        devtool: 'source-map',
-        entry: './src/index.tsx',
+        entry: './src/index.ts',
         module: {
             rules: [
                 {
@@ -68,9 +67,24 @@ const config = (env: EnvConfig): Configuration => {
         output: {
             path: path.resolve(__dirname, 'dist'),
             filename: `${modules}/components.js`,
+            library: {
+                name: 'components',
+                type: 'umd',
+            },
         },
-        externals: ['react'],
         plugins: [new ForkTsCheckerWebpackPlugin()],
+        externals: {
+            react: {
+                root: 'React',
+                commonjs: 'react',
+                commonjs2: 'react',
+            },
+            'react-dom': {
+                commonjs: 'react-dom',
+                commonjs2: 'react-dom',
+                root: 'ReactDOM',
+            },
+        },
     };
 };
 
