@@ -1,10 +1,10 @@
 {
     "name": "@deriv/components",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "A UI library developed by Deriv",
     "main": "./dist/cjs/components.js",
     "module": "./dist/es/components.js",
-    "types": "./dist/src/index.d.ts",
+    "types": "./dist/types/src/index.d.ts",
     "scripts": {
         "start": "npm run storybook",
         "storybook": "start-storybook -p 6006",
@@ -78,7 +78,6 @@
         "@stitches/react": "^1.2.6",
         "classnames": "^2.3.1",
         "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "react-inlinesvg": "^2.3.0"
+        "react-dom": "^17.0.2"
     }
 }
