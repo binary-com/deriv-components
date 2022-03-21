@@ -1,6 +1,6 @@
 {
     "name": "@deriv/components",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "A UI library developed by Deriv",
     "main": "./dist/cjs/components.js",
     "module": "./dist/es/components.js",
@@ -12,7 +12,7 @@
         "build": "npm run clean && tsc && webpack build --env modules='cjs' && webpack build --env modules='es'",
         "build:watch": "webpack build --watch",
         "prepare": "husky install",
-        "publish": "npm run build && npm publish",
+        "build_and_publish": "npm run build && npm publish",
         "clean": "rimraf dist/*",
         "test": "jest",
         "test:coverage": "jest --coverage",
