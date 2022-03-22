@@ -8,12 +8,7 @@ export default {
 
 const Template: Story<TWizardProps> = (args) => <Wizard {...args} />;
 
-export const DefaultLightLarge = Template.bind({});
-DefaultLightLarge.args = {
-    //
-};
-
-export const DefaultDarkLarge = Template.bind({});
-DefaultDarkLarge.args = {
+export const Light = Template.bind({});
+Light.args = {
     //
 };
