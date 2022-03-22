@@ -19,7 +19,7 @@ const WizardContainer = styled('div', {
     height: '640px',
     left: 'calc(50% - 1040px / 2)',
     top: 'calc(50% - 640px / 2)',
-    background: '#FFFFFF',
+    background: '$white',
     borderRadius: '16px',
     display: 'flex',
     overflow: 'hidden',
@@ -83,22 +83,60 @@ const Footer = styled('div', {
     gap: '8px',
 });
 
-const InactiveBullet = styled('div', {
+const Bullet = styled('div', {
     width: '16px',
     height: '16px',
     border: '2px solid #D6DADB',
     boxSizing: 'border-box',
     borderRadius: '50%',
-    background: '#FFFFFF',
-});
+    background: '$white',
 
-const ActiveBullet = styled('div', {
-    width: '16px',
-    height: '16px',
-    border: '2px solid #FF444F',
-    boxSizing: 'border-box',
-    borderRadius: '50%',
-    background: '#FFFFFF',
+    variants: {
+        active: {
+            true: {
+                border: '2px solid #FF444F',
+            },
+        },
+        complete: {
+            true: {
+                border: '2px solid #FF444F',
+                background: `#FF444F url(${CircularCheckIcon}) no-repeat center`,
+            },
+        },
+        disabled: {
+            true: {
+                backgroundColor: '#D6D6D6',
+                border: '2px solid #D6D6D6',
+            },
+        },
+        dark: {
+            true: {},
+        },
+    },
+    compoundVariants: [
+        {
+            active: true,
+            dark: true,
+            css: {
+                backgroundColor: '#0E0E0E',
+                border: '2px solid #FF444F',
+            },
+        },
+        {
+            disabled: true,
+            dark: true,
+            css: {
+                backgroundColor: '#3E3E3E',
+                border: '2px solid #3E3E3E',
+            },
+        },
+    ],
+    defaultVariants: {
+        active: false,
+        complete: false,
+        disabled: false,
+        dark: false,
+    },
 });
 
 const Before = styled('div', {
@@ -122,12 +160,7 @@ const After = styled('div', {
     transition: 'height 0.3s ease',
 });
 
-const CheckIcon = styled('img', {
-    width: '16px',
-    height: '16px',
-});
-
-const StepContainer = styled('div', {
+const Step = styled('div', {
     width: '100%',
     height: '40px',
     display: 'flex',
@@ -137,13 +170,13 @@ const StepContainer = styled('div', {
     position: 'relative',
 });
 
-const Steps = React.memo(() => {
-    const el_completed_bar = React.useRef<HTMLDivElement>(null);
-    const first_identifier = React.useRef<HTMLLabelElement>(null);
-    const current_step = 3;
-    let active = false;
-    const steps = ['Product', 'App', 'Password', 'Wallet', 'Personal details'];
+type TStepsProps = {
+    steps: TItemsState[];
+    current_step: number;
+    dark?: boolean;
+};
 
+const Steps = React.memo(({ steps, current_step, dark = false }: TStepsProps) => {
     return (
         <div
             style={{
@@ -156,66 +189,154 @@ const Steps = React.memo(() => {
                 }}
             />
             {steps.map((step, idx) => {
-                active = idx === current_step;
+                const active = idx === current_step;
+                const disabled = idx > current_step + 2; // temporary stub, still figuring out when a step must be disabled
                 return (
-                    <StepContainer key={idx + 1}>
-                        {idx < current_step ? (
-                            <CheckIcon src={CircularCheckIcon} alt="check_icon" />
-                        ) : active ? (
-                            <ActiveBullet />
-                        ) : (
-                            <InactiveBullet />
-                        )}
-                        <label ref={first_identifier}>
-                            <Text as="div" type="paragraph-2" bold={active}>
-                                {step}
+                    <Step key={idx + 1}>
+                        <Bullet active={active} complete={step.complete} disabled={disabled} dark={dark} />
+                        <label>
+                            <Text
+                                as="div"
+                                type="paragraph-2"
+                                bold={active}
+                                css={{ color: disabled ? (dark ? '#3E3E3E' : '#999999') : dark ? '$white' : '#333333' }}
+                            >
+                                {step.header.title}
                             </Text>
                         </label>
-                    </StepContainer>
+                    </Step>
                 );
             })}
             <After
-                ref={el_completed_bar}
                 css={{
                     height: `${current_step * (100 / steps.length)}%`,
-                    transform: `translateX(${
-                        (first_identifier.current as HTMLLabelElement)?.offsetTop +
-                        (first_identifier.current as HTMLLabelElement)?.clientHeight / 2
-                    }px)`,
                 }}
             />
         </div>
     );
 });
 
+type TItemsState = {
+    header: { [key: string]: string };
+    cancel_button_name?: string;
+    submit_button_name?: string;
+    complete?: boolean;
+};
+
 export interface TWizardProps {
     has_form?: boolean;
     has_right_panel?: boolean;
-    children?: React.ReactElement[] | string;
+    main_content?: React.ReactElement[] | string;
+    right_panel_content?: React.ReactElement[] | string;
 }
 
-const Wizard = ({ has_form = true, has_right_panel = true, children = 'text' }: TWizardProps) => {
+const Wizard = ({
+    has_form = true,
+    has_right_panel = true,
+    main_content = 'text',
+    right_panel_content = 'right_panel_content',
+}: TWizardProps) => {
+    const wizard_title = 'app'; // temporary stub
+    const [current_step, setCurrentStep] = React.useState<number>(0);
+    const [steps, setSteps] = React.useState<TItemsState[]>([
+        // temporary stub
+        {
+            header: {
+                active_title: 'Choose a product',
+                title: 'Product',
+            },
+        },
+        {
+            header: {
+                active_title: 'Add an app',
+                title: 'App',
+            },
+        },
+        {
+            header: {
+                active_title: 'Create a password',
+                title: 'Password',
+            },
+        },
+        {
+            header: {
+                active_title: 'Create a wallet',
+                title: 'Wallet',
+            },
+        },
+        {
+            header: {
+                active_title: 'Personal details',
+                title: 'Personal details',
+            },
+        },
+        {
+            header: {
+                active_title: 'Address information',
+                title: 'Address',
+            },
+        },
+        {
+            header: {
+                active_title: 'Terms of use',
+                title: 'Terms of use',
+            },
+        },
+        {
+            header: {
+                active_title: 'Completed',
+                title: 'Complete',
+            },
+            cancel_button_name: 'Maybe later',
+            submit_button_name: 'Deposit',
+        },
+    ]);
+
+    const nextStep = () => {
+        if (current_step + 1 < steps.length) {
+            setCurrentStep(current_step + 1);
+            setSteps(
+                steps.map((step, idx) => (idx === current_step ? { ...steps[current_step], complete: true } : step)),
+            );
+        }
+    };
+
+    const prevStep = () => {
+        setCurrentStep(current_step - 1);
+    };
+
+    const getBody = () => (
+        <>
+            <Text as="div" type="subtitle-1" bold>
+                {steps[current_step].header.active_title}
+            </Text>
+            {main_content}
+        </>
+    );
+
     return (
         <Container>
             <WizardContainer>
                 <LeftPanel>
                     <Title>
                         <Text as="div" type="subtitle-2" bold>
-                            Title
+                            Let's get you a new {wizard_title}.
                         </Text>
                     </Title>
-                    <Steps />
+                    <Steps steps={steps} current_step={current_step} />
                 </LeftPanel>
                 <WizardBody>
                     <ContentContainer>
-                        {has_form ? <FixedWidthContainer>{children}</FixedWidthContainer> : children}
-                        {has_right_panel && <RightPanel>{children}</RightPanel>}
+                        {has_form ? <FixedWidthContainer>{getBody()}</FixedWidthContainer> : getBody()}
+                        {has_right_panel && <RightPanel>{right_panel_content}</RightPanel>}
                     </ContentContainer>
                     <Footer>
-                        <Button color="secondary" size="large">
-                            Left Button
+                        <Button color="secondary" size="large" onClick={prevStep} disabled={current_step < 1}>
+                            {steps[current_step].cancel_button_name || 'Back'}
                         </Button>
-                        <Button size="large">Right Button</Button>
+                        <Button size="large" onClick={nextStep}>
+                            {steps[current_step].submit_button_name || 'Next'}
+                        </Button>
                     </Footer>
                 </WizardBody>
             </WizardContainer>
