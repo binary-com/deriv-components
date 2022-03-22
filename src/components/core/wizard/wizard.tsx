@@ -174,9 +174,10 @@ type TStepsProps = {
     steps: TItemsState[];
     current_step: number;
     dark?: boolean;
+    onClick?: (idx: number) => void;
 };
 
-const Steps = React.memo(({ steps, current_step, dark = false }: TStepsProps) => {
+const Steps = React.memo(({ steps, current_step, dark = false, onClick }: TStepsProps) => {
     return (
         <div
             style={{
@@ -192,7 +193,7 @@ const Steps = React.memo(({ steps, current_step, dark = false }: TStepsProps) =>
                 const active = idx === current_step;
                 const disabled = idx > current_step + 2; // temporary stub, still figuring out when a step must be disabled
                 return (
-                    <Step key={idx + 1}>
+                    <Step key={idx + 1} onClick={() => onClick?.(idx)}>
                         <Bullet active={active} complete={step.complete} disabled={disabled} dark={dark} />
                         <label>
                             <Text
@@ -305,6 +306,17 @@ const Wizard = ({
         setCurrentStep(current_step - 1);
     };
 
+    const handleStepClick = (index: number) => {
+        const last_complete_step_index = steps
+            .map((step, idx) => (step.complete ? idx : null))
+            .filter((i) => i !== null)
+            .pop();
+
+        if (index <= Number(last_complete_step_index) + 1) {
+            setCurrentStep(index);
+        }
+    };
+
     const getBody = () => (
         <>
             <Text as="div" type="subtitle-1" bold>
@@ -323,7 +335,7 @@ const Wizard = ({
                             Let's get you a new {wizard_title}.
                         </Text>
                     </Title>
-                    <Steps steps={steps} current_step={current_step} />
+                    <Steps steps={steps} current_step={current_step} onClick={handleStepClick} />
                 </LeftPanel>
                 <WizardBody>
                     <ContentContainer>
