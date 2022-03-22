@@ -39,7 +39,7 @@
         "@node-minify/clean-css": "^6.2.0",
         "@node-minify/core": "^6.2.0",
         "@storybook/addon-actions": "^6.5.0-alpha.36",
-        "@storybook/addon-docs": "^6.5.0-alpha.36",
+        "@storybook/addon-docs": "^6.5.0-alpha.49",
         "@storybook/addon-essentials": "^6.5.0-alpha.36",
         "@storybook/addon-links": "^6.5.0-alpha.36",
         "@storybook/builder-webpack5": "^6.5.0-alpha.38",
