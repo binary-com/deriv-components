@@ -137,59 +137,12 @@ const StepContainer = styled('div', {
     position: 'relative',
 });
 
-const Step = ({
-    active = false,
-    complete,
-    name,
-    ref,
-}: {
-    active?: boolean;
-    complete?: boolean;
-    name: string;
-    ref: React.RefObject<HTMLLabelElement>;
-}) => (
-    <StepContainer>
-        {complete ? (
-            <CheckIcon src={CircularCheckIcon} alt="check_icon" />
-        ) : active ? (
-            <ActiveBullet />
-        ) : (
-            <InactiveBullet />
-        )}
-        <label ref={ref}>
-            <Text as="div" type="paragraph-2" bold={active}>
-                {name}
-            </Text>
-        </label>
-    </StepContainer>
-);
-
 const Steps = React.memo(() => {
-    const current_step = 2;
-    let active = false;
-
-    const steps = ['Product', 'App', 'Password', 'Wallet', 'Personal details'];
-
     const el_completed_bar = React.useRef<HTMLDivElement>(null);
     const first_identifier = React.useRef<HTMLLabelElement>(null);
-
-    const animateCompleteBar = () => {
-        const el_first_identifier = first_identifier.current || {
-            offsetTop: 0,
-            clientHeight: 1,
-        };
-        const each = 100 / steps.length;
-        if (el_completed_bar.current) {
-            el_completed_bar.current.style.height = `${current_step * each}%`;
-            el_completed_bar.current.style.transform = `translateX(${
-                el_first_identifier.offsetTop + el_first_identifier.clientHeight / 2
-            }px)`;
-        }
-    };
-
-    React.useEffect(() => {
-        animateCompleteBar();
-    });
+    const current_step = 3;
+    let active = false;
+    const steps = ['Product', 'App', 'Password', 'Wallet', 'Personal details'];
 
     return (
         <div
@@ -205,16 +158,32 @@ const Steps = React.memo(() => {
             {steps.map((step, idx) => {
                 active = idx === current_step;
                 return (
-                    <Step
-                        key={idx + 1}
-                        ref={first_identifier}
-                        active={active}
-                        complete={idx < current_step}
-                        name={step}
-                    />
+                    <StepContainer key={idx + 1}>
+                        {idx < current_step ? (
+                            <CheckIcon src={CircularCheckIcon} alt="check_icon" />
+                        ) : active ? (
+                            <ActiveBullet />
+                        ) : (
+                            <InactiveBullet />
+                        )}
+                        <label ref={first_identifier}>
+                            <Text as="div" type="paragraph-2" bold={active}>
+                                {step}
+                            </Text>
+                        </label>
+                    </StepContainer>
                 );
             })}
-            <After ref={el_completed_bar} />
+            <After
+                ref={el_completed_bar}
+                css={{
+                    height: `${current_step * (100 / steps.length)}%`,
+                    transform: `translateX(${
+                        (first_identifier.current as HTMLLabelElement)?.offsetTop +
+                        (first_identifier.current as HTMLLabelElement)?.clientHeight / 2
+                    }px)`,
+                }}
+            />
         </div>
     );
 });
