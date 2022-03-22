@@ -9,6 +9,9 @@ const Button = styled('button', {
     border: 'none',
     width: 'fit-content',
     borderRadius: '4px',
+    fontSize: '14px',
+    fontWeight: '700',
+    lineHeight: '20px',
 
     '&:hover': {
         cursor: 'pointer',
@@ -57,6 +60,7 @@ const Button = styled('button', {
             secondary: {
                 border: '1px solid #999999',
                 color: '#333333',
+                backgroundColor: 'transparent',
 
                 '&:hover': {
                     backgroundColor: 'rgba(0, 0, 0, 0.08)',
