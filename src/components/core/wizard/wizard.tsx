@@ -1,27 +1,77 @@
 import CircularCheckIcon from '@assets/svg/circular-check-icon.svg';
+import CloseIconLight from '@assets/svg/modal/ic-close-light.svg';
+import CloseIconDark from '@assets/svg/modal/ic-close-dark.svg';
 import Button from '@core/button/button';
 import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
 
+const DarkBackgroundContainer = styled('div', {
+    position: 'absolute',
+    inset: '0',
+    background: 'rgba(0, 0, 0, 0.72)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+});
+
 const WizardContainer = styled('div', {
+    position: 'relative',
     width: '1040px',
     height: '640px',
-    background: '$white',
+    backgroundColor: '$white',
     borderRadius: '16px',
     display: 'flex',
     overflow: 'hidden',
+
+    variants: {
+        dark: {
+            true: {
+                backgroundColor: '#0E0E0E',
+            },
+        },
+    },
 });
 
 const LeftPanel = styled('div', {
     width: '256px',
     height: '640px',
-    background: '#F2F3F4',
+    backgroundColor: '#F2F3F4',
     boxSizing: 'border-box',
     padding: '48px 24px',
+
+    variants: {
+        dark: {
+            true: {
+                backgroundColor: '#151717',
+            },
+        },
+    },
 });
-const Title = styled('div', {
-    marginBottom: '24px',
+const WizardTitle = styled('div', {
+    variants: {
+        dark: {
+            true: {
+                '*': {
+                    color: '$white',
+                },
+            },
+        },
+        is_step_title: {
+            true: {
+                'div:first-child': {
+                    marginBottom: '24px',
+                },
+            },
+        },
+        is_main_content_title: {
+            true: {
+                'div:first-child': {
+                    marginBottom: '8px',
+                },
+            },
+        },
+    },
 });
 
 const WizardBody = styled('div', {
@@ -58,6 +108,14 @@ const RightPanel = styled('div', {
     right: '0',
     bottom: '0',
     borderLeft: '2px solid #F2F3F4',
+
+    variants: {
+        dark: {
+            true: {
+                borderLeft: '2px solid #323738',
+            },
+        },
+    },
 });
 
 const Footer = styled('div', {
@@ -69,6 +127,14 @@ const Footer = styled('div', {
     display: 'flex',
     justifyContent: 'end',
     gap: '8px',
+
+    variants: {
+        dark: {
+            true: {
+                borderTop: '2px solid #323738',
+            },
+        },
+    },
 });
 
 const Bullet = styled('div', {
@@ -98,7 +164,10 @@ const Bullet = styled('div', {
             },
         },
         dark: {
-            true: {},
+            true: {
+                border: '2px solid #323738',
+                backgroundColor: '#0E0E0E',
+            },
         },
     },
     compoundVariants: [
@@ -118,6 +187,13 @@ const Bullet = styled('div', {
                 border: '2px solid #3E3E3E',
             },
         },
+        {
+            complete: true,
+            dark: true,
+            css: {
+                border: '2px solid #FF444F',
+            },
+        },
     ],
     defaultVariants: {
         active: false,
@@ -135,6 +211,14 @@ const Before = styled('div', {
         'absolute' /* positioning must be absolute here, and relative positioning must be applied to the parent */,
     top: '20px',
     borderLeft: '2px solid #D6DADB',
+
+    variants: {
+        dark: {
+            true: {
+                borderLeft: '2px solid #323738',
+            },
+        },
+    },
 });
 
 const After = styled('div', {
@@ -148,6 +232,38 @@ const After = styled('div', {
     transition: 'height 0.3s ease',
 });
 
+const CloseIcon = styled('div', {
+    position: 'absolute',
+    width: '12px',
+    height: '12px',
+    top: '34px',
+    right: '34px',
+    cursor: 'pointer',
+    zIndex: '1',
+    background: `url(${CloseIconLight}) no-repeat center`,
+
+    '&:hover': {
+        width: '32px',
+        height: '32px',
+        right: '24px',
+        top: '24px',
+        borderRadius: '4px',
+        backgroundColor: '#E6E9E9',
+    },
+
+    variants: {
+        dark: {
+            true: {
+                background: `url(${CloseIconDark}) no-repeat center`,
+
+                '&:hover': {
+                    backgroundColor: '#242828',
+                },
+            },
+        },
+    },
+});
+
 const Step = styled('div', {
     width: '100%',
     height: '40px',
@@ -156,6 +272,39 @@ const Step = styled('div', {
     alignItems: 'center',
     zIndex: '1',
     position: 'relative',
+
+    '*': {
+        color: '#333333',
+    },
+
+    variants: {
+        dark: {
+            true: {
+                '*': {
+                    color: '#C2C2C2',
+                },
+            },
+        },
+        disabled: {
+            true: {
+                '*': {
+                    color: '#D6D6D6',
+                },
+            },
+        },
+    },
+
+    compoundVariants: [
+        {
+            disabled: true,
+            dark: true,
+            css: {
+                '*': {
+                    color: '#3E3E3E',
+                },
+            },
+        },
+    ],
 });
 
 type TStepsProps = {
@@ -176,6 +325,7 @@ const Steps = React.memo(
                 }}
             >
                 <Before
+                    dark={dark}
                     css={{
                         height: `calc(100% * ${steps.length - 1} / ${steps.length})`,
                     }}
@@ -184,7 +334,7 @@ const Steps = React.memo(
                     const active = idx === current_step_index;
                     const disabled = disabled_steps_indexes?.some((i) => i === idx);
                     return (
-                        <Step key={idx + 1} onClick={() => onClick?.(idx)}>
+                        <Step key={idx + 1} onClick={() => onClick?.(idx)} disabled={disabled} dark={dark}>
                             <Bullet
                                 active={active}
                                 complete={complete_steps_indexes?.some((i) => i === idx)}
@@ -192,14 +342,7 @@ const Steps = React.memo(
                                 dark={dark}
                             />
                             <label>
-                                <Text
-                                    as="div"
-                                    type="paragraph-2"
-                                    bold={active}
-                                    css={{
-                                        color: disabled ? (dark ? '#3E3E3E' : '#999999') : dark ? '$white' : '#333333',
-                                    }}
-                                >
+                                <Text as="div" type="paragraph-2" bold={active}>
                                     {step.titles.step_title}
                                 </Text>
                             </label>
@@ -234,10 +377,11 @@ export type TItemsState = {
 
 export type TWizardProps = {
     dark?: boolean;
+    onClose: () => void;
     steps: TItemsState[];
 };
 
-const Wizard = ({ dark, steps }: TWizardProps) => {
+const Wizard = ({ dark, onClose, steps }: TWizardProps) => {
     const wizard_title = 'app'; // temporary stub
     const [current_step_index, setCurrentStepIndex] = React.useState<number>(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
@@ -288,9 +432,11 @@ const Wizard = ({ dark, steps }: TWizardProps) => {
 
         return (
             <>
-                <Text as="div" type="subtitle-1" bold css={{ marginBottom: '24px' }}>
-                    {steps[current_step_index].titles.main_content_title}
-                </Text>
+                <WizardTitle dark={dark} is_main_content_title>
+                    <Text as="div" type="subtitle-1" bold>
+                        {steps[current_step_index].titles.main_content_title}
+                    </Text>
+                </WizardTitle>
                 {BodyComponent && (
                     <BodyComponent onClick={handleClick}>
                         {steps[current_step_index].main_content?.children}
@@ -301,54 +447,57 @@ const Wizard = ({ dark, steps }: TWizardProps) => {
     };
 
     return (
-        <WizardContainer>
-            <LeftPanel>
-                <Title>
-                    <Text as="div" type="subtitle-2" bold>
-                        Let's get you a new {wizard_title}.
-                    </Text>
-                </Title>
-                <Steps
-                    steps={steps}
-                    current_step_index={current_step_index}
-                    complete_steps_indexes={complete_steps_indexes}
-                    dark={dark}
-                    disabled_steps_indexes={disabled_steps_indexes}
-                    onClick={handleStepClick}
-                />
-            </LeftPanel>
-            <WizardBody>
-                <ContentContainer>
-                    {steps[current_step_index].main_content?.is_fullwidth ? (
-                        getBody()
-                    ) : (
-                        <FixedWidthContainer>{getBody()}</FixedWidthContainer>
-                    )}
-                    {steps[current_step_index].right_panel_content && (
-                        <RightPanel>{steps[current_step_index].right_panel_content}</RightPanel>
-                    )}
-                </ContentContainer>
-                <Footer>
-                    <Button
-                        color="secondary"
-                        size="large"
-                        onClick={prevStep}
-                        disabled={current_step_index < 1}
+        <DarkBackgroundContainer>
+            <WizardContainer dark={dark}>
+                <LeftPanel dark={dark}>
+                    <WizardTitle dark={dark} is_step_title>
+                        <Text as="div" type="subtitle-2" bold>
+                            Let's get you a new {wizard_title}.
+                        </Text>
+                    </WizardTitle>
+                    <Steps
+                        steps={steps}
+                        current_step_index={current_step_index}
+                        complete_steps_indexes={complete_steps_indexes}
                         dark={dark}
-                    >
-                        {steps[current_step_index].cancel_button_name || 'Back'}
-                    </Button>
-                    <Button
-                        size="large"
-                        onClick={nextStep}
-                        disabled={complete_steps_indexes.every((i) => i !== current_step_index)}
-                        dark={dark}
-                    >
-                        {steps[current_step_index].submit_button_name || 'Next'}
-                    </Button>
-                </Footer>
-            </WizardBody>
-        </WizardContainer>
+                        disabled_steps_indexes={disabled_steps_indexes}
+                        onClick={handleStepClick}
+                    />
+                </LeftPanel>
+                <WizardBody>
+                    <ContentContainer>
+                        {steps[current_step_index].main_content?.is_fullwidth ? (
+                            getBody()
+                        ) : (
+                            <FixedWidthContainer>{getBody()}</FixedWidthContainer>
+                        )}
+                        {steps[current_step_index].right_panel_content && (
+                            <RightPanel dark={dark}>{steps[current_step_index].right_panel_content}</RightPanel>
+                        )}
+                    </ContentContainer>
+                    <Footer dark={dark}>
+                        <Button
+                            color="secondary"
+                            size="large"
+                            onClick={prevStep}
+                            disabled={current_step_index < 1}
+                            dark={dark}
+                        >
+                            {steps[current_step_index].cancel_button_name || 'Back'}
+                        </Button>
+                        <Button
+                            size="large"
+                            onClick={nextStep}
+                            disabled={complete_steps_indexes.every((i) => i !== current_step_index)}
+                            dark={dark}
+                        >
+                            {steps[current_step_index].submit_button_name || 'Next'}
+                        </Button>
+                    </Footer>
+                </WizardBody>
+                <CloseIcon dark={dark} onClick={onClose} />
+            </WizardContainer>
+        </DarkBackgroundContainer>
     );
 };
 

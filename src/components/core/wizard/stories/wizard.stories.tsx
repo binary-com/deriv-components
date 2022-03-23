@@ -1,7 +1,8 @@
 import { Meta, Story } from '@storybook/react';
 import Wizard, { TItemsState, TWizardProps } from '../wizard';
 import Button from '../../button/button';
-import { styled } from '../../../../Styles/stitches.config';
+import Text from '../../text/text';
+import { useState } from 'react';
 
 type TFormProps = {
     onClick: React.MouseEventHandler<HTMLButtonElement>;
@@ -10,7 +11,9 @@ type TFormProps = {
 const Form: React.FC<TFormProps | { [key: string]: unknown | undefined }> = ({ onClick, children }) => {
     return (
         <div>
-            <div>Form</div>
+            <Text as="div" type="subtitle-2">
+                Form
+            </Text>
             <Button onClick={onClick}>{children}</Button>
         </div>
     );
@@ -120,16 +123,6 @@ const steps: TItemsState[] = [
     },
 ];
 
-const DarkBackgroundContainer = styled('div', {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    background: 'rgba(0, 0, 0, 0.72)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-});
-
 export default {
     title: 'Wizard',
     component: Wizard,
@@ -144,7 +137,8 @@ export default {
             },
         },
         steps: {
-            description: 'Required. An array of objects containing the list of steps to render in the wizard.',
+            description:
+                'Required. An array of objects containing the list of steps to render in the wizard. Please refer to the acceptable type below.',
             table: {
                 type: {
                     summary: `Array<{
@@ -169,32 +163,35 @@ export default {
     },
 } as Meta<TWizardProps>;
 
-const TemplateWithBackground: Story<TWizardProps> = (args) => (
-    <DarkBackgroundContainer>
-        <Wizard {...args} />
-    </DarkBackgroundContainer>
-);
+const Template: Story<TWizardProps> = (args) => {
+    const [is_wizard_open, setIsWizardOpen] = useState<boolean>(false);
 
-export const LightWithBackground = TemplateWithBackground.bind({});
-LightWithBackground.args = {
+    return (
+        <>
+            <Button onClick={() => setIsWizardOpen(true)}>Open Wizard</Button>
+            {is_wizard_open && <Wizard onClose={() => setIsWizardOpen(false)} {...args} />}
+        </>
+    );
+};
+
+export const LightAppWizard = Template.bind({});
+LightAppWizard.args = {
     steps,
     dark: false,
 };
-export const DarkWithBackground = TemplateWithBackground.bind({});
-DarkWithBackground.args = {
+export const DarkAppWizard = Template.bind({});
+DarkAppWizard.args = {
     steps,
     dark: true,
 };
 
-const TemplateWithoutBackground: Story<TWizardProps> = (args) => <Wizard {...args} />;
-
-export const LightWithoutBackground = TemplateWithoutBackground.bind({});
-LightWithoutBackground.args = {
+export const LightWalletWizard = Template.bind({});
+LightWalletWizard.args = {
     steps,
     dark: false,
 };
-export const DarkWithoutBackground = TemplateWithoutBackground.bind({});
-DarkWithoutBackground.args = {
+export const DarkWalletWizard = Template.bind({});
+DarkWalletWizard.args = {
     steps,
     dark: true,
 };
