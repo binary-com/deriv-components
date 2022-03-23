@@ -1,24 +1,12 @@
-import Button from '@core/button/button';
-import type * as Stitches from '@stitches/react';
-import { styled } from 'Styles/stitches.config';
-import { modifyVariantsForStory } from 'Styles/type-utils';
-import Text from '@core/text/text';
 import CircularCheckIcon from '@assets/svg/circular-check-icon.svg';
+import Button from '@core/button/button';
+import Text from '@core/text/text';
 import React from 'react';
-
-const Container = styled('div', {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    background: 'rgba(0, 0, 0, 0.72)',
-});
+import { styled } from 'Styles/stitches.config';
 
 const WizardContainer = styled('div', {
-    position: 'relative',
     width: '1040px',
     height: '640px',
-    left: 'calc(50% - 1040px / 2)',
-    top: 'calc(50% - 640px / 2)',
     background: '$white',
     borderRadius: '16px',
     display: 'flex',
@@ -30,7 +18,7 @@ const LeftPanel = styled('div', {
     height: '640px',
     background: '#F2F3F4',
     boxSizing: 'border-box',
-    padding: '24px',
+    padding: '48px 24px',
 });
 const Title = styled('div', {
     marginBottom: '24px',
@@ -46,14 +34,14 @@ const ContentContainer = styled('div', {
     height: '568px',
     position: 'relative',
     boxSizing: 'border-box',
-    padding: '24px',
+    padding: '48px 24px 24px',
 });
 
 const FixedWidthContainer = styled('div', {
     width: '472px',
     height: '568px',
     boxSizing: 'border-box',
-    padding: '24px',
+    padding: '48px 24px 24px',
     position: 'absolute',
     top: '0',
     left: '0',
@@ -64,7 +52,7 @@ const RightPanel = styled('div', {
     width: '312px',
     height: '568px',
     boxSizing: 'border-box',
-    padding: '24px',
+    padding: '48px 24px 24px',
     position: 'absolute',
     top: '0',
     right: '0',
@@ -172,200 +160,196 @@ const Step = styled('div', {
 
 type TStepsProps = {
     steps: TItemsState[];
-    current_step: number;
+    current_step_index: number;
+    complete_steps_indexes?: number[];
+    disabled_steps_indexes?: number[];
     dark?: boolean;
     onClick?: (idx: number) => void;
 };
 
-const Steps = React.memo(({ steps, current_step, dark = false, onClick }: TStepsProps) => {
-    return (
-        <div
-            style={{
-                position: 'relative',
-            }}
-        >
-            <Before
-                css={{
-                    height: `calc(100% * ${steps.length - 1} / ${steps.length})`,
+const Steps = React.memo(
+    ({ steps, current_step_index, complete_steps_indexes, disabled_steps_indexes, dark, onClick }: TStepsProps) => {
+        return (
+            <div
+                style={{
+                    position: 'relative',
                 }}
-            />
-            {steps.map((step, idx) => {
-                const active = idx === current_step;
-                const disabled = idx > current_step + 2; // temporary stub, still figuring out when a step must be disabled
-                return (
-                    <Step key={idx + 1} onClick={() => onClick?.(idx)}>
-                        <Bullet active={active} complete={step.complete} disabled={disabled} dark={dark} />
-                        <label>
-                            <Text
-                                as="div"
-                                type="paragraph-2"
-                                bold={active}
-                                css={{ color: disabled ? (dark ? '#3E3E3E' : '#999999') : dark ? '$white' : '#333333' }}
-                            >
-                                {step.header.title}
-                            </Text>
-                        </label>
-                    </Step>
-                );
-            })}
-            <After
-                css={{
-                    height: `${current_step * (100 / steps.length)}%`,
-                }}
-            />
-        </div>
-    );
-});
+            >
+                <Before
+                    css={{
+                        height: `calc(100% * ${steps.length - 1} / ${steps.length})`,
+                    }}
+                />
+                {steps.map((step, idx) => {
+                    const active = idx === current_step_index;
+                    const disabled = disabled_steps_indexes?.some((i) => i === idx);
+                    return (
+                        <Step key={idx + 1} onClick={() => onClick?.(idx)}>
+                            <Bullet
+                                active={active}
+                                complete={complete_steps_indexes?.some((i) => i === idx)}
+                                disabled={disabled}
+                                dark={dark}
+                            />
+                            <label>
+                                <Text
+                                    as="div"
+                                    type="paragraph-2"
+                                    bold={active}
+                                    css={{
+                                        color: disabled ? (dark ? '#3E3E3E' : '#999999') : dark ? '$white' : '#333333',
+                                    }}
+                                >
+                                    {step.titles.step_title}
+                                </Text>
+                            </label>
+                        </Step>
+                    );
+                })}
+                <After
+                    css={{
+                        height: `${current_step_index * (100 / steps.length)}%`,
+                    }}
+                />
+            </div>
+        );
+    },
+);
 
-type TItemsState = {
-    header: { [key: string]: string };
+export type TItemsState = {
+    titles: {
+        main_content_title: string;
+        step_title: string;
+    };
+    main_content?: {
+        component: React.FC<{ [key: string]: unknown | undefined }> & React.ReactNode;
+        children?: string | (React.FC<{ [key: string]: unknown | undefined }> & React.ReactNode);
+        passthrough_props?: string[];
+        is_fullwidth?: boolean;
+    };
+    right_panel_content?: string | (React.FC<{ [key: string]: unknown | undefined }> & React.ReactNode);
     cancel_button_name?: string;
     submit_button_name?: string;
-    complete?: boolean;
 };
 
-export interface TWizardProps {
-    has_form?: boolean;
-    has_right_panel?: boolean;
-    main_content?: React.ReactElement[] | string;
-    right_panel_content?: React.ReactElement[] | string;
-}
+export type TWizardProps = {
+    dark?: boolean;
+    steps: TItemsState[];
+};
 
-const Wizard = ({
-    has_form = true,
-    has_right_panel = true,
-    main_content = 'text',
-    right_panel_content = 'right_panel_content',
-}: TWizardProps) => {
+const Wizard = ({ dark, steps }: TWizardProps) => {
     const wizard_title = 'app'; // temporary stub
-    const [current_step, setCurrentStep] = React.useState<number>(0);
-    const [steps, setSteps] = React.useState<TItemsState[]>([
-        // temporary stub
-        {
-            header: {
-                active_title: 'Choose a product',
-                title: 'Product',
-            },
-        },
-        {
-            header: {
-                active_title: 'Add an app',
-                title: 'App',
-            },
-        },
-        {
-            header: {
-                active_title: 'Create a password',
-                title: 'Password',
-            },
-        },
-        {
-            header: {
-                active_title: 'Create a wallet',
-                title: 'Wallet',
-            },
-        },
-        {
-            header: {
-                active_title: 'Personal details',
-                title: 'Personal details',
-            },
-        },
-        {
-            header: {
-                active_title: 'Address information',
-                title: 'Address',
-            },
-        },
-        {
-            header: {
-                active_title: 'Terms of use',
-                title: 'Terms of use',
-            },
-        },
-        {
-            header: {
-                active_title: 'Completed',
-                title: 'Complete',
-            },
-            cancel_button_name: 'Maybe later',
-            submit_button_name: 'Deposit',
-        },
-    ]);
+    const [current_step_index, setCurrentStepIndex] = React.useState<number>(0);
+    const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
+    const [disabled_steps_indexes, setDisabledStepsIndexes] = React.useState<number[]>([]);
+    const next_enabled_step_index = steps
+        .map((_step, idx) => idx)
+        .find((i) => i > current_step_index && disabled_steps_indexes.every((index) => i !== index));
+    const previous_enabled_step_index = steps
+        .map((_step, idx) => idx)
+        .reverse()
+        .find((i) => i < current_step_index && disabled_steps_indexes.every((index) => i !== index));
+    const last_complete_step_index = steps
+        .map((_step, idx) => (complete_steps_indexes.some((i) => i === idx) ? idx : null))
+        .filter((i) => i !== null)
+        .pop();
 
     const nextStep = () => {
-        if (current_step + 1 < steps.length) {
-            setCurrentStep(current_step + 1);
-            setSteps(
-                steps.map((step, idx) => (idx === current_step ? { ...steps[current_step], complete: true } : step)),
-            );
+        if (Number(next_enabled_step_index) < steps.length) {
+            setCurrentStepIndex(Number(next_enabled_step_index));
         }
     };
 
     const prevStep = () => {
-        setCurrentStep(current_step - 1);
+        setCurrentStepIndex(Number(previous_enabled_step_index));
     };
 
     const handleStepClick = (index: number) => {
-        const last_complete_step_index = steps
-            .map((step, idx) => (step.complete ? idx : null))
-            .filter((i) => i !== null)
-            .pop();
-
-        if (index <= Number(last_complete_step_index) + 1) {
-            setCurrentStep(index);
+        if (
+            disabled_steps_indexes.every((i) => i !== index) &&
+            (index <= Number(last_complete_step_index) + 1 ||
+                (index === Number(next_enabled_step_index) &&
+                    complete_steps_indexes.some((i) => i === current_step_index)))
+        ) {
+            setCurrentStepIndex(index);
         }
     };
 
-    const getBody = () => (
-        <>
-            <Text as="div" type="subtitle-1" bold>
-                {steps[current_step].header.active_title}
-            </Text>
-            {main_content}
-        </>
-    );
+    const BodyComponent = steps[current_step_index].main_content?.component;
+
+    const getBody = () => {
+        const handleClick = () => {
+            setCompleteStepsIndexes([...complete_steps_indexes, current_step_index]);
+            // temporary condition to test disabling of the next step
+            if (steps[current_step_index].main_content?.children === 'Submit & Disable next step') {
+                setDisabledStepsIndexes([...disabled_steps_indexes, current_step_index + 1]);
+            }
+        };
+
+        return (
+            <>
+                <Text as="div" type="subtitle-1" bold css={{ marginBottom: '24px' }}>
+                    {steps[current_step_index].titles.main_content_title}
+                </Text>
+                {BodyComponent && (
+                    <BodyComponent onClick={handleClick}>
+                        {steps[current_step_index].main_content?.children}
+                    </BodyComponent>
+                )}
+            </>
+        );
+    };
 
     return (
-        <Container>
-            <WizardContainer>
-                <LeftPanel>
-                    <Title>
-                        <Text as="div" type="subtitle-2" bold>
-                            Let's get you a new {wizard_title}.
-                        </Text>
-                    </Title>
-                    <Steps steps={steps} current_step={current_step} onClick={handleStepClick} />
-                </LeftPanel>
-                <WizardBody>
-                    <ContentContainer>
-                        {has_form ? <FixedWidthContainer>{getBody()}</FixedWidthContainer> : getBody()}
-                        {has_right_panel && <RightPanel>{right_panel_content}</RightPanel>}
-                    </ContentContainer>
-                    <Footer>
-                        <Button color="secondary" size="large" onClick={prevStep} disabled={current_step < 1}>
-                            {steps[current_step].cancel_button_name || 'Back'}
-                        </Button>
-                        <Button size="large" onClick={nextStep}>
-                            {steps[current_step].submit_button_name || 'Next'}
-                        </Button>
-                    </Footer>
-                </WizardBody>
-            </WizardContainer>
-        </Container>
+        <WizardContainer>
+            <LeftPanel>
+                <Title>
+                    <Text as="div" type="subtitle-2" bold>
+                        Let's get you a new {wizard_title}.
+                    </Text>
+                </Title>
+                <Steps
+                    steps={steps}
+                    current_step_index={current_step_index}
+                    complete_steps_indexes={complete_steps_indexes}
+                    dark={dark}
+                    disabled_steps_indexes={disabled_steps_indexes}
+                    onClick={handleStepClick}
+                />
+            </LeftPanel>
+            <WizardBody>
+                <ContentContainer>
+                    {steps[current_step_index].main_content?.is_fullwidth ? (
+                        getBody()
+                    ) : (
+                        <FixedWidthContainer>{getBody()}</FixedWidthContainer>
+                    )}
+                    {steps[current_step_index].right_panel_content && (
+                        <RightPanel>{steps[current_step_index].right_panel_content}</RightPanel>
+                    )}
+                </ContentContainer>
+                <Footer>
+                    <Button
+                        color="secondary"
+                        size="large"
+                        onClick={prevStep}
+                        disabled={current_step_index < 1}
+                        dark={dark}
+                    >
+                        {steps[current_step_index].cancel_button_name || 'Back'}
+                    </Button>
+                    <Button
+                        size="large"
+                        onClick={nextStep}
+                        disabled={complete_steps_indexes.every((i) => i !== current_step_index)}
+                        dark={dark}
+                    >
+                        {steps[current_step_index].submit_button_name || 'Next'}
+                    </Button>
+                </Footer>
+            </WizardBody>
+        </WizardContainer>
     );
 };
 
 export default Wizard;
-
-type NativeDivProps = React.ComponentPropsWithoutRef<'div'>;
-
-// Only export/use these in Storybook since they are just for the Stitchs x SB handshake
-// Can be here or in the story
-// We need to Omit css as Emotions global css typedef clashes with the Stitches css typedef
-// Storybook currently uses v10+ of Emotion, this issue is fixed in Emotion v11+
-// TODO: Remove Omit once Storybook's Emotion is running on v11+
-type WizardVariantProps = Stitches.VariantProps<typeof Wizard> & Omit<NativeDivProps, 'css'>;
-interface WizardProps extends WizardVariantProps {}
-// Use this as the type in Story; i.e. `ComponentMeta<typeof ButtonStory>`
-export const TextStory = modifyVariantsForStory<WizardVariantProps, WizardProps, typeof Wizard>(Wizard);
