@@ -438,7 +438,7 @@ const Wizard = ({ dark, onClose, steps }: TWizardProps) => {
                     </Text>
                 </WizardTitle>
                 {BodyComponent && (
-                    <BodyComponent onClick={handleClick}>
+                    <BodyComponent onClick={handleClick} dark={dark}>
                         {steps[current_step_index].main_content?.children}
                     </BodyComponent>
                 )}

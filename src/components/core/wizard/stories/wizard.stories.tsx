@@ -6,12 +6,18 @@ import { useState } from 'react';
 
 type TFormProps = {
     onClick: React.MouseEventHandler<HTMLButtonElement>;
+    dark?: boolean;
 };
 
-const Form: React.FC<TFormProps | { [key: string]: unknown | undefined }> = ({ onClick, children }) => {
+const Form: React.FC<TFormProps | { [key: string]: unknown | undefined }> = ({ dark, onClick, children }) => {
     return (
         <div>
-            <Text as="div" type="subtitle-2">
+            <Text
+                as="div"
+                type="paragraph-1"
+                bold={false}
+                css={{ color: dark ? '#C2C2C2' : '#333333', marginBottom: '24px' }}
+            >
                 Form
             </Text>
             <Button onClick={onClick}>{children}</Button>
