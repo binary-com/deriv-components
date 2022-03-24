@@ -244,7 +244,7 @@ const Wizard = ({ dark, has_dark_background = true, onClose, steps }: TWizardPro
     const BodyComponent = steps[current_step_index].main_content?.component;
 
     const getBody = () => {
-        const handleClick = () => {
+        const handleClick = (values?: { [key: string]: unknown }) => {
             setCompleteStepsIndexes([...complete_steps_indexes, current_step_index]);
             // temporary condition to test disabling of the next step
             if (steps[current_step_index].main_content?.children === 'Submit & Disable next step') {
@@ -252,20 +252,11 @@ const Wizard = ({ dark, has_dark_background = true, onClose, steps }: TWizardPro
             }
         };
 
-        return (
-            <>
-                <WizardTitle dark={dark} is_main_content_title>
-                    <Text as="div" type="subtitle-1" bold>
-                        {steps[current_step_index].titles.main_content_title}
-                    </Text>
-                </WizardTitle>
-                {BodyComponent && (
-                    <BodyComponent onClick={handleClick} dark={dark}>
-                        {steps[current_step_index].main_content?.children}
-                    </BodyComponent>
-                )}
-            </>
-        );
+        return BodyComponent ? (
+            <BodyComponent onSubmit={handleClick} dark={dark}>
+                {steps[current_step_index].main_content?.children}
+            </BodyComponent>
+        ) : null;
     };
 
     return (
