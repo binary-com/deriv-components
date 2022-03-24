@@ -17,6 +17,21 @@ export default {
                 defaultValue: { summary: false },
             },
         },
+        has_dark_background: {
+            description:
+                'Optional. If set to false`, the wizard will be displayed without dark background surrounding it.',
+            defaultValue: true,
+            table: {
+                type: { summary: 'boolean | undefined' },
+                defaultValue: { summary: true },
+            },
+        },
+        onClose: {
+            description: 'Required. A callback used to inform a parent that the Wizard has been closed.',
+            table: {
+                type: { summary: '() => void' },
+            },
+        },
         steps: {
             description:
                 'Required. An array of objects containing the list of steps to render in the wizard. Please refer to the acceptable type below.',
@@ -50,7 +65,7 @@ const Template: Story<TWizardProps> = (args) => {
     return (
         <>
             {is_wizard_open ? (
-                <Wizard onClose={() => setIsWizardOpen(false)} {...args} />
+                <Wizard {...args} onClose={() => setIsWizardOpen(false)} />
             ) : (
                 <Button onClick={() => setIsWizardOpen(true)}>Open Wizard</Button>
             )}
@@ -60,22 +75,38 @@ const Template: Story<TWizardProps> = (args) => {
 
 export const LightAppWizard = Template.bind({});
 LightAppWizard.args = {
-    steps: test_steps,
     dark: false,
+    has_dark_background: true,
+    steps: test_steps,
+};
+export const LightAppWizardWithoutDarkBackground = Template.bind({});
+LightAppWizardWithoutDarkBackground.args = {
+    dark: false,
+    has_dark_background: false,
+    steps: test_steps,
 };
 export const DarkAppWizard = Template.bind({});
 DarkAppWizard.args = {
-    steps: test_steps,
     dark: true,
+    has_dark_background: true,
+    steps: test_steps,
 };
 
 export const LightWalletWizard = Template.bind({});
 LightWalletWizard.args = {
-    steps: test_steps,
     dark: false,
+    has_dark_background: true,
+    steps: test_steps,
+};
+export const LightWalletWizardWithoutDarkBackground = Template.bind({});
+LightWalletWizardWithoutDarkBackground.args = {
+    dark: false,
+    has_dark_background: false,
+    steps: test_steps,
 };
 export const DarkWalletWizard = Template.bind({});
 DarkWalletWizard.args = {
-    steps: test_steps,
     dark: true,
+    has_dark_background: true,
+    steps: test_steps,
 };

@@ -13,6 +13,15 @@ const DarkBackgroundContainer = styled('div', {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+
+    variants: {
+        visible: {
+            false: {
+                display: 'unset',
+                background: 'unset',
+            },
+        },
+    },
 });
 
 const WizardContainer = styled('div', {
@@ -23,6 +32,7 @@ const WizardContainer = styled('div', {
     borderRadius: '16px',
     display: 'flex',
     overflow: 'hidden',
+    boxShadow: '0px 0px 24px rgba(0, 0, 0, 0.08), 0px 24px 24px rgba(0, 0, 0, 0.08)',
 
     variants: {
         dark: {
@@ -188,11 +198,12 @@ export type TItemsState = {
 
 export type TWizardProps = {
     dark?: boolean;
+    has_dark_background?: boolean;
     onClose: () => void;
     steps: TItemsState[];
 };
 
-const Wizard = ({ dark, onClose, steps }: TWizardProps) => {
+const Wizard = ({ dark, has_dark_background = true, onClose, steps }: TWizardProps) => {
     const wizard_title = 'app'; // temporary stub
     const [current_step_index, setCurrentStepIndex] = React.useState<number>(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
@@ -258,7 +269,7 @@ const Wizard = ({ dark, onClose, steps }: TWizardProps) => {
     };
 
     return (
-        <DarkBackgroundContainer>
+        <DarkBackgroundContainer visible={has_dark_background}>
             <WizardContainer dark={dark}>
                 <LeftPanel dark={dark}>
                     <WizardTitle dark={dark} is_step_title>
