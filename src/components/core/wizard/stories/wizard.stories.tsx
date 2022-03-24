@@ -170,12 +170,15 @@ export default {
 } as Meta<TWizardProps>;
 
 const Template: Story<TWizardProps> = (args) => {
-    const [is_wizard_open, setIsWizardOpen] = useState<boolean>(false);
+    const [is_wizard_open, setIsWizardOpen] = useState<boolean>(true);
 
     return (
         <>
-            <Button onClick={() => setIsWizardOpen(true)}>Open Wizard</Button>
-            {is_wizard_open && <Wizard onClose={() => setIsWizardOpen(false)} {...args} />}
+            {is_wizard_open ? (
+                <Wizard onClose={() => setIsWizardOpen(false)} {...args} />
+            ) : (
+                <Button onClick={() => setIsWizardOpen(true)}>Open Wizard</Button>
+            )}
         </>
     );
 };
