@@ -176,12 +176,12 @@ export type TItemsState = {
         step_title: string;
     };
     main_content?: {
-        component: React.FC<{ [key: string]: unknown | undefined }> & React.ReactNode;
-        children?: string | (React.FC<{ [key: string]: unknown | undefined }> & React.ReactNode);
+        component: React.FC<{ [key: string]: unknown }> & React.ReactNode;
+        children?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
         passthrough_props?: string[];
         is_fullwidth?: boolean;
     };
-    right_panel_content?: string | (React.FC<{ [key: string]: unknown | undefined }> & React.ReactNode);
+    right_panel_content?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
     cancel_button_name?: string;
     submit_button_name?: string;
 };

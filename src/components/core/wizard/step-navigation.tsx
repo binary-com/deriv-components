@@ -69,6 +69,7 @@ const Bullet = styled('div', {
         dark: false,
     },
 });
+
 const Before = styled('div', {
     bottom: '20px',
     content: '',
@@ -86,6 +87,7 @@ const Before = styled('div', {
         },
     },
 });
+
 const After = styled('div', {
     borderLeft: '2px solid #FF444F',
     bottom: '20px',
