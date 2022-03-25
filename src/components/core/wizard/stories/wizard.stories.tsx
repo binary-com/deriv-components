@@ -38,22 +38,21 @@ export default {
             table: {
                 type: {
                     summary: `Array<{
-                    titles: {
-                    main_content_title: string;
-                    step_title: string;
-                };
-                main_content?: {
-                    component: React.FC<{[key: string]: unknown }> & React.ReactNode;
-                    children?: string | React.FC<{[key: string]: unknown }> & React.ReactNode;
-                    passthrough_props?: string[];
-                    is_fullwidth?: boolean;
-                };
-                right_panel_content?: string | React.FC<{[key: string]: unknown }> & React.ReactNode;
-                cancel_button_name?: string;
-                submit_button_name?: string;
-            }>`,
+                        step_title: string;
+                        toggle_switcher_buttons?: string[];
+                        main_content_header: string;
+                        subheader?: string;
+                        main_content?: React.FC<{ [key: string]: unknown }> & React.ReactNode;
+                        more_info_header?: string;
+                        more_info_subheader?: string;
+                        right_panel_upper_block?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
+                        right_panel_lower_block?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
+                        is_fullwidth?: boolean;
+                        cancel_button_name?: string;
+                        submit_button_name?: string;
+                    }>`,
                 },
-                defaultValue: { summary: '[{}]' },
+                defaultValue: { summary: '[{...}]' },
             },
         },
     },
@@ -91,22 +90,9 @@ DarkAppWizard.args = {
     has_dark_background: true,
     steps: test_steps,
 };
-
-export const LightWalletWizard = Template.bind({});
-LightWalletWizard.args = {
-    dark: false,
-    has_dark_background: true,
-    steps: test_steps,
-};
-export const LightWalletWizardWithoutDarkBackground = Template.bind({});
-LightWalletWizardWithoutDarkBackground.args = {
-    dark: false,
-    has_dark_background: false,
-    steps: test_steps,
-};
-export const DarkWalletWizard = Template.bind({});
-DarkWalletWizard.args = {
+export const DarkAppWizardWithoutDarkBackground = Template.bind({});
+DarkAppWizardWithoutDarkBackground.args = {
     dark: true,
-    has_dark_background: true,
+    has_dark_background: false,
     steps: test_steps,
 };

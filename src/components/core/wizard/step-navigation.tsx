@@ -180,7 +180,7 @@ const StepNavigation = React.memo(
                             />
                             <label>
                                 <Text as="div" type="paragraph-2" bold={active}>
-                                    {step.titles.step_title}
+                                    {step.step_title}
                                 </Text>
                             </label>
                         </StepBreadcrumb>

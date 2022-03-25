@@ -1,5 +1,7 @@
-import CloseIconLight from '@assets/svg/modal/ic-close-light.svg';
 import CloseIconDark from '@assets/svg/modal/ic-close-dark.svg';
+import CloseIconLight from '@assets/svg/modal/ic-close-light.svg';
+import BackArrowIconLight from '@assets/svg/wizard/ic-back-arrow-light.svg';
+import BackArrowIconDark from '@assets/svg/wizard/ic-back-arrow-dark.svg';
 import Button from '@core/button/button';
 import Text from '@core/text/text';
 import React from 'react';
@@ -59,30 +61,9 @@ const LeftPanel = styled('div', {
     },
 });
 
-const WizardTitle = styled('div', {
-    variants: {
-        dark: {
-            true: {
-                '*': {
-                    color: '$white',
-                },
-            },
-        },
-        is_step_title: {
-            true: {
-                'div:first-child': {
-                    marginBottom: '24px',
-                },
-            },
-        },
-        is_main_content_title: {
-            true: {
-                'div:first-child': {
-                    marginBottom: '8px',
-                },
-            },
-        },
-    },
+const MainTitleContainer = styled('div', {
+    display: 'flex',
+    gap: '10px',
 });
 
 const WizardBody = styled('div', {
@@ -129,6 +110,37 @@ const RightPanel = styled('div', {
     },
 });
 
+const RightPanelBlock = styled('div', {
+    boxSizing: 'border-box',
+
+    variants: {
+        upper: {
+            true: {
+                minHeight: '272px',
+                paddingBottom: '24px',
+                borderBottom: '1px solid #D6DADB',
+            },
+        },
+        lower: {
+            true: {
+                paddingTop: '24px',
+            },
+        },
+        dark: {
+            true: {},
+        },
+    },
+    compoundVariants: [
+        {
+            upper: true,
+            dark: true,
+            css: {
+                borderBottom: '1px solid #323738',
+            },
+        },
+    ],
+});
+
 const Footer = styled('div', {
     width: '784px',
     height: '72px',
@@ -143,6 +155,21 @@ const Footer = styled('div', {
         dark: {
             true: {
                 borderTop: '2px solid #323738',
+            },
+        },
+    },
+});
+
+const GoBackArrow = styled('div', {
+    marginTop: '14px',
+    width: '12px',
+    height: '8px',
+    background: `url(${BackArrowIconDark}) no-repeat center`,
+
+    variants: {
+        dark: {
+            true: {
+                background: `url(${BackArrowIconLight}) no-repeat center`,
             },
         },
     },
@@ -181,17 +208,16 @@ const CloseIcon = styled('div', {
 });
 
 export type TItemsState = {
-    titles: {
-        main_content_title: string;
-        step_title: string;
-    };
-    main_content?: {
-        component: React.FC<{ [key: string]: unknown }> & React.ReactNode;
-        children?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
-        passthrough_props?: string[];
-        is_fullwidth?: boolean;
-    };
-    right_panel_content?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
+    step_title: string;
+    toggle_switcher_buttons?: string[];
+    main_content_header: string;
+    subheader?: string;
+    main_content?: React.FC<{ [key: string]: unknown }> & React.ReactNode;
+    more_info_header?: string;
+    more_info_subheader?: string;
+    right_panel_upper_block?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
+    right_panel_lower_block?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
+    is_fullwidth?: boolean;
     cancel_button_name?: string;
     submit_button_name?: string;
 };
@@ -208,6 +234,7 @@ const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWiza
     const [current_step_index, setCurrentStepIndex] = React.useState<number>(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
     const [disabled_steps_indexes, setDisabledStepsIndexes] = React.useState<number[]>([]);
+    const [is_more_info_shown, setIsMoreInfoShown] = React.useState<boolean>(false);
     const [steps_values, setStepsValues] = React.useState<{ [key: string]: unknown }>({});
     const next_enabled_step_index = steps
         .map((_step, idx) => idx)
@@ -242,34 +269,82 @@ const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWiza
         }
     };
 
-    const BodyComponent = steps[current_step_index].main_content?.component;
+    const BodyComponent = steps[current_step_index].main_content;
 
     const getBody = () => {
         const handleClick = (values?: { [key: string]: unknown }) => {
             setCompleteStepsIndexes([...complete_steps_indexes, current_step_index]);
             setStepsValues({ ...steps_values, [current_step_index]: values });
-            // temporary condition to test disabling of the next step
-            if (steps[current_step_index].main_content?.children === 'Submit & Disable next step') {
-                setDisabledStepsIndexes([...disabled_steps_indexes, current_step_index + 1]);
-            }
         };
 
-        return BodyComponent ? (
-            <BodyComponent onSubmit={handleClick} dark={dark} values={steps_values[current_step_index]}>
-                {steps[current_step_index].main_content?.children}
-            </BodyComponent>
-        ) : null;
+        return (
+            <>
+                <MainTitleContainer>
+                    {is_more_info_shown ? (
+                        <GoBackArrow dark={dark as boolean} onClick={() => setIsMoreInfoShown(false)} />
+                    ) : null}
+                    <div>
+                        <Text
+                            as="div"
+                            type="subtitle-1"
+                            bold
+                            css={{ marginBottom: '8px', color: dark ? '$white' : '#333333' }}
+                        >
+                            {is_more_info_shown
+                                ? steps[current_step_index].more_info_header
+                                : steps[current_step_index].main_content_header}
+                        </Text>
+                        <Text
+                            as="div"
+                            type="paragraph-1"
+                            bold={false}
+                            css={{ color: dark ? '#C2C2C2' : '#333333', marginBottom: '24px' }}
+                        >
+                            {is_more_info_shown
+                                ? steps[current_step_index].more_info_subheader
+                                : steps[current_step_index].subheader}
+                        </Text>
+                    </div>
+                </MainTitleContainer>
+                {BodyComponent && (
+                    <BodyComponent
+                        onSubmit={handleClick}
+                        setIsNextStepDisabled={(should_disable_next_step: boolean) => {
+                            if (should_disable_next_step) {
+                                setDisabledStepsIndexes([...disabled_steps_indexes, current_step_index + 1]);
+                                // clear next step data in case it was completed previously:
+                                setCompleteStepsIndexes(
+                                    complete_steps_indexes.filter((s) => s !== current_step_index + 1),
+                                );
+                                setStepsValues({ ...steps_values, [current_step_index + 1]: undefined });
+                            } else {
+                                setDisabledStepsIndexes(
+                                    disabled_steps_indexes.filter((s) => s !== current_step_index + 1),
+                                );
+                            }
+                        }}
+                        dark={dark}
+                        values={steps_values[current_step_index]}
+                        setIsMoreInfoShown={setIsMoreInfoShown}
+                        is_more_info_shown={is_more_info_shown}
+                    />
+                )}
+            </>
+        );
     };
 
     return (
         <DarkBackgroundContainer visible={has_dark_background}>
             <WizardContainer dark={dark}>
                 <LeftPanel dark={dark}>
-                    <WizardTitle dark={dark} is_step_title>
-                        <Text as="div" type="subtitle-2" bold>
-                            Let's get you a new {wizard_title}.
-                        </Text>
-                    </WizardTitle>
+                    <Text
+                        as="div"
+                        type="subtitle-2"
+                        bold
+                        css={{ marginBottom: '24px', color: dark ? '$white' : '#333333' }}
+                    >
+                        Let's get you a new {wizard_title}.
+                    </Text>
                     <StepNavigation
                         steps={steps}
                         current_step_index={current_step_index}
@@ -281,13 +356,20 @@ const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWiza
                 </LeftPanel>
                 <WizardBody>
                     <ContentContainer>
-                        {steps[current_step_index].main_content?.is_fullwidth ? (
+                        {steps[current_step_index].is_fullwidth ? (
                             getBody()
                         ) : (
                             <FixedWidthContainer>{getBody()}</FixedWidthContainer>
                         )}
-                        {steps[current_step_index].right_panel_content && (
-                            <RightPanel dark={dark}>{steps[current_step_index].right_panel_content}</RightPanel>
+                        {steps[current_step_index].right_panel_upper_block && (
+                            <RightPanel dark={dark}>
+                                <RightPanelBlock upper dark={dark}>
+                                    {steps[current_step_index].right_panel_upper_block}
+                                </RightPanelBlock>
+                                <RightPanelBlock lower>
+                                    {steps[current_step_index].right_panel_lower_block}
+                                </RightPanelBlock>
+                            </RightPanel>
                         )}
                     </ContentContainer>
                     <Footer dark={dark}>

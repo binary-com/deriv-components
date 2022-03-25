@@ -8,211 +8,70 @@ import {
     StepCreateWalletMain,
     StepPersonalDetailsMain,
     StepTermsOfUseMain,
-    TestStepContent,
 } from './steps-content';
-
-type TStepsData = {
-    [key: string]: {
-        titles: {
-            main_content_title: string;
-            step_title?: string;
-        };
-        main_content?: {
-            component?: React.FC<{ [key: string]: unknown }> & React.ReactNode;
-            children?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
-            passthrough_props?: string[];
-            is_fullwidth?: boolean;
-        };
-        additional_steps?: string[];
-        right_panel_content?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
-        cancel_button_name?: string;
-        submit_button_name?: string;
-    };
-};
-
-// will apply this object later:
-export const add_app_before_wallet_steps: TStepsData = {
-    product: {
-        titles: {
-            main_content_title: 'Choose a product',
-            step_title: 'Product',
-        },
-        main_content: {
-            component: StepChooseProductMain,
-            children: 'Submit',
-        },
-        right_panel_content: 'Some info',
-    },
-    app: {
-        titles: {
-            main_content_title: 'Add an app',
-            step_title: 'App',
-        },
-        main_content: {
-            component: StepAddAppMain,
-            children: 'Submit',
-        },
-        right_panel_content: 'Some info',
-    },
-    wallet: {
-        titles: {
-            main_content_title: 'Create a wallet',
-            step_title: 'Wallet',
-        },
-        main_content: {
-            component: StepCreateWalletMain,
-            children: 'Submit & Disable next step',
-        },
-        additional_steps: ['wallets_options'],
-        right_panel_content: 'Some info',
-    },
-    currency: {
-        titles: {
-            main_content_title: "Choose your wallet's currency",
-            step_title: 'Currency',
-        },
-        main_content: {
-            component: StepChooseCurrencyMain,
-            children: 'Submit',
-        },
-        right_panel_content: 'Some info',
-    },
-    personal_details: {
-        titles: {
-            main_content_title: 'Personal details',
-            step_title: 'Personal details',
-        },
-        main_content: {
-            component: StepPersonalDetailsMain,
-            children: 'Submit',
-        },
-        right_panel_content: 'Some info',
-    },
-    address: {
-        titles: {
-            main_content_title: 'Address information',
-            step_title: 'Address',
-        },
-        main_content: {
-            component: StepAddressInfoMain,
-            children: 'Submit',
-        },
-        right_panel_content: 'Some info',
-    },
-    terms_of_use: {
-        titles: {
-            main_content_title: 'Terms of use',
-            step_title: 'Terms of use',
-        },
-        main_content: {
-            component: StepTermsOfUseMain,
-            children: 'Submit',
-        },
-        right_panel_content: 'Some info',
-    },
-    complete: {
-        titles: {
-            main_content_title: 'Completed',
-            step_title: 'Complete',
-        },
-        main_content: {
-            component: StepComplete,
-            children: 'Submit',
-            is_fullwidth: true,
-        },
-        cancel_button_name: 'Maybe later',
-        submit_button_name: 'Deposit',
-    },
-};
 
 export const test_steps: TItemsState[] = [
     {
-        titles: {
-            main_content_title: 'Choose a product',
-            step_title: 'Product',
-        },
-        main_content: {
-            component: TestStepContent,
-            children: 'Submit',
-        },
-        right_panel_content: 'Some info',
+        step_title: 'Product',
+        main_content_header: 'Choose a product',
+        subheader: 'Choose a product to start.',
+        main_content: StepChooseProductMain,
+        right_panel_upper_block: 'Upper block test info',
+        right_panel_lower_block: 'Lower block test info',
     },
     {
-        titles: {
-            main_content_title: 'Add an app',
-            step_title: 'App',
-        },
-        main_content: {
-            component: StepAddAppMain,
-            children: 'Submit',
-        },
-        right_panel_content: 'Some info',
+        step_title: 'App',
+        main_content_header: 'Add an app',
+        subheader: 'Choose a product to start.',
+        toggle_switcher_buttons: ['real', 'demo'],
+        main_content: StepAddAppMain,
+        right_panel_upper_block: 'Upper block test info',
+        right_panel_lower_block: 'Lower block test info',
     },
     {
-        titles: {
-            main_content_title: 'Create a wallet',
-            step_title: 'Wallet',
-        },
-        main_content: {
-            component: StepCreateWalletMain,
-            children: 'Submit & Disable next step',
-        },
-        right_panel_content: 'Some info',
+        step_title: 'Wallet',
+        main_content_header: 'Create a wallet',
+        subheader: 'Create a wallet that can be linked to your choosen app.',
+        main_content: StepCreateWalletMain,
+        more_info_header: 'Fiat currency wallets',
+        more_info_subheader: 'These are all the options you get when choosing fiat wallet.',
+        right_panel_upper_block: 'Upper block test info',
+        right_panel_lower_block: 'Lower block test info',
     },
     {
-        titles: {
-            main_content_title: "Choose your wallet's currency",
-            step_title: 'Currency',
-        },
-        main_content: {
-            component: StepChooseCurrencyMain,
-            children: 'Submit',
-        },
-        right_panel_content: 'Some info',
+        step_title: 'Currency',
+        main_content_header: "Choose your wallet's currency",
+        subheader: 'Fiat currencies.',
+        main_content: StepChooseCurrencyMain,
+        right_panel_upper_block: 'Upper block test info',
+        right_panel_lower_block: 'Lower block test info',
     },
     {
-        titles: {
-            main_content_title: 'Personal details',
-            step_title: 'Personal details',
-        },
-        main_content: {
-            component: StepPersonalDetailsMain,
-            children: 'Submit',
-        },
-        right_panel_content: 'Some info',
+        step_title: 'Personal details',
+        main_content_header: 'Personal details',
+        main_content: StepPersonalDetailsMain,
+        right_panel_upper_block: 'Upper block test info',
+        right_panel_lower_block: 'Lower block test info',
     },
     {
-        titles: {
-            main_content_title: 'Address information',
-            step_title: 'Address',
-        },
-        main_content: {
-            component: StepAddressInfoMain,
-            children: 'Submit',
-        },
-        right_panel_content: 'Some info',
+        step_title: 'Address',
+        main_content_header: 'Address information',
+        main_content: StepAddressInfoMain,
+        right_panel_upper_block: 'Upper block test info',
+        right_panel_lower_block: 'Lower block test info',
     },
     {
-        titles: {
-            main_content_title: 'Terms of use',
-            step_title: 'Terms of use',
-        },
-        main_content: {
-            component: StepTermsOfUseMain,
-            children: 'Submit',
-        },
-        right_panel_content: 'Some info',
+        step_title: 'Terms of use',
+        main_content_header: 'Terms of use',
+        main_content: StepTermsOfUseMain,
+        right_panel_upper_block: 'Upper block test info',
+        right_panel_lower_block: 'Lower block test info',
     },
     {
-        titles: {
-            main_content_title: 'Completed',
-            step_title: 'Complete',
-        },
-        main_content: {
-            component: StepComplete,
-            children: 'Submit',
-            is_fullwidth: true,
-        },
+        step_title: 'Complete',
+        main_content_header: 'Completed',
+        main_content: StepComplete,
+        is_fullwidth: true,
         cancel_button_name: 'Maybe later',
         submit_button_name: 'Deposit',
     },
