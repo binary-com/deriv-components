@@ -67,24 +67,13 @@ const ProductCardContentWrapper = styled('div', {
 export type TProductType = 'cfds' | 'multipliers' | 'options';
 type TProductCard = {
     active: boolean;
+    description: string;
     onProductSelect: (selected_product: 'cfds' | 'multipliers' | 'options') => void;
+    title: string;
     type: TProductType;
 };
 
-const ProductCard = ({ active, onProductSelect, type }: TProductCard) => {
-    let title, description;
-
-    if (type === 'cfds') {
-        title = 'CFDs';
-        description = 'Trade with leverage and tight spreads for better returns on successful trades.';
-    } else if (type === 'multipliers') {
-        title = 'Multipliers';
-        description = 'Combine the upside of CFDs with the simplicity of options.';
-    } else if (type === 'options') {
-        title = 'Options';
-        description = "Earn fixed payouts by predicting an asset's price movement.";
-    }
-
+const ProductCard = ({ active, description, onProductSelect, title, type }: TProductCard) => {
     const handleClick = () => {
         onProductSelect(type);
     };

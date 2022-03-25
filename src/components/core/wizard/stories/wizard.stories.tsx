@@ -26,8 +26,8 @@ export default {
                 defaultValue: { summary: true },
             },
         },
-        onClose: {
-            description: 'Required. A callback used to inform a parent that the Wizard has been closed.',
+        toggleWizard: {
+            description: 'Required. A callback used to inform a parent that the Wizard has been closed or open.',
             table: {
                 type: { summary: '() => void' },
             },
@@ -65,7 +65,7 @@ const Template: Story<TWizardProps> = (args) => {
     return (
         <>
             {is_wizard_open ? (
-                <Wizard {...args} onClose={() => setIsWizardOpen(false)} />
+                <Wizard {...args} toggleWizard={() => setIsWizardOpen(false)} />
             ) : (
                 <Button onClick={() => setIsWizardOpen(true)}>Open Wizard</Button>
             )}

@@ -199,11 +199,11 @@ export type TItemsState = {
 export type TWizardProps = {
     dark?: boolean;
     has_dark_background?: boolean;
-    onClose: () => void;
+    toggleWizard: () => void;
     steps: TItemsState[];
 };
 
-const Wizard = ({ dark, has_dark_background = true, onClose, steps }: TWizardProps) => {
+const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWizardProps) => {
     const wizard_title = 'app'; // temporary stub
     const [current_step_index, setCurrentStepIndex] = React.useState<number>(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
@@ -308,7 +308,7 @@ const Wizard = ({ dark, has_dark_background = true, onClose, steps }: TWizardPro
                         </Button>
                     </Footer>
                 </WizardBody>
-                <CloseIcon dark={dark} onClick={onClose} />
+                <CloseIcon dark={dark} onClick={toggleWizard} />
             </WizardContainer>
         </DarkBackgroundContainer>
     );

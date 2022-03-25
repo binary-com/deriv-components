@@ -2,7 +2,7 @@ import React from 'react';
 import { styled } from 'Styles/stitches.config';
 import Button from '../../button/button';
 import Text from '../../text/text';
-import ProductCard, { TProductType } from './components/ProductCard';
+import ProductCard, { TProductType } from './components/product-card';
 
 const ProductsContainer = styled('div', {
     display: 'flex',
@@ -12,6 +12,20 @@ const ProductsContainer = styled('div', {
 
 export const StepChooseProductMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit }) => {
     const [selected_product, setSelectedProduct] = React.useState<TProductType>();
+    const products = {
+        cfds: {
+            title: 'CFDs',
+            description: 'Trade with leverage and tight spreads for better returns on successful trades.',
+        },
+        multipliers: {
+            title: 'Multipliers',
+            description: 'Combine the upside of CFDs with the simplicity of options.',
+        },
+        options: {
+            title: 'Options',
+            description: "Earn fixed payouts by predicting an asset's price movement.",
+        },
+    };
 
     const handleSelect = (_selected_product: TProductType) => {
         setSelectedProduct(_selected_product);
@@ -32,11 +46,13 @@ export const StepChooseProductMain: React.FC<{ [key: string]: unknown }> = ({ da
                 Choose a product to start.
             </Text>
             <ProductsContainer>
-                {['cfds', 'multipliers', 'options'].map((product, idx) => (
+                {Object.keys(products).map((product, idx) => (
                     <ProductCard
-                        active={product === selected_product}
-                        onProductSelect={handleSelect}
                         key={idx + 1}
+                        active={product === selected_product}
+                        description={products[product as keyof typeof products].description}
+                        onProductSelect={handleSelect}
+                        title={products[product as keyof typeof products].title}
                         type={product as TProductType}
                     />
                 ))}
