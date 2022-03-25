@@ -8,7 +8,6 @@ import {
     StepCreateWalletMain,
     StepPersonalDetailsMain,
     StepTermsOfUseMain,
-    StepWalletsOptions,
     TestStepContent,
 } from './steps-content';
 
@@ -65,16 +64,6 @@ export const add_app_before_wallet_steps: TStepsData = {
             children: 'Submit & Disable next step',
         },
         additional_steps: ['wallets_options'],
-        right_panel_content: 'Some info',
-    },
-    wallets_options: {
-        titles: {
-            main_content_title: 'Fiat currency wallets',
-        },
-        main_content: {
-            component: StepWalletsOptions,
-            children: 'Submit',
-        },
         right_panel_content: 'Some info',
     },
     currency: {

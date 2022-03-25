@@ -10,8 +10,7 @@ const ProductsContainer = styled('div', {
     gap: '16px',
 });
 
-export const StepChooseProductMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit }) => {
-    const [selected_product, setSelectedProduct] = React.useState<TProductType>();
+export const StepChooseProductMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, values }) => {
     const products = {
         cfds: {
             title: 'CFDs',
@@ -27,9 +26,8 @@ export const StepChooseProductMain: React.FC<{ [key: string]: unknown }> = ({ da
         },
     };
 
-    const handleSelect = (_selected_product: TProductType) => {
-        setSelectedProduct(_selected_product);
-        (onSubmit as (values?: { [key: string]: unknown }) => void)({ _selected_product });
+    const handleSelect = (selected_product: TProductType) => {
+        (onSubmit as (values?: { [key: string]: unknown }) => void)({ selected_product });
     };
 
     return (
@@ -49,7 +47,7 @@ export const StepChooseProductMain: React.FC<{ [key: string]: unknown }> = ({ da
                 {Object.keys(products).map((product, idx) => (
                     <ProductCard
                         key={idx + 1}
-                        active={product === selected_product}
+                        active={product === (values as { [key: string]: unknown })?.selected_product}
                         description={products[product as keyof typeof products].description}
                         onProductSelect={handleSelect}
                         title={products[product as keyof typeof products].title}
@@ -61,7 +59,7 @@ export const StepChooseProductMain: React.FC<{ [key: string]: unknown }> = ({ da
     );
 };
 
-export const StepAddAppMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children }) => {
+export const StepAddAppMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children, values }) => {
     return (
         <>
             <Text as="div" type="subtitle-1" bold>
@@ -82,7 +80,7 @@ export const StepAddAppMain: React.FC<{ [key: string]: unknown }> = ({ dark, onS
     );
 };
 
-export const StepCreateWalletMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children }) => {
+export const StepCreateWalletMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children, values }) => {
     return (
         <>
             <Text as="div" type="subtitle-1" bold>
@@ -103,16 +101,11 @@ export const StepCreateWalletMain: React.FC<{ [key: string]: unknown }> = ({ dar
     );
 };
 
-export const StepWalletsOptions: React.FC<{ [key: string]: unknown }> = ({
-    dark,
-    onSubmit,
-    children,
-    currency_type = 'fiat',
-}) => {
+export const InfoFiatCurrencyWallets: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children, values }) => {
     return (
         <>
             <Text as="div" type="subtitle-1" bold>
-                Wallet Options
+                Fiat currency wallets
             </Text>
             <div>
                 <Text
@@ -121,7 +114,7 @@ export const StepWalletsOptions: React.FC<{ [key: string]: unknown }> = ({
                     bold={false}
                     css={{ color: dark ? '#C2C2C2' : '#333333', marginBottom: '24px' }}
                 >
-                    These are all the options you get when choosing {currency_type} wallet.
+                    These are all the options you get when choosing fiat wallet.
                 </Text>
                 <Button onClick={onSubmit as React.MouseEventHandler<HTMLButtonElement>}>{children}</Button>
             </div>
@@ -129,7 +122,7 @@ export const StepWalletsOptions: React.FC<{ [key: string]: unknown }> = ({
     );
 };
 
-export const StepChooseCurrencyMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children }) => {
+export const StepChooseCurrencyMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children, values }) => {
     return (
         <>
             <Text as="div" type="subtitle-1" bold>
@@ -145,7 +138,7 @@ export const StepChooseCurrencyMain: React.FC<{ [key: string]: unknown }> = ({ d
     );
 };
 
-export const StepPersonalDetailsMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children }) => {
+export const StepPersonalDetailsMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children, values }) => {
     return (
         <>
             <Text as="div" type="subtitle-1" bold>
@@ -167,7 +160,7 @@ export const StepPersonalDetailsMain: React.FC<{ [key: string]: unknown }> = ({ 
     );
 };
 
-export const StepAddressInfoMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children }) => {
+export const StepAddressInfoMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children, values }) => {
     return (
         <>
             <Text as="div" type="subtitle-1" bold>
@@ -189,7 +182,7 @@ export const StepAddressInfoMain: React.FC<{ [key: string]: unknown }> = ({ dark
     );
 };
 
-export const StepTermsOfUseMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children }) => {
+export const StepTermsOfUseMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children, values }) => {
     return (
         <>
             <Text as="div" type="subtitle-1" bold>
@@ -205,7 +198,7 @@ export const StepTermsOfUseMain: React.FC<{ [key: string]: unknown }> = ({ dark,
     );
 };
 
-export const StepComplete: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children }) => {
+export const StepComplete: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children, values }) => {
     return (
         <>
             <Text as="div" type="subtitle-1" bold>
@@ -229,10 +222,12 @@ export const StepComplete: React.FC<{ [key: string]: unknown }> = ({ dark, onSub
 type TTestStepContentProps = {
     onSubmit: (values?: { [key: string]: unknown }) => void;
     dark?: boolean;
+    values?: { [key: string]: unknown };
 };
 
 export const TestStepContent: React.FC<TTestStepContentProps | { [key: string]: unknown }> = ({
     dark,
     onSubmit,
     children,
-}) => <StepChooseProductMain onSubmit={onSubmit} />;
+    values,
+}) => <StepChooseProductMain onSubmit={onSubmit} values={values} />;

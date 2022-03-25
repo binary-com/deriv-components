@@ -208,6 +208,7 @@ const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWiza
     const [current_step_index, setCurrentStepIndex] = React.useState<number>(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
     const [disabled_steps_indexes, setDisabledStepsIndexes] = React.useState<number[]>([]);
+    const [steps_values, setStepsValues] = React.useState<{ [key: string]: unknown }>({});
     const next_enabled_step_index = steps
         .map((_step, idx) => idx)
         .find((i) => i > current_step_index && disabled_steps_indexes.every((index) => i !== index));
@@ -246,6 +247,7 @@ const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWiza
     const getBody = () => {
         const handleClick = (values?: { [key: string]: unknown }) => {
             setCompleteStepsIndexes([...complete_steps_indexes, current_step_index]);
+            setStepsValues({ ...steps_values, [current_step_index]: values });
             // temporary condition to test disabling of the next step
             if (steps[current_step_index].main_content?.children === 'Submit & Disable next step') {
                 setDisabledStepsIndexes([...disabled_steps_indexes, current_step_index + 1]);
@@ -253,7 +255,7 @@ const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWiza
         };
 
         return BodyComponent ? (
-            <BodyComponent onSubmit={handleClick} dark={dark}>
+            <BodyComponent onSubmit={handleClick} dark={dark} values={steps_values[current_step_index]}>
                 {steps[current_step_index].main_content?.children}
             </BodyComponent>
         ) : null;
