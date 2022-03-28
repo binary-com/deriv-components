@@ -114,15 +114,13 @@ const RightPanelBlock = styled('div', {
     boxSizing: 'border-box',
 
     variants: {
-        upper: {
-            true: {
+        location: {
+            upper: {
                 minHeight: '272px',
                 paddingBottom: '24px',
                 borderBottom: '1px solid #D6DADB',
             },
-        },
-        lower: {
-            true: {
+            lower: {
                 paddingTop: '24px',
             },
         },
@@ -132,7 +130,7 @@ const RightPanelBlock = styled('div', {
     },
     compoundVariants: [
         {
-            upper: true,
+            location: 'upper',
             dark: true,
             css: {
                 borderBottom: '1px solid #323738',
@@ -165,6 +163,10 @@ const GoBackArrow = styled('div', {
     width: '12px',
     height: '8px',
     background: `url(${BackArrowIconDark}) no-repeat center`,
+
+    '&:hover': {
+        cursor: 'pointer',
+    },
 
     variants: {
         dark: {
@@ -207,7 +209,7 @@ const CloseIcon = styled('div', {
     },
 });
 
-export type TItemsState = {
+export type ItemsState = {
     step_title: string;
     toggle_switcher_buttons?: string[];
     main_content_header: string;
@@ -222,19 +224,25 @@ export type TItemsState = {
     submit_button_name?: string;
 };
 
-export type TWizardProps = {
+export type DesktopWizardProps = {
     dark?: boolean;
     has_dark_background?: boolean;
     toggleWizard: () => void;
-    steps: TItemsState[];
+    steps: ItemsState[];
+    wizard_title: string;
 };
 
-const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWizardProps) => {
-    const wizard_title = 'app'; // temporary stub
-    const [current_step_index, setCurrentStepIndex] = React.useState<number>(0);
+const DesktopWizard = ({
+    dark,
+    has_dark_background = true,
+    toggleWizard,
+    steps,
+    wizard_title = "Let's get you a new app.",
+}: DesktopWizardProps) => {
+    const [current_step_index, setCurrentStepIndex] = React.useState(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
     const [disabled_steps_indexes, setDisabledStepsIndexes] = React.useState<number[]>([]);
-    const [is_more_info_shown, setIsMoreInfoShown] = React.useState<boolean>(false);
+    const [is_more_info_shown, setIsMoreInfoShown] = React.useState(false);
     const [steps_values, setStepsValues] = React.useState<{ [key: string]: unknown }>({});
     const next_enabled_step_index = steps
         .map((_step, idx) => idx)
@@ -272,7 +280,7 @@ const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWiza
     const BodyComponent = steps[current_step_index].main_content;
 
     const getBody = () => {
-        const handleClick = (values?: { [key: string]: unknown }) => {
+        const handleDataSubmit = (values?: { [key: string]: unknown }) => {
             setCompleteStepsIndexes([...complete_steps_indexes, current_step_index]);
             setStepsValues({ ...steps_values, [current_step_index]: values });
         };
@@ -308,7 +316,7 @@ const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWiza
                 </MainTitleContainer>
                 {BodyComponent && (
                     <BodyComponent
-                        onSubmit={handleClick}
+                        onSubmit={handleDataSubmit}
                         setIsNextStepDisabled={(should_disable_next_step: boolean) => {
                             if (should_disable_next_step) {
                                 setDisabledStepsIndexes([...disabled_steps_indexes, current_step_index + 1]);
@@ -343,7 +351,7 @@ const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWiza
                         bold
                         css={{ marginBottom: '24px', color: dark ? '$white' : '#333333' }}
                     >
-                        Let's get you a new {wizard_title}.
+                        {wizard_title}
                     </Text>
                     <StepNavigation
                         steps={steps}
@@ -363,10 +371,10 @@ const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWiza
                         )}
                         {steps[current_step_index].right_panel_upper_block && (
                             <RightPanel dark={dark}>
-                                <RightPanelBlock upper dark={dark}>
+                                <RightPanelBlock location="upper" dark={dark}>
                                     {steps[current_step_index].right_panel_upper_block}
                                 </RightPanelBlock>
-                                <RightPanelBlock lower>
+                                <RightPanelBlock location="lower">
                                     {steps[current_step_index].right_panel_lower_block}
                                 </RightPanelBlock>
                             </RightPanel>
@@ -398,4 +406,4 @@ const Wizard = ({ dark, has_dark_background = true, toggleWizard, steps }: TWiza
     );
 };
 
-export default Wizard;
+export default DesktopWizard;

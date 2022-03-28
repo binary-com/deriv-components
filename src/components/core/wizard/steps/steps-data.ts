@@ -1,4 +1,4 @@
-import { TItemsState } from '../wizard';
+import { ItemsState } from '../desktop-wizard';
 import {
     StepAddAppMain,
     StepAddressInfoMain,
@@ -10,7 +10,7 @@ import {
     StepTermsOfUseMain,
 } from './steps-content';
 
-export const test_steps: TItemsState[] = [
+export const test_steps: ItemsState[] = [
     {
         step_title: 'Product',
         main_content_header: 'Choose a product',

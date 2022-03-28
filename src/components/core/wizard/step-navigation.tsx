@@ -2,7 +2,7 @@ import CircularCheckIcon from '@assets/svg/circular-check-icon.svg';
 import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
-import { TItemsState } from './wizard';
+import { ItemsState } from './desktop-wizard';
 
 const Bullet = styled('div', {
     width: '16px',
@@ -141,8 +141,8 @@ const StepBreadcrumb = styled('div', {
     ],
 });
 
-type TStepNavigationProps = {
-    steps: TItemsState[];
+type StepNavigationProps = {
+    steps: ItemsState[];
     current_step_index: number;
     complete_steps_indexes?: number[];
     disabled_steps_indexes?: number[];
@@ -158,7 +158,7 @@ const StepNavigation = React.memo(
         disabled_steps_indexes,
         dark,
         onClick,
-    }: TStepNavigationProps) => {
+    }: StepNavigationProps) => {
         return (
             <div style={{ position: 'relative' }}>
                 <Before
@@ -178,11 +178,9 @@ const StepNavigation = React.memo(
                                 disabled={disabled}
                                 dark={dark}
                             />
-                            <label>
-                                <Text as="div" type="paragraph-2" bold={active}>
-                                    {step.step_title}
-                                </Text>
-                            </label>
+                            <Text as="label" type="paragraph-2" bold={active}>
+                                {step.step_title}
+                            </Text>
                         </StepBreadcrumb>
                     );
                 })}

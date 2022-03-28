@@ -17,6 +17,10 @@ const ProductCardContainer = styled('div', {
     padding: '16px',
     boxSizing: 'border-box',
 
+    '&:hover': {
+        cursor: 'pointer',
+    },
+
     variants: {
         type: {
             cfds: {
@@ -64,16 +68,16 @@ const ProductCardContentWrapper = styled('div', {
     gap: '16px',
 });
 
-export type TProductType = 'cfds' | 'multipliers' | 'options';
-type TProductCard = {
+export type ProductType = 'cfds' | 'multipliers' | 'options';
+type ProductCardProps = {
     active: boolean;
     description: string;
-    onProductSelect: (selected_product: 'cfds' | 'multipliers' | 'options') => void;
+    onProductSelect: (selected_product: ProductType) => void;
     title: string;
-    type: TProductType;
+    type: ProductType;
 };
 
-const ProductCard = ({ active, description, onProductSelect, title, type }: TProductCard) => {
+const ProductCard = ({ active, description, onProductSelect, title, type }: ProductCardProps) => {
     const handleClick = () => {
         onProductSelect(type);
     };

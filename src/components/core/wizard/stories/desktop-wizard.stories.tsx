@@ -1,12 +1,12 @@
 import { Meta, Story } from '@storybook/react';
-import Wizard, { TWizardProps } from '../wizard';
+import DesktopWizard, { DesktopWizardProps } from '../desktop-wizard';
 import Button from '../../button/button';
 import { useState } from 'react';
 import { test_steps } from '../steps/steps-data';
 
 export default {
-    title: 'Wizard',
-    component: Wizard,
+    title: 'DesktopWizard',
+    component: DesktopWizard,
     parameters: { controls: { sort: 'alpha' } },
     argTypes: {
         dark: {
@@ -27,7 +27,7 @@ export default {
             },
         },
         toggleWizard: {
-            description: 'Required. A callback used to inform a parent that the Wizard has been closed or open.',
+            description: 'Required. A callback used to inform a parent that the wizard has been closed or open.',
             table: {
                 type: { summary: '() => void' },
             },
@@ -55,44 +55,64 @@ export default {
                 defaultValue: { summary: '[{...}]' },
             },
         },
+        wizard_title: {
+            description: 'Optional. Sets the wizard title.',
+            defaultValue: "Let's get you a new app.",
+            table: {
+                type: { summary: 'string | undefined' },
+                defaultValue: { summary: "Let's get you a new app." },
+            },
+            control: {
+                type: 'select',
+                options: [
+                    "Let's get you a new app.",
+                    "Let's get you a new wallet.",
+                    "Let's get you a new Deriv MT5 Synthetics app in new region.",
+                ],
+            },
+        },
     },
-} as Meta<TWizardProps>;
+} as Meta<DesktopWizardProps>;
 
-const Template: Story<TWizardProps> = (args) => {
-    const [is_wizard_open, setIsWizardOpen] = useState<boolean>(true);
+const Template: Story<DesktopWizardProps> = (args) => {
+    const [is_wizard_open, setIsWizardOpen] = useState(true);
 
     return (
         <>
             {is_wizard_open ? (
-                <Wizard {...args} toggleWizard={() => setIsWizardOpen(false)} />
+                <DesktopWizard {...args} toggleWizard={() => setIsWizardOpen(false)} />
             ) : (
-                <Button onClick={() => setIsWizardOpen(true)}>Open Wizard</Button>
+                <Button onClick={() => setIsWizardOpen(true)}>Open Desktop Wizard</Button>
             )}
         </>
     );
 };
 
-export const LightAppWizard = Template.bind({});
-LightAppWizard.args = {
+export const LightDesktopAppWizard = Template.bind({});
+LightDesktopAppWizard.args = {
     dark: false,
     has_dark_background: true,
     steps: test_steps,
+    wizard_title: "Let's get you a new app.",
 };
-export const LightAppWizardWithoutDarkBackground = Template.bind({});
-LightAppWizardWithoutDarkBackground.args = {
+export const LightDesktopAppWizardWithoutDarkBackground = Template.bind({});
+LightDesktopAppWizardWithoutDarkBackground.args = {
     dark: false,
     has_dark_background: false,
     steps: test_steps,
+    wizard_title: "Let's get you a new app.",
 };
-export const DarkAppWizard = Template.bind({});
-DarkAppWizard.args = {
+export const DarkDesktopAppWizard = Template.bind({});
+DarkDesktopAppWizard.args = {
     dark: true,
     has_dark_background: true,
     steps: test_steps,
+    wizard_title: "Let's get you a new app.",
 };
-export const DarkAppWizardWithoutDarkBackground = Template.bind({});
-DarkAppWizardWithoutDarkBackground.args = {
+export const DarkDesktopAppWizardWithoutDarkBackground = Template.bind({});
+DarkDesktopAppWizardWithoutDarkBackground.args = {
     dark: true,
     has_dark_background: false,
     steps: test_steps,
+    wizard_title: "Let's get you a new app.",
 };

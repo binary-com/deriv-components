@@ -2,9 +2,9 @@ import React from 'react';
 import { styled } from 'Styles/stitches.config';
 import Button from '../../button/button';
 import Text from '../../text/text';
-import ProductCard, { TProductType } from './components/product-card';
+import ProductCard, { ProductType } from './components/product-card';
 
-export type TBodyComponentProps = {
+export type BodyComponentProps = {
     dark?: boolean;
     is_more_info_shown?: boolean;
     onSubmit: (values?: { [key: string]: unknown }) => void;
@@ -19,63 +19,65 @@ const ProductsContainer = styled('div', {
     gap: '16px',
 });
 
-export const StepChooseProductMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, values }) => {
-    const products = {
-        cfds: {
+export const StepChooseProductMain = ({ dark, onSubmit, values }: { [key: string]: unknown }) => {
+    const products = [
+        {
             title: 'CFDs',
             description: 'Trade with leverage and tight spreads for better returns on successful trades.',
         },
-        multipliers: {
+        {
             title: 'Multipliers',
             description: 'Combine the upside of CFDs with the simplicity of options.',
         },
-        options: {
+        {
             title: 'Options',
             description: "Earn fixed payouts by predicting an asset's price movement.",
         },
-    };
+    ];
 
-    const handleSelect = (selected_product: TProductType) => {
+    const handleSelect = (selected_product: ProductType) => {
         (onSubmit as (values?: { [key: string]: unknown }) => void)({ selected_product });
     };
 
     return (
         <ProductsContainer>
-            {Object.keys(products).map((product, idx) => (
+            {products.map(({ title, description }, idx) => (
                 <ProductCard
                     key={idx + 1}
-                    active={product === (values as { [key: string]: unknown })?.selected_product}
-                    description={products[product as keyof typeof products].description}
+                    active={title.toLowerCase() === (values as { [key: string]: unknown })?.selected_product}
+                    description={description}
                     onProductSelect={handleSelect}
-                    title={products[product as keyof typeof products].title}
-                    type={product as TProductType}
+                    title={title}
+                    type={title.toLowerCase() as ProductType}
                 />
             ))}
         </ProductsContainer>
     );
 };
 
-export const StepAddAppMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit }) => (
+export const StepAddAppMain = ({ dark, onSubmit }: { [key: string]: unknown }) => (
     <Button onClick={() => (onSubmit as (values?: { [key: string]: unknown }) => void)()}>Submit</Button>
 );
 
-export const StepCreateWalletMain: React.FC<{ [key: string]: unknown }> = ({
+export const StepCreateWalletMain = ({
     dark,
     onSubmit,
     setIsNextStepDisabled,
     setIsMoreInfoShown,
     is_more_info_shown,
+}: {
+    [key: string]: unknown;
 }) => {
     const handleInfoIconClick: React.MouseEventHandler<HTMLButtonElement> = () => {
         (setIsMoreInfoShown as (is_more_info_shown: boolean) => void)(true);
     };
     const onFiatOrCryptoClick: React.MouseEventHandler<HTMLButtonElement> = () => {
-        (onSubmit as (values?: { [key: string]: unknown }) => void)();
         (setIsNextStepDisabled as (should_disable_next_step: boolean) => void)(true);
+        (onSubmit as (values?: { [key: string]: unknown }) => void)();
     };
     const onPaymentAgentClick: React.MouseEventHandler<HTMLButtonElement> = () => {
-        (onSubmit as (values?: { [key: string]: unknown }) => void)();
         (setIsNextStepDisabled as (should_disable_next_step: boolean) => void)(false);
+        (onSubmit as (values?: { [key: string]: unknown }) => void)();
     };
 
     return is_more_info_shown ? (
@@ -89,7 +91,7 @@ export const StepCreateWalletMain: React.FC<{ [key: string]: unknown }> = ({
         </>
     ) : (
         <>
-            <Button color={'secondary'} dark={dark as boolean} onClick={handleInfoIconClick}>
+            <Button color="secondary" dark={dark as boolean} onClick={handleInfoIconClick}>
                 More Info
             </Button>
             <Button onClick={onFiatOrCryptoClick}>Choose fiat or crypto to disable next step</Button>
@@ -98,11 +100,11 @@ export const StepCreateWalletMain: React.FC<{ [key: string]: unknown }> = ({
     );
 };
 
-export const StepChooseCurrencyMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children }) => (
+export const StepChooseCurrencyMain = ({ dark, onSubmit, children }: { [key: string]: unknown }) => (
     <Button onClick={() => (onSubmit as (values?: { [key: string]: unknown }) => void)()}>Submit</Button>
 );
 
-export const StepPersonalDetailsMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children }) => {
+export const StepPersonalDetailsMain = ({ dark, onSubmit, children }: { [key: string]: unknown }) => {
     return (
         <>
             <Text
@@ -119,7 +121,7 @@ export const StepPersonalDetailsMain: React.FC<{ [key: string]: unknown }> = ({ 
     );
 };
 
-export const StepAddressInfoMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children }) => {
+export const StepAddressInfoMain = ({ dark, onSubmit, children }: { [key: string]: unknown }) => {
     return (
         <>
             <Text
@@ -136,7 +138,7 @@ export const StepAddressInfoMain: React.FC<{ [key: string]: unknown }> = ({ dark
     );
 };
 
-export const StepTermsOfUseMain: React.FC<{ [key: string]: unknown }> = ({ dark, onSubmit, children }) => {
+export const StepTermsOfUseMain = ({ dark, onSubmit, children }: { [key: string]: unknown }) => {
     return (
         <>
             <Text as="div" type="paragraph-1" css={{ color: dark ? '#C2C2C2' : '#333333', margin: '24px 0 16px' }}>
@@ -147,7 +149,7 @@ export const StepTermsOfUseMain: React.FC<{ [key: string]: unknown }> = ({ dark,
     );
 };
 
-export const StepComplete: React.FC<{ [key: string]: unknown }> = ({ dark }) => (
+export const StepComplete = ({ dark }: { [key: string]: unknown }) => (
     <Text
         as="div"
         type="paragraph-1"
