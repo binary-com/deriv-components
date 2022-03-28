@@ -35,6 +35,7 @@ const WizardContainer = styled('div', {
     display: 'flex',
     overflow: 'hidden',
     boxShadow: '0px 0px 24px rgba(0, 0, 0, 0.08), 0px 24px 24px rgba(0, 0, 0, 0.08)',
+    boxSizingForAllChildren: 'border-box',
 
     variants: {
         dark: {
@@ -49,7 +50,6 @@ const LeftPanel = styled('div', {
     width: '256px',
     height: '640px',
     backgroundColor: '#F2F3F4',
-    boxSizing: 'border-box',
     padding: '48px 24px',
 
     variants: {
@@ -75,14 +75,12 @@ const ContentContainer = styled('div', {
     width: '784px',
     height: '568px',
     position: 'relative',
-    boxSizing: 'border-box',
     padding: '48px 24px 24px',
 });
 
 const FixedWidthContainer = styled('div', {
     width: '472px',
     height: '568px',
-    boxSizing: 'border-box',
     padding: '48px 24px 24px',
     position: 'absolute',
     top: '0',
@@ -93,7 +91,6 @@ const FixedWidthContainer = styled('div', {
 const RightPanel = styled('div', {
     width: '312px',
     height: '568px',
-    boxSizing: 'border-box',
     padding: '48px 24px 24px',
     position: 'absolute',
     top: '0',
@@ -111,8 +108,6 @@ const RightPanel = styled('div', {
 });
 
 const RightPanelBlock = styled('div', {
-    boxSizing: 'border-box',
-
     variants: {
         location: {
             upper: {
@@ -142,7 +137,6 @@ const RightPanelBlock = styled('div', {
 const Footer = styled('div', {
     width: '784px',
     height: '72px',
-    boxSizing: 'border-box',
     padding: '16px 24px',
     borderTop: '2px solid #F2F3F4',
     display: 'flex',
