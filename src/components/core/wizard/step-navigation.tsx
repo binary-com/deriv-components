@@ -2,7 +2,7 @@ import CircularCheckIcon from '@assets/svg/circular-check-icon.svg';
 import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
-import { ItemsState } from './desktop-wizard';
+import { StepData } from './desktop-wizard';
 
 const Bullet = styled('div', {
     width: '16px',
@@ -13,19 +13,15 @@ const Bullet = styled('div', {
     background: '$white',
 
     variants: {
-        active: {
-            true: {
+        status: {
+            active: {
                 border: '2px solid #FF444F',
             },
-        },
-        complete: {
-            true: {
+            complete: {
                 border: '2px solid #FF444F',
                 background: `#FF444F url(${CircularCheckIcon}) no-repeat center`,
             },
-        },
-        disabled: {
-            true: {
+            disabled: {
                 backgroundColor: '#D6D6D6',
                 border: '2px solid #D6D6D6',
             },
@@ -39,7 +35,7 @@ const Bullet = styled('div', {
     },
     compoundVariants: [
         {
-            active: true,
+            status: 'active',
             dark: true,
             css: {
                 backgroundColor: '#0E0E0E',
@@ -47,7 +43,7 @@ const Bullet = styled('div', {
             },
         },
         {
-            disabled: true,
+            status: 'disabled',
             dark: true,
             css: {
                 backgroundColor: '#3E3E3E',
@@ -55,7 +51,7 @@ const Bullet = styled('div', {
             },
         },
         {
-            complete: true,
+            status: 'complete',
             dark: true,
             css: {
                 border: '2px solid #FF444F',
@@ -63,9 +59,7 @@ const Bullet = styled('div', {
         },
     ],
     defaultVariants: {
-        active: false,
-        complete: false,
-        disabled: false,
+        status: undefined,
         dark: false,
     },
 });
@@ -142,7 +136,7 @@ const StepBreadcrumb = styled('div', {
 });
 
 type StepNavigationProps = {
-    steps: ItemsState[];
+    steps: StepData[];
     current_step_index: number;
     complete_steps_indexes?: number[];
     disabled_steps_indexes?: number[];
@@ -173,9 +167,12 @@ const StepNavigation = React.memo(
                     return (
                         <StepBreadcrumb key={idx + 1} onClick={() => onClick?.(idx)} disabled={disabled} dark={dark}>
                             <Bullet
-                                active={active}
-                                complete={complete_steps_indexes?.some((i) => i === idx)}
-                                disabled={disabled}
+                                status={
+                                    (complete_steps_indexes?.some((i) => i === idx) && 'complete') ||
+                                    (disabled && 'disabled') ||
+                                    (active && 'active') ||
+                                    undefined
+                                }
                                 dark={dark}
                             />
                             <Text as="label" type="paragraph-2" bold={active}>

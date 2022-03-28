@@ -223,7 +223,7 @@ const CloseIcon = styled('div', {
 
 type CustomReactComponent = (props: { [key: string]: unknown }) => JSX.Element;
 
-export type ItemsState = {
+export type StepData = {
     step_title: string;
     toggle_switcher_buttons?: string[];
     main_content_header: string;
@@ -247,7 +247,7 @@ export type DesktopWizardProps = {
     dark?: boolean;
     has_dark_background?: boolean;
     toggleWizard: () => void;
-    steps: ItemsState[];
+    steps: StepData[];
     wizard_title: string;
 };
 
@@ -396,7 +396,7 @@ const DesktopWizard = ({
                             <RightPanel dark={dark}>
                                 {['upper', 'middle', 'lower'].map((placement, i) => {
                                     const RightPanelComponent = steps[current_step_index][
-                                        `right_panel_${placement}_block` as keyof ItemsState
+                                        `right_panel_${placement}_block` as keyof StepData
                                     ] as CustomReactComponent & React.ReactNode;
 
                                     return (

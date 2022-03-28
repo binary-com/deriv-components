@@ -1,4 +1,4 @@
-import { ItemsState } from '../desktop-wizard';
+import { StepData } from '../desktop-wizard';
 import {
     StepAddAppMain,
     StepAddressInfoMain,
@@ -13,7 +13,7 @@ import {
     TestRightUpperComponent,
 } from './steps-content';
 
-export const test_steps: ItemsState[] = [
+export const test_steps: StepData[] = [
     {
         step_title: 'Product',
         main_content_header: 'Choose a product',
