@@ -7,6 +7,7 @@ import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
 import StepNavigation from './step-navigation';
+import { MainComponentProps } from './steps/steps-content';
 
 const DarkBackgroundContainer = styled('div', {
     position: 'absolute',
@@ -107,16 +108,26 @@ const RightPanel = styled('div', {
     },
 });
 
+type RightPanelBlockType = 'upper' | 'middle' | 'lower';
+
 const RightPanelBlock = styled('div', {
     variants: {
-        location: {
+        placement: {
             upper: {
-                minHeight: '272px',
+                minHeight: '170px',
                 paddingBottom: '24px',
                 borderBottom: '1px solid #D6DADB',
             },
-            lower: {
+            middle: {
                 paddingTop: '24px',
+            },
+            lower: {
+                position: 'absolute',
+                bottom: '24px',
+                left: '24px',
+                right: '24px',
+                minHeight: '26px',
+                borderTop: '1px solid #D6DADB',
             },
         },
         dark: {
@@ -125,10 +136,17 @@ const RightPanelBlock = styled('div', {
     },
     compoundVariants: [
         {
-            location: 'upper',
+            placement: 'upper',
             dark: true,
             css: {
                 borderBottom: '1px solid #323738',
+            },
+        },
+        {
+            placement: 'lower',
+            dark: true,
+            css: {
+                borderTop: '1px solid #323738',
             },
         },
     ],
@@ -203,16 +221,23 @@ const CloseIcon = styled('div', {
     },
 });
 
+type CustomReactComponent = (props: { [key: string]: unknown }) => JSX.Element;
+
 export type ItemsState = {
     step_title: string;
     toggle_switcher_buttons?: string[];
     main_content_header: string;
     subheader?: string;
-    main_content?: React.FC<{ [key: string]: unknown }> & React.ReactNode;
-    more_info_header?: string;
-    more_info_subheader?: string;
-    right_panel_upper_block?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
-    right_panel_lower_block?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
+    main_content?: (props: MainComponentProps) => JSX.Element;
+    more_details?: {
+        [key: string]: {
+            header?: string;
+            subheader?: string;
+        };
+    };
+    right_panel_upper_block?: CustomReactComponent;
+    right_panel_middle_block?: CustomReactComponent;
+    right_panel_lower_block?: CustomReactComponent;
     is_fullwidth?: boolean;
     cancel_button_name?: string;
     submit_button_name?: string;
@@ -236,8 +261,8 @@ const DesktopWizard = ({
     const [current_step_index, setCurrentStepIndex] = React.useState(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
     const [disabled_steps_indexes, setDisabledStepsIndexes] = React.useState<number[]>([]);
-    const [is_more_info_shown, setIsMoreInfoShown] = React.useState(false);
-    const [steps_values, setStepsValues] = React.useState<{ [key: string]: unknown }>({});
+    const [more_details_type, setMoreDetailsType] = React.useState('');
+    const [collected_values, setCollectedValues] = React.useState<{ [key: string]: { [key: string]: unknown } }>({});
     const next_enabled_step_index = steps
         .map((_step, idx) => idx)
         .find((i) => i > current_step_index && disabled_steps_indexes.every((index) => i !== index));
@@ -253,6 +278,10 @@ const DesktopWizard = ({
     const nextStep = () => {
         if (Number(next_enabled_step_index) < steps.length) {
             setCurrentStepIndex(Number(next_enabled_step_index));
+            if (Number(next_enabled_step_index) === steps.length - 1) {
+                // last step is always 'Complete' and has to be completed automatically:
+                setCompleteStepsIndexes([...complete_steps_indexes, current_step_index + 1]);
+            }
         }
     };
 
@@ -276,14 +305,14 @@ const DesktopWizard = ({
     const getBody = () => {
         const handleDataSubmit = (values?: { [key: string]: unknown }) => {
             setCompleteStepsIndexes([...complete_steps_indexes, current_step_index]);
-            setStepsValues({ ...steps_values, [current_step_index]: values });
+            setCollectedValues({ ...collected_values, [current_step_index]: values });
         };
 
         return (
             <>
                 <MainTitleContainer>
-                    {is_more_info_shown ? (
-                        <GoBackArrow dark={dark as boolean} onClick={() => setIsMoreInfoShown(false)} />
+                    {more_details_type ? (
+                        <GoBackArrow dark={dark as boolean} onClick={() => setMoreDetailsType('')} />
                     ) : null}
                     <div>
                         <Text
@@ -292,8 +321,8 @@ const DesktopWizard = ({
                             bold
                             css={{ marginBottom: '8px', color: dark ? '$white' : '#333333' }}
                         >
-                            {is_more_info_shown
-                                ? steps[current_step_index].more_info_header
+                            {more_details_type
+                                ? steps[current_step_index].more_details?.[more_details_type].header
                                 : steps[current_step_index].main_content_header}
                         </Text>
                         <Text
@@ -302,8 +331,8 @@ const DesktopWizard = ({
                             bold={false}
                             css={{ color: dark ? '#C2C2C2' : '#333333', marginBottom: '24px' }}
                         >
-                            {is_more_info_shown
-                                ? steps[current_step_index].more_info_subheader
+                            {more_details_type
+                                ? steps[current_step_index].more_details?.[more_details_type].subheader
                                 : steps[current_step_index].subheader}
                         </Text>
                     </div>
@@ -318,7 +347,7 @@ const DesktopWizard = ({
                                 setCompleteStepsIndexes(
                                     complete_steps_indexes.filter((s) => s !== current_step_index + 1),
                                 );
-                                setStepsValues({ ...steps_values, [current_step_index + 1]: undefined });
+                                setCollectedValues({ ...collected_values, [current_step_index + 1]: undefined });
                             } else {
                                 setDisabledStepsIndexes(
                                     disabled_steps_indexes.filter((s) => s !== current_step_index + 1),
@@ -326,9 +355,9 @@ const DesktopWizard = ({
                             }
                         }}
                         dark={dark}
-                        values={steps_values[current_step_index]}
-                        setIsMoreInfoShown={setIsMoreInfoShown}
-                        is_more_info_shown={is_more_info_shown}
+                        values={collected_values[current_step_index]}
+                        setMoreDetailsType={setMoreDetailsType}
+                        more_details_type={more_details_type}
                     />
                 )}
             </>
@@ -365,12 +394,23 @@ const DesktopWizard = ({
                         )}
                         {steps[current_step_index].right_panel_upper_block && (
                             <RightPanel dark={dark}>
-                                <RightPanelBlock location="upper" dark={dark}>
-                                    {steps[current_step_index].right_panel_upper_block}
-                                </RightPanelBlock>
-                                <RightPanelBlock location="lower">
-                                    {steps[current_step_index].right_panel_lower_block}
-                                </RightPanelBlock>
+                                {['upper', 'middle', 'lower'].map((placement, i) => {
+                                    const RightPanelComponent = steps[current_step_index][
+                                        `right_panel_${placement}_block` as keyof ItemsState
+                                    ] as CustomReactComponent & React.ReactNode;
+
+                                    return (
+                                        RightPanelComponent && (
+                                            <RightPanelBlock
+                                                key={i + 1}
+                                                placement={placement as RightPanelBlockType}
+                                                dark={dark}
+                                            >
+                                                <RightPanelComponent data={collected_values} dark={dark} />
+                                            </RightPanelBlock>
+                                        )
+                                    );
+                                })}
                             </RightPanel>
                         )}
                     </ContentContainer>
@@ -387,7 +427,10 @@ const DesktopWizard = ({
                         <Button
                             size="large"
                             onClick={nextStep}
-                            disabled={complete_steps_indexes.every((i) => i !== current_step_index)}
+                            disabled={
+                                complete_steps_indexes.every((i) => i !== current_step_index) &&
+                                current_step_index !== steps.length - 1
+                            }
                             dark={dark}
                         >
                             {steps[current_step_index].submit_button_name || 'Next'}

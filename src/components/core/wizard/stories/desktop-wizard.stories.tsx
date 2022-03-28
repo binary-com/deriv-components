@@ -42,11 +42,16 @@ export default {
                         toggle_switcher_buttons?: string[];
                         main_content_header: string;
                         subheader?: string;
-                        main_content?: React.FC<{ [key: string]: unknown }> & React.ReactNode;
-                        more_info_header?: string;
-                        more_info_subheader?: string;
-                        right_panel_upper_block?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
-                        right_panel_lower_block?: string | (React.FC<{ [key: string]: unknown }> & React.ReactNode);
+                        main_content?: (props: { [key: string]: unknown }) => JSX.Element;
+                        more_details?: {
+                            [key: string]: {
+                                header?: string;
+                                subheader?: string;
+                            };
+                        };
+                        right_panel_upper_block?: (props: { [key: string]: unknown }) => JSX.Element;
+                        right_panel_middle_block?: (props: { [key: string]: unknown }) => JSX.Element;
+                        right_panel_lower_block?: (props: { [key: string]: unknown }) => JSX.Element;
                         is_fullwidth?: boolean;
                         cancel_button_name?: string;
                         submit_button_name?: string;
