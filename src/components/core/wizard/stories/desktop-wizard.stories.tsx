@@ -28,7 +28,9 @@ export default {
         },
         onComplete: {
             description:
-                'Required. A callback triggered on the last step and used to send collected data to a parent together with the clicked button name providing opportunity to choose what to do with the received data depending on the button.',
+                'Required. A callback triggered on the last step and used to send collected data to a parent together with the clicked button name providing opportunity to choose what to do with the received data depending on the button. ' +
+                'Data object contains values collected for each step index starting with 0, e.g.: {"0":{"selected_product":"multipliers"},"1":{"selected_app":"real_mt5_financial"},"2":{"wallet_name":"BTC"}, ...}. ' +
+                'Collected values are the values you submit using onSubmit() inside child components that you add to the steps as main content or right panel content.',
             table: {
                 type: { summary: '(data: { [key: string]: { [key: string]: unknown } }, button_name: string) => void' },
             },
@@ -41,7 +43,7 @@ export default {
         },
         steps: {
             description:
-                'Required. An array of objects containing the list of steps to render in the wizard. Please refer to the acceptable type below.',
+                'Required. An array of objects containing the list of steps to render in the wizard. Please refer to the acceptable type below. Please note that right_panel_lower_block is absolutely positioned against the right panel bottom.',
             table: {
                 type: {
                     summary: `Array<{

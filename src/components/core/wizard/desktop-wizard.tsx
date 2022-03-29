@@ -9,6 +9,82 @@ import { styled } from 'Styles/stitches.config';
 import StepNavigation from './step-navigation';
 import { MainComponentProps } from './steps/steps-content';
 
+const Scrollbars = styled('div', {
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    maxHeight: '100%',
+    width: 'calc(100% + 14px)',
+    paddingRight: '10px',
+
+    '&::-webkit-scrollbar': {
+        width: '4px',
+        height: '4px',
+        backgroundColor: 'transparent',
+        opacity: '0.16',
+    },
+    '&::-webkit-scrollbar-thumb': {
+        borderRadius: '4px',
+        backgroundColor: '#D6DADB',
+        opacity: '0.16',
+    },
+
+    variants: {
+        dark: {
+            true: {
+                '&::-webkit-scrollbar-thumb': {
+                    backgroundColor: '#333333',
+                },
+            },
+        },
+        autohide: {
+            true: {
+                '&::-webkit-scrollbar-thumb': {
+                    visibility: 'hidden',
+
+                    '&:hover': {
+                        visibility: 'visible',
+                    },
+                },
+            },
+        },
+        is_hovered: {
+            true: {},
+        },
+        has_horizontal: {
+            true: {
+                overflowX: 'auto',
+            },
+        },
+        is_scrollbar_hidden: {
+            true: {
+                '&::-webkit-scrollbar': {
+                    display: 'none',
+                },
+            },
+        },
+        is_only_horizontal: {
+            true: {
+                overflowY: 'hidden',
+                overflowX: 'auto',
+            },
+        },
+        is_only_horizontal_overlay: {
+            true: {
+                overflowY: 'hidden',
+                overflowX: 'overlay',
+            },
+        },
+    },
+    defaultVariants: {
+        dark: false,
+        autohide: false,
+        has_horizontal: false,
+        is_only_horizontal: false,
+        is_only_horizontal_overlay: false,
+        is_scrollbar_hidden: false,
+    },
+});
+
 const DarkBackgroundContainer = styled('div', {
     position: 'absolute',
     inset: '0',
@@ -227,7 +303,7 @@ export type StepData = {
     step_title: string;
     toggle_switcher_buttons?: string[];
     main_content_header: string;
-    subheader?: string;
+    main_content_subheader?: string;
     main_content?: (props: MainComponentProps) => JSX.Element;
     more_details?: {
         [key: string]: {
@@ -318,7 +394,7 @@ const DesktopWizard = ({
         };
 
         return (
-            <>
+            <Scrollbars dark={dark}>
                 <MainTitleContainer>
                     {more_details_type ? (
                         <GoBackArrow dark={dark as boolean} onClick={() => setMoreDetailsType('')} />
@@ -342,7 +418,7 @@ const DesktopWizard = ({
                         >
                             {more_details_type
                                 ? steps[current_step_index].more_details?.[more_details_type].subheader
-                                : steps[current_step_index].subheader}
+                                : steps[current_step_index].main_content_subheader}
                         </Text>
                     </div>
                 </MainTitleContainer>
@@ -369,7 +445,7 @@ const DesktopWizard = ({
                         more_details_type={more_details_type}
                     />
                 )}
-            </>
+            </Scrollbars>
         );
     };
 
@@ -403,23 +479,25 @@ const DesktopWizard = ({
                         )}
                         {steps[current_step_index].right_panel_upper_block && (
                             <RightPanel dark={dark}>
-                                {['upper', 'middle', 'lower'].map((placement, i) => {
-                                    const RightPanelComponent = steps[current_step_index][
-                                        `right_panel_${placement}_block` as keyof StepData
-                                    ] as CustomReactComponent & React.ReactNode;
+                                <Scrollbars dark={dark} autohide>
+                                    {['upper', 'middle', 'lower'].map((placement, i) => {
+                                        const RightPanelComponent = steps[current_step_index][
+                                            `right_panel_${placement}_block` as keyof StepData
+                                        ] as CustomReactComponent;
 
-                                    return (
-                                        RightPanelComponent && (
-                                            <RightPanelBlock
-                                                key={i + 1}
-                                                placement={placement as RightPanelBlockType}
-                                                dark={dark}
-                                            >
-                                                <RightPanelComponent data={collected_values} dark={dark} />
-                                            </RightPanelBlock>
-                                        )
-                                    );
-                                })}
+                                        return (
+                                            RightPanelComponent && (
+                                                <RightPanelBlock
+                                                    key={i + 1}
+                                                    placement={placement as RightPanelBlockType}
+                                                    dark={dark}
+                                                >
+                                                    <RightPanelComponent data={collected_values} dark={dark} />
+                                                </RightPanelBlock>
+                                            )
+                                        );
+                                    })}
+                                </Scrollbars>
                             </RightPanel>
                         )}
                     </ContentContainer>

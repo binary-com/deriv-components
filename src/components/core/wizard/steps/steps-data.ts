@@ -8,6 +8,7 @@ import {
     StepCreateWalletMain,
     StepPersonalDetailsMain,
     StepTermsOfUseMain,
+    TestLongRightUpperComponent,
     TestRightLowerComponent,
     TestRightMiddleComponent,
     TestRightUpperComponent,
@@ -17,7 +18,7 @@ export const test_steps: StepData[] = [
     {
         step_title: 'Product',
         main_content_header: 'Choose a product',
-        subheader: 'Choose a product to start.',
+        main_content_subheader: 'Choose a product to start.',
         main_content: StepChooseProductMain,
         right_panel_upper_block: TestRightUpperComponent,
         right_panel_middle_block: TestRightMiddleComponent,
@@ -25,16 +26,15 @@ export const test_steps: StepData[] = [
     {
         step_title: 'App',
         main_content_header: 'Add an app',
-        subheader: 'Choose a product to start.',
+        main_content_subheader: 'Choose a product to start.',
         toggle_switcher_buttons: ['real', 'demo'],
         main_content: StepAddAppMain,
-        right_panel_upper_block: TestRightUpperComponent,
-        right_panel_middle_block: TestRightMiddleComponent,
+        right_panel_upper_block: TestLongRightUpperComponent,
     },
     {
         step_title: 'Wallet',
         main_content_header: 'Create a wallet',
-        subheader: 'Create a wallet that can be linked to your choosen app.',
+        main_content_subheader: 'Create a wallet that can be linked to your choosen app.',
         main_content: StepCreateWalletMain,
         more_details: {
             fiat_currency_wallets: {
@@ -53,7 +53,7 @@ export const test_steps: StepData[] = [
     {
         step_title: 'Currency',
         main_content_header: "Choose your wallet's currency",
-        subheader: 'Fiat currencies.',
+        main_content_subheader: 'Fiat currencies.',
         main_content: StepChooseCurrencyMain,
         right_panel_upper_block: TestRightUpperComponent,
         right_panel_middle_block: TestRightMiddleComponent,

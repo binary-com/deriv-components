@@ -20,7 +20,7 @@ const ProductsContainer = styled('div', {
     gap: '16px',
 });
 
-export const StepChooseProductMain = ({ onSubmit, values }: { [key: string]: unknown }) => {
+export const StepChooseProductMain = ({ dark, onSubmit, values }: { [key: string]: unknown }) => {
     const products = [
         {
             title: 'CFDs',
@@ -41,18 +41,31 @@ export const StepChooseProductMain = ({ onSubmit, values }: { [key: string]: unk
     };
 
     return (
-        <ProductsContainer>
-            {products.map(({ title, description }, idx) => (
-                <ProductCard
-                    key={idx + 1}
-                    active={title.toLowerCase() === (values as { [key: string]: unknown })?.selected_product}
-                    description={description}
-                    onProductSelect={handleSelect}
-                    title={title}
-                    type={title.toLowerCase() as ProductType}
-                />
-            ))}
-        </ProductsContainer>
+        <>
+            <ProductsContainer>
+                {products.map(({ title, description }, idx) => (
+                    <ProductCard
+                        key={idx + 1}
+                        active={title.toLowerCase() === (values as { [key: string]: unknown })?.selected_product}
+                        description={description}
+                        onProductSelect={handleSelect}
+                        title={title}
+                        type={title.toLowerCase() as ProductType}
+                    />
+                ))}
+            </ProductsContainer>
+            <Text
+                as="div"
+                type="paragraph-1"
+                css={{
+                    height: '600px',
+                    marginTop: '10px',
+                    backgroundColor: 'LightGrey',
+                }}
+            >
+                A very long content for scroll feature test...
+            </Text>
+        </>
     );
 };
 
@@ -211,25 +224,56 @@ export const StepComplete = ({ dark }: { [key: string]: unknown }) => (
         css={{ color: dark ? '#C2C2C2' : '#333333', marginTop: '59.5px', textAlign: 'center' }}
     >
         You can now use your USD wallet with your Deriv USD Apps.
+        <Text
+            as="div"
+            type="paragraph-1"
+            css={{
+                height: '600px',
+                marginTop: '10px',
+                backgroundColor: 'LightGrey',
+            }}
+        >
+            A very long content for scroll feature test...
+        </Text>
     </Text>
 );
 
 export const TestRightUpperComponent = ({ data, dark }: { [key: string]: unknown }) => (
-    <Text as="div" type="paragraph-1" bold={false} css={{ color: dark ? '#C2C2C2' : '#333333' }}>
+    <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
         Upper block test info. Data collected on each step can be used here.
         <div>Collected data: {JSON.stringify(data)}</div>
     </Text>
 );
 
+export const TestLongRightUpperComponent = ({ data, dark }: { [key: string]: unknown }) => (
+    <>
+        <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
+            Long upper block test info. Data collected on each step can be used here.
+            <div>Collected data: {JSON.stringify(data)}</div>
+        </Text>
+        <Text
+            as="div"
+            type="paragraph-1"
+            css={{
+                height: '600px',
+                marginTop: '10px',
+                backgroundColor: 'LightGrey',
+            }}
+        >
+            A very long content for scroll feature test...
+        </Text>
+    </>
+);
+
 export const TestRightMiddleComponent = ({ data, dark }: { [key: string]: unknown }) => (
-    <Text as="div" type="paragraph-1" bold={false} css={{ color: dark ? '#C2C2C2' : '#333333' }}>
+    <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
         Middle block test info. Data collected on each step can be used here.
         <div>Collected data: {JSON.stringify(data)}</div>
     </Text>
 );
 
 export const TestRightLowerComponent = ({ data, dark }: { [key: string]: unknown }) => (
-    <Text as="div" type="paragraph-1" bold={false} css={{ color: dark ? '#C2C2C2' : '#333333' }}>
+    <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
         Lower block test info. Data collected on each step can be used here.
         <div>Collected data: {JSON.stringify(data)}</div>
     </Text>
