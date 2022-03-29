@@ -26,6 +26,13 @@ export default {
                 defaultValue: { summary: true },
             },
         },
+        onComplete: {
+            description:
+                'Required. A callback triggered on the last step and used to send collected data to a parent together with the clicked button name providing opportunity to choose what to do with the received data depending on the button.',
+            table: {
+                type: { summary: '(data: { [key: string]: { [key: string]: unknown } }, button_name: string) => void' },
+            },
+        },
         toggleWizard: {
             description: 'Required. A callback used to inform a parent that the wizard has been closed or open.',
             table: {
@@ -81,13 +88,31 @@ export default {
 
 const Template: Story<DesktopWizardProps> = (args) => {
     const [is_wizard_open, setIsWizardOpen] = useState(true);
+    const [data, setData] = useState('');
+    const [button_name, setButtonName] = useState('');
+
+    const onWizardOpening = () => {
+        setIsWizardOpen(true);
+        setData('');
+        setButtonName('');
+    };
+
+    const handleComplete = (data: { [key: string]: { [key: string]: unknown } }, button_name: string) => {
+        setIsWizardOpen(false);
+        setData(JSON.stringify(data));
+        setButtonName(button_name);
+    };
 
     return (
         <>
             {is_wizard_open ? (
-                <DesktopWizard {...args} toggleWizard={() => setIsWizardOpen(false)} />
+                <DesktopWizard {...args} toggleWizard={() => setIsWizardOpen(false)} onComplete={handleComplete} />
             ) : (
-                <Button onClick={() => setIsWizardOpen(true)}>Open Desktop Wizard</Button>
+                <>
+                    <Button onClick={onWizardOpening}>Open Desktop Wizard</Button>
+                    <div>Collected data are: {data}</div>
+                    <div>A clicked button name is: {button_name}</div>
+                </>
             )}
         </>
     );

@@ -246,6 +246,7 @@ export type StepData = {
 export type DesktopWizardProps = {
     dark?: boolean;
     has_dark_background?: boolean;
+    onComplete: (data: { [key: string]: { [key: string]: unknown } }, button_name: string) => void;
     toggleWizard: () => void;
     steps: StepData[];
     wizard_title: string;
@@ -254,6 +255,7 @@ export type DesktopWizardProps = {
 const DesktopWizard = ({
     dark,
     has_dark_background = true,
+    onComplete,
     toggleWizard,
     steps,
     wizard_title = "Let's get you a new app.",
@@ -263,6 +265,8 @@ const DesktopWizard = ({
     const [disabled_steps_indexes, setDisabledStepsIndexes] = React.useState<number[]>([]);
     const [more_details_type, setMoreDetailsType] = React.useState('');
     const [collected_values, setCollectedValues] = React.useState<{ [key: string]: { [key: string]: unknown } }>({});
+    const current_left_button_name = steps[current_step_index].cancel_button_name || 'Back';
+    const current_right_button_name = steps[current_step_index].submit_button_name || 'Next';
     const next_enabled_step_index = steps
         .map((_step, idx) => idx)
         .find((i) => i > current_step_index && disabled_steps_indexes.every((index) => i !== index));
@@ -275,6 +279,13 @@ const DesktopWizard = ({
         .filter((i) => i !== null)
         .pop();
 
+    const prevStep = () => {
+        setCurrentStepIndex(Number(previous_enabled_step_index));
+        if (current_step_index === steps.length - 1) {
+            onComplete(collected_values, current_left_button_name);
+        }
+    };
+
     const nextStep = () => {
         if (Number(next_enabled_step_index) < steps.length) {
             setCurrentStepIndex(Number(next_enabled_step_index));
@@ -282,11 +293,9 @@ const DesktopWizard = ({
                 // last step is always 'Complete' and has to be completed automatically:
                 setCompleteStepsIndexes([...complete_steps_indexes, current_step_index + 1]);
             }
+        } else if (current_step_index === steps.length - 1) {
+            onComplete(collected_values, current_right_button_name);
         }
-    };
-
-    const prevStep = () => {
-        setCurrentStepIndex(Number(previous_enabled_step_index));
     };
 
     const handleStepClick = (index: number) => {
@@ -422,7 +431,7 @@ const DesktopWizard = ({
                             disabled={current_step_index < 1}
                             dark={dark}
                         >
-                            {steps[current_step_index].cancel_button_name || 'Back'}
+                            {current_left_button_name}
                         </Button>
                         <Button
                             size="large"
@@ -433,7 +442,7 @@ const DesktopWizard = ({
                             }
                             dark={dark}
                         >
-                            {steps[current_step_index].submit_button_name || 'Next'}
+                            {current_right_button_name}
                         </Button>
                     </Footer>
                 </WizardBody>
