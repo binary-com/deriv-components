@@ -43,7 +43,7 @@ export default {
         },
         steps: {
             description:
-                'Required. An array of objects containing the list of steps to render in the wizard. Please refer to the acceptable type below. Please note that right_panel_lower_block is absolutely positioned against the right panel bottom.',
+                'Required. An array of objects containing the list of steps to render in the wizard. Please refer to the acceptable type below. Please note that right_panel_content.lower_block is absolutely positioned against the right panel bottom.',
             table: {
                 type: {
                     summary: `Array<{
@@ -58,9 +58,11 @@ export default {
                                 subheader?: string;
                             };
                         };
-                        right_panel_upper_block?: (props: { [key: string]: unknown }) => JSX.Element;
-                        right_panel_middle_block?: (props: { [key: string]: unknown }) => JSX.Element;
-                        right_panel_lower_block?: (props: { [key: string]: unknown }) => JSX.Element;
+                        right_panel_content?: {
+                            upper_block?: (props: { [key: string]: unknown }) => JSX.Element;
+                            middle_block?: (props: { [key: string]: unknown }) => JSX.Element;
+                            lower_block?: (props: { [key: string]: unknown }) => JSX.Element;
+                        };
                         is_fullwidth?: boolean;
                         cancel_button_name?: string;
                         submit_button_name?: string;

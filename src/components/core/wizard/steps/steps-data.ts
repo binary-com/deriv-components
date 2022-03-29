@@ -20,8 +20,10 @@ export const test_steps: StepData[] = [
         main_content_header: 'Choose a product',
         main_content_subheader: 'Choose a product to start.',
         main_content: StepChooseProductMain,
-        right_panel_upper_block: TestRightUpperComponent,
-        right_panel_middle_block: TestRightMiddleComponent,
+        right_panel_content: {
+            upper_block: TestRightUpperComponent,
+            middle_block: TestRightMiddleComponent,
+        },
     },
     {
         step_title: 'App',
@@ -29,7 +31,7 @@ export const test_steps: StepData[] = [
         main_content_subheader: 'Choose a product to start.',
         toggle_switcher_buttons: ['real', 'demo'],
         main_content: StepAddAppMain,
-        right_panel_upper_block: TestLongRightUpperComponent,
+        right_panel_content: { upper_block: TestLongRightUpperComponent },
     },
     {
         step_title: 'Wallet',
@@ -46,38 +48,48 @@ export const test_steps: StepData[] = [
                 subheader: 'Some extra details.',
             },
         },
-        right_panel_upper_block: TestRightUpperComponent,
-        right_panel_middle_block: TestRightMiddleComponent,
-        right_panel_lower_block: TestRightLowerComponent,
+        right_panel_content: {
+            upper_block: TestRightUpperComponent,
+            middle_block: TestRightMiddleComponent,
+            lower_block: TestRightLowerComponent,
+        },
     },
     {
         step_title: 'Currency',
         main_content_header: "Choose your wallet's currency",
         main_content_subheader: 'Fiat currencies.',
         main_content: StepChooseCurrencyMain,
-        right_panel_upper_block: TestRightUpperComponent,
-        right_panel_middle_block: TestRightMiddleComponent,
+        right_panel_content: {
+            upper_block: TestRightUpperComponent,
+            middle_block: TestRightMiddleComponent,
+        },
     },
     {
         step_title: 'Personal details',
         main_content_header: 'Personal details',
         main_content: StepPersonalDetailsMain,
-        right_panel_upper_block: TestRightUpperComponent,
-        right_panel_middle_block: TestRightMiddleComponent,
+        right_panel_content: {
+            upper_block: TestRightUpperComponent,
+            middle_block: TestRightMiddleComponent,
+        },
     },
     {
         step_title: 'Address',
         main_content_header: 'Address information',
         main_content: StepAddressInfoMain,
-        right_panel_upper_block: TestRightUpperComponent,
-        right_panel_middle_block: TestRightMiddleComponent,
+        right_panel_content: {
+            upper_block: TestRightUpperComponent,
+            middle_block: TestRightMiddleComponent,
+        },
     },
     {
         step_title: 'Terms of use',
         main_content_header: 'Terms of use',
         main_content: StepTermsOfUseMain,
-        right_panel_upper_block: TestRightUpperComponent,
-        right_panel_middle_block: TestRightMiddleComponent,
+        right_panel_content: {
+            upper_block: TestRightUpperComponent,
+            middle_block: TestRightMiddleComponent,
+        },
     },
     {
         step_title: 'Complete',

@@ -311,9 +311,11 @@ export type StepData = {
             subheader?: string;
         };
     };
-    right_panel_upper_block?: CustomReactComponent;
-    right_panel_middle_block?: CustomReactComponent;
-    right_panel_lower_block?: CustomReactComponent;
+    right_panel_content?: {
+        upper_block?: CustomReactComponent;
+        middle_block?: CustomReactComponent;
+        lower_block?: CustomReactComponent;
+    };
     is_fullwidth?: boolean;
     cancel_button_name?: string;
     submit_button_name?: string;
@@ -477,13 +479,13 @@ const DesktopWizard = ({
                         ) : (
                             <FixedWidthContainer>{getBody()}</FixedWidthContainer>
                         )}
-                        {steps[current_step_index].right_panel_upper_block && (
+                        {steps[current_step_index].right_panel_content && (
                             <RightPanel dark={dark}>
                                 <Scrollbars dark={dark} autohide>
                                     {['upper', 'middle', 'lower'].map((placement, i) => {
-                                        const RightPanelComponent = steps[current_step_index][
-                                            `right_panel_${placement}_block` as keyof StepData
-                                        ] as CustomReactComponent;
+                                        const RightPanelComponent = steps[current_step_index].right_panel_content?.[
+                                            `${placement}_block` as keyof StepData['right_panel_content']
+                                        ] as CustomReactComponent | undefined;
 
                                         return (
                                             RightPanelComponent && (
