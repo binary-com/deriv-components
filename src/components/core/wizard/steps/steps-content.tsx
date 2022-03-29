@@ -238,18 +238,20 @@ export const StepComplete = ({ dark }: { [key: string]: unknown }) => (
     </Text>
 );
 
-export const TestRightUpperComponent = ({ data, dark }: { [key: string]: unknown }) => (
+export const TestRightUpperComponent = ({ data, dark, current_step_index }: { [key: string]: unknown }) => (
     <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
         Upper block test info. Data collected on each step can be used here.
         <div>Collected data: {JSON.stringify(data)}</div>
+        <div>And current_step_index is: {current_step_index}</div>
     </Text>
 );
 
-export const TestLongRightUpperComponent = ({ data, dark }: { [key: string]: unknown }) => (
+export const TestLongRightUpperComponent = ({ data, dark, current_step_index }: { [key: string]: unknown }) => (
     <>
         <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
             Long upper block test info. Data collected on each step can be used here.
             <div>Collected data: {JSON.stringify(data)}</div>
+            <div>And current_step_index is: {current_step_index}</div>
         </Text>
         <Text
             as="div"
@@ -265,16 +267,18 @@ export const TestLongRightUpperComponent = ({ data, dark }: { [key: string]: unk
     </>
 );
 
-export const TestRightMiddleComponent = ({ data, dark }: { [key: string]: unknown }) => (
+export const TestRightMiddleComponent = ({ data, dark, current_step_index }: { [key: string]: unknown }) => (
     <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
         Middle block test info. Data collected on each step can be used here.
         <div>Collected data: {JSON.stringify(data)}</div>
+        <div>And current_step_index is: {current_step_index}</div>
     </Text>
 );
 
-export const TestRightLowerComponent = ({ data, dark }: { [key: string]: unknown }) => (
+export const TestRightLowerComponent = ({ data, dark, current_step_index }: { [key: string]: unknown }) => (
     <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
         Lower block test info. Data collected on each step can be used here.
         <div>Collected data: {JSON.stringify(data)}</div>
+        <div>And current_step_index is: {current_step_index}</div>
     </Text>
 );

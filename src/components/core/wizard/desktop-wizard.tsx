@@ -8,82 +8,7 @@ import React from 'react';
 import { styled } from 'Styles/stitches.config';
 import StepNavigation from './step-navigation';
 import { MainComponentProps } from './steps/steps-content';
-
-const Scrollbars = styled('div', {
-    overflowY: 'auto',
-    overflowX: 'hidden',
-    maxHeight: '100%',
-    width: 'calc(100% + 14px)',
-    paddingRight: '10px',
-
-    '&::-webkit-scrollbar': {
-        width: '4px',
-        height: '4px',
-        backgroundColor: 'transparent',
-        opacity: '0.16',
-    },
-    '&::-webkit-scrollbar-thumb': {
-        borderRadius: '4px',
-        backgroundColor: '#D6DADB',
-        opacity: '0.16',
-    },
-
-    variants: {
-        dark: {
-            true: {
-                '&::-webkit-scrollbar-thumb': {
-                    backgroundColor: '#333333',
-                },
-            },
-        },
-        autohide: {
-            true: {
-                '&::-webkit-scrollbar-thumb': {
-                    visibility: 'hidden',
-
-                    '&:hover': {
-                        visibility: 'visible',
-                    },
-                },
-            },
-        },
-        is_hovered: {
-            true: {},
-        },
-        has_horizontal: {
-            true: {
-                overflowX: 'auto',
-            },
-        },
-        is_scrollbar_hidden: {
-            true: {
-                '&::-webkit-scrollbar': {
-                    display: 'none',
-                },
-            },
-        },
-        is_only_horizontal: {
-            true: {
-                overflowY: 'hidden',
-                overflowX: 'auto',
-            },
-        },
-        is_only_horizontal_overlay: {
-            true: {
-                overflowY: 'hidden',
-                overflowX: 'overlay',
-            },
-        },
-    },
-    defaultVariants: {
-        dark: false,
-        autohide: false,
-        has_horizontal: false,
-        is_only_horizontal: false,
-        is_only_horizontal_overlay: false,
-        is_scrollbar_hidden: false,
-    },
-});
+import Scrollbars from './scrollbars';
 
 const DarkBackgroundContainer = styled('div', {
     position: 'absolute',
@@ -481,7 +406,7 @@ const DesktopWizard = ({
                         )}
                         {steps[current_step_index].right_panel_content && (
                             <RightPanel dark={dark}>
-                                <Scrollbars dark={dark} autohide>
+                                <Scrollbars dark={dark} is_scrollbar_hidden has_y_scroll_on_drag_effect>
                                     {['upper', 'middle', 'lower'].map((placement, i) => {
                                         const RightPanelComponent = steps[current_step_index].right_panel_content?.[
                                             `${placement}_block` as keyof StepData['right_panel_content']
@@ -494,7 +419,11 @@ const DesktopWizard = ({
                                                     placement={placement as RightPanelBlockType}
                                                     dark={dark}
                                                 >
-                                                    <RightPanelComponent data={collected_values} dark={dark} />
+                                                    <RightPanelComponent
+                                                        data={collected_values}
+                                                        dark={dark}
+                                                        current_step_index={current_step_index}
+                                                    />
                                                 </RightPanelBlock>
                                             )
                                         );
