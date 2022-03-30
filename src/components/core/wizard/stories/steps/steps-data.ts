@@ -1,4 +1,4 @@
-import { StepData } from '../desktop-wizard';
+import { StepData } from '../../desktop-wizard';
 import {
     StepAddAppMain,
     StepAddressInfoMain,

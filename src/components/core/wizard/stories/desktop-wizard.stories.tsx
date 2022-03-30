@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/react';
 import DesktopWizard, { DesktopWizardProps } from '../desktop-wizard';
 import Button from '../../button/button';
 import { useState } from 'react';
-import { test_steps } from '../steps/steps-data';
+import { test_steps } from './steps/steps-data';
 
 export default {
     title: 'DesktopWizard',

@@ -7,7 +7,7 @@ import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
 import StepNavigation from './step-navigation';
-import { MainComponentProps } from './steps/steps-content';
+import { MainComponentProps } from './stories/steps/steps-content';
 import Scrollbars from './scrollbars';
 
 const DarkBackgroundContainer = styled('div', {

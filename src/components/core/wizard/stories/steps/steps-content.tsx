@@ -1,8 +1,8 @@
 import Checkbox from '@core/checkbox/checkbox';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
-import Button from '../../button/button';
-import Text from '../../text/text';
+import Button from '../../../button/button';
+import Text from '../../../text/text';
 import ProductCard, { ProductType } from './components/product-card';
 
 export type MainComponentProps = {
