@@ -7,7 +7,6 @@ import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
 import StepNavigation from './step-navigation';
-import { MainComponentProps } from './stories/steps/steps-content';
 import Scrollbars from './scrollbars';
 
 const DarkBackgroundContainer = styled('div', {
@@ -222,7 +221,22 @@ const CloseIcon = styled('div', {
     },
 });
 
-type CustomReactComponent = (props: { [key: string]: unknown }) => JSX.Element;
+type RightPanelComponentType = (props: RightPanelComponentProps) => JSX.Element;
+
+type RightPanelComponentProps = {
+    data: { [key: string]: { [key: string]: unknown } };
+    dark?: boolean;
+    current_step_index: number;
+};
+
+type MainComponentProps = {
+    dark?: boolean;
+    more_details_type?: string;
+    onSubmit: (values?: { [key: string]: unknown }) => void;
+    setMoreDetailsType?: (more_details_type: string) => void;
+    setIsNextStepDisabled?: (should_disable_next_step: boolean) => void;
+    values?: { [key: string]: unknown };
+};
 
 export type StepData = {
     step_title: string;
@@ -237,9 +251,9 @@ export type StepData = {
         };
     };
     right_panel_content?: {
-        upper_block?: CustomReactComponent;
-        middle_block?: CustomReactComponent;
-        lower_block?: CustomReactComponent;
+        upper_block?: RightPanelComponentType;
+        middle_block?: RightPanelComponentType;
+        lower_block?: RightPanelComponentType;
     };
     is_fullwidth?: boolean;
     cancel_button_name?: string;
@@ -410,7 +424,7 @@ const DesktopWizard = ({
                                     {['upper', 'middle', 'lower'].map((placement, i) => {
                                         const RightPanelComponent = steps[current_step_index].right_panel_content?.[
                                             `${placement}_block` as keyof StepData['right_panel_content']
-                                        ] as CustomReactComponent | undefined;
+                                        ] as RightPanelComponentType | undefined;
 
                                         return (
                                             RightPanelComponent && (

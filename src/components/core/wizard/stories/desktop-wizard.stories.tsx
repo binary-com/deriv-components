@@ -42,16 +42,16 @@ export default {
             },
         },
         steps: {
-            description:
-                'Required. An array of objects containing the list of steps to render in the wizard. Please refer to the acceptable type below. Please note that right_panel_content.lower_block is absolutely positioned against the right panel bottom.',
+            description: `Required. An array of objects containing the list of steps to render in the wizard. Please refer to the acceptable type below. Please note that right_panel_content.lower_block is absolutely positioned against the right panel bottom.
+                Below are also mentioned the types of child components' props.`,
             table: {
                 type: {
-                    summary: `Array<{
+                    summary: `**STEPS: ** Array<{
                         step_title: string;
                         toggle_switcher_buttons?: string[];
                         main_content_header: string;
-                        subheader?: string;
-                        main_content?: (props: { [key: string]: unknown }) => JSX.Element;
+                        main_content_subheader?: string;
+                        main_content?: (props: MainComponentProps) => JSX.Element;
                         more_details?: {
                             [key: string]: {
                                 header?: string;
@@ -59,14 +59,27 @@ export default {
                             };
                         };
                         right_panel_content?: {
-                            upper_block?: (props: { [key: string]: unknown }) => JSX.Element;
-                            middle_block?: (props: { [key: string]: unknown }) => JSX.Element;
-                            lower_block?: (props: { [key: string]: unknown }) => JSX.Element;
+                            upper_block?: (props: RightPanelComponentProps) => JSX.Element;
+                            middle_block?: (props: RightPanelComponentProps) => JSX.Element;
+                            lower_block?: (props: RightPanelComponentProps) => JSX.Element;
                         };
                         is_fullwidth?: boolean;
                         cancel_button_name?: string;
                         submit_button_name?: string;
-                    }>`,
+                    }>
+                    **MAIN COMPONENT PROPS: ** {
+                        dark?: boolean;
+                        more_details_type?: string;
+                        onSubmit: (values?: { [key: string]: unknown }) => void;
+                        setMoreDetailsType?: (more_details_type: string) => void;
+                        setIsNextStepDisabled?: (should_disable_next_step: boolean) => void;
+                        values?: { [key: string]: unknown };
+                    };
+                    **RIGHT PANEL COMPONENT PROPS: ** {
+                        data: { [key: string]: { [key: string]: unknown } };
+                        dark?: boolean;
+                        current_step_index: number;
+                    };`,
                 },
                 defaultValue: { summary: '[{...}]' },
             },

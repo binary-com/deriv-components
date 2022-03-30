@@ -5,15 +5,6 @@ import Button from '../../../button/button';
 import Text from '../../../text/text';
 import ProductCard, { ProductType } from './components/product-card';
 
-export type MainComponentProps = {
-    dark?: boolean;
-    more_details_type?: string;
-    onSubmit: (values?: { [key: string]: unknown }) => void;
-    setMoreDetailsType?: (more_details_type: string) => void;
-    setIsNextStepDisabled?: (should_disable_next_step: boolean) => void;
-    values?: { [key: string]: unknown };
-};
-
 const ProductsContainer = styled('div', {
     display: 'flex',
     flexWrap: 'wrap',
