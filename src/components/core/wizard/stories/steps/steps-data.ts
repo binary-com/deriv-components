@@ -29,7 +29,6 @@ export const test_steps: StepData[] = [
         step_title: 'App',
         main_content_header: 'Add an app',
         main_content_subheader: 'Choose a product to start.',
-        toggle_switcher_buttons: ['real', 'demo'],
         main_content: StepAddAppMain,
         right_panel_content: { upper_block: TestLongRightUpperComponent },
     },

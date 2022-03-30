@@ -1,5 +1,5 @@
 import Checkbox from '@core/checkbox/checkbox';
-import React from 'react';
+import { MainComponentProps, RightPanelComponentProps } from '@core/wizard/desktop-wizard';
 import { styled } from 'Styles/stitches.config';
 import Button from '../../../button/button';
 import Text from '../../../text/text';
@@ -11,7 +11,7 @@ const ProductsContainer = styled('div', {
     gap: '16px',
 });
 
-export const StepChooseProductMain = ({ dark, onSubmit, values }: { [key: string]: unknown }) => {
+export const StepChooseProductMain = ({ onSubmit, values }: MainComponentProps) => {
     const products = [
         {
             title: 'CFDs',
@@ -28,7 +28,7 @@ export const StepChooseProductMain = ({ dark, onSubmit, values }: { [key: string
     ];
 
     const handleSelect = (selected_product: ProductType) => {
-        (onSubmit as (values?: { [key: string]: unknown }) => void)({ selected_product });
+        onSubmit({ selected_product });
     };
 
     return (
@@ -60,20 +60,15 @@ export const StepChooseProductMain = ({ dark, onSubmit, values }: { [key: string
     );
 };
 
-export const StepAddAppMain = ({ onSubmit }: { [key: string]: unknown }) => (
-    <Button onClick={() => (onSubmit as (values?: { [key: string]: unknown }) => void)()}>Submit</Button>
-);
+export const StepAddAppMain = ({ onSubmit }: MainComponentProps) => <Button onClick={() => onSubmit()}>Submit</Button>;
 
 export const StepCreateWalletMain = ({
     dark,
     onSubmit,
-    setIsNextStepDisabled,
     setMoreDetailsType,
     more_details_type,
     values,
-}: {
-    [key: string]: unknown;
-}) => {
+}: MainComponentProps) => {
     const fiat_currencies = ['aud', 'eur', 'gbp', 'usd'];
     const crypto_currencies = ['btc', 'eth', 'ltc', 'eusdt', 'usdt', 'usdc'];
 
@@ -86,11 +81,10 @@ export const StepCreateWalletMain = ({
             fiat_currencies.some((w) => w === wallet_name?.toLowerCase()) ||
             crypto_currencies.some((w) => w === wallet_name?.toLowerCase())
         ) {
-            (setIsNextStepDisabled as (should_disable_next_step: boolean) => void)(true);
+            onSubmit({ wallet_name }, true);
         } else {
-            (setIsNextStepDisabled as (should_disable_next_step: boolean) => void)(false);
+            onSubmit({ wallet_name });
         }
-        (onSubmit as (values?: { [key: string]: unknown }) => void)({ wallet_name });
     };
 
     const getMoreDetails = () => {
@@ -158,11 +152,11 @@ export const StepCreateWalletMain = ({
     );
 };
 
-export const StepChooseCurrencyMain = ({ onSubmit }: { [key: string]: unknown }) => (
-    <Button onClick={() => (onSubmit as (values?: { [key: string]: unknown }) => void)()}>Submit</Button>
+export const StepChooseCurrencyMain = ({ onSubmit }: MainComponentProps) => (
+    <Button onClick={() => onSubmit()}>Submit</Button>
 );
 
-export const StepPersonalDetailsMain = ({ dark, onSubmit }: { [key: string]: unknown }) => {
+export const StepPersonalDetailsMain = ({ dark, onSubmit }: MainComponentProps) => {
     return (
         <>
             <Text
@@ -174,12 +168,12 @@ export const StepPersonalDetailsMain = ({ dark, onSubmit }: { [key: string]: unk
                 Please provide your information for verification purposes. If you give us inaccurate information, you
                 may be unable to make deposits or withdrawals.
             </Text>
-            <Button onClick={() => (onSubmit as (values?: { [key: string]: unknown }) => void)()}>Submit</Button>
+            <Button onClick={() => onSubmit()}>Submit</Button>
         </>
     );
 };
 
-export const StepAddressInfoMain = ({ dark, onSubmit }: { [key: string]: unknown }) => {
+export const StepAddressInfoMain = ({ dark, onSubmit }: MainComponentProps) => {
     return (
         <>
             <Text
@@ -191,23 +185,23 @@ export const StepAddressInfoMain = ({ dark, onSubmit }: { [key: string]: unknown
                 We need this for verification. If the information you provide is fake or inaccurate, you won’t be able
                 to deposit and withdraw.
             </Text>
-            <Button onClick={() => (onSubmit as (values?: { [key: string]: unknown }) => void)()}>Submit</Button>
+            <Button onClick={() => onSubmit()}>Submit</Button>
         </>
     );
 };
 
-export const StepTermsOfUseMain = ({ dark, onSubmit }: { [key: string]: unknown }) => {
+export const StepTermsOfUseMain = ({ dark, onSubmit }: MainComponentProps) => {
     return (
         <>
             <Text as="div" type="paragraph-1" css={{ color: dark ? '#C2C2C2' : '#333333', margin: '24px 0 16px' }}>
                 Jurisdiction and choice of law
             </Text>
-            <Button onClick={() => (onSubmit as (values?: { [key: string]: unknown }) => void)()}>Submit</Button>
+            <Button onClick={() => onSubmit()}>Submit</Button>
         </>
     );
 };
 
-export const StepComplete = ({ dark }: { [key: string]: unknown }) => (
+export const StepComplete = ({ dark }: MainComponentProps) => (
     <Text
         as="div"
         type="paragraph-1"
@@ -229,7 +223,7 @@ export const StepComplete = ({ dark }: { [key: string]: unknown }) => (
     </Text>
 );
 
-export const TestRightUpperComponent = ({ data, dark, current_step_index }: { [key: string]: unknown }) => (
+export const TestRightUpperComponent = ({ data, dark, current_step_index }: RightPanelComponentProps) => (
     <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
         Upper block test info. Data collected on each step can be used here.
         <div>Collected data: {JSON.stringify(data)}</div>
@@ -237,7 +231,7 @@ export const TestRightUpperComponent = ({ data, dark, current_step_index }: { [k
     </Text>
 );
 
-export const TestLongRightUpperComponent = ({ data, dark, current_step_index }: { [key: string]: unknown }) => (
+export const TestLongRightUpperComponent = ({ data, dark, current_step_index }: RightPanelComponentProps) => (
     <>
         <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
             Long upper block test info. Data collected on each step can be used here.
@@ -258,7 +252,7 @@ export const TestLongRightUpperComponent = ({ data, dark, current_step_index }: 
     </>
 );
 
-export const TestRightMiddleComponent = ({ data, dark, current_step_index }: { [key: string]: unknown }) => (
+export const TestRightMiddleComponent = ({ data, dark, current_step_index }: RightPanelComponentProps) => (
     <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
         Middle block test info. Data collected on each step can be used here.
         <div>Collected data: {JSON.stringify(data)}</div>
@@ -266,7 +260,7 @@ export const TestRightMiddleComponent = ({ data, dark, current_step_index }: { [
     </Text>
 );
 
-export const TestRightLowerComponent = ({ data, dark, current_step_index }: { [key: string]: unknown }) => (
+export const TestRightLowerComponent = ({ data, dark, current_step_index }: RightPanelComponentProps) => (
     <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
         Lower block test info. Data collected on each step can be used here.
         <div>Collected data: {JSON.stringify(data)}</div>

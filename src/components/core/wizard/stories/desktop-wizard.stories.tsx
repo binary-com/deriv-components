@@ -48,7 +48,7 @@ export default {
                 type: {
                     summary: `**STEPS: ** Array<{
                         step_title: string;
-                        toggle_switcher_buttons?: string[];
+                        toggle_switcher?: CustomComponentType;
                         main_content_header: string;
                         main_content_subheader?: string;
                         main_content?: (props: MainComponentProps) => JSX.Element;
@@ -70,9 +70,8 @@ export default {
                     **MAIN COMPONENT PROPS: ** {
                         dark?: boolean;
                         more_details_type?: string;
-                        onSubmit: (values?: { [key: string]: unknown }) => void;
+                        onSubmit: (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => void;
                         setMoreDetailsType?: (more_details_type: string) => void;
-                        setIsNextStepDisabled?: (should_disable_next_step: boolean) => void;
                         values?: { [key: string]: unknown };
                     };
                     **RIGHT PANEL COMPONENT PROPS: ** {

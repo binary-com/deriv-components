@@ -221,26 +221,26 @@ const CloseIcon = styled('div', {
     },
 });
 
+type CustomComponentType = (props: { [key: string]: unknown }) => JSX.Element;
 type RightPanelComponentType = (props: RightPanelComponentProps) => JSX.Element;
 
-type RightPanelComponentProps = {
+export type RightPanelComponentProps = {
     data: { [key: string]: { [key: string]: unknown } };
     dark?: boolean;
     current_step_index: number;
 };
 
-type MainComponentProps = {
+export type MainComponentProps = {
     dark?: boolean;
     more_details_type?: string;
-    onSubmit: (values?: { [key: string]: unknown }) => void;
+    onSubmit: (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => void;
     setMoreDetailsType?: (more_details_type: string) => void;
-    setIsNextStepDisabled?: (should_disable_next_step: boolean) => void;
     values?: { [key: string]: unknown };
 };
 
 export type StepData = {
     step_title: string;
-    toggle_switcher_buttons?: string[];
+    toggle_switcher?: CustomComponentType;
     main_content_header: string;
     main_content_subheader?: string;
     main_content?: (props: MainComponentProps) => JSX.Element;
@@ -284,17 +284,21 @@ const DesktopWizard = ({
     const [collected_values, setCollectedValues] = React.useState<{ [key: string]: { [key: string]: unknown } }>({});
     const current_left_button_name = steps[current_step_index].cancel_button_name || 'Back';
     const current_right_button_name = steps[current_step_index].submit_button_name || 'Next';
-    const next_enabled_step_index = steps
-        .map((_step, idx) => idx)
-        .find((i) => i > current_step_index && disabled_steps_indexes.every((index) => i !== index));
-    const previous_enabled_step_index = steps
-        .map((_step, idx) => idx)
+    const steps_indexes = steps.map((_step, idx) => idx);
+    const next_enabled_step_index = steps_indexes.find(
+        (i) => i > current_step_index && disabled_steps_indexes.every((index) => i !== index),
+    );
+    const previous_enabled_step_index = steps_indexes
+        .slice()
         .reverse()
         .find((i) => i < current_step_index && disabled_steps_indexes.every((index) => i !== index));
-    const last_complete_step_index = steps
-        .map((_step, idx) => (complete_steps_indexes.some((i) => i === idx) ? idx : null))
-        .filter((i) => i !== null)
-        .pop();
+    const last_complete_step_index = steps_indexes.filter((idx) => complete_steps_indexes.some((i) => i === idx)).pop();
+    const incomplete_steps = steps_indexes.filter(
+        (idx) =>
+            complete_steps_indexes.every((i) => i !== idx) &&
+            disabled_steps_indexes.every((i) => i !== idx) &&
+            idx < steps.length - 1,
+    );
 
     const prevStep = () => {
         setCurrentStepIndex(Number(previous_enabled_step_index));
@@ -306,9 +310,12 @@ const DesktopWizard = ({
     const nextStep = () => {
         if (Number(next_enabled_step_index) < steps.length) {
             setCurrentStepIndex(Number(next_enabled_step_index));
-            if (Number(next_enabled_step_index) === steps.length - 1) {
-                // last step is always 'Complete' and has to be completed automatically:
-                setCompleteStepsIndexes([...complete_steps_indexes, current_step_index + 1]);
+            // last step is always 'Complete' and has to be completed automatically unless some incomplete steps are left:
+            if (incomplete_steps.length === 0)
+                setCompleteStepsIndexes([...complete_steps_indexes, steps_indexes.length - 1]);
+            if (Number(next_enabled_step_index) === steps.length - 1 && incomplete_steps.length > 0) {
+                // switch to first incomplete step from second-to-last step before 'Complete' if any incomplete steps are left:
+                setCurrentStepIndex(incomplete_steps[0] as number);
             }
         } else if (current_step_index === steps.length - 1) {
             onComplete(collected_values, current_right_button_name);
@@ -320,7 +327,9 @@ const DesktopWizard = ({
             disabled_steps_indexes.every((i) => i !== index) &&
             (index <= Number(last_complete_step_index) + 1 ||
                 (index === Number(next_enabled_step_index) &&
-                    complete_steps_indexes.some((i) => i === current_step_index)))
+                    complete_steps_indexes.some((i) => i === current_step_index))) &&
+            (index < steps.length - 1 ||
+                (incomplete_steps.length === 0 && complete_steps_indexes.some((i) => i === index)))
         ) {
             setCurrentStepIndex(index);
         }
@@ -329,7 +338,15 @@ const DesktopWizard = ({
     const BodyComponent = steps[current_step_index].main_content;
 
     const getBody = () => {
-        const handleDataSubmit = (values?: { [key: string]: unknown }) => {
+        const handleDataSubmit = (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => {
+            if (should_disable_next_step) {
+                setDisabledStepsIndexes([...disabled_steps_indexes, current_step_index + 1]);
+                // clear next step data in case it was completed previously:
+                setCompleteStepsIndexes(complete_steps_indexes.filter((s) => s !== current_step_index + 1));
+                setCollectedValues({ ...collected_values, [current_step_index + 1]: undefined });
+            } else {
+                setDisabledStepsIndexes(disabled_steps_indexes.filter((s) => s !== current_step_index + 1));
+            }
             setCompleteStepsIndexes([...complete_steps_indexes, current_step_index]);
             setCollectedValues({ ...collected_values, [current_step_index]: values });
         };
@@ -366,20 +383,6 @@ const DesktopWizard = ({
                 {BodyComponent && (
                     <BodyComponent
                         onSubmit={handleDataSubmit}
-                        setIsNextStepDisabled={(should_disable_next_step: boolean) => {
-                            if (should_disable_next_step) {
-                                setDisabledStepsIndexes([...disabled_steps_indexes, current_step_index + 1]);
-                                // clear next step data in case it was completed previously:
-                                setCompleteStepsIndexes(
-                                    complete_steps_indexes.filter((s) => s !== current_step_index + 1),
-                                );
-                                setCollectedValues({ ...collected_values, [current_step_index + 1]: undefined });
-                            } else {
-                                setDisabledStepsIndexes(
-                                    disabled_steps_indexes.filter((s) => s !== current_step_index + 1),
-                                );
-                            }
-                        }}
                         dark={dark}
                         values={collected_values[current_step_index]}
                         setMoreDetailsType={setMoreDetailsType}
