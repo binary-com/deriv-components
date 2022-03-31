@@ -137,8 +137,8 @@ const Template: Story<DesktopWizardProps> = (args) => {
             ) : (
                 <>
                     <Button onClick={onWizardOpening}>Open Desktop Wizard</Button>
-                    <div>Collected data are: {data}</div>
-                    <div>A clicked button name is: {button_name}</div>
+                    <p>Collected data are: {data}</p>
+                    <p>A clicked button name is: {button_name}</p>
                 </>
             )}
         </>

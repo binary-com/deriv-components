@@ -197,7 +197,7 @@ const Footer = styled('div', {
     padding: '16px 24px',
     borderTop: '2px solid #F2F3F4',
     display: 'flex',
-    justifyContent: 'end',
+    justifyContent: 'flex-end',
     gap: '8px',
 
     variants: {

@@ -61,12 +61,14 @@ export const StepChooseProductMain = ({ onSubmit, values }: MainComponentProps) 
     );
 };
 
-export const StepAddAppMain = ({ onSubmit, selected_toggle_value }: MainComponentProps) => {
+export const StepAddAppMain = ({ dark, onSubmit, selected_toggle_value }: MainComponentProps) => {
     const is_real = selected_toggle_value?.toLowerCase() === 'real';
 
     return (
         <>
-            <div>{is_real ? 'Real' : 'Demo'} apps:</div>
+            <Text as="p" type="paragraph-1" bold={false} css={{ color: dark ? '#C2C2C2' : '#333333' }}>
+                {is_real ? 'Real' : 'Demo'} apps:
+            </Text>
             <Button onClick={() => onSubmit({ app_type: is_real ? 'real' : 'demo' })}>
                 Select a {is_real ? 'real' : 'demo'} app
             </Button>
@@ -103,18 +105,10 @@ export const StepCreateWalletMain = ({
         if (more_details_type === 'fiat_currency_wallets') {
             return (
                 <>
-                    <Text
-                        as="div"
-                        type="paragraph-1"
-                        css={{ color: dark ? '#C2C2C2' : '#333333', marginBottom: '24px' }}
-                    >
+                    <Text as="p" type="paragraph-1" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
                         E-wallets
                     </Text>
-                    <Text
-                        as="div"
-                        type="paragraph-1"
-                        css={{ color: dark ? '#C2C2C2' : '#333333', marginBottom: '24px' }}
-                    >
+                    <Text as="p" type="paragraph-1" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
                         Bankwire
                     </Text>
                 </>
@@ -122,7 +116,7 @@ export const StepCreateWalletMain = ({
         }
         return (
             <>
-                <Text as="div" type="paragraph-1" css={{ color: dark ? '#C2C2C2' : '#333333', marginBottom: '24px' }}>
+                <Text as="p" type="paragraph-1" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
                     Some additional details
                 </Text>
             </>
@@ -143,12 +137,7 @@ export const StepCreateWalletMain = ({
             <Button color="secondary" dark={dark as boolean} onClick={() => handleInfoIconClick('something_else')}>
                 More Info about something else
             </Button>
-            <Text
-                as="div"
-                type="paragraph-2"
-                bold={false}
-                css={{ color: dark ? '#C2C2C2' : '#333333', margin: '24px' }}
-            >
+            <Text as="p" type="paragraph-2" bold={false} css={{ color: dark ? '#C2C2C2' : '#333333' }}>
                 If you choose a fiat or crypto wallet, the next step will be disabled (skipped). If you choose a payment
                 agent wallet, the next step will be enabled.
             </Text>
@@ -222,11 +211,10 @@ export const StepComplete = ({ dark }: MainComponentProps) => (
     >
         You can now use your USD wallet with your Deriv USD Apps.
         <Text
-            as="div"
+            as="p"
             type="paragraph-1"
             css={{
                 height: '600px',
-                marginTop: '10px',
                 backgroundColor: 'LightGrey',
             }}
         >
@@ -236,26 +224,25 @@ export const StepComplete = ({ dark }: MainComponentProps) => (
 );
 
 export const TestRightUpperComponent = ({ data, dark, current_step_index }: RightPanelComponentProps) => (
-    <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
+    <Text as="p" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
         Upper block test info. Data collected on each step can be used here.
-        <div>Collected data: {JSON.stringify(data)}</div>
-        <div>And current_step_index is: {current_step_index}</div>
+        <p>Collected data: {JSON.stringify(data)}</p>
+        <p>And current_step_index is: {current_step_index}</p>
     </Text>
 );
 
 export const TestLongRightUpperComponent = ({ data, dark, current_step_index }: RightPanelComponentProps) => (
     <>
-        <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
+        <Text as="p" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
             Long upper block test info. Data collected on each step can be used here.
-            <div>Collected data: {JSON.stringify(data)}</div>
-            <div>And current_step_index is: {current_step_index}</div>
+            <p>Collected data: {JSON.stringify(data)}</p>
+            <p>And current_step_index is: {current_step_index}</p>
         </Text>
         <Text
-            as="div"
+            as="p"
             type="paragraph-1"
             css={{
                 height: '600px',
-                marginTop: '10px',
                 backgroundColor: 'LightGrey',
             }}
         >
@@ -266,7 +253,7 @@ export const TestLongRightUpperComponent = ({ data, dark, current_step_index }: 
 
 export const TestRightMiddleComponent = ({ data, dark, current_step_index }: RightPanelComponentProps) => (
     <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
-        Middle block test info. Data collected on each step can be used here.
+        Middle block.
         <div>Collected data: {JSON.stringify(data)}</div>
         <div>And current_step_index is: {current_step_index}</div>
     </Text>
@@ -274,7 +261,7 @@ export const TestRightMiddleComponent = ({ data, dark, current_step_index }: Rig
 
 export const TestRightLowerComponent = ({ data, dark, current_step_index }: RightPanelComponentProps) => (
     <Text as="div" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
-        Lower block test info. Data collected on each step can be used here.
+        Lower block.
         <div>Collected data: {JSON.stringify(data)}</div>
         <div>And current_step_index is: {current_step_index}</div>
     </Text>
@@ -291,14 +278,20 @@ const ToggleButton = styled('button', {
     variants: {
         dark: {
             true: {
-                background: '$white',
-                color: '#6E6E6E',
+                background: 'transparent',
+
+                '*': {
+                    color: '#6E6E6E',
+                },
             },
         },
         pressed: {
             true: {
                 background: '$white',
-                color: '#333333',
+
+                '*': {
+                    color: '#333333',
+                },
             },
         },
     },
@@ -308,7 +301,10 @@ const ToggleButton = styled('button', {
             pressed: true,
             css: {
                 background: '#323738',
-                color: '$white',
+
+                '*': {
+                    color: '$white',
+                },
             },
         },
     ],
