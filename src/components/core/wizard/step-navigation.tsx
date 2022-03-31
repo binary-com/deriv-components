@@ -175,7 +175,7 @@ const StepNavigation = React.memo(
                                 }
                                 dark={dark}
                             />
-                            <Text as="label" type="paragraph-2" bold={active}>
+                            <Text as="label" type="paragraph-2" bold={active} css={{ cursor: 'pointer' }}>
                                 {step.step_title}
                             </Text>
                         </StepBreadcrumb>
