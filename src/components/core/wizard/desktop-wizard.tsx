@@ -1,13 +1,13 @@
 import CloseIconDark from '@assets/svg/modal/ic-close-dark.svg';
 import CloseIconLight from '@assets/svg/modal/ic-close-light.svg';
-import BackArrowIconLight from '@assets/svg/wizard/ic-back-arrow-light.svg';
 import BackArrowIconDark from '@assets/svg/wizard/ic-back-arrow-dark.svg';
+import BackArrowIconLight from '@assets/svg/wizard/ic-back-arrow-light.svg';
 import Button from '@core/button/button';
 import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
-import StepNavigation from './step-navigation';
 import Scrollbars from './scrollbars';
+import StepNavigation from './step-navigation';
 
 const DarkBackgroundContainer = styled('div', {
     position: 'absolute',
@@ -63,8 +63,47 @@ const LeftPanel = styled('div', {
 });
 
 const MainTitleContainer = styled('div', {
+    position: 'relative',
     display: 'flex',
     gap: '10px',
+});
+
+const GoBackArrow = styled('div', {
+    marginTop: '14px',
+    width: '12px',
+    height: '8px',
+    background: `url(${BackArrowIconDark}) no-repeat center`,
+
+    '&:hover': {
+        cursor: 'pointer',
+    },
+
+    variants: {
+        dark: {
+            true: {
+                background: `url(${BackArrowIconLight}) no-repeat center`,
+            },
+        },
+    },
+});
+
+const ToggleSwitcherContainer = styled('div', {
+    position: 'absolute',
+    top: '0',
+    right: '0',
+    width: '200px',
+    height: '40px',
+    background: '#F2F3F4',
+    borderRadius: '6px',
+    padding: '4px',
+
+    variants: {
+        dark: {
+            true: {
+                background: '#151717',
+            },
+        },
+    },
 });
 
 const WizardBody = styled('div', {
@@ -170,25 +209,6 @@ const Footer = styled('div', {
     },
 });
 
-const GoBackArrow = styled('div', {
-    marginTop: '14px',
-    width: '12px',
-    height: '8px',
-    background: `url(${BackArrowIconDark}) no-repeat center`,
-
-    '&:hover': {
-        cursor: 'pointer',
-    },
-
-    variants: {
-        dark: {
-            true: {
-                background: `url(${BackArrowIconLight}) no-repeat center`,
-            },
-        },
-    },
-});
-
 const CloseIcon = styled('div', {
     position: 'absolute',
     width: '12px',
@@ -221,7 +241,13 @@ const CloseIcon = styled('div', {
     },
 });
 
-type CustomComponentType = (props: { [key: string]: unknown }) => JSX.Element;
+export type ToggleSwitcherProps = {
+    button_labels?: string[];
+    dark?: boolean;
+    defaultValue: string;
+    onToggle: (value: string) => void;
+};
+
 type RightPanelComponentType = (props: RightPanelComponentProps) => JSX.Element;
 
 export type RightPanelComponentProps = {
@@ -236,11 +262,16 @@ export type MainComponentProps = {
     onSubmit: (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => void;
     setMoreDetailsType?: (more_details_type: string) => void;
     values?: { [key: string]: unknown };
+    toggle_switcher_value?: string;
 };
 
 export type StepData = {
     step_title: string;
-    toggle_switcher?: CustomComponentType;
+    toggle_switcher?: {
+        component: (props: ToggleSwitcherProps) => JSX.Element;
+        defaultValue: string;
+        button_labels?: string[];
+    };
     main_content_header: string;
     main_content_subheader?: string;
     main_content?: (props: MainComponentProps) => JSX.Element;
@@ -281,6 +312,7 @@ const DesktopWizard = ({
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
     const [disabled_steps_indexes, setDisabledStepsIndexes] = React.useState<number[]>([]);
     const [more_details_type, setMoreDetailsType] = React.useState('');
+    const [toggle_switcher_value, setToggleSwitcherValue] = React.useState('');
     const [collected_values, setCollectedValues] = React.useState<{ [key: string]: { [key: string]: unknown } }>({});
     const current_left_button_name = steps[current_step_index].cancel_button_name || 'Back';
     const current_right_button_name = steps[current_step_index].submit_button_name || 'Next';
@@ -336,6 +368,8 @@ const DesktopWizard = ({
     };
 
     const BodyComponent = steps[current_step_index].main_content;
+    const ToggleSwitcher = steps[current_step_index].toggle_switcher?.component;
+    const default_toggle_button = steps[current_step_index].toggle_switcher?.defaultValue;
 
     const getBody = () => {
         const handleDataSubmit = (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => {
@@ -379,6 +413,16 @@ const DesktopWizard = ({
                                 : steps[current_step_index].main_content_subheader}
                         </Text>
                     </div>
+                    {ToggleSwitcher && (
+                        <ToggleSwitcherContainer dark={dark}>
+                            <ToggleSwitcher
+                                button_labels={steps[current_step_index].toggle_switcher?.button_labels}
+                                dark={dark}
+                                defaultValue={default_toggle_button as string}
+                                onToggle={setToggleSwitcherValue}
+                            />
+                        </ToggleSwitcherContainer>
+                    )}
                 </MainTitleContainer>
                 {BodyComponent && (
                     <BodyComponent
@@ -387,6 +431,7 @@ const DesktopWizard = ({
                         values={collected_values[current_step_index]}
                         setMoreDetailsType={setMoreDetailsType}
                         more_details_type={more_details_type}
+                        toggle_switcher_value={toggle_switcher_value || default_toggle_button}
                     />
                 )}
             </Scrollbars>

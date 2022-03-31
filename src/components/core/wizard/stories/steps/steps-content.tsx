@@ -1,5 +1,6 @@
 import Checkbox from '@core/checkbox/checkbox';
-import { MainComponentProps, RightPanelComponentProps } from '@core/wizard/desktop-wizard';
+import { MainComponentProps, RightPanelComponentProps, ToggleSwitcherProps } from '@core/wizard/desktop-wizard';
+import React from 'react';
 import { styled } from 'Styles/stitches.config';
 import Button from '../../../button/button';
 import Text from '../../../text/text';
@@ -60,7 +61,18 @@ export const StepChooseProductMain = ({ onSubmit, values }: MainComponentProps) 
     );
 };
 
-export const StepAddAppMain = ({ onSubmit }: MainComponentProps) => <Button onClick={() => onSubmit()}>Submit</Button>;
+export const StepAddAppMain = ({ onSubmit, toggle_switcher_value }: MainComponentProps) => {
+    const is_real = toggle_switcher_value?.toLowerCase() === 'real';
+
+    return (
+        <>
+            <div>{is_real ? 'Real' : 'Demo'} apps:</div>
+            <Button onClick={() => onSubmit({ app_type: is_real ? 'real' : 'demo' })}>
+                Select a {is_real ? 'real' : 'demo'} app
+            </Button>
+        </>
+    );
+};
 
 export const StepCreateWalletMain = ({
     dark,
@@ -267,3 +279,64 @@ export const TestRightLowerComponent = ({ data, dark, current_step_index }: Righ
         <div>And current_step_index is: {current_step_index}</div>
     </Text>
 );
+
+const ToggleButton = styled('button', {
+    width: '96px',
+    height: '32px',
+    borderRadius: '4px',
+    background: 'transparent',
+    color: '#999999',
+    border: 'none',
+
+    variants: {
+        dark: {
+            true: {
+                background: '$white',
+                color: '#6E6E6E',
+            },
+        },
+        pressed: {
+            true: {
+                background: '$white',
+                color: '#333333',
+            },
+        },
+    },
+    compoundVariants: [
+        {
+            dark: true,
+            pressed: true,
+            css: {
+                background: '#323738',
+                color: '$white',
+            },
+        },
+    ],
+});
+
+export const ToggleSwitcherComponent = ({ button_labels, dark, defaultValue, onToggle }: ToggleSwitcherProps) => {
+    const [value, setValue] = React.useState(defaultValue.toLowerCase());
+    const buttons = button_labels || ['Real', 'Demo'];
+
+    const handleClick = (_value: string) => {
+        setValue(_value);
+        onToggle(_value);
+    };
+
+    return (
+        <div style={{ margin: '0 auto', display: 'flex' }}>
+            {buttons.map((label, idx) => (
+                <ToggleButton
+                    key={idx + 1}
+                    dark={dark}
+                    pressed={value === label.toLowerCase()}
+                    onClick={() => handleClick(label.toLowerCase())}
+                >
+                    <Text as="span" type="paragraph-2" bold={value === label.toLowerCase()}>
+                        {label}
+                    </Text>
+                </ToggleButton>
+            ))}
+        </div>
+    );
+};

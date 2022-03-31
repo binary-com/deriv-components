@@ -12,6 +12,7 @@ import {
     TestRightLowerComponent,
     TestRightMiddleComponent,
     TestRightUpperComponent,
+    ToggleSwitcherComponent,
 } from './steps-content';
 
 export const test_steps: StepData[] = [
@@ -31,6 +32,11 @@ export const test_steps: StepData[] = [
         main_content_subheader: 'Choose a product to start.',
         main_content: StepAddAppMain,
         right_panel_content: { upper_block: TestLongRightUpperComponent },
+        toggle_switcher: {
+            component: ToggleSwitcherComponent,
+            defaultValue: 'real',
+            button_labels: ['Real', 'Demo'],
+        },
     },
     {
         step_title: 'Wallet',

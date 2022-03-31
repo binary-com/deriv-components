@@ -48,7 +48,11 @@ export default {
                 type: {
                     summary: `**STEPS: ** Array<{
                         step_title: string;
-                        toggle_switcher?: CustomComponentType;
+                        toggle_switcher?: {
+                            component: (props: ToggleSwitcherProps) => JSX.Element;
+                            defaultValue: string;
+                            button_labels?: string[];
+                        };
                         main_content_header: string;
                         main_content_subheader?: string;
                         main_content?: (props: MainComponentProps) => JSX.Element;
@@ -78,6 +82,12 @@ export default {
                         data: { [key: string]: { [key: string]: unknown } };
                         dark?: boolean;
                         current_step_index: number;
+                    };
+                    **TOGGLE SWITCHER PROPS: ** {
+                        button_labels?: string[];
+                        dark?: boolean;
+                        defaultValue: string;
+                        onToggle: (value: string) => void;
                     };`,
                 },
                 defaultValue: { summary: '[{...}]' },
