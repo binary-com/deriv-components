@@ -2,8 +2,8 @@ import Checkbox from '@core/checkbox/checkbox';
 import { MainComponentProps, RightPanelComponentProps, ToggleSwitcherProps } from '@core/wizard/desktop-wizard';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
-import Button from '../../../button/button';
-import Text from '../../../text/text';
+import Button from '@core/button/button';
+import Text from '@core/text/text';
 import ProductCard, { ProductType } from './components/product-card';
 
 const ProductsContainer = styled('div', {
@@ -324,7 +324,7 @@ export const ToggleSwitcherComponent = ({ button_labels, dark, defaultValue, onT
     };
 
     return (
-        <div style={{ margin: '0 auto', display: 'flex' }}>
+        <div style={{ margin: 'auto', display: 'flex' }}>
             {buttons.map((label, idx) => (
                 <ToggleButton
                     key={idx + 1}

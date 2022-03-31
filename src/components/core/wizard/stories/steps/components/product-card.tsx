@@ -1,6 +1,5 @@
-import React from 'react';
 import { styled } from 'Styles/stitches.config';
-import Text from '../../../../text/text';
+import Text from '@core/text/text';
 import CFDsIcon from '@assets/svg/wizard/ic-cfds-logo.svg';
 import CFDsBackground from '@assets/svg/wizard/cfds-background.svg';
 import MultipliersIcon from '@assets/svg/wizard/ic-multipliers-logo.svg';

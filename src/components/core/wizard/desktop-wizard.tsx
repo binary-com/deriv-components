@@ -6,7 +6,7 @@ import Button from '@core/button/button';
 import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
-import Scrollbars from './scrollbars';
+import Scrollbars from '@core/scrollbars/scrollbars';
 import StepNavigation from './step-navigation';
 
 const DarkBackgroundContainer = styled('div', {
@@ -311,11 +311,14 @@ const DesktopWizard = ({
     const [current_step_index, setCurrentStepIndex] = React.useState(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
     const [disabled_steps_indexes, setDisabledStepsIndexes] = React.useState<number[]>([]);
+    const [collected_values, setCollectedValues] = React.useState<{ [key: string]: { [key: string]: unknown } }>({});
     const [more_details_type, setMoreDetailsType] = React.useState('');
     const [toggle_switcher_value, setToggleSwitcherValue] = React.useState('');
-    const [collected_values, setCollectedValues] = React.useState<{ [key: string]: { [key: string]: unknown } }>({});
+    const default_toggle_button = steps[current_step_index].toggle_switcher?.defaultValue;
     const current_left_button_name = steps[current_step_index].cancel_button_name || 'Back';
     const current_right_button_name = steps[current_step_index].submit_button_name || 'Next';
+    const BodyComponent = steps[current_step_index].main_content;
+    const ToggleSwitcher = steps[current_step_index].toggle_switcher?.component;
     const steps_indexes = steps.map((_step, idx) => idx);
     const next_enabled_step_index = steps_indexes.find(
         (i) => i > current_step_index && disabled_steps_indexes.every((index) => i !== index),
@@ -325,7 +328,7 @@ const DesktopWizard = ({
         .reverse()
         .find((i) => i < current_step_index && disabled_steps_indexes.every((index) => i !== index));
     const last_complete_step_index = steps_indexes.filter((idx) => complete_steps_indexes.some((i) => i === idx)).pop();
-    const incomplete_steps = steps_indexes.filter(
+    const incomplete_steps_indexes = steps_indexes.filter(
         (idx) =>
             complete_steps_indexes.every((i) => i !== idx) &&
             disabled_steps_indexes.every((i) => i !== idx) &&
@@ -343,11 +346,11 @@ const DesktopWizard = ({
         if (Number(next_enabled_step_index) < steps.length) {
             setCurrentStepIndex(Number(next_enabled_step_index));
             // last step is always 'Complete' and has to be completed automatically unless some incomplete steps are left:
-            if (incomplete_steps.length === 0)
+            if (incomplete_steps_indexes.length === 0)
                 setCompleteStepsIndexes([...complete_steps_indexes, steps_indexes.length - 1]);
-            if (Number(next_enabled_step_index) === steps.length - 1 && incomplete_steps.length > 0) {
+            if (Number(next_enabled_step_index) === steps.length - 1 && incomplete_steps_indexes.length > 0) {
                 // switch to first incomplete step from second-to-last step before 'Complete' if any incomplete steps are left:
-                setCurrentStepIndex(incomplete_steps[0] as number);
+                setCurrentStepIndex(incomplete_steps_indexes[0] as number);
             }
         } else if (current_step_index === steps.length - 1) {
             onComplete(collected_values, current_right_button_name);
@@ -361,15 +364,11 @@ const DesktopWizard = ({
                 (index === Number(next_enabled_step_index) &&
                     complete_steps_indexes.some((i) => i === current_step_index))) &&
             (index < steps.length - 1 ||
-                (incomplete_steps.length === 0 && complete_steps_indexes.some((i) => i === index)))
+                (incomplete_steps_indexes.length === 0 && complete_steps_indexes.some((i) => i === index)))
         ) {
             setCurrentStepIndex(index);
         }
     };
-
-    const BodyComponent = steps[current_step_index].main_content;
-    const ToggleSwitcher = steps[current_step_index].toggle_switcher?.component;
-    const default_toggle_button = steps[current_step_index].toggle_switcher?.defaultValue;
 
     const getBody = () => {
         const handleDataSubmit = (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => {
