@@ -8,7 +8,7 @@ const Button = styled('button', {
     justifyContent: 'center',
     border: 'none',
     width: 'fit-content',
-    borderRadius: '4px',
+    borderRadius: '$default',
 
     '&:hover': {
         cursor: 'pointer',
@@ -31,7 +31,7 @@ const Button = styled('button', {
             },
             hero: {
                 padding: '17px 24px',
-                borderRadius: '8px',
+                borderRadius: '$pill',
             },
         },
         color: {

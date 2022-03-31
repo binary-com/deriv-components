@@ -69,7 +69,7 @@ const config = (env: EnvConfig): Configuration => {
             path: path.resolve(__dirname, 'dist'),
             filename: `${modules}/components.js`,
         },
-        externals: ['react'],
+        externals: ['react', 'react-dom', 'classnames'],
         plugins: [new ForkTsCheckerWebpackPlugin()],
     };
 };

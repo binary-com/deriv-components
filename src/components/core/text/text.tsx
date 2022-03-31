@@ -8,7 +8,7 @@ const Text = styled('p', {
     variants: {
         bold: {
             true: {
-                fontWeight: 'bold',
+                fontWeight: '$bold',
             },
         },
         align: {
@@ -25,92 +25,92 @@ const Text = styled('p', {
         type: {
             hero: {
                 fontSize: '80px',
-                lineHeight: '100px',
+                lineHeight: '$lineHeight100',
 
                 '@mobile': {
                     fontSize: '40px',
-                    lineHeight: '50px',
+                    lineHeight: '$lineHeight50',
                 },
             },
             'heading-1': {
                 fontSize: '64px',
-                lineHeight: '80px',
+                lineHeight: '$lineHeight80',
 
                 '@mobile': {
                     fontSize: '32px',
-                    lineHeight: '40px',
+                    lineHeight: '$lineHeight40',
                 },
             },
             'heading-2': {
                 fontSize: '48px',
-                lineHeight: '60px',
+                lineHeight: '$lineHeight60',
 
                 '@mobile': {
                     fontSize: '28px',
-                    lineHeight: '34px',
+                    lineHeight: '$lineHeight34',
                 },
             },
             'heading-3': {
                 fontSize: '32px',
-                lineHeight: '40px',
+                lineHeight: '$lineHeight40',
 
                 '@mobile': {
                     fontSize: '24px',
-                    lineHeight: '30px',
+                    lineHeight: '$lineHeight30',
                 },
             },
             'subtitle-1': {
                 fontSize: '24px',
-                lineHeight: '36px',
+                lineHeight: '$lineHeight36',
 
                 '@mobile': {
                     fontSize: '18px',
-                    lineHeight: '26px',
+                    lineHeight: '$lineHeight26',
                 },
             },
             'subtitle-2': {
                 fontSize: '20px',
-                lineHeight: '30px',
+                lineHeight: '$lineHeight30',
 
                 '@mobile': {
                     fontSize: '16px',
-                    lineHeight: '24px',
+                    lineHeight: '$lineHeight24',
                 },
             },
             'paragraph-1': {
                 fontSize: '16px',
-                lineHeight: '24px',
+                lineHeight: '$lineHeight24',
 
                 '@mobile': {
                     fontSize: '14px',
-                    lineHeight: '20px',
+                    lineHeight: '$lineHeight20',
                 },
             },
             'paragraph-2': {
                 fontSize: '14px',
-                lineHeight: '20px',
+                lineHeight: '$lineHeight20',
 
                 '@mobile': {
                     fontSize: '12px',
-                    lineHeight: '18px',
+                    lineHeight: '$lineHeight18',
                 },
             },
             small: {
                 fontSize: '12px',
-                lineHeight: '18px',
+                lineHeight: '$lineHeight18',
 
                 '@mobile': {
                     fontSize: '10px',
-                    lineHeight: '14px',
+                    lineHeight: '$lineHeight14',
                 },
             },
             'extra-small': {
                 fontSize: '10px',
-                lineHeight: '14px',
+                lineHeight: '$lineHeight14',
 
                 '@mobile': {
                     fontSize: '8px',
-                    lineHeight: '12px',
+                    lineHeight: '$lineHeight12',
                 },
             },
         },
