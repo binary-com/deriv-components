@@ -262,7 +262,7 @@ export type MainComponentProps = {
     onSubmit: (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => void;
     setMoreDetailsType?: (more_details_type: string) => void;
     values?: { [key: string]: unknown };
-    toggle_switcher_value?: string;
+    selected_toggle_value?: string;
 };
 
 export type StepData = {
@@ -313,8 +313,8 @@ const DesktopWizard = ({
     const [disabled_steps_indexes, setDisabledStepsIndexes] = React.useState<number[]>([]);
     const [collected_values, setCollectedValues] = React.useState<{ [key: string]: { [key: string]: unknown } }>({});
     const [more_details_type, setMoreDetailsType] = React.useState('');
-    const [toggle_switcher_value, setToggleSwitcherValue] = React.useState('');
-    const default_toggle_button = steps[current_step_index].toggle_switcher?.defaultValue;
+    const [selected_toggle_value, setSelectedToggleValue] = React.useState('');
+    const default_toggle_value = steps[current_step_index].toggle_switcher?.defaultValue;
     const current_left_button_name = steps[current_step_index].cancel_button_name || 'Back';
     const current_right_button_name = steps[current_step_index].submit_button_name || 'Next';
     const BodyComponent = steps[current_step_index].main_content;
@@ -417,8 +417,8 @@ const DesktopWizard = ({
                             <ToggleSwitcher
                                 button_labels={steps[current_step_index].toggle_switcher?.button_labels}
                                 dark={dark}
-                                defaultValue={default_toggle_button as string}
-                                onToggle={setToggleSwitcherValue}
+                                defaultValue={default_toggle_value as string}
+                                onToggle={setSelectedToggleValue}
                             />
                         </ToggleSwitcherContainer>
                     )}
@@ -430,7 +430,7 @@ const DesktopWizard = ({
                         values={collected_values[current_step_index]}
                         setMoreDetailsType={setMoreDetailsType}
                         more_details_type={more_details_type}
-                        toggle_switcher_value={toggle_switcher_value || default_toggle_button}
+                        selected_toggle_value={selected_toggle_value || default_toggle_value}
                     />
                 )}
             </Scrollbars>

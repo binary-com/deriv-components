@@ -77,6 +77,7 @@ export default {
                         onSubmit: (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => void;
                         setMoreDetailsType?: (more_details_type: string) => void;
                         values?: { [key: string]: unknown };
+                        selected_toggle_value?: string;
                     };
                     **RIGHT PANEL COMPONENT PROPS: ** {
                         data: { [key: string]: { [key: string]: unknown } };

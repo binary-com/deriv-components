@@ -61,8 +61,8 @@ export const StepChooseProductMain = ({ onSubmit, values }: MainComponentProps) 
     );
 };
 
-export const StepAddAppMain = ({ onSubmit, toggle_switcher_value }: MainComponentProps) => {
-    const is_real = toggle_switcher_value?.toLowerCase() === 'real';
+export const StepAddAppMain = ({ onSubmit, selected_toggle_value }: MainComponentProps) => {
+    const is_real = selected_toggle_value?.toLowerCase() === 'real';
 
     return (
         <>
