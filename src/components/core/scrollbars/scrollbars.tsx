@@ -1,3 +1,4 @@
+import type * as Stitches from '@stitches/react';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
 
@@ -80,7 +81,7 @@ const ScrollbarsContainer = styled('div', {
     },
 });
 
-type ScrollbarsProps = {
+export type ScrollbarsProps = {
     dark?: boolean;
     autohide?: boolean;
     children?: React.ReactNode | React.ReactNode[];
@@ -89,45 +90,47 @@ type ScrollbarsProps = {
     is_only_horizontal_overlay?: boolean;
     is_scrollbar_hidden?: boolean;
     onScroll?: React.UIEventHandler<HTMLDivElement>;
-    style?: { [key: string]: React.CSSProperties };
+    style?: Stitches.CSS;
     has_y_scroll_on_drag_effect?: boolean;
 };
 
-const Scrollbars = ({ children, has_y_scroll_on_drag_effect, style, ...props }: ScrollbarsProps) => {
-    const scroll_ref = React.useRef<HTMLDivElement>(null);
-    const [is_mouse_down, setIsMouseDown] = React.useState(false);
-    const [start_clientY, setStartClientY] = React.useState<number | undefined>(undefined);
-    const [current_clientY, setCurrentClientY] = React.useState<number | undefined>(undefined);
+const Scrollbars = React.forwardRef(
+    ({ children, has_y_scroll_on_drag_effect, style, ...props }: ScrollbarsProps, ref) => {
+        const scroll_ref = (ref as React.RefObject<HTMLDivElement>) || React.useRef<HTMLDivElement>(null);
+        const [is_mouse_down, setIsMouseDown] = React.useState(false);
+        const [start_clientY, setStartClientY] = React.useState<number | undefined>(undefined);
+        const [current_clientY, setCurrentClientY] = React.useState<number | undefined>(undefined);
 
-    const scrollYAxisOnDrag: React.MouseEventHandler<HTMLDivElement> = (e) => {
-        if (!has_y_scroll_on_drag_effect) return;
-        if (e.type === 'mousedown') {
-            setIsMouseDown(true);
-            setStartClientY(e.clientY);
-        } else if (e.type === 'mousemove' && is_mouse_down && scroll_ref.current) {
-            setCurrentClientY(e.clientY);
-        } else if (e.type === 'mouseup') {
-            setIsMouseDown(false);
-        }
-        if (scroll_ref.current && is_mouse_down && current_clientY && start_clientY) {
-            scroll_ref.current.scrollTop -= current_clientY - start_clientY;
-        }
-    };
+        const scrollYAxisOnDrag: React.MouseEventHandler<HTMLDivElement> = (e) => {
+            if (!has_y_scroll_on_drag_effect) return;
+            if (e.type === 'mousedown') {
+                setIsMouseDown(true);
+                setStartClientY(e.clientY);
+            } else if (e.type === 'mousemove' && is_mouse_down && scroll_ref.current) {
+                setCurrentClientY(e.clientY);
+            } else if (e.type === 'mouseup') {
+                setIsMouseDown(false);
+            }
+            if (scroll_ref.current && is_mouse_down && current_clientY && start_clientY) {
+                scroll_ref.current.scrollTop -= current_clientY - start_clientY;
+            }
+        };
 
-    return (
-        <>
-            <ScrollbarsContainer
-                {...props}
-                css={style}
-                onMouseDown={scrollYAxisOnDrag}
-                onMouseUp={scrollYAxisOnDrag}
-                onMouseMove={scrollYAxisOnDrag}
-                ref={scroll_ref}
-            >
-                {children}
-            </ScrollbarsContainer>
-        </>
-    );
-};
+        return (
+            <>
+                <ScrollbarsContainer
+                    {...props}
+                    css={style}
+                    onMouseDown={scrollYAxisOnDrag}
+                    onMouseUp={scrollYAxisOnDrag}
+                    onMouseMove={scrollYAxisOnDrag}
+                    ref={scroll_ref}
+                >
+                    {children}
+                </ScrollbarsContainer>
+            </>
+        );
+    },
+);
 
 export default Scrollbars;

@@ -116,6 +116,7 @@ const ContentContainer = styled('div', {
     height: '568px',
     position: 'relative',
     padding: '48px 24px 24px',
+    overflow: 'hidden',
 });
 
 const FixedWidthContainer = styled('div', {
@@ -313,12 +314,14 @@ const DesktopWizard = ({
     const [disabled_steps_indexes, setDisabledStepsIndexes] = React.useState<number[]>([]);
     const [collected_values, setCollectedValues] = React.useState<{ [key: string]: { [key: string]: unknown } }>({});
     const [more_details_type, setMoreDetailsType] = React.useState('');
+    const [should_show_scrollbar, setShouldShowScrollbar] = React.useState(false);
     const [selected_toggle_value, setSelectedToggleValue] = React.useState('');
     const default_toggle_value = steps[current_step_index].toggle_switcher?.defaultValue;
     const current_left_button_name = steps[current_step_index].cancel_button_name || 'Back';
     const current_right_button_name = steps[current_step_index].submit_button_name || 'Next';
     const BodyComponent = steps[current_step_index].main_content;
     const ToggleSwitcher = steps[current_step_index].toggle_switcher?.component;
+    const animated_div_ref = React.useRef<HTMLDivElement>(null);
     const steps_indexes = steps.map((_step, idx) => idx);
     const next_enabled_step_index = steps_indexes.find(
         (i) => i > current_step_index && disabled_steps_indexes.every((index) => i !== index),
@@ -334,24 +337,52 @@ const DesktopWizard = ({
             disabled_steps_indexes.every((i) => i !== idx) &&
             idx < steps.length - 1,
     );
+    let scroll_timeout: NodeJS.Timeout;
+    let new_step_timeout: NodeJS.Timeout;
+
+    const slide = (from: string, to: string) => {
+        // new_step_timeout times should be equal to this animation duration:
+        animated_div_ref.current?.animate({ transform: [from, to], easing: ['ease'] }, 250);
+    };
+
+    const handleScroll = () => {
+        clearTimeout(scroll_timeout);
+        if (!should_show_scrollbar) {
+            setShouldShowScrollbar(true);
+            scroll_timeout = setTimeout(() => {
+                setShouldShowScrollbar(false);
+            }, 700);
+        }
+    };
 
     const prevStep = () => {
-        setCurrentStepIndex(Number(previous_enabled_step_index));
+        clearTimeout(new_step_timeout);
+        slide('translateY(0)', 'translateY(100vh)');
         if (current_step_index === steps.length - 1) {
             onComplete(collected_values, current_left_button_name);
+        } else {
+            new_step_timeout = setTimeout(() => {
+                setCurrentStepIndex(Number(previous_enabled_step_index));
+                slide('translateY(-100vh)', 'translateY(0)');
+            }, 250);
         }
     };
 
     const nextStep = () => {
+        clearTimeout(new_step_timeout);
+        slide('translateY(0)', 'translateY(-100vh)');
         if (Number(next_enabled_step_index) < steps.length) {
-            setCurrentStepIndex(Number(next_enabled_step_index));
-            // last step is always 'Complete' and has to be completed automatically unless some incomplete steps are left:
-            if (incomplete_steps_indexes.length === 0)
-                setCompleteStepsIndexes([...complete_steps_indexes, steps_indexes.length - 1]);
-            if (Number(next_enabled_step_index) === steps.length - 1 && incomplete_steps_indexes.length > 0) {
-                // switch to first incomplete step from second-to-last step before 'Complete' if any incomplete steps are left:
-                setCurrentStepIndex(incomplete_steps_indexes[0] as number);
-            }
+            new_step_timeout = setTimeout(() => {
+                setCurrentStepIndex(Number(next_enabled_step_index));
+                // last step is always 'Complete' and has to be completed automatically unless some incomplete steps are left:
+                if (incomplete_steps_indexes.length === 0)
+                    setCompleteStepsIndexes([...complete_steps_indexes, steps_indexes.length - 1]);
+                if (Number(next_enabled_step_index) === steps.length - 1 && incomplete_steps_indexes.length > 0) {
+                    // switch from second-to-last step before 'Complete' to the first incomplete step if any incomplete steps are left:
+                    setCurrentStepIndex(incomplete_steps_indexes[0] as number);
+                }
+                slide('translateY(100vh)', 'translateY(0)');
+            }, 250);
         } else if (current_step_index === steps.length - 1) {
             onComplete(collected_values, current_right_button_name);
         }
@@ -366,7 +397,14 @@ const DesktopWizard = ({
             (index < steps.length - 1 ||
                 (incomplete_steps_indexes.length === 0 && complete_steps_indexes.some((i) => i === index)))
         ) {
-            setCurrentStepIndex(index);
+            clearTimeout(new_step_timeout);
+            if (index < current_step_index) slide('translateY(0)', 'translateY(100vh)');
+            if (index > current_step_index) slide('translateY(0)', 'translateY(-100vh)');
+            new_step_timeout = setTimeout(() => {
+                setCurrentStepIndex(index);
+                if (index < current_step_index) slide('translateY(-100vh)', 'translateY(0)');
+                if (index > current_step_index) slide('translateY(100vh)', 'translateY(0)');
+            }, 250);
         }
     };
 
@@ -385,7 +423,7 @@ const DesktopWizard = ({
         };
 
         return (
-            <Scrollbars dark={dark}>
+            <Scrollbars dark={dark} ref={animated_div_ref} onScroll={handleScroll} autohide={!should_show_scrollbar}>
                 <MainTitleContainer>
                     {more_details_type ? (
                         <GoBackArrow dark={dark as boolean} onClick={() => setMoreDetailsType('')} />

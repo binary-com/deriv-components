@@ -223,21 +223,25 @@ export const StepComplete = ({ dark }: MainComponentProps) => (
     </Text>
 );
 
-export const TestRightUpperComponent = ({ data, dark, current_step_index }: RightPanelComponentProps) => (
-    <Text as="p" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
-        Upper block test info. Data collected on each step can be used here.
-        <p>Collected data: {JSON.stringify(data)}</p>
-        <p>And current_step_index is: {current_step_index}</p>
-    </Text>
-);
+export const TestRightUpperComponent = ({ data, dark, current_step_index }: RightPanelComponentProps) => {
+    return (
+        <>
+            <Text as="p" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
+                Upper block test info. Data collected on each step can be used here.
+            </Text>
+            <p>Collected data: {JSON.stringify(data)}</p>
+            <p>And current_step_index is: {current_step_index}</p>
+        </>
+    );
+};
 
 export const TestLongRightUpperComponent = ({ data, dark, current_step_index }: RightPanelComponentProps) => (
     <>
         <Text as="p" type="paragraph-2" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
             Long upper block test info. Data collected on each step can be used here.
-            <p>Collected data: {JSON.stringify(data)}</p>
-            <p>And current_step_index is: {current_step_index}</p>
         </Text>
+        <p>Collected data: {JSON.stringify(data)}</p>
+        <p>And current_step_index is: {current_step_index}</p>
         <Text
             as="p"
             type="paragraph-1"
