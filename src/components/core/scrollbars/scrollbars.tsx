@@ -106,12 +106,13 @@ const Scrollbars = React.forwardRef(
             if (e.type === 'mousedown') {
                 setIsMouseDown(true);
                 setStartClientY(e.clientY);
+                e.preventDefault();
             } else if (e.type === 'mousemove' && is_mouse_down && scroll_ref.current) {
                 setCurrentClientY(e.clientY);
-            } else if (e.type === 'mouseup') {
+            } else if (e.type === 'mouseup' || e.type === 'mouseleave') {
                 setIsMouseDown(false);
             }
-            if (scroll_ref.current && is_mouse_down && current_clientY && start_clientY) {
+            if (scroll_ref.current && is_mouse_down && start_clientY && current_clientY) {
                 scroll_ref.current.scrollTop -= current_clientY - start_clientY;
             }
         };
@@ -124,6 +125,7 @@ const Scrollbars = React.forwardRef(
                     onMouseDown={scrollYAxisOnDrag}
                     onMouseUp={scrollYAxisOnDrag}
                     onMouseMove={scrollYAxisOnDrag}
+                    onMouseLeave={scrollYAxisOnDrag}
                     ref={scroll_ref}
                 >
                     {children}
