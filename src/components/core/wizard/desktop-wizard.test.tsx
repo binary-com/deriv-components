@@ -57,6 +57,8 @@ describe('DesktopWizard Component', () => {
         has_dark_background: true,
         steps: mocked_steps,
         wizard_title: "Let's get you a new app.",
+        onClose: jest.fn(),
+        onComplete: jest.fn(),
     };
 
     beforeEach(() => {
@@ -68,7 +70,7 @@ describe('DesktopWizard Component', () => {
     });
 
     it('DesktopWizard renders properly with a 1st step header, step navigation and initially disabled Back and Next buttons', () => {
-        render(DesktopWizard({ onClose: () => {}, onComplete: () => {}, ...props }));
+        render(<DesktopWizard {...props} />);
 
         const steps = screen.getByTestId('step-navigation');
         const products = screen.getAllByTestId('product-card');
@@ -92,7 +94,7 @@ describe('DesktopWizard Component', () => {
             .mockReturnValueOnce([0, () => {}])
             .mockReturnValueOnce([[0], () => {}]);
 
-        render(DesktopWizard({ onClose: () => {}, onComplete: () => {}, ...props }));
+        render(<DesktopWizard {...props} />);
 
         const products = screen.getAllByTestId('product-card');
 
@@ -111,7 +113,7 @@ describe('DesktopWizard Component', () => {
             .mockReturnValueOnce([1, () => {}])
             .mockReturnValueOnce([[0], () => {}]);
 
-        render(DesktopWizard({ onClose: () => {}, onComplete: () => {}, ...props }));
+        render(<DesktopWizard {...props} />);
 
         expect(screen.getByTestId('desktop-wizard')).toBeInTheDocument();
         expect(screen.getByText("Let's get you a new app.")).toBeInTheDocument();
@@ -130,7 +132,7 @@ describe('DesktopWizard Component', () => {
             .mockReturnValueOnce([1, () => {}])
             .mockReturnValueOnce([[0, 1], () => {}]);
 
-        render(DesktopWizard({ onClose: () => {}, onComplete: () => {}, ...props }));
+        render(<DesktopWizard {...props} />);
 
         expect(screen.getByTestId('desktop-wizard')).toBeInTheDocument();
         expect(screen.getByText("Let's get you a new app.")).toBeInTheDocument();
@@ -148,7 +150,7 @@ describe('DesktopWizard Component', () => {
             .mockReturnValueOnce([1, () => {}])
             .mockReturnValueOnce([[0, 1], () => {}]);
 
-        render(DesktopWizard({ onClose: () => {}, onComplete: () => {}, ...props }));
+        render(<DesktopWizard {...props} />);
 
         expect(screen.getByTestId('desktop-wizard')).toBeInTheDocument();
         expect(screen.getByText("Let's get you a new app.")).toBeInTheDocument();
@@ -163,7 +165,7 @@ describe('DesktopWizard Component', () => {
             .mockReturnValueOnce([2, () => {}])
             .mockReturnValueOnce([[0, 1], () => {}]);
 
-        render(DesktopWizard({ onClose: () => {}, onComplete: () => {}, ...props }));
+        render(<DesktopWizard {...props} />);
 
         expect(screen.getByTestId('desktop-wizard')).toBeInTheDocument();
         expect(screen.getByText("Let's get you a new app.")).toBeInTheDocument();

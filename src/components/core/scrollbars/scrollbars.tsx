@@ -128,6 +128,7 @@ const Scrollbars = React.forwardRef(
                     onMouseMove={scrollYAxisOnDrag}
                     onMouseLeave={scrollYAxisOnDrag}
                     ref={scroll_ref}
+                    data-testid="scrollbars"
                 >
                     {children}
                 </ScrollbarsContainer>
