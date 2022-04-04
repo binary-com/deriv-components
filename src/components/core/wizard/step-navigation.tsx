@@ -154,7 +154,7 @@ const StepNavigation = React.memo(
         onClick,
     }: StepNavigationProps) => {
         return (
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative' }} data-testid="step-navigation">
                 <Before
                     dark={dark}
                     css={{
@@ -165,7 +165,13 @@ const StepNavigation = React.memo(
                     const active = idx === current_step_index;
                     const disabled = disabled_steps_indexes?.some((i) => i === idx);
                     return (
-                        <StepBreadcrumb key={idx + 1} onClick={() => onClick?.(idx)} disabled={disabled} dark={dark}>
+                        <StepBreadcrumb
+                            key={idx + 1}
+                            onClick={() => onClick?.(idx)}
+                            disabled={disabled}
+                            dark={dark}
+                            data-testid="step-item"
+                        >
                             <Bullet
                                 status={
                                     (complete_steps_indexes?.some((i) => i === idx) && 'complete') ||

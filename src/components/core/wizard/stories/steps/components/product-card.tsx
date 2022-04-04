@@ -82,7 +82,7 @@ const ProductCard = ({ active, description, onProductSelect, title, type }: Prod
     };
 
     return (
-        <ProductCardContainer type={type} onClick={handleClick}>
+        <ProductCardContainer type={type} onClick={handleClick} data-testid="product-card">
             <Text as="div" type="small" css={{ color: '$white', marginBottom: '8px' }}>
                 {title}
             </Text>

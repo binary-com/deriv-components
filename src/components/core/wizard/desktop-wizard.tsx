@@ -296,7 +296,7 @@ export type DesktopWizardProps = {
     dark?: boolean;
     has_dark_background?: boolean;
     onComplete: (data: { [key: string]: { [key: string]: unknown } }, button_name: string) => void;
-    toggleWizard: () => void;
+    onClose: () => void;
     steps: StepData[];
     wizard_title: string;
 };
@@ -305,7 +305,7 @@ const DesktopWizard = ({
     dark,
     has_dark_background = true,
     onComplete,
-    toggleWizard,
+    onClose,
     steps,
     wizard_title = "Let's get you a new app.",
 }: DesktopWizardProps) => {
@@ -477,7 +477,7 @@ const DesktopWizard = ({
 
     return (
         <DarkBackgroundContainer visible={has_dark_background}>
-            <WizardContainer dark={dark}>
+            <WizardContainer dark={dark} data-testid="desktop-wizard">
                 <LeftPanel dark={dark}>
                     <Text
                         as="div"
@@ -554,7 +554,7 @@ const DesktopWizard = ({
                         </Button>
                     </Footer>
                 </WizardBody>
-                <CloseIcon dark={dark} onClick={toggleWizard} />
+                <CloseIcon dark={dark} onClick={onClose} />
             </WizardContainer>
         </DarkBackgroundContainer>
     );

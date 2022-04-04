@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react';
-import DesktopWizard, { DesktopWizardProps } from '../desktop-wizard';
-import Button from '../../button/button';
 import { useState } from 'react';
+import Button from '../../button/button';
+import DesktopWizard, { DesktopWizardProps } from '../desktop-wizard';
 import { test_steps } from './steps/steps-data';
 
 export default {
@@ -35,8 +35,8 @@ export default {
                 type: { summary: '(data: { [key: string]: { [key: string]: unknown } }, button_name: string) => void' },
             },
         },
-        toggleWizard: {
-            description: 'Required. A callback used to inform a parent that the wizard has been closed or open.',
+        onClose: {
+            description: 'Required. A callback used to inform a parent that the wizard has been closed.',
             table: {
                 type: { summary: '() => void' },
             },
@@ -133,7 +133,7 @@ const Template: Story<DesktopWizardProps> = (args) => {
     return (
         <>
             {is_wizard_open ? (
-                <DesktopWizard {...args} toggleWizard={() => setIsWizardOpen(false)} onComplete={handleComplete} />
+                <DesktopWizard {...args} onClose={() => setIsWizardOpen(false)} onComplete={handleComplete} />
             ) : (
                 <>
                     <Button onClick={onWizardOpening}>Open Desktop Wizard</Button>
