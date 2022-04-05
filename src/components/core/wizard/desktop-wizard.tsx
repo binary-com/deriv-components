@@ -1,13 +1,12 @@
 import CloseIconDark from '@assets/svg/modal/ic-close-dark.svg';
 import CloseIconLight from '@assets/svg/modal/ic-close-light.svg';
-import BackArrowIconDark from '@assets/svg/wizard/ic-back-arrow-dark.svg';
-import BackArrowIconLight from '@assets/svg/wizard/ic-back-arrow-light.svg';
 import Button from '@core/button/button';
 import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
 import Scrollbars from '@core/scrollbars/scrollbars';
 import StepNavigation from './step-navigation';
+import DesktopWizardBody from './desktop-wizard-body';
 
 const DarkBackgroundContainer = styled('div', {
     position: 'absolute',
@@ -62,50 +61,6 @@ const LeftPanel = styled('div', {
     },
 });
 
-const MainTitleContainer = styled('div', {
-    position: 'relative',
-    display: 'flex',
-    gap: '10px',
-});
-
-const GoBackArrow = styled('div', {
-    marginTop: '14px',
-    width: '12px',
-    height: '8px',
-    background: `url(${BackArrowIconDark}) no-repeat center`,
-
-    '&:hover': {
-        cursor: 'pointer',
-    },
-
-    variants: {
-        dark: {
-            true: {
-                background: `url(${BackArrowIconLight}) no-repeat center`,
-            },
-        },
-    },
-});
-
-const ToggleSwitcherContainer = styled('div', {
-    position: 'absolute',
-    top: '0',
-    right: '0',
-    width: '200px',
-    height: '40px',
-    background: '#F2F3F4',
-    borderRadius: '6px',
-    padding: '4px',
-
-    variants: {
-        dark: {
-            true: {
-                background: '#151717',
-            },
-        },
-    },
-});
-
 const WizardBody = styled('div', {
     width: '784px',
     height: '640px',
@@ -127,6 +82,17 @@ const FixedWidthContainer = styled('div', {
     top: '0',
     left: '0',
     bottom: '0',
+
+    variants: {
+        is_fullwidth: {
+            true: {
+                overflow: 'inherit',
+                right: '0',
+                width: 'inherit',
+                height: 'inherit',
+            },
+        },
+    },
 });
 
 const RightPanel = styled('div', {
@@ -257,7 +223,7 @@ export type RightPanelComponentProps = {
     current_step_index: number;
 };
 
-export type MainComponentProps = {
+export type MainComponentProps = Partial<DesktopWizardProps> & {
     dark?: boolean;
     more_details_type?: string;
     onSubmit: (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => void;
@@ -273,9 +239,12 @@ export type StepData = {
         defaultValue: string;
         button_labels?: string[];
     };
-    main_content_header: string;
-    main_content_subheader?: string;
-    main_content?: (props: MainComponentProps) => JSX.Element;
+    main_content?: {
+        component: (props: MainComponentProps) => JSX.Element;
+        header?: string;
+        subheader?: string;
+        props_to_pass_through_wizard?: string[];
+    };
     more_details?: {
         [key: string]: {
             header?: string;
@@ -301,26 +270,23 @@ export type DesktopWizardProps = {
     wizard_title: string;
 };
 
-const DesktopWizard = ({
-    dark,
-    has_dark_background = true,
-    onComplete,
-    onClose,
-    steps,
-    wizard_title = "Let's get you a new app.",
-}: DesktopWizardProps) => {
+const DesktopWizard = (props: DesktopWizardProps) => {
+    const {
+        dark,
+        has_dark_background = true,
+        onComplete,
+        onClose,
+        steps,
+        wizard_title = "Let's get you a new app.",
+    } = props;
     const [current_step_index, setCurrentStepIndex] = React.useState(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
     const [disabled_steps_indexes, setDisabledStepsIndexes] = React.useState<number[]>([]);
     const [collected_values, setCollectedValues] = React.useState<{ [key: string]: { [key: string]: unknown } }>({});
     const [more_details_type, setMoreDetailsType] = React.useState('');
-    const [should_show_scrollbar, setShouldShowScrollbar] = React.useState(false);
-    const [selected_toggle_value, setSelectedToggleValue] = React.useState('');
     const default_toggle_value = steps[current_step_index].toggle_switcher?.defaultValue;
     const current_left_button_name = steps[current_step_index].cancel_button_name || 'Back';
     const current_right_button_name = steps[current_step_index].submit_button_name || 'Next';
-    const BodyComponent = steps[current_step_index].main_content;
-    const ToggleSwitcher = steps[current_step_index].toggle_switcher?.component;
     const animated_div_ref = React.useRef<HTMLDivElement>(null);
     const steps_indexes = steps.map((_step, idx) => idx);
     const next_enabled_step_index = steps_indexes.find(
@@ -337,22 +303,28 @@ const DesktopWizard = ({
             disabled_steps_indexes.every((i) => i !== idx) &&
             idx < steps.length - 1,
     );
-    let scroll_timeout: NodeJS.Timeout;
     let new_step_timeout: NodeJS.Timeout;
+    const passThroughProps = steps[current_step_index].main_content?.props_to_pass_through_wizard?.reduce(
+        (arr, item) => {
+            return { ...arr, [item]: props[item as keyof DesktopWizardProps] };
+        },
+        {},
+    );
+
+    React.useEffect(() => {
+        const handleEscKeyPress = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose();
+        };
+        document.addEventListener('keydown', handleEscKeyPress);
+
+        return () => {
+            document.removeEventListener('keydown', handleEscKeyPress);
+        };
+    }, []);
 
     const slide = (from: string, to: string) => {
         // new_step_timeout times should be equal to this animation duration:
         animated_div_ref.current?.animate({ transform: [from, to], easing: ['ease'] }, 250);
-    };
-
-    const handleScroll = () => {
-        clearTimeout(scroll_timeout);
-        if (!should_show_scrollbar) {
-            setShouldShowScrollbar(true);
-            scroll_timeout = setTimeout(() => {
-                setShouldShowScrollbar(false);
-            }, 700);
-        }
     };
 
     const prevStep = () => {
@@ -408,71 +380,17 @@ const DesktopWizard = ({
         }
     };
 
-    const getBody = () => {
-        const handleDataSubmit = (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => {
-            if (should_disable_next_step) {
-                setDisabledStepsIndexes([...disabled_steps_indexes, current_step_index + 1]);
-                // clear next step data in case it was completed previously:
-                setCompleteStepsIndexes(complete_steps_indexes.filter((s) => s !== current_step_index + 1));
-                setCollectedValues({ ...collected_values, [current_step_index + 1]: undefined });
-            } else {
-                setDisabledStepsIndexes(disabled_steps_indexes.filter((s) => s !== current_step_index + 1));
-            }
-            setCompleteStepsIndexes([...complete_steps_indexes, current_step_index]);
-            setCollectedValues({ ...collected_values, [current_step_index]: values });
-        };
-
-        return (
-            <Scrollbars dark={dark} ref={animated_div_ref} onScroll={handleScroll} autohide={!should_show_scrollbar}>
-                <MainTitleContainer>
-                    {more_details_type ? (
-                        <GoBackArrow dark={dark as boolean} onClick={() => setMoreDetailsType('')} />
-                    ) : null}
-                    <div>
-                        <Text
-                            as="div"
-                            type="subtitle-1"
-                            bold
-                            css={{ marginBottom: '8px', color: dark ? '$white' : '#333333' }}
-                        >
-                            {more_details_type
-                                ? steps[current_step_index].more_details?.[more_details_type].header
-                                : steps[current_step_index].main_content_header}
-                        </Text>
-                        <Text
-                            as="div"
-                            type="paragraph-1"
-                            bold={false}
-                            css={{ color: dark ? '#C2C2C2' : '#333333', marginBottom: '24px' }}
-                        >
-                            {more_details_type
-                                ? steps[current_step_index].more_details?.[more_details_type].subheader
-                                : steps[current_step_index].main_content_subheader}
-                        </Text>
-                    </div>
-                    {ToggleSwitcher && (
-                        <ToggleSwitcherContainer dark={dark}>
-                            <ToggleSwitcher
-                                button_labels={steps[current_step_index].toggle_switcher?.button_labels}
-                                dark={dark}
-                                defaultValue={default_toggle_value as string}
-                                onToggle={setSelectedToggleValue}
-                            />
-                        </ToggleSwitcherContainer>
-                    )}
-                </MainTitleContainer>
-                {BodyComponent && (
-                    <BodyComponent
-                        onSubmit={handleDataSubmit}
-                        dark={dark}
-                        values={collected_values[current_step_index]}
-                        setMoreDetailsType={setMoreDetailsType}
-                        more_details_type={more_details_type}
-                        selected_toggle_value={selected_toggle_value || default_toggle_value}
-                    />
-                )}
-            </Scrollbars>
-        );
+    const handleDataSubmit = (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => {
+        if (should_disable_next_step) {
+            setDisabledStepsIndexes([...disabled_steps_indexes, current_step_index + 1]);
+            // clear next step data in case it was completed previously:
+            setCompleteStepsIndexes(complete_steps_indexes.filter((s) => s !== current_step_index + 1));
+            setCollectedValues({ ...collected_values, [current_step_index + 1]: undefined });
+        } else {
+            setDisabledStepsIndexes(disabled_steps_indexes.filter((s) => s !== current_step_index + 1));
+        }
+        setCompleteStepsIndexes([...complete_steps_indexes, current_step_index]);
+        setCollectedValues({ ...collected_values, [current_step_index]: values });
     };
 
     return (
@@ -487,7 +405,7 @@ const DesktopWizard = ({
                     >
                         {wizard_title}
                     </Text>
-                    <StepNavigation
+                    <DesktopWizard.StepNavigation
                         steps={steps}
                         current_step_index={current_step_index}
                         complete_steps_indexes={complete_steps_indexes}
@@ -498,11 +416,19 @@ const DesktopWizard = ({
                 </LeftPanel>
                 <WizardBody>
                     <ContentContainer>
-                        {steps[current_step_index].is_fullwidth ? (
-                            getBody()
-                        ) : (
-                            <FixedWidthContainer>{getBody()}</FixedWidthContainer>
-                        )}
+                        <FixedWidthContainer is_fullwidth={steps[current_step_index].is_fullwidth}>
+                            <DesktopWizard.Body
+                                animated_div_ref={animated_div_ref}
+                                current_step={steps[current_step_index]}
+                                current_step_collected_values={collected_values[current_step_index]}
+                                dark={dark}
+                                default_toggle_value={default_toggle_value}
+                                handleDataSubmit={handleDataSubmit}
+                                more_details_type={more_details_type}
+                                setMoreDetailsType={setMoreDetailsType}
+                                {...passThroughProps}
+                            />
+                        </FixedWidthContainer>
                         {steps[current_step_index].right_panel_content && (
                             <RightPanel dark={dark}>
                                 <Scrollbars dark={dark} is_scrollbar_hidden has_y_scroll_on_drag_effect>
@@ -559,5 +485,9 @@ const DesktopWizard = ({
         </DarkBackgroundContainer>
     );
 };
+
+// DesktopWizard.Body is where the main_content of the step is rendered:
+DesktopWizard.Body = DesktopWizardBody;
+DesktopWizard.StepNavigation = StepNavigation;
 
 export default DesktopWizard;

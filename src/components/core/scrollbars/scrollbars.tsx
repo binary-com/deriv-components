@@ -106,8 +106,6 @@ const Scrollbars = React.forwardRef(
             if (e.type === 'mousedown') {
                 setIsMouseDown(true);
                 setStartClientY(e.clientY);
-                // preventing immediate text selection:
-                e.preventDefault();
             } else if (e.type === 'mousemove' && is_mouse_down && scroll_ref.current) {
                 setCurrentClientY(e.clientY);
             } else if (e.type === 'mouseup' || e.type === 'mouseleave') {

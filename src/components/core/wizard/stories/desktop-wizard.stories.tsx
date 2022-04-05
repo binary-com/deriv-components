@@ -53,9 +53,12 @@ export default {
                             defaultValue: string;
                             button_labels?: string[];
                         };
-                        main_content_header: string;
-                        main_content_subheader?: string;
-                        main_content?: (props: MainComponentProps) => JSX.Element;
+                        main_content?: {
+                            component: (props: MainComponentProps) => JSX.Element;
+                            header?: string;
+                            subheader?: string;
+                            props_to_pass_through_wizard?: string[];
+                        }
                         more_details?: {
                             [key: string]: {
                                 header?: string;
@@ -71,7 +74,8 @@ export default {
                         cancel_button_name?: string;
                         submit_button_name?: string;
                     }>
-                    **MAIN COMPONENT PROPS: ** {
+                    **PROPS_TO_PASS_THROUGH_WIZARD: ** an array of any DesktopWizard props that you want to pass to Wizard's main_content.component.
+                    **MAIN COMPONENT PROPS: ** PROPS_TO_PASS_THROUGH_WIZARD + {
                         dark?: boolean;
                         more_details_type?: string;
                         onSubmit: (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => void;

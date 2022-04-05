@@ -10,6 +10,8 @@ jest.mock('react', () => ({
 
 describe('Scrollbars Component', () => {
     const setState = jest.fn();
+    (useState as jest.Mock).mockImplementation((init) => [init, setState]);
+    jest.spyOn(React, 'useRef').mockReturnValueOnce({ current: null });
 
     const props = {
         autohide: false,
@@ -20,14 +22,6 @@ describe('Scrollbars Component', () => {
         is_scrollbar_hidden: false,
         has_y_scroll_on_drag_effect: false,
     };
-
-    beforeEach(() => {
-        (useState as jest.Mock).mockImplementation((init) => [init, setState]);
-        jest.spyOn(React, 'useRef').mockReturnValueOnce({ current: null });
-    });
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
 
     it('Scrollbars renders properly', () => {
         render(

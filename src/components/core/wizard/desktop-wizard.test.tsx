@@ -22,9 +22,12 @@ describe('DesktopWizard Component', () => {
     const mocked_steps: StepData[] = [
         {
             step_title: 'Product',
-            main_content_header: 'Choose a product',
-            main_content_subheader: 'Choose a product to start.',
-            main_content: StepChooseProductMain,
+            main_content: {
+                component: StepChooseProductMain,
+                header: 'Choose a product',
+                subheader: 'Choose a product to start.',
+                props_to_pass_through_wizard: ['dark'],
+            },
             right_panel_content: {
                 upper_block: TestRightUpperComponent,
                 middle_block: TestRightMiddleComponent,
@@ -32,9 +35,12 @@ describe('DesktopWizard Component', () => {
         },
         {
             step_title: 'App',
-            main_content_header: 'Add an app',
-            main_content_subheader: 'Choose a product to start.',
-            main_content: StepAddAppMain,
+            main_content: {
+                component: StepAddAppMain,
+                header: 'Add an app',
+                subheader: 'Choose an app to start.',
+                props_to_pass_through_wizard: ['dark'],
+            },
             right_panel_content: { upper_block: TestLongRightUpperComponent },
             toggle_switcher: {
                 component: ToggleSwitcherComponent,
@@ -44,8 +50,11 @@ describe('DesktopWizard Component', () => {
         },
         {
             step_title: 'Complete',
-            main_content_header: 'Completed',
-            main_content: StepComplete,
+            main_content: {
+                component: StepComplete,
+                header: 'Completed',
+                props_to_pass_through_wizard: ['dark'],
+            },
             is_fullwidth: true,
             cancel_button_name: 'Maybe later',
             submit_button_name: 'Deposit',
@@ -72,17 +81,13 @@ describe('DesktopWizard Component', () => {
     it('DesktopWizard renders properly with a 1st step header, step navigation and initially disabled Back and Next buttons', () => {
         render(<DesktopWizard {...props} />);
 
-        const steps = screen.getByTestId('step-navigation');
         const products = screen.getAllByTestId('product-card');
 
         expect(screen.getByTestId('desktop-wizard')).toBeInTheDocument();
         expect(screen.getByText("Let's get you a new app.")).toBeInTheDocument();
         expect(screen.queryByText("Let's get you a new wallet.")).not.toBeInTheDocument();
-        expect(steps).toBeInTheDocument();
+        expect(screen.getByTestId('step-navigation')).toBeInTheDocument();
         expect(screen.getAllByTestId('step-item').length).toBe(3);
-        expect(steps).toHaveTextContent(/product/i);
-        expect(steps).toHaveTextContent(/app/i);
-        expect(steps).toHaveTextContent(/complete/i);
         expect(products.length).toBe(3);
         expect(screen.getByRole('button', { name: /back/i })).toBeDisabled();
         expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();

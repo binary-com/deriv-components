@@ -15,9 +15,12 @@ describe('StepNavigation Component', () => {
     const mocked_steps: StepData[] = [
         {
             step_title: 'Product',
-            main_content_header: 'Choose a product',
-            main_content_subheader: 'Choose a product to start.',
-            main_content: StepChooseProductMain,
+            main_content: {
+                component: StepChooseProductMain,
+                header: 'Choose a product',
+                subheader: 'Choose a product to start.',
+                props_to_pass_through_wizard: ['dark'],
+            },
             right_panel_content: {
                 upper_block: TestRightUpperComponent,
                 middle_block: TestRightMiddleComponent,
@@ -25,9 +28,12 @@ describe('StepNavigation Component', () => {
         },
         {
             step_title: 'App',
-            main_content_header: 'Add an app',
-            main_content_subheader: 'Choose a product to start.',
-            main_content: StepAddAppMain,
+            main_content: {
+                component: StepAddAppMain,
+                header: 'Add an app',
+                subheader: 'Choose an app to start.',
+                props_to_pass_through_wizard: ['dark'],
+            },
             right_panel_content: { upper_block: TestLongRightUpperComponent },
             toggle_switcher: {
                 component: ToggleSwitcherComponent,
@@ -37,8 +43,11 @@ describe('StepNavigation Component', () => {
         },
         {
             step_title: 'Complete',
-            main_content_header: 'Completed',
-            main_content: StepComplete,
+            main_content: {
+                component: StepComplete,
+                header: 'Completed',
+                props_to_pass_through_wizard: ['dark'],
+            },
             is_fullwidth: true,
             cancel_button_name: 'Maybe later',
             submit_button_name: 'Deposit',
@@ -57,12 +66,13 @@ describe('StepNavigation Component', () => {
     it('StepNavigation renders properly', () => {
         render(<StepNavigation {...props} />);
 
-        const steps = screen.getByTestId('step-navigation');
+        const step_navigation = screen.getByTestId('step-navigation');
+        const steps = screen.getAllByTestId('step-item');
 
-        expect(steps).toBeInTheDocument();
-        expect(screen.getAllByTestId('step-item').length).toBe(3);
-        expect(steps).toHaveTextContent(/product/i);
-        expect(steps).toHaveTextContent(/app/i);
-        expect(steps).toHaveTextContent(/complete/i);
+        expect(step_navigation).toBeInTheDocument();
+        expect(steps.length).toBe(3);
+        expect(steps[0]).toHaveTextContent(/product/i);
+        expect(steps[1]).toHaveTextContent(/app/i);
+        expect(steps[2]).toHaveTextContent(/complete/i);
     });
 });

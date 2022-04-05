@@ -18,9 +18,12 @@ import {
 export const test_steps: StepData[] = [
     {
         step_title: 'Product',
-        main_content_header: 'Choose a product',
-        main_content_subheader: 'Choose a product to start.',
-        main_content: StepChooseProductMain,
+        main_content: {
+            component: StepChooseProductMain,
+            header: 'Choose a product',
+            subheader: 'Choose a product to start.',
+            props_to_pass_through_wizard: ['dark'],
+        },
         right_panel_content: {
             upper_block: TestRightUpperComponent,
             middle_block: TestRightMiddleComponent,
@@ -28,9 +31,12 @@ export const test_steps: StepData[] = [
     },
     {
         step_title: 'App',
-        main_content_header: 'Add an app',
-        main_content_subheader: 'Choose a product to start.',
-        main_content: StepAddAppMain,
+        main_content: {
+            component: StepAddAppMain,
+            header: 'Add an app',
+            subheader: 'Choose an app to start.',
+            props_to_pass_through_wizard: ['dark'],
+        },
         right_panel_content: { upper_block: TestLongRightUpperComponent },
         toggle_switcher: {
             component: ToggleSwitcherComponent,
@@ -40,9 +46,12 @@ export const test_steps: StepData[] = [
     },
     {
         step_title: 'Wallet',
-        main_content_header: 'Create a wallet',
-        main_content_subheader: 'Create a wallet that can be linked to your choosen app.',
-        main_content: StepCreateWalletMain,
+        main_content: {
+            component: StepCreateWalletMain,
+            header: 'Create a wallet',
+            subheader: 'Create a wallet that can be linked to your choosen app.',
+            props_to_pass_through_wizard: ['dark'],
+        },
         more_details: {
             fiat_currency_wallets: {
                 header: 'Fiat currency wallets',
@@ -61,9 +70,12 @@ export const test_steps: StepData[] = [
     },
     {
         step_title: 'Currency',
-        main_content_header: "Choose your wallet's currency",
-        main_content_subheader: 'Fiat currencies.',
-        main_content: StepChooseCurrencyMain,
+        main_content: {
+            component: StepChooseCurrencyMain,
+            header: "Choose your wallet's currency",
+            subheader: 'Fiat currencies.',
+            props_to_pass_through_wizard: ['dark'],
+        },
         right_panel_content: {
             upper_block: TestRightUpperComponent,
             middle_block: TestRightMiddleComponent,
@@ -71,8 +83,11 @@ export const test_steps: StepData[] = [
     },
     {
         step_title: 'Personal details',
-        main_content_header: 'Personal details',
-        main_content: StepPersonalDetailsMain,
+        main_content: {
+            component: StepPersonalDetailsMain,
+            header: 'Personal details',
+            props_to_pass_through_wizard: ['dark'],
+        },
         right_panel_content: {
             upper_block: TestRightUpperComponent,
             middle_block: TestRightMiddleComponent,
@@ -80,8 +95,11 @@ export const test_steps: StepData[] = [
     },
     {
         step_title: 'Address',
-        main_content_header: 'Address information',
-        main_content: StepAddressInfoMain,
+        main_content: {
+            component: StepAddressInfoMain,
+            header: 'Address information',
+            props_to_pass_through_wizard: ['dark'],
+        },
         right_panel_content: {
             upper_block: TestRightUpperComponent,
             middle_block: TestRightMiddleComponent,
@@ -89,8 +107,11 @@ export const test_steps: StepData[] = [
     },
     {
         step_title: 'Terms of use',
-        main_content_header: 'Terms of use',
-        main_content: StepTermsOfUseMain,
+        main_content: {
+            component: StepTermsOfUseMain,
+            header: 'Terms of use',
+            props_to_pass_through_wizard: ['dark'],
+        },
         right_panel_content: {
             upper_block: TestRightUpperComponent,
             middle_block: TestRightMiddleComponent,
@@ -98,8 +119,11 @@ export const test_steps: StepData[] = [
     },
     {
         step_title: 'Complete',
-        main_content_header: 'Completed',
-        main_content: StepComplete,
+        main_content: {
+            component: StepComplete,
+            header: 'Completed',
+            props_to_pass_through_wizard: ['dark'],
+        },
         is_fullwidth: true,
         cancel_button_name: 'Maybe later',
         submit_button_name: 'Deposit',
