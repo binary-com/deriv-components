@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { render, screen } from 'test-setup';
 import Scrollbars from './scrollbars';
+import Text from '@core/text/text';
 
 jest.mock('react', () => ({
     ...jest.requireActual('react'),
@@ -28,8 +29,8 @@ describe('Scrollbars Component', () => {
         jest.clearAllMocks();
     });
 
-    it('Scrollbars renders properly with a 1st step header, step navigation and initially disabled Back and Next buttons', () => {
-        const { queryByLabelText, getByLabelText } = render(
+    it('Scrollbars renders properly', () => {
+        render(
             <Scrollbars
                 {...props}
                 style={{
@@ -39,17 +40,16 @@ describe('Scrollbars Component', () => {
                     background: props.dark ? '#C15D5D' : '#F7F8F1',
                 }}
             >
-                <div
-                    style={{
-                        width: '400px',
-                    }}
-                >
-                    {'27557758768778565768756776576576567576567454'.split('').map((el, i) => (
-                        <p key={i + 1} style={{ color: props.dark ? 'white' : 'black' }}>
-                            {el}
-                        </p>
-                    ))}
-                </div>
+                {'275577587687785657687567'.split('').map((el, i) => (
+                    <Text
+                        key={i + 1}
+                        as="p"
+                        bold={false}
+                        css={{ color: props.dark ? 'white' : 'black', marginRight: '400px' }}
+                    >
+                        {el}
+                    </Text>
+                ))}
             </Scrollbars>,
         );
 

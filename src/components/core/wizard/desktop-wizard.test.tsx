@@ -78,7 +78,7 @@ describe('DesktopWizard Component', () => {
         expect(screen.getByTestId('desktop-wizard')).toBeInTheDocument();
         expect(screen.getByText("Let's get you a new app.")).toBeInTheDocument();
         expect(screen.queryByText("Let's get you a new wallet.")).not.toBeInTheDocument();
-        expect(screen.getByTestId('step-navigation')).toBeInTheDocument();
+        expect(steps).toBeInTheDocument();
         expect(screen.getAllByTestId('step-item').length).toBe(3);
         expect(steps).toHaveTextContent(/product/i);
         expect(steps).toHaveTextContent(/app/i);

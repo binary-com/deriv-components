@@ -1,6 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import React from 'react';
 import Scrollbars, { ScrollbarsProps } from '../scrollbars';
+import Text from '../../text/text';
 
 export default {
     title: 'Scrollbars',
@@ -89,17 +90,11 @@ const BasicTemplate: Story<ScrollbarsProps> = (args) => (
         {...args}
         style={{ width: '300px', height: '400px', borderRadius: '10px', background: args.dark ? '#C15D5D' : '#F7F8F1' }}
     >
-        <div
-            style={{
-                width: '400px',
-            }}
-        >
-            {'27557758768778565768756776576576567576567454'.split('').map((el, i) => (
-                <p key={i + 1} style={{ color: args.dark ? 'white' : 'black' }}>
-                    {el}
-                </p>
-            ))}
-        </div>
+        {'275577587687785657687567'.split('').map((el, i) => (
+            <Text key={i + 1} as="p" bold={false} css={{ color: args.dark ? 'white' : 'black', marginRight: '400px' }}>
+                {el}
+            </Text>
+        ))}
     </Scrollbars>
 );
 const TemplateWithOnScroll: Story<ScrollbarsProps> = (args) => {
@@ -128,17 +123,16 @@ const TemplateWithOnScroll: Story<ScrollbarsProps> = (args) => {
                 background: args.dark ? '#C15D5D' : '#F7F8F1',
             }}
         >
-            <div
-                style={{
-                    width: '400px',
-                }}
-            >
-                {'27557758768778565768756776576576567576567454'.split('').map((el, i) => (
-                    <p key={i + 1} style={{ color: args.dark ? 'white' : 'black' }}>
-                        {el}
-                    </p>
-                ))}
-            </div>
+            {'275577587687785657687567'.split('').map((el, i) => (
+                <Text
+                    key={i + 1}
+                    as="p"
+                    bold={false}
+                    css={{ color: args.dark ? 'white' : 'black', marginRight: '400px' }}
+                >
+                    {el}
+                </Text>
+            ))}
         </Scrollbars>
     );
 };
