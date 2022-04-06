@@ -23,7 +23,6 @@
             "jest",
             "@types/testing-library__jest-dom"
         ],
-        "resolveJsonModule": true,
         "paths": {
             "test-setup": ["test-setup"],
             "Styles/*": ["styles/*"],
