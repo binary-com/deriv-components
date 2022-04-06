@@ -36,8 +36,8 @@ const Button = styled('button', {
         },
         color: {
             primary: {
-                backgroundColor: '#ff444f',
-                color: '$white',
+                backgroundColor: '$coral500',
+                color: '$greyLight100',
 
                 '&:hover': {
                     backgroundColor: '#eb3e48',
@@ -45,7 +45,7 @@ const Button = styled('button', {
             },
             'primary-light': {
                 backgroundColor: 'rgba(255, 68, 79, 0.14)',
-                color: '#ff444f',
+                color: '$coral500',
 
                 '&:hover': {
                     backgroundColor: 'rgba(255, 68, 79, 0.24)',
@@ -55,8 +55,8 @@ const Button = styled('button', {
                 },
             },
             secondary: {
-                border: '1px solid #999999',
-                color: '#333333',
+                border: '1px solid $greyLight600',
+                color: '$greyLight700',
 
                 '&:hover': {
                     backgroundColor: 'rgba(0, 0, 0, 0.08)',
@@ -64,7 +64,7 @@ const Button = styled('button', {
             },
             tertiary: {
                 backgroundColor: 'none',
-                color: '#ff444f',
+                color: '$coral500',
 
                 '&:hover': {
                     backgroundColor: 'rgba(255, 68, 79, 0.08)',
@@ -86,7 +86,7 @@ const Button = styled('button', {
             dark: true,
             css: {
                 backgroundColor: 'rgba(255, 68, 79, 0.16)',
-                color: '#ff444f',
+                color: '$coral500',
 
                 '&:hover': {
                     backgroundColor: 'rgba(255, 68, 79, 0.24)',
@@ -100,9 +100,9 @@ const Button = styled('button', {
             color: 'secondary',
             dark: true,
             css: {
-                borderColor: '#6e6e6e',
+                borderColor: '$greyDark200',
                 background: 'none',
-                color: '$white',
+                color: '$greyLight100',
 
                 '&:hover': {
                     backgroundColor: 'rgba(255, 255, 255, 0.08)',
@@ -113,28 +113,28 @@ const Button = styled('button', {
             color: 'secondary',
             size: 'medium',
             css: {
-                borderWidth: '1px',
+                borderWidth: '$1',
             },
         },
         {
             color: 'secondary',
             size: 'small',
             css: {
-                borderWidth: '1px',
+                borderWidth: '$1',
             },
         },
         {
             color: 'secondary',
             size: 'large',
             css: {
-                borderWidth: '2px',
+                borderWidth: '$2',
             },
         },
         {
             color: 'secondary',
             size: 'hero',
             css: {
-                borderWidth: '2px',
+                borderWidth: '$2',
             },
         },
     ],
