@@ -40,18 +40,21 @@ const Button = styled('button', {
                 color: '$greyLight100',
 
                 '&:hover': {
-                    backgroundColor: '#eb3e48',
+                    backgroundColor: '$coral600',
+                },
+                '&:disabled': {
+                    opacity: 0.32,
                 },
             },
             'primary-light': {
-                backgroundColor: 'rgba(255, 68, 79, 0.14)',
+                backgroundColor: '$coral500_16',
                 color: '$coral500',
 
                 '&:hover': {
-                    backgroundColor: 'rgba(255, 68, 79, 0.24)',
+                    backgroundColor: '$coral500_24',
                 },
                 '&:disabled': {
-                    opacity: 0.16,
+                    opacity: 0.32,
                 },
             },
             secondary: {
@@ -59,7 +62,7 @@ const Button = styled('button', {
                 color: '$greyLight700',
 
                 '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                    backgroundColor: '$greyLight700_8',
                 },
             },
             tertiary: {
@@ -67,7 +70,7 @@ const Button = styled('button', {
                 color: '$coral500',
 
                 '&:hover': {
-                    backgroundColor: 'rgba(255, 68, 79, 0.08)',
+                    backgroundColor: '$coral500_8',
                 },
             },
         },
@@ -82,14 +85,29 @@ const Button = styled('button', {
     },
     compoundVariants: [
         {
+            color: 'primary',
+            dark: true,
+            css: {
+                backgroundColor: '$coral500',
+                color: '$greyLight100',
+
+                '&:hover': {
+                    backgroundColor: '$coral400',
+                },
+                '&:disabled': {
+                    opacity: 0.32,
+                },
+            },
+        },
+        {
             color: 'primary-light',
             dark: true,
             css: {
-                backgroundColor: 'rgba(255, 68, 79, 0.16)',
+                backgroundColor: '$coral500_16',
                 color: '$coral500',
 
                 '&:hover': {
-                    backgroundColor: 'rgba(255, 68, 79, 0.24)',
+                    backgroundColor: '$coral500_24',
                 },
                 '&:disabled': {
                     opacity: 0.32,
