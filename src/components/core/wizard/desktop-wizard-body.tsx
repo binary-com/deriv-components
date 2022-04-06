@@ -78,7 +78,7 @@ const DesktopWizardBody = React.memo((props: DesktopWizardBody) => {
     } = props;
     const [selected_toggle_value, setSelectedToggleValue] = React.useState('');
     const [should_show_scrollbar, setShouldShowScrollbar] = React.useState(false);
-    const BodyComponent = current_step.main_content?.component;
+    const MainComponent = current_step.main_content?.component;
     const ToggleSwitcher = current_step.toggle_switcher?.component;
     let scroll_timeout: NodeJS.Timeout;
 
@@ -129,8 +129,8 @@ const DesktopWizardBody = React.memo((props: DesktopWizardBody) => {
                     </ToggleSwitcherContainer>
                 )}
             </MainTitleContainer>
-            {BodyComponent && (
-                <BodyComponent
+            {MainComponent && (
+                <MainComponent
                     onSubmit={handleDataSubmit}
                     dark={dark}
                     values={current_step_collected_values}
