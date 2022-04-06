@@ -358,7 +358,7 @@ const DesktopWizard = (props: DesktopWizardProps) => {
                 setCurrentStepIndex(Number(next_incomplete_step_index));
                 // last step is always 'Complete' and has to be completed automatically unless some incomplete steps are left:
                 if (incomplete_steps_indexes.length === 0)
-                    setCompleteStepsIndexes([...complete_steps_indexes, steps.length - 1]);
+                    setCompleteStepsIndexes([...new Set([...complete_steps_indexes, steps.length - 1])]);
                 if (Number(next_incomplete_step_index) === steps.length - 1 && incomplete_steps_indexes.length > 0) {
                     // switch from second-to-last step before 'Complete' to the first incomplete step if any incomplete steps are left:
                     setCurrentStepIndex(incomplete_steps_indexes[0] as number);
@@ -406,14 +406,18 @@ const DesktopWizard = (props: DesktopWizardProps) => {
             (steps_indexes_to_enable && steps_indexes_to_enable.length > 0)
         ) {
             setDisabledStepsIndexes([
-                ...disabled_steps_indexes.filter((idx) => (steps_indexes_to_enable || []).every((i) => idx !== i)),
-                ...(steps_indexes_to_disable || []),
+                ...new Set([
+                    ...disabled_steps_indexes.filter((idx) => (steps_indexes_to_enable || []).every((i) => idx !== i)),
+                    ...(steps_indexes_to_disable || []),
+                ]),
             ]);
             if (steps_indexes_to_disable && steps_indexes_to_disable.length > 0) {
                 // remove disabled steps from completed and clear their data in case they were completed previously:
                 setCompleteStepsIndexes([
-                    ...complete_steps_indexes.filter((s) => steps_indexes_to_disable.every((i) => s !== i)),
-                    current_step_index,
+                    ...new Set([
+                        ...complete_steps_indexes.filter((s) => steps_indexes_to_disable.every((i) => s !== i)),
+                        current_step_index,
+                    ]),
                 ]);
                 setCollectedValues({
                     ...collected_values,
@@ -423,12 +427,11 @@ const DesktopWizard = (props: DesktopWizardProps) => {
             } else if (steps_indexes_to_enable && steps_indexes_to_enable.length > 0) {
                 // make last 'Complete' step incomplete when a previously disabled step gets enabled:
                 setCompleteStepsIndexes([
-                    ...complete_steps_indexes.filter((s) => s !== steps.length - 1),
-                    current_step_index,
+                    ...new Set([...complete_steps_indexes.filter((s) => s !== steps.length - 1), current_step_index]),
                 ]);
             }
         } else {
-            setCompleteStepsIndexes([...complete_steps_indexes, current_step_index]);
+            setCompleteStepsIndexes([...new Set([...complete_steps_indexes, current_step_index])]);
         }
     };
 
