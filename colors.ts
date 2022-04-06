@@ -23,7 +23,8 @@ export const colors = {
     orange700: TOKEN.General.colors.brand.orange.shade.orange700.value,
     orange500_8: TOKEN.General.colors.brand.orange.alpha['orange500-8'].value,
     orange500_16: TOKEN.General.colors.brand.orange.alpha['orange500-16'].value,
-    orange500_24: TOKEN.General.colors.brand.orange.alpha['orange500-24'].value,
+    // TODO: update value once typo has been fixed from JSON file
+    orange500_24: TOKEN.General.colors.brand.orange.alpha['oragne500-24'].value,
 
     // Blue
     blue100: TOKEN.General.colors.brand.blue.shade.blue100.value,
