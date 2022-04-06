@@ -15,6 +15,7 @@
         "sourceMap": true,
         "declaration": true,
         "emitDeclarationOnly": true,
+        "declarationDir": "./dist/types",
         "outDir": "dist",
         "types": [
             "node",
