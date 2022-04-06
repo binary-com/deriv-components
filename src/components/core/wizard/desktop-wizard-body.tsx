@@ -56,7 +56,10 @@ type DesktopWizardBody = Partial<DesktopWizardProps> & {
     current_step_collected_values: { [key: string]: unknown };
     dark?: boolean;
     default_toggle_value?: string;
-    handleDataSubmit: (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => void;
+    handleDataSubmit: (
+        values?: { [key: string]: unknown },
+        steps_disabling_params?: Array<{ step_title: string; should_be_disabled: boolean }>,
+    ) => void;
     more_details_type: string;
     setMoreDetailsType: (more_details_type: string) => void;
 };
@@ -92,9 +95,7 @@ const DesktopWizardBody = React.memo((props: DesktopWizardBody) => {
     return (
         <Scrollbars dark={dark} ref={animated_div_ref} onScroll={handleScroll} autohide={!should_show_scrollbar}>
             <MainTitleContainer data-testid="body-heading">
-                {more_details_type ? (
-                    <GoBackArrow dark={dark as boolean} onClick={() => setMoreDetailsType('')} />
-                ) : null}
+                {more_details_type && <GoBackArrow dark={dark as boolean} onClick={() => setMoreDetailsType('')} />}
                 <div>
                     <Text
                         as="div"

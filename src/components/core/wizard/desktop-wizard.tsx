@@ -226,7 +226,10 @@ export type RightPanelComponentProps = {
 export type MainComponentProps = Partial<DesktopWizardProps> & {
     dark?: boolean;
     more_details_type?: string;
-    onSubmit: (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => void;
+    onSubmit: (
+        values?: { [key: string]: unknown },
+        steps_disabling_params?: Array<{ step_title: string; should_be_disabled: boolean }>,
+    ) => void;
     setMoreDetailsType?: (more_details_type: string) => void;
     values?: { [key: string]: unknown };
     selected_toggle_value?: string;
@@ -289,27 +292,30 @@ const DesktopWizard = (props: DesktopWizardProps) => {
     const current_right_button_name = steps[current_step_index].submit_button_name || 'Next';
     const animated_div_ref = React.useRef<HTMLDivElement>(null);
     const steps_indexes = steps.map((_step, idx) => idx);
-    const next_enabled_step_index = steps_indexes.find(
-        (i) => i > current_step_index && disabled_steps_indexes.every((index) => i !== index),
-    );
-    const previous_enabled_step_index = steps_indexes
-        .slice()
-        .reverse()
-        .find((i) => i < current_step_index && disabled_steps_indexes.every((index) => i !== index));
-    const last_complete_step_index = steps_indexes.filter((idx) => complete_steps_indexes.some((i) => i === idx)).pop();
     const incomplete_steps_indexes = steps_indexes.filter(
         (idx) =>
             complete_steps_indexes.every((i) => i !== idx) &&
             disabled_steps_indexes.every((i) => i !== idx) &&
             idx < steps.length - 1,
     );
-    let new_step_timeout: NodeJS.Timeout;
+    const next_incomplete_step_index = steps_indexes.find(
+        (i) =>
+            i > current_step_index &&
+            disabled_steps_indexes.every((index) => i !== index) &&
+            complete_steps_indexes.every((idx) => i !== idx),
+    );
+    const previous_enabled_step_index = steps_indexes
+        .slice()
+        .reverse()
+        .find((i) => i < current_step_index && disabled_steps_indexes.every((index) => i !== index));
+    const last_complete_step_index = steps_indexes.filter((idx) => complete_steps_indexes.some((i) => i === idx)).pop();
     const passThroughProps = steps[current_step_index].main_content?.props_to_pass_through_wizard?.reduce(
         (arr, item) => {
             return { ...arr, [item]: props[item as keyof DesktopWizardProps] };
         },
         {},
     );
+    let new_step_timeout: NodeJS.Timeout;
 
     React.useEffect(() => {
         const handleEscKeyPress = (e: KeyboardEvent) => {
@@ -343,20 +349,24 @@ const DesktopWizard = (props: DesktopWizardProps) => {
     const nextStep = () => {
         clearTimeout(new_step_timeout);
         slide('translateY(0)', 'translateY(-100vh)');
-        if (Number(next_enabled_step_index) < steps.length) {
+        if (current_step_index === steps.length - 1) {
+            onComplete(collected_values, current_right_button_name);
+            return;
+        }
+        if (Number(next_incomplete_step_index) < steps.length) {
             new_step_timeout = setTimeout(() => {
-                setCurrentStepIndex(Number(next_enabled_step_index));
+                setCurrentStepIndex(Number(next_incomplete_step_index));
                 // last step is always 'Complete' and has to be completed automatically unless some incomplete steps are left:
                 if (incomplete_steps_indexes.length === 0)
-                    setCompleteStepsIndexes([...complete_steps_indexes, steps_indexes.length - 1]);
-                if (Number(next_enabled_step_index) === steps.length - 1 && incomplete_steps_indexes.length > 0) {
+                    setCompleteStepsIndexes([...complete_steps_indexes, steps.length - 1]);
+                if (Number(next_incomplete_step_index) === steps.length - 1 && incomplete_steps_indexes.length > 0) {
                     // switch from second-to-last step before 'Complete' to the first incomplete step if any incomplete steps are left:
                     setCurrentStepIndex(incomplete_steps_indexes[0] as number);
                 }
                 slide('translateY(100vh)', 'translateY(0)');
             }, 250);
-        } else if (current_step_index === steps.length - 1) {
-            onComplete(collected_values, current_right_button_name);
+        } else {
+            setCurrentStepIndex(steps.length - 1);
         }
     };
 
@@ -364,8 +374,8 @@ const DesktopWizard = (props: DesktopWizardProps) => {
         if (
             disabled_steps_indexes.every((i) => i !== index) &&
             (index <= Number(last_complete_step_index) + 1 ||
-                (index === Number(next_enabled_step_index) &&
-                    complete_steps_indexes.some((i) => i === current_step_index))) &&
+                index === Number(next_incomplete_step_index) ||
+                complete_steps_indexes.some((i) => i === current_step_index)) &&
             (index < steps.length - 1 ||
                 (incomplete_steps_indexes.length === 0 && complete_steps_indexes.some((i) => i === index)))
         ) {
@@ -380,17 +390,46 @@ const DesktopWizard = (props: DesktopWizardProps) => {
         }
     };
 
-    const handleDataSubmit = (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => {
-        if (should_disable_next_step) {
-            setDisabledStepsIndexes([...disabled_steps_indexes, current_step_index + 1]);
-            // clear next step data in case it was completed previously:
-            setCompleteStepsIndexes(complete_steps_indexes.filter((s) => s !== current_step_index + 1));
-            setCollectedValues({ ...collected_values, [current_step_index + 1]: undefined });
-        } else {
-            setDisabledStepsIndexes(disabled_steps_indexes.filter((s) => s !== current_step_index + 1));
-        }
-        setCompleteStepsIndexes([...complete_steps_indexes, current_step_index]);
+    const handleDataSubmit = (
+        values?: { [key: string]: unknown },
+        steps_disabling_params?: Array<{ step_title: string; should_be_disabled: boolean }>,
+    ) => {
+        const steps_indexes_to_disable = steps_disabling_params
+            ?.map((t) => steps.findIndex((step) => t.should_be_disabled && step.step_title === t.step_title))
+            .filter((i) => i > -1);
+        const steps_indexes_to_enable = steps_disabling_params
+            ?.map((t) => steps.findIndex((step) => !t.should_be_disabled && step.step_title === t.step_title))
+            .filter((i) => i > -1);
         setCollectedValues({ ...collected_values, [current_step_index]: values });
+        if (
+            (steps_indexes_to_disable && steps_indexes_to_disable.length > 0) ||
+            (steps_indexes_to_enable && steps_indexes_to_enable.length > 0)
+        ) {
+            setDisabledStepsIndexes([
+                ...disabled_steps_indexes.filter((idx) => (steps_indexes_to_enable || []).every((i) => idx !== i)),
+                ...(steps_indexes_to_disable || []),
+            ]);
+            if (steps_indexes_to_disable && steps_indexes_to_disable.length > 0) {
+                // remove disabled steps from completed and clear their data in case they were completed previously:
+                setCompleteStepsIndexes([
+                    ...complete_steps_indexes.filter((s) => steps_indexes_to_disable.every((i) => s !== i)),
+                    current_step_index,
+                ]);
+                setCollectedValues({
+                    ...collected_values,
+                    [current_step_index]: values,
+                    ...steps_indexes_to_disable.reduce((acc, i) => ({ ...acc, [i]: undefined }), {}),
+                });
+            } else if (steps_indexes_to_enable && steps_indexes_to_enable.length > 0) {
+                // make last 'Complete' step incomplete when a previously disabled step gets enabled:
+                setCompleteStepsIndexes([
+                    ...complete_steps_indexes.filter((s) => s !== steps.length - 1),
+                    current_step_index,
+                ]);
+            }
+        } else {
+            setCompleteStepsIndexes([...complete_steps_indexes, current_step_index]);
+        }
     };
 
     return (

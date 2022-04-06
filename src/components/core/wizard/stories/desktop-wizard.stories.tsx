@@ -78,7 +78,10 @@ export default {
                     **MAIN COMPONENT PROPS: ** PROPS_TO_PASS_THROUGH_WIZARD + {
                         dark?: boolean;
                         more_details_type?: string;
-                        onSubmit: (values?: { [key: string]: unknown }, should_disable_next_step?: boolean) => void;
+                        onSubmit: (
+                            values?: { [key: string]: unknown },
+                            steps_disabling_params?: Array<{ step_title: string; should_be_disabled: boolean }>,
+                        ) => void;
                         setMoreDetailsType?: (more_details_type: string) => void;
                         values?: { [key: string]: unknown };
                         selected_toggle_value?: string;

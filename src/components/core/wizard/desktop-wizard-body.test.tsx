@@ -91,7 +91,7 @@ describe('DesktopWizard Component', () => {
                 {...props}
                 current_step={mocked_steps[1]}
                 current_step_collected_values={mocked_step_values[1]}
-                default_toggle_value={'demo'}
+                default_toggle_value="demo"
             />,
         );
 

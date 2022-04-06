@@ -95,9 +95,9 @@ export const StepCreateWalletMain = ({
             fiat_currencies.some((w) => w === wallet_name?.toLowerCase()) ||
             crypto_currencies.some((w) => w === wallet_name?.toLowerCase())
         ) {
-            onSubmit({ wallet_name }, true);
+            onSubmit({ wallet_name }, [{ step_title: 'Currency', should_be_disabled: true }]);
         } else {
-            onSubmit({ wallet_name });
+            onSubmit({ wallet_name }, [{ step_title: 'Currency', should_be_disabled: false }]);
         }
     };
 
@@ -144,7 +144,7 @@ export const StepCreateWalletMain = ({
             {['USD', 'BTC', 'payment_agent'].map((wallet_name, i) => (
                 <label onClick={() => onWalletSelection(wallet_name)} key={i + 1}>
                     <Checkbox check={!!((values as { [key: string]: unknown })?.wallet_name === wallet_name)}>
-                        <input style={{ visibility: 'hidden' }} type="radio" name={'wallet_name'} />
+                        <input style={{ visibility: 'hidden' }} type="radio" name="wallet_name" />
                         {wallet_name}
                     </Checkbox>
                 </label>
