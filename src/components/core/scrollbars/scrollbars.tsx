@@ -1,5 +1,5 @@
 import type * as Stitches from '@stitches/react';
-import React from 'react';
+import React, { HtmlHTMLAttributes } from 'react';
 import { styled } from 'Styles/stitches.config';
 
 const ScrollbarsContainer = styled('div', {
@@ -81,7 +81,7 @@ const ScrollbarsContainer = styled('div', {
     },
 });
 
-export type ScrollbarsProps = {
+export type ScrollbarsProps = HtmlHTMLAttributes<HTMLDivElement> & {
     dark?: boolean;
     autohide?: boolean;
     children?: React.ReactNode | React.ReactNode[];
@@ -89,7 +89,6 @@ export type ScrollbarsProps = {
     is_only_horizontal?: boolean;
     is_only_horizontal_overlay?: boolean;
     is_scrollbar_hidden?: boolean;
-    onScroll?: React.UIEventHandler<HTMLDivElement>;
     style?: Stitches.CSS;
     has_y_scroll_on_drag_effect?: boolean;
 };
@@ -98,8 +97,8 @@ const Scrollbars = React.forwardRef(
     ({ children, has_y_scroll_on_drag_effect, style, ...props }: ScrollbarsProps, ref) => {
         const scroll_ref = (ref as React.RefObject<HTMLDivElement>) || React.useRef<HTMLDivElement>(null);
         const [is_mouse_down, setIsMouseDown] = React.useState(false);
-        const [start_clientY, setStartClientY] = React.useState<number | undefined>(undefined);
-        const [current_clientY, setCurrentClientY] = React.useState<number | undefined>(undefined);
+        const [start_clientY, setStartClientY] = React.useState<number | null>(null);
+        const [current_clientY, setCurrentClientY] = React.useState<number | null>(null);
 
         const scrollYAxisOnDrag: React.MouseEventHandler<HTMLDivElement> = (e) => {
             if (!has_y_scroll_on_drag_effect) return;
@@ -117,20 +116,18 @@ const Scrollbars = React.forwardRef(
         };
 
         return (
-            <>
-                <ScrollbarsContainer
-                    {...props}
-                    css={style}
-                    onMouseDown={scrollYAxisOnDrag}
-                    onMouseUp={scrollYAxisOnDrag}
-                    onMouseMove={scrollYAxisOnDrag}
-                    onMouseLeave={scrollYAxisOnDrag}
-                    ref={scroll_ref}
-                    data-testid="scrollbars"
-                >
-                    {children}
-                </ScrollbarsContainer>
-            </>
+            <ScrollbarsContainer
+                {...props}
+                css={style}
+                onMouseDown={scrollYAxisOnDrag}
+                onMouseUp={scrollYAxisOnDrag}
+                onMouseMove={scrollYAxisOnDrag}
+                onMouseLeave={scrollYAxisOnDrag}
+                ref={scroll_ref}
+                data-testid="scrollbars"
+            >
+                {children}
+            </ScrollbarsContainer>
         );
     },
 );
