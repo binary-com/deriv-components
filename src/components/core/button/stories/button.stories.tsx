@@ -4,6 +4,15 @@ import Button, { button_color_type, button_size_type, ButtonStory } from '../but
 export default {
     title: 'Button',
     component: Button,
+    parameters: {
+        backgrounds: {
+            default: 'light',
+            values: [
+                { name: 'light', value: '#ffffff' },
+                { name: 'dark', value: '#0E0E0E' },
+            ],
+        },
+    },
     argTypes: {
         block: {
             description: 'If set to `true`, button width will be full-width relative to the container size.',
@@ -78,14 +87,27 @@ PrimaryLight.args = {
     children: 'Button',
 };
 
-export const Secondary = Template.bind({});
-Secondary.args = {
+export const SecondaryLight = Template.bind({});
+SecondaryLight.args = {
     block: false,
     dark: false,
     color: 'secondary',
     size: 'medium',
     disabled: false,
     children: 'Button',
+};
+
+export const SecondaryDark = Template.bind({});
+SecondaryDark.args = {
+    block: false,
+    dark: true,
+    color: 'secondary',
+    size: 'medium',
+    disabled: false,
+    children: 'Button',
+};
+SecondaryDark.parameters = {
+    backgrounds: { default: 'dark' },
 };
 
 export const Tertiary = Template.bind({});
