@@ -12,7 +12,6 @@ import {
     TestRightLowerComponent,
     TestRightMiddleComponent,
     TestRightUpperComponent,
-    ToggleSwitcherComponent,
 } from './steps-content';
 
 export const test_steps: StepData[] = [
@@ -22,7 +21,6 @@ export const test_steps: StepData[] = [
             component: StepChooseProductMain,
             header: 'Choose a product',
             subheader: 'Choose a product to start.',
-            props_to_pass_through_wizard: ['dark'],
         },
         right_panel_content: {
             upper_block: TestRightUpperComponent,
@@ -35,14 +33,8 @@ export const test_steps: StepData[] = [
             component: StepAddAppMain,
             header: 'Add an app',
             subheader: 'Choose an app to start.',
-            props_to_pass_through_wizard: ['dark'],
         },
         right_panel_content: { upper_block: TestLongRightUpperComponent },
-        toggle_switcher: {
-            component: ToggleSwitcherComponent,
-            defaultValue: 'real',
-            button_labels: ['Real', 'Demo'],
-        },
     },
     {
         step_title: 'Wallet',
@@ -50,17 +42,6 @@ export const test_steps: StepData[] = [
             component: StepCreateWalletMain,
             header: 'Create a wallet',
             subheader: 'Create a wallet that can be linked to your choosen app.',
-            props_to_pass_through_wizard: ['dark'],
-        },
-        more_details: {
-            fiat_currency_wallets: {
-                header: 'Fiat currency wallets',
-                subheader: 'These are all the options you get when choosing fiat wallet.',
-            },
-            something_else: {
-                header: 'Some additional info',
-                subheader: 'Some extra details.',
-            },
         },
         right_panel_content: {
             upper_block: TestRightUpperComponent,
@@ -74,7 +55,6 @@ export const test_steps: StepData[] = [
             component: StepChooseCurrencyMain,
             header: "Choose your wallet's currency",
             subheader: 'Fiat currencies.',
-            props_to_pass_through_wizard: ['dark'],
         },
         right_panel_content: {
             upper_block: TestRightUpperComponent,
@@ -86,7 +66,6 @@ export const test_steps: StepData[] = [
         main_content: {
             component: StepPersonalDetailsMain,
             header: 'Personal details',
-            props_to_pass_through_wizard: ['dark'],
         },
         right_panel_content: {
             upper_block: TestRightUpperComponent,
@@ -98,7 +77,6 @@ export const test_steps: StepData[] = [
         main_content: {
             component: StepAddressInfoMain,
             header: 'Address information',
-            props_to_pass_through_wizard: ['dark'],
         },
         right_panel_content: {
             upper_block: TestRightUpperComponent,
@@ -110,7 +88,6 @@ export const test_steps: StepData[] = [
         main_content: {
             component: StepTermsOfUseMain,
             header: 'Terms of use',
-            props_to_pass_through_wizard: ['dark'],
         },
         right_panel_content: {
             upper_block: TestRightUpperComponent,
@@ -122,7 +99,6 @@ export const test_steps: StepData[] = [
         main_content: {
             component: StepComplete,
             header: 'Completed',
-            props_to_pass_through_wizard: ['dark'],
         },
         is_fullwidth: true,
         cancel_button_name: 'Maybe later',

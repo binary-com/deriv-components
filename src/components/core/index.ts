@@ -8,5 +8,4 @@ export type {
     MainComponentProps,
     RightPanelComponentProps,
     StepData,
-    ToggleSwitcherProps,
 } from './wizard/desktop-wizard';

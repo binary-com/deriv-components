@@ -208,51 +208,23 @@ const CloseIcon = styled('div', {
     },
 });
 
-export type ToggleSwitcherProps = {
-    button_labels?: string[];
-    dark?: boolean;
-    defaultValue: string;
-    onToggle: (value: string) => void;
-};
-
 type RightPanelComponentType = (props: RightPanelComponentProps) => JSX.Element;
 
 export type RightPanelComponentProps = {
-    data: { [key: string]: { [key: string]: unknown } };
     dark?: boolean;
     current_step_index: number;
 };
 
-export type MainComponentProps = Partial<DesktopWizardProps> & {
+export type MainComponentProps = {
     dark?: boolean;
-    more_details_type?: string;
-    onSubmit: (
-        values?: { [key: string]: unknown },
-        steps_disabling_params?: Array<{ step_title: string; should_be_disabled: boolean }>,
-    ) => void;
-    setMoreDetailsType?: (more_details_type: string) => void;
-    values?: { [key: string]: unknown };
-    selected_toggle_value?: string;
 };
 
 export type StepData = {
     step_title: string;
-    toggle_switcher?: {
-        component: (props: ToggleSwitcherProps) => JSX.Element;
-        defaultValue: string;
-        button_labels?: string[];
-    };
     main_content?: {
         component: (props: MainComponentProps) => JSX.Element;
         header?: string;
         subheader?: string;
-        props_to_pass_through_wizard?: string[];
-    };
-    more_details?: {
-        [key: string]: {
-            header?: string;
-            subheader?: string;
-        };
     };
     right_panel_content?: {
         upper_block?: RightPanelComponentType;
@@ -260,6 +232,8 @@ export type StepData = {
         lower_block?: RightPanelComponentType;
     };
     is_fullwidth?: boolean;
+    is_disabled?: boolean;
+    is_hidden?: boolean;
     cancel_button_name?: string;
     submit_button_name?: string;
 };
@@ -267,10 +241,12 @@ export type StepData = {
 export type DesktopWizardProps = {
     dark?: boolean;
     has_dark_background?: boolean;
-    onComplete: (data: { [key: string]: { [key: string]: unknown } }, button_name: string) => void;
+    onComplete: () => void;
     onClose: () => void;
     steps: StepData[];
     wizard_title: string;
+    submit_button_name: string;
+    cancel_button_name: string;
 };
 
 const DesktopWizard = (props: DesktopWizardProps) => {
@@ -280,41 +256,30 @@ const DesktopWizard = (props: DesktopWizardProps) => {
         onComplete,
         onClose,
         steps,
-        wizard_title = "Let's get you a new app.",
+        wizard_title,
+        submit_button_name,
+        cancel_button_name,
     } = props;
     const [current_step_index, setCurrentStepIndex] = React.useState(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
-    const [disabled_steps_indexes, setDisabledStepsIndexes] = React.useState<number[]>([]);
-    const [collected_values, setCollectedValues] = React.useState<{ [key: string]: { [key: string]: unknown } }>({});
-    const [more_details_type, setMoreDetailsType] = React.useState('');
-    const default_toggle_value = steps[current_step_index].toggle_switcher?.defaultValue;
-    const current_left_button_name = steps[current_step_index].cancel_button_name || 'Back';
-    const current_right_button_name = steps[current_step_index].submit_button_name || 'Next';
+    const [is_completed, setCompleted] = React.useState(false);
+
+    const current_left_button_name = steps[current_step_index].cancel_button_name || cancel_button_name;
+    const current_right_button_name = steps[current_step_index].submit_button_name || submit_button_name;
     const animated_div_ref = React.useRef<HTMLDivElement>(null);
     const steps_indexes = steps.map((_step, idx) => idx);
     const incomplete_steps_indexes = steps_indexes.filter(
-        (idx) =>
-            complete_steps_indexes.every((i) => i !== idx) &&
-            disabled_steps_indexes.every((i) => i !== idx) &&
-            idx < steps.length - 1,
+        (idx) => complete_steps_indexes.every((i) => i !== idx) && idx < steps.length - 1,
     );
     const next_incomplete_step_index = steps_indexes.find(
-        (i) =>
-            i > current_step_index &&
-            disabled_steps_indexes.every((index) => i !== index) &&
-            complete_steps_indexes.every((idx) => i !== idx),
+        (i) => i > current_step_index && complete_steps_indexes.every((idx) => i !== idx),
     );
     const previous_enabled_step_index = steps_indexes
         .slice()
         .reverse()
-        .find((i) => i < current_step_index && disabled_steps_indexes.every((index) => i !== index));
+        .find((i) => i < current_step_index);
     const last_complete_step_index = steps_indexes.filter((idx) => complete_steps_indexes.some((i) => i === idx)).pop();
-    const passThroughProps = steps[current_step_index].main_content?.props_to_pass_through_wizard?.reduce(
-        (arr, item) => {
-            return { ...arr, [item]: props[item as keyof DesktopWizardProps] };
-        },
-        {},
-    );
+
     let new_step_timeout: NodeJS.Timeout;
 
     React.useEffect(() => {
@@ -337,7 +302,7 @@ const DesktopWizard = (props: DesktopWizardProps) => {
         clearTimeout(new_step_timeout);
         slide('translateY(0)', 'translateY(100vh)');
         if (current_step_index === steps.length - 1) {
-            onComplete(collected_values, current_left_button_name);
+            onComplete();
         } else {
             new_step_timeout = setTimeout(() => {
                 setCurrentStepIndex(Number(previous_enabled_step_index));
@@ -350,7 +315,7 @@ const DesktopWizard = (props: DesktopWizardProps) => {
         clearTimeout(new_step_timeout);
         slide('translateY(0)', 'translateY(-100vh)');
         if (current_step_index === steps.length - 1) {
-            onComplete(collected_values, current_right_button_name);
+            onComplete();
             return;
         }
         if (Number(next_incomplete_step_index) < steps.length) {
@@ -372,7 +337,6 @@ const DesktopWizard = (props: DesktopWizardProps) => {
 
     const handleStepClick = (index: number) => {
         if (
-            disabled_steps_indexes.every((i) => i !== index) &&
             (index <= Number(last_complete_step_index) + 1 ||
                 index === Number(next_incomplete_step_index) ||
                 complete_steps_indexes.some((i) => i === current_step_index)) &&
@@ -390,49 +354,8 @@ const DesktopWizard = (props: DesktopWizardProps) => {
         }
     };
 
-    const handleDataSubmit = (
-        values?: { [key: string]: unknown },
-        steps_disabling_params?: Array<{ step_title: string; should_be_disabled: boolean }>,
-    ) => {
-        const steps_indexes_to_disable = steps_disabling_params
-            ?.map((t) => steps.findIndex((step) => t.should_be_disabled && step.step_title === t.step_title))
-            .filter((i) => i > -1);
-        const steps_indexes_to_enable = steps_disabling_params
-            ?.map((t) => steps.findIndex((step) => !t.should_be_disabled && step.step_title === t.step_title))
-            .filter((i) => i > -1);
-        setCollectedValues({ ...collected_values, [current_step_index]: values });
-        if (
-            (steps_indexes_to_disable && steps_indexes_to_disable.length > 0) ||
-            (steps_indexes_to_enable && steps_indexes_to_enable.length > 0)
-        ) {
-            setDisabledStepsIndexes([
-                ...new Set([
-                    ...disabled_steps_indexes.filter((idx) => (steps_indexes_to_enable || []).every((i) => idx !== i)),
-                    ...(steps_indexes_to_disable || []),
-                ]),
-            ]);
-            if (steps_indexes_to_disable && steps_indexes_to_disable.length > 0) {
-                // remove disabled steps from completed and clear their data in case they were completed previously:
-                setCompleteStepsIndexes([
-                    ...new Set([
-                        ...complete_steps_indexes.filter((s) => steps_indexes_to_disable.every((i) => s !== i)),
-                        current_step_index,
-                    ]),
-                ]);
-                setCollectedValues({
-                    ...collected_values,
-                    [current_step_index]: values,
-                    ...steps_indexes_to_disable.reduce((acc, i) => ({ ...acc, [i]: undefined }), {}),
-                });
-            } else if (steps_indexes_to_enable && steps_indexes_to_enable.length > 0) {
-                // make last 'Complete' step incomplete when a previously disabled step gets enabled:
-                setCompleteStepsIndexes([
-                    ...new Set([...complete_steps_indexes.filter((s) => s !== steps.length - 1), current_step_index]),
-                ]);
-            }
-        } else {
-            setCompleteStepsIndexes([...new Set([...complete_steps_indexes, current_step_index])]);
-        }
+    const handleDataSubmit = () => {
+        setCompleteStepsIndexes([...new Set([...complete_steps_indexes, current_step_index])]);
     };
 
     return (
@@ -452,7 +375,6 @@ const DesktopWizard = (props: DesktopWizardProps) => {
                         current_step_index={current_step_index}
                         complete_steps_indexes={complete_steps_indexes}
                         dark={dark}
-                        disabled_steps_indexes={disabled_steps_indexes}
                         onClick={handleStepClick}
                     />
                 </LeftPanel>
@@ -462,13 +384,7 @@ const DesktopWizard = (props: DesktopWizardProps) => {
                             <DesktopWizard.Body
                                 animated_div_ref={animated_div_ref}
                                 current_step={steps[current_step_index]}
-                                current_step_collected_values={collected_values[current_step_index]}
                                 dark={dark}
-                                default_toggle_value={default_toggle_value}
-                                handleDataSubmit={handleDataSubmit}
-                                more_details_type={more_details_type}
-                                setMoreDetailsType={setMoreDetailsType}
-                                {...passThroughProps}
                             />
                         </FixedWidthContainer>
                         {steps[current_step_index].right_panel_content && (
@@ -487,9 +403,8 @@ const DesktopWizard = (props: DesktopWizardProps) => {
                                                     dark={dark}
                                                 >
                                                     <RightPanelComponent
-                                                        data={collected_values}
-                                                        dark={dark}
                                                         current_step_index={current_step_index}
+                                                        dark={dark}
                                                     />
                                                 </RightPanelBlock>
                                             )

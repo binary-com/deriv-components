@@ -1,5 +1,5 @@
 import Checkbox from '@core/checkbox/checkbox';
-import { MainComponentProps, RightPanelComponentProps, ToggleSwitcherProps } from '@core/wizard/desktop-wizard';
+import { MainComponentProps, RightPanelComponentProps } from '@core/wizard/desktop-wizard';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
 import Button from '@core/button/button';
@@ -61,9 +61,7 @@ export const StepChooseProductMain = ({ onSubmit, values }: MainComponentProps) 
     );
 };
 
-export const StepAddAppMain = ({ dark, onSubmit, selected_toggle_value }: MainComponentProps) => {
-    const is_real = selected_toggle_value?.toLowerCase() === 'real';
-
+export const StepAddAppMain = ({ dark, onSubmit }: MainComponentProps) => {
     return (
         <>
             <Text as="p" type="paragraph-1" bold={false} css={{ color: dark ? '#C2C2C2' : '#333333' }}>
@@ -76,19 +74,9 @@ export const StepAddAppMain = ({ dark, onSubmit, selected_toggle_value }: MainCo
     );
 };
 
-export const StepCreateWalletMain = ({
-    dark,
-    onSubmit,
-    setMoreDetailsType,
-    more_details_type,
-    values,
-}: MainComponentProps) => {
+export const StepCreateWalletMain = ({ dark, onSubmit, values }: MainComponentProps) => {
     const fiat_currencies = ['aud', 'eur', 'gbp', 'usd'];
     const crypto_currencies = ['btc', 'eth', 'ltc', 'eusdt', 'usdt', 'usdc'];
-
-    const handleInfoIconClick = (details_type: string) => {
-        (setMoreDetailsType as (more_details_type: string) => void)(details_type);
-    };
 
     const onWalletSelection = (wallet_name: string) => {
         if (
@@ -102,18 +90,6 @@ export const StepCreateWalletMain = ({
     };
 
     const getMoreDetails = () => {
-        if (more_details_type === 'fiat_currency_wallets') {
-            return (
-                <>
-                    <Text as="p" type="paragraph-1" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
-                        E-wallets
-                    </Text>
-                    <Text as="p" type="paragraph-1" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
-                        Bankwire
-                    </Text>
-                </>
-            );
-        }
         return (
             <>
                 <Text as="p" type="paragraph-1" css={{ color: dark ? '#C2C2C2' : '#333333' }}>
@@ -123,20 +99,8 @@ export const StepCreateWalletMain = ({
         );
     };
 
-    return more_details_type ? (
-        getMoreDetails()
-    ) : (
+    return (
         <>
-            <Button
-                color="secondary"
-                dark={dark as boolean}
-                onClick={() => handleInfoIconClick('fiat_currency_wallets')}
-            >
-                More Info about fiat currency wallets
-            </Button>
-            <Button color="secondary" dark={dark as boolean} onClick={() => handleInfoIconClick('something_else')}>
-                More Info about something else
-            </Button>
             <Text as="p" type="paragraph-2" bold={false} css={{ color: dark ? '#C2C2C2' : '#333333' }}>
                 If you choose a fiat or crypto wallet, the next step will be disabled (skipped). If you choose a payment
                 agent wallet, the next step will be enabled.
@@ -313,30 +277,3 @@ const ToggleButton = styled('button', {
         },
     ],
 });
-
-export const ToggleSwitcherComponent = ({ button_labels, dark, defaultValue, onToggle }: ToggleSwitcherProps) => {
-    const [value, setValue] = React.useState(defaultValue.toLowerCase());
-    const buttons = button_labels || ['Real', 'Demo'];
-
-    const handleClick = (_value: string) => {
-        setValue(_value);
-        onToggle(_value);
-    };
-
-    return (
-        <div style={{ margin: 'auto', display: 'flex' }}>
-            {buttons.map((label, idx) => (
-                <ToggleButton
-                    key={idx + 1}
-                    dark={dark}
-                    pressed={value === label.toLowerCase()}
-                    onClick={() => handleClick(label.toLowerCase())}
-                >
-                    <Text as="span" type="paragraph-2" bold={value === label.toLowerCase()}>
-                        {label}
-                    </Text>
-                </ToggleButton>
-            ))}
-        </div>
-    );
-};

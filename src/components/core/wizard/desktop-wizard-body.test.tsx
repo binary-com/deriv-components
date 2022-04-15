@@ -7,7 +7,6 @@ import {
     TestLongRightUpperComponent,
     TestRightMiddleComponent,
     TestRightUpperComponent,
-    ToggleSwitcherComponent,
 } from './stories/steps/steps-content';
 
 jest.mock('react', () => ({
@@ -28,7 +27,6 @@ describe('DesktopWizard Component', () => {
                 component: StepChooseProductMain,
                 header: 'Choose a product',
                 subheader: 'Choose a product to start.',
-                props_to_pass_through_wizard: ['dark'],
             },
             right_panel_content: {
                 upper_block: TestRightUpperComponent,
@@ -41,33 +39,14 @@ describe('DesktopWizard Component', () => {
                 component: StepAddAppMain,
                 header: 'Add an app',
                 subheader: 'Choose an app to start.',
-                props_to_pass_through_wizard: ['dark'],
             },
             right_panel_content: { upper_block: TestLongRightUpperComponent },
-            toggle_switcher: {
-                component: ToggleSwitcherComponent,
-                defaultValue: 'real',
-                button_labels: ['Real', 'Demo'],
-            },
         },
     ];
-    const mocked_step_values = {
-        '0': {
-            selected_product: 'multipliers',
-        },
-        '1': {
-            app_type: 'demo',
-        },
-    };
 
     const props = {
         dark: false,
         current_step: mocked_steps[0],
-        current_step_collected_values: mocked_step_values[0],
-        default_toggle_value: '',
-        handleDataSubmit: jest.fn(),
-        more_details_type: '',
-        setMoreDetailsType: jest.fn(),
         animated_div_ref: animated_div_ref,
     };
 
@@ -86,14 +65,7 @@ describe('DesktopWizard Component', () => {
     });
 
     it('DesktopWizard.Body renders properly with the 2nd step content', () => {
-        render(
-            <DesktopWizard.Body
-                {...props}
-                current_step={mocked_steps[1]}
-                current_step_collected_values={mocked_step_values[1]}
-                default_toggle_value="demo"
-            />,
-        );
+        render(<DesktopWizard.Body {...props} current_step={mocked_steps[1]} />);
 
         const body_heading = screen.getByTestId('body-heading');
         const toggle_switcher = screen.getByTestId('toggle-switcher');

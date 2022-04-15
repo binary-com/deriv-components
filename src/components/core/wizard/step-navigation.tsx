@@ -139,20 +139,12 @@ type StepNavigationProps = {
     steps: StepData[];
     current_step_index: number;
     complete_steps_indexes?: number[];
-    disabled_steps_indexes?: number[];
     dark?: boolean;
     onClick?: (idx: number) => void;
 };
 
 const StepNavigation = React.memo(
-    ({
-        steps,
-        current_step_index,
-        complete_steps_indexes,
-        disabled_steps_indexes,
-        dark,
-        onClick,
-    }: StepNavigationProps) => {
+    ({ steps, current_step_index, complete_steps_indexes, dark, onClick }: StepNavigationProps) => {
         return (
             <div style={{ position: 'relative' }} data-testid="step-navigation">
                 <Before
@@ -163,7 +155,7 @@ const StepNavigation = React.memo(
                 />
                 {steps.map((step, idx) => {
                     const active = idx === current_step_index;
-                    const disabled = disabled_steps_indexes?.some((i) => i === idx);
+                    const disabled = steps[current_step_index].is_disabled;
                     return (
                         <StepBreadcrumb
                             key={idx + 1}

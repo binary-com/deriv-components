@@ -48,23 +48,11 @@ export default {
                 type: {
                     summary: `**STEPS: ** Array<{
                         step_title: string;
-                        toggle_switcher?: {
-                            component: (props: ToggleSwitcherProps) => JSX.Element;
-                            defaultValue: string;
-                            button_labels?: string[];
-                        };
                         main_content?: {
                             component: (props: MainComponentProps) => JSX.Element;
                             header?: string;
                             subheader?: string;
-                            props_to_pass_through_wizard?: string[];
                         }
-                        more_details?: {
-                            [key: string]: {
-                                header?: string;
-                                subheader?: string;
-                            };
-                        };
                         right_panel_content?: {
                             upper_block?: (props: RightPanelComponentProps) => JSX.Element;
                             middle_block?: (props: RightPanelComponentProps) => JSX.Element;
@@ -74,17 +62,12 @@ export default {
                         cancel_button_name?: string;
                         submit_button_name?: string;
                     }>
-                    **PROPS_TO_PASS_THROUGH_WIZARD: ** an array of any DesktopWizard props that you want to pass to Wizard's main_content.component.
-                    **MAIN COMPONENT PROPS: ** PROPS_TO_PASS_THROUGH_WIZARD + {
+                    **MAIN COMPONENT PROPS: {
                         dark?: boolean;
-                        more_details_type?: string;
                         onSubmit: (
                             values?: { [key: string]: unknown },
-                            steps_disabling_params?: Array<{ step_title: string; should_be_disabled: boolean }>,
                         ) => void;
-                        setMoreDetailsType?: (more_details_type: string) => void;
                         values?: { [key: string]: unknown };
-                        selected_toggle_value?: string;
                     };
                     **RIGHT PANEL COMPONENT PROPS: ** {
                         data: { [key: string]: { [key: string]: unknown } };

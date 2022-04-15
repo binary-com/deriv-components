@@ -8,7 +8,6 @@ import {
     TestLongRightUpperComponent,
     TestRightMiddleComponent,
     TestRightUpperComponent,
-    ToggleSwitcherComponent,
 } from './stories/steps/steps-content';
 
 jest.mock('react', () => ({
@@ -26,7 +25,6 @@ describe('DesktopWizard Component', () => {
                 component: StepChooseProductMain,
                 header: 'Choose a product',
                 subheader: 'Choose a product to start.',
-                props_to_pass_through_wizard: ['dark'],
             },
             right_panel_content: {
                 upper_block: TestRightUpperComponent,
@@ -39,21 +37,14 @@ describe('DesktopWizard Component', () => {
                 component: StepAddAppMain,
                 header: 'Add an app',
                 subheader: 'Choose an app to start.',
-                props_to_pass_through_wizard: ['dark'],
             },
             right_panel_content: { upper_block: TestLongRightUpperComponent },
-            toggle_switcher: {
-                component: ToggleSwitcherComponent,
-                defaultValue: 'real',
-                button_labels: ['Real', 'Demo'],
-            },
         },
         {
             step_title: 'Complete',
             main_content: {
                 component: StepComplete,
                 header: 'Completed',
-                props_to_pass_through_wizard: ['dark'],
             },
             is_fullwidth: true,
             cancel_button_name: 'Maybe later',
