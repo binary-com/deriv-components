@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import ModalBody from './modal-body';
 import ModalTrigger from './modal-trigger';
@@ -6,7 +6,7 @@ import ModalTrigger from './modal-trigger';
 export const Dialog = DialogPrimitive.Root;
 
 export interface ModalProps {
-    children?: ReactElement[];
+    children?: React.ReactElement[];
 }
 
 const WalletModal = ({ children }: ModalProps) => {

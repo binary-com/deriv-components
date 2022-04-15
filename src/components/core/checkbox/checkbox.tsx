@@ -1,4 +1,4 @@
-import { useState, HtmlHTMLAttributes } from 'react';
+import React from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import classNames from 'classnames';
 import css from './checkbox.module.scss';
@@ -7,7 +7,7 @@ import CheckIndetermineIconSVG from '../../../images/svg/checkbox-indetermine-ic
 
 export const CheckBox = CheckboxPrimitive.Root;
 
-export interface CheckboxProps extends HtmlHTMLAttributes<HTMLInputElement> {
+export interface CheckboxProps extends React.HtmlHTMLAttributes<HTMLInputElement> {
     dark?: boolean;
     indetermine?: boolean;
     check?: boolean;
@@ -15,7 +15,7 @@ export interface CheckboxProps extends HtmlHTMLAttributes<HTMLInputElement> {
 }
 
 const Checkbox = ({ children, dark, indetermine, check, size = 'default', ...props }: CheckboxProps) => {
-    const [checked, setChecked] = useState(false);
+    const [checked, setChecked] = React.useState(false);
     const icon_src = check ? CheckIconSVG : indetermine && CheckIndetermineIconSVG;
     const icon_class = check ? 'check_icon' : indetermine && 'indetermine_icon';
 

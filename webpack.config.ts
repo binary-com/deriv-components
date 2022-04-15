@@ -1,5 +1,6 @@
 import { ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin/lib/plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
+import  CopyWebpackPlugin from 'copy-webpack-plugin';
 import path from 'path';
 import { Configuration, ResolvePluginInstance } from 'webpack';
 
@@ -72,7 +73,11 @@ const config = (env: EnvConfig): Configuration => {
                 type: 'umd',
             },
         },
-        plugins: [new ForkTsCheckerWebpackPlugin()],
+        plugins: [new ForkTsCheckerWebpackPlugin(), 
+            new CopyWebpackPlugin({
+                patterns: [{ from: path.resolve(__dirname, 'src/images/svg/modal'), to: 'modal' }],
+            }),
+        ],
         externals: {
             react: {
                 root: 'React',
