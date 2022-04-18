@@ -126,6 +126,7 @@ const RightPanelBlock = styled('div', {
             },
             middle: {
                 paddingTop: '24px',
+                flex: '1',
             },
             lower: {
                 position: 'absolute',
@@ -134,6 +135,7 @@ const RightPanelBlock = styled('div', {
                 right: '24px',
                 minHeight: '26px',
                 borderTop: '1px solid #D6DADB',
+                flex: '1',
             },
         },
         dark: {
@@ -234,8 +236,8 @@ export type StepData = {
     is_fullwidth?: boolean;
     is_disabled?: boolean;
     is_hidden?: boolean;
-    cancel_button_name?: string;
-    submit_button_name?: string;
+    cancel_button_label?: string;
+    submit_button_label?: string;
 };
 
 export type DesktopWizardProps = {
@@ -245,8 +247,8 @@ export type DesktopWizardProps = {
     onClose: () => void;
     steps: StepData[];
     wizard_title: string;
-    submit_button_name: string;
-    cancel_button_name: string;
+    submit_button_label?: string;
+    cancel_button_label?: string;
 };
 
 const DesktopWizard = (props: DesktopWizardProps) => {
@@ -257,15 +259,15 @@ const DesktopWizard = (props: DesktopWizardProps) => {
         onClose,
         steps,
         wizard_title,
-        submit_button_name,
-        cancel_button_name,
+        submit_button_label,
+        cancel_button_label,
     } = props;
     const [current_step_index, setCurrentStepIndex] = React.useState(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
     const [is_completed, setCompleted] = React.useState(false);
 
-    const current_left_button_name = steps[current_step_index].cancel_button_name || cancel_button_name;
-    const current_right_button_name = steps[current_step_index].submit_button_name || submit_button_name;
+    const current_left_button_name = steps[current_step_index].cancel_button_label || cancel_button_label;
+    const current_right_button_name = steps[current_step_index].submit_button_label || submit_button_label;
     const animated_div_ref = React.useRef<HTMLDivElement>(null);
     const steps_indexes = steps.map((_step, idx) => idx);
     const incomplete_steps_indexes = steps_indexes.filter(

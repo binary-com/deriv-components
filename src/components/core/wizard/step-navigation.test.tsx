@@ -40,8 +40,8 @@ describe('StepNavigation Component', () => {
                 header: 'Completed',
             },
             is_fullwidth: true,
-            cancel_button_name: 'Maybe later',
-            submit_button_name: 'Deposit',
+            cancel_button_label: 'Maybe later',
+            submit_button_label: 'Deposit',
         },
     ];
 

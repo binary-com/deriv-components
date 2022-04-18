@@ -59,8 +59,8 @@ export default {
                             lower_block?: (props: RightPanelComponentProps) => JSX.Element;
                         };
                         is_fullwidth?: boolean;
-                        cancel_button_name?: string;
-                        submit_button_name?: string;
+                        cancel_button_label?: string;
+                        submit_button_label?: string;
                     }>
                     **MAIN COMPONENT PROPS: {
                         dark?: boolean;
@@ -100,35 +100,150 @@ export default {
                 ],
             },
         },
+        cancel_button_label: {
+            defaultValue: 'Back',
+            description: 'Optional. Cancel button label',
+            control: {
+                type: 'text',
+            },
+        },
+        submit_button_label: {
+            defaultValue: 'Next',
+            description: 'Optional. Submit button label',
+            control: {
+                type: 'text',
+            },
+        },
     },
 } as Meta<DesktopWizardProps>;
 
+type CreateAppState = {
+    product_type?: string;
+};
+
 const Template: Story<DesktopWizardProps> = (args) => {
     const [is_wizard_open, setIsWizardOpen] = useState(true);
-    const [data, setData] = useState('');
-    const [button_name, setButtonName] = useState('');
+    const [product_type, setProductType] = useState('');
+
+    console.log('Template render');
 
     const onWizardOpening = () => {
         setIsWizardOpen(true);
-        setData('');
-        setButtonName('');
     };
 
-    const handleComplete = (data: { [key: string]: { [key: string]: unknown } }, button_name: string) => {
+    const handleComplete = () => {
         setIsWizardOpen(false);
-        setData(JSON.stringify(data));
-        setButtonName(button_name);
     };
+
+    const updateState = (product_type: string) => {
+        setProductType(product_type);
+    };
+
+    const test_steps: StepData[] = [
+        {
+            step_title: 'Product',
+            main_content: {
+                component: <></>,
+                header: 'Choose a product',
+                subheader: 'Choose a product to start.',
+            },
+            // right_panel_content: {
+            //     upper_block: TestRightUpperComponent,
+            //     middle_block: TestRightMiddleComponent,
+            // },
+        },
+        // {
+        //     step_title: 'App',
+        //     main_content: {
+        //         component: StepAddAppMain,
+        //         header: 'Add an app',
+        //         subheader: 'Choose an app to start.',
+        //     },
+        //     right_panel_content: { upper_block: TestLongRightUpperComponent },
+        // },
+        // {
+        //     step_title: 'Wallet',
+        //     main_content: {
+        //         component: StepCreateWalletMain,
+        //         header: 'Create a wallet',
+        //         subheader: 'Create a wallet that can be linked to your choosen app.',
+        //     },
+        //     right_panel_content: {
+        //         upper_block: TestRightUpperComponent,
+        //         middle_block: TestRightMiddleComponent,
+        //         lower_block: TestRightLowerComponent,
+        //     },
+        // },
+        // {
+        //     step_title: 'Currency',
+        //     main_content: {
+        //         component: StepChooseCurrencyMain,
+        //         header: "Choose your wallet's currency",
+        //         subheader: 'Fiat currencies.',
+        //     },
+        //     right_panel_content: {
+        //         upper_block: TestRightUpperComponent,
+        //         middle_block: TestRightMiddleComponent,
+        //     },
+        // },
+        // {
+        //     step_title: 'Personal details',
+        //     main_content: {
+        //         component: StepPersonalDetailsMain,
+        //         header: 'Personal details',
+        //     },
+        //     right_panel_content: {
+        //         upper_block: TestRightUpperComponent,
+        //         middle_block: TestRightMiddleComponent,
+        //     },
+        // },
+        // {
+        //     step_title: 'Address',
+        //     main_content: {
+        //         component: StepAddressInfoMain,
+        //         header: 'Address information',
+        //     },
+        //     right_panel_content: {
+        //         upper_block: TestRightUpperComponent,
+        //         middle_block: TestRightMiddleComponent,
+        //     },
+        // },
+        // {
+        //     step_title: 'Terms of use',
+        //     main_content: {
+        //         component: StepTermsOfUseMain,
+        //         header: 'Terms of use',
+        //     },
+        //     right_panel_content: {
+        //         upper_block: TestRightUpperComponent,
+        //         middle_block: TestRightMiddleComponent,
+        //     },
+        // },
+        // {
+        //     step_title: 'Complete',
+        //     main_content: {
+        //         component: StepComplete,
+        //         header: 'Completed',
+        //     },
+        //     is_fullwidth: true,
+        //     cancel_button_label: 'Maybe later',
+        //     submit_button_label: 'Deposit',
+        // },
+    ];
 
     return (
         <>
             {is_wizard_open ? (
-                <DesktopWizard {...args} onClose={() => setIsWizardOpen(false)} onComplete={handleComplete} />
+                <DesktopWizard
+                    steps={test_steps}
+                    onClose={() => setIsWizardOpen(false)}
+                    onComplete={handleComplete}
+                    component={<StepChooseProductMain product_type={product_type} onSelect={updateState} />}
+                    wizard_title="Let's get you a new app."
+                />
             ) : (
                 <>
                     <Button onClick={onWizardOpening}>Open Desktop Wizard</Button>
-                    <p>Collected data are: {data}</p>
-                    <p>A clicked button name is: {button_name}</p>
                 </>
             )}
         </>
@@ -139,27 +254,23 @@ export const LightDesktopAppWizard = Template.bind({});
 LightDesktopAppWizard.args = {
     dark: false,
     has_dark_background: true,
-    steps: test_steps,
     wizard_title: "Let's get you a new app.",
 };
 export const LightDesktopAppWizardWithoutDarkBackground = Template.bind({});
 LightDesktopAppWizardWithoutDarkBackground.args = {
     dark: false,
     has_dark_background: false,
-    steps: test_steps,
     wizard_title: "Let's get you a new app.",
 };
 export const DarkDesktopAppWizard = Template.bind({});
 DarkDesktopAppWizard.args = {
     dark: true,
     has_dark_background: true,
-    steps: test_steps,
     wizard_title: "Let's get you a new app.",
 };
 export const DarkDesktopAppWizardWithoutDarkBackground = Template.bind({});
 DarkDesktopAppWizardWithoutDarkBackground.args = {
     dark: true,
     has_dark_background: false,
-    steps: test_steps,
     wizard_title: "Let's get you a new app.",
 };
