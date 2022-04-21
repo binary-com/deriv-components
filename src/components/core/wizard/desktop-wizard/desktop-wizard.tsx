@@ -146,10 +146,6 @@ const CloseIcon = styled('div', {
     },
 });
 
-export type MainComponentProps = {
-    dark?: boolean;
-};
-
 export type DesktopWizardProps = {
     dark?: boolean;
     lock_final_step?: boolean;
@@ -348,7 +344,7 @@ const DesktopWizard = (props: DesktopWizardProps) => {
                             disabled={current_step_index < 1}
                             dark={dark}
                         >
-                            {current_step.props?.secondary_button_label || secondary_button_label}
+                            {secondary_button_label}
                         </Button>
                         <Button
                             size="large"
@@ -356,7 +352,7 @@ const DesktopWizard = (props: DesktopWizardProps) => {
                             disabled={current_step.props.is_submit_disabled}
                             dark={dark}
                         >
-                            {current_step.props?.primary_button_label || primary_button_label}
+                            {primary_button_label}
                         </Button>
                     </Footer>
                 </WizardBody>

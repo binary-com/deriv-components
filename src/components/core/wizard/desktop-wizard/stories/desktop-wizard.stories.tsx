@@ -52,49 +52,6 @@ export default {
                 type: { summary: '() => void' },
             },
         },
-        steps: {
-            description: `Required. An array of objects containing the list of steps to render in the wizard. Please refer to the acceptable type below. Please note that right_panel_content.lower_block is absolutely positioned against the right panel bottom.
-                Below are also mentioned the types of child components' props.`,
-            table: {
-                type: {
-                    summary: `**STEPS: ** Array<{
-                        step_title: string;
-                        main_content?: {
-                            component: (props: MainComponentProps) => JSX.Element;
-                            header?: string;
-                            subheader?: string;
-                        }
-                        right_panel_content?: {
-                            upper_block?: (props: RightPanelComponentProps) => JSX.Element;
-                            middle_block?: (props: RightPanelComponentProps) => JSX.Element;
-                            lower_block?: (props: RightPanelComponentProps) => JSX.Element;
-                        };
-                        is_fullwidth?: boolean;
-                        secondary_button_label?: string;
-                        primary_button_label?: string;
-                    }>
-                    **MAIN COMPONENT PROPS: {
-                        dark?: boolean;
-                        onSubmit: (
-                            values?: { [key: string]: unknown },
-                        ) => void;
-                        values?: { [key: string]: unknown };
-                    };
-                    **RIGHT PANEL COMPONENT PROPS: ** {
-                        data: { [key: string]: { [key: string]: unknown } };
-                        dark?: boolean;
-                        current_step_index: number;
-                    };
-                    **TOGGLE SWITCHER PROPS: ** {
-                        button_labels?: string[];
-                        dark?: boolean;
-                        defaultValue: string;
-                        onToggle: (value: string) => void;
-                    };`,
-                },
-                defaultValue: { summary: '[{...}]' },
-            },
-        },
         wizard_title: {
             description: 'Optional. Sets the wizard title.',
             defaultValue: "Let's get you a new app.",
@@ -138,6 +95,7 @@ const Template: Story<DesktopWizardProps> = (args) => {
     const [is_wizard_open, setIsWizardOpen] = useState(true);
     const [create_app_state, setCreateAppState] = useState<CreateAppState>({});
     const [current_step, setCurrentStep] = useState<number>();
+    const [current_step_key, setCurrentStepKey] = useState<string>();
 
     const onWizardOpening = () => {
         setIsWizardOpen(true);
@@ -148,12 +106,19 @@ const Template: Story<DesktopWizardProps> = (args) => {
         setIsWizardOpen(false);
     };
 
+    const onChangeStep = (_current_step: number, _current_step_key?: string) => {
+        setCurrentStep(_current_step);
+        setCurrentStepKey(_current_step_key);
+    };
+
     const updateCreateAppState = (new_state: Partial<CreateAppState>) => {
         setCreateAppState({
             ...create_app_state,
             ...new_state,
         });
     };
+
+    const is_final_step = current_step_key === 'complete_step';
 
     return (
         <>
@@ -162,9 +127,9 @@ const Template: Story<DesktopWizardProps> = (args) => {
                     onClose={() => setIsWizardOpen(false)}
                     onComplete={handleComplete}
                     wizard_title="Let's get you a new app."
-                    primary_button_label="Next"
-                    secondary_button_label="Back"
-                    onChangeStep={setCurrentStep}
+                    primary_button_label={is_final_step ? 'Deposit' : 'Next'}
+                    secondary_button_label={is_final_step ? 'Maybe later' : 'Back'}
+                    onChangeStep={onChangeStep}
                     lock_final_step
                     {...args}
                 >
@@ -195,11 +160,7 @@ const Template: Story<DesktopWizardProps> = (args) => {
                     <DesktopWizard.Step title="Terms of use">
                         <StepTermsOfUseMain />
                     </DesktopWizard.Step>
-                    <DesktopWizard.Step
-                        title="Complete"
-                        primary_button_label="Deposit"
-                        secondary_button_label="Maybe later"
-                    >
+                    <DesktopWizard.Step key="complete_step" title="Complete">
                         <StepComplete />
                     </DesktopWizard.Step>
                     <DesktopWizard.RightPanel>
