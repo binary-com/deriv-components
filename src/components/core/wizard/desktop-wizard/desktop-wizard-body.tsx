@@ -1,36 +1,7 @@
 import Scrollbars from '@core/scrollbars/scrollbars';
 import React from 'react';
-import Text from '@core/text/text';
-import { styled } from 'Styles/stitches.config';
-import BackArrowIconDark from '@assets/svg/wizard/ic-back-arrow-dark.svg';
-import BackArrowIconLight from '@assets/svg/wizard/ic-back-arrow-light.svg';
 import { DesktopWizardProps } from './desktop-wizard';
 import { StepProps } from './step';
-
-const MainTitleContainer = styled('div', {
-    position: 'relative',
-    display: 'flex',
-    gap: '10px',
-});
-
-const GoBackArrow = styled('div', {
-    marginTop: '14px',
-    width: '12px',
-    height: '8px',
-    background: `url(${BackArrowIconDark}) no-repeat center`,
-
-    '&:hover': {
-        cursor: 'pointer',
-    },
-
-    variants: {
-        dark: {
-            true: {
-                background: `url(${BackArrowIconLight}) no-repeat center`,
-            },
-        },
-    },
-});
 
 type DesktopWizardBody = Partial<DesktopWizardProps> & {
     animated_div_ref: React.RefObject<HTMLDivElement | null>;
