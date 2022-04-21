@@ -1,11 +1,7 @@
 import React from 'react';
 import Scrollbars from '@core/scrollbars/scrollbars';
 import { styled } from '@stitches/react';
-
-export type RightPanelProps = {
-    is_hidden?: boolean;
-    children: React.ReactElement | React.ReactElement[];
-};
+import { RightPanelProps } from '@core/wizard/types';
 
 const RightPanelContainer = styled('div', {
     width: '312px',

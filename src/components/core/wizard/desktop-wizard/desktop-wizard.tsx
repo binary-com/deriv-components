@@ -1,12 +1,13 @@
+import React from 'react';
 import CloseIconDark from '@assets/svg/modal/ic-close-dark.svg';
 import CloseIconLight from '@assets/svg/modal/ic-close-light.svg';
 import Button from '@core/button/button';
 import Text from '@core/text/text';
-import React from 'react';
+import { WizardProps, StepProps, RightPanelProps } from '@core/wizard/types';
 import { styled } from 'Styles/stitches.config';
 import StepNavigation from './step-navigation';
-import Step, { StepProps } from './step';
-import RightPanel, { RightPanelProps } from './right-panel';
+import Step from './step';
+import RightPanel from './right-panel';
 import DesktopWizardBody from './desktop-wizard-body';
 
 const DarkBackgroundContainer = styled('div', {
@@ -146,20 +147,7 @@ const CloseIcon = styled('div', {
     },
 });
 
-export type DesktopWizardProps = {
-    dark?: boolean;
-    lock_final_step?: boolean;
-    has_dark_background?: boolean;
-    onComplete: (button_type: 'primary' | 'secondary') => void;
-    onClose: () => void;
-    onChangeStep?: (current_step_index: number, current_step_key?: string) => void;
-    wizard_title: string;
-    primary_button_label?: string;
-    secondary_button_label?: string;
-    children: React.ReactElement | React.ReactElement[];
-};
-
-const DesktopWizard = (props: DesktopWizardProps) => {
+const DesktopWizard = (props: WizardProps) => {
     const {
         dark,
         lock_final_step,

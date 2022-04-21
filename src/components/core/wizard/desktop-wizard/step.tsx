@@ -1,14 +1,5 @@
 import React from 'react';
-
-export type StepProps = {
-    title: string;
-    step_key?: string;
-    is_fullwidth?: boolean;
-    is_disabled?: boolean;
-    is_hidden?: boolean;
-    is_submit_disabled?: boolean;
-    children: React.ReactElement;
-};
+import { StepProps } from '@core/wizard/types';
 
 const Step = ({ children }: StepProps) => {
     return children;

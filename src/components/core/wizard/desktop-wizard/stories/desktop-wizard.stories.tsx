@@ -1,7 +1,8 @@
 import { Meta, Story } from '@storybook/react';
 import { useState } from 'react';
+import DesktopWizard from '../desktop-wizard';
+import { WizardProps } from '../../types';
 import Button from '../../../button/button';
-import DesktopWizard, { DesktopWizardProps } from '../desktop-wizard';
 import {
     StepChooseProductMain,
     StepAddAppMain,
@@ -83,7 +84,7 @@ export default {
             },
         },
     },
-} as Meta<DesktopWizardProps>;
+} as Meta<WizardProps>;
 
 type CreateAppState = {
     product_type?: string;
@@ -91,7 +92,7 @@ type CreateAppState = {
     wallet?: string;
 };
 
-const Template: Story<DesktopWizardProps> = (args) => {
+const Template: Story<WizardProps> = (args) => {
     const [is_wizard_open, setIsWizardOpen] = useState(true);
     const [create_app_state, setCreateAppState] = useState<CreateAppState>({});
     const [current_step, setCurrentStep] = useState<number>();

@@ -2,7 +2,7 @@ import CircularCheckIcon from '@assets/svg/circular-check-icon.svg';
 import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
-import Step, { StepProps } from './step';
+import { StepProps } from './step';
 
 const Bullet = styled('div', {
     width: '16px',
