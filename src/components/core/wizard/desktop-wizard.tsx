@@ -4,8 +4,9 @@ import Button from '@core/button/button';
 import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
-import Scrollbars from '@core/scrollbars/scrollbars';
 import StepNavigation from './step-navigation';
+import Step, { StepProps } from './step';
+import RightPanel, { RightPanelProps } from './right-panel';
 import DesktopWizardBody from './desktop-wizard-body';
 
 const DarkBackgroundContainer = styled('div', {
@@ -95,71 +96,6 @@ const FixedWidthContainer = styled('div', {
     },
 });
 
-const RightPanel = styled('div', {
-    width: '312px',
-    height: '568px',
-    padding: '48px 24px 24px',
-    position: 'absolute',
-    top: '0',
-    right: '0',
-    bottom: '0',
-    borderLeft: '2px solid #F2F3F4',
-
-    variants: {
-        dark: {
-            true: {
-                borderLeft: '2px solid #323738',
-            },
-        },
-    },
-});
-
-type RightPanelBlockType = 'upper' | 'middle' | 'lower';
-
-const RightPanelBlock = styled('div', {
-    variants: {
-        placement: {
-            upper: {
-                minHeight: '170px',
-                paddingBottom: '24px',
-                borderBottom: '1px solid #D6DADB',
-            },
-            middle: {
-                paddingTop: '24px',
-                flex: '1',
-            },
-            lower: {
-                position: 'absolute',
-                bottom: '24px',
-                left: '24px',
-                right: '24px',
-                minHeight: '26px',
-                borderTop: '1px solid #D6DADB',
-                flex: '1',
-            },
-        },
-        dark: {
-            true: {},
-        },
-    },
-    compoundVariants: [
-        {
-            placement: 'upper',
-            dark: true,
-            css: {
-                borderBottom: '1px solid #323738',
-            },
-        },
-        {
-            placement: 'lower',
-            dark: true,
-            css: {
-                borderTop: '1px solid #323738',
-            },
-        },
-    ],
-});
-
 const Footer = styled('div', {
     width: '784px',
     height: '72px',
@@ -210,77 +146,61 @@ const CloseIcon = styled('div', {
     },
 });
 
-type RightPanelComponentType = (props: RightPanelComponentProps) => JSX.Element;
-
-export type RightPanelComponentProps = {
-    dark?: boolean;
-    current_step_index: number;
-};
-
 export type MainComponentProps = {
     dark?: boolean;
 };
 
-export type StepData = {
-    step_title: string;
-    main_content?: {
-        component: (props: MainComponentProps) => JSX.Element;
-        header?: string;
-        subheader?: string;
-    };
-    right_panel_content?: {
-        upper_block?: RightPanelComponentType;
-        middle_block?: RightPanelComponentType;
-        lower_block?: RightPanelComponentType;
-    };
-    is_fullwidth?: boolean;
-    is_disabled?: boolean;
-    is_hidden?: boolean;
-    cancel_button_label?: string;
-    submit_button_label?: string;
-};
-
 export type DesktopWizardProps = {
     dark?: boolean;
+    lock_final_step?: boolean;
     has_dark_background?: boolean;
-    onComplete: () => void;
+    onComplete: (button_type: 'primary' | 'secondary') => void;
     onClose: () => void;
-    steps: StepData[];
+    onChangeStep?: (current_step_index: number, current_step_key?: string) => void;
     wizard_title: string;
-    submit_button_label?: string;
-    cancel_button_label?: string;
+    primary_button_label?: string;
+    secondary_button_label?: string;
+    children: React.ReactElement | React.ReactElement[];
 };
 
 const DesktopWizard = (props: DesktopWizardProps) => {
     const {
         dark,
+        lock_final_step,
         has_dark_background = true,
         onComplete,
+        onChangeStep,
         onClose,
-        steps,
         wizard_title,
-        submit_button_label,
-        cancel_button_label,
+        primary_button_label,
+        secondary_button_label,
+        children,
     } = props;
     const [current_step_index, setCurrentStepIndex] = React.useState(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
-    const [is_completed, setCompleted] = React.useState(false);
+    const [is_completed, setIsCompleted] = React.useState(false);
 
-    const current_left_button_name = steps[current_step_index].cancel_button_label || cancel_button_label;
-    const current_right_button_name = steps[current_step_index].submit_button_label || submit_button_label;
     const animated_div_ref = React.useRef<HTMLDivElement>(null);
-    const steps_indexes = steps.map((_step, idx) => idx);
-    const incomplete_steps_indexes = steps_indexes.filter(
-        (idx) => complete_steps_indexes.every((i) => i !== idx) && idx < steps.length - 1,
-    );
-    const next_incomplete_step_index = steps_indexes.find(
-        (i) => i > current_step_index && complete_steps_indexes.every((idx) => i !== idx),
-    );
-    const previous_enabled_step_index = steps_indexes
-        .slice()
-        .reverse()
-        .find((i) => i < current_step_index);
-    const last_complete_step_index = steps_indexes.filter((idx) => complete_steps_indexes.some((i) => i === idx)).pop();
+
+    const steps: React.ReactElement<StepProps>[] = React.Children.toArray(children).filter((child) => {
+        const step_element = child as React.ReactElement;
+        return step_element?.type === DesktopWizard.Step;
+    }) as React.ReactElement<StepProps>[];
+
+    const right_panel: React.ReactElement<RightPanelProps> = React.Children.toArray(children).find((child) => {
+        const step_element = child as React.ReactElement;
+        return step_element?.type === DesktopWizard.RightPanel;
+    }) as React.ReactElement<RightPanelProps>;
+
+    const getStepDetails = (_step: React.ReactElement<StepProps>) => ({
+        key: _step.props.key,
+        is_disabled: _step.props.is_disabled,
+        is_hidden: _step.props.is_hidden,
+        is_submit_disabled: _step.props.is_submit_disabled,
+    });
+
+    const current_step = steps[current_step_index];
+    const current_step_key = getStepDetails(current_step).key;
 
     let new_step_timeout: NodeJS.Timeout;
 
@@ -295,19 +215,49 @@ const DesktopWizard = (props: DesktopWizardProps) => {
         };
     }, []);
 
+    React.useEffect(() => {
+        onChangeStep?.(current_step_index, current_step_key);
+    }, [current_step_index]);
+
     const slide = (from: string, to: string) => {
         // new_step_timeout times should be equal to this animation duration:
         animated_div_ref.current?.animate({ transform: [from, to], easing: ['ease'] }, 250);
     };
 
+    const getPrevStepIndex = () => {
+        for (let i = current_step_index - 1; i >= 0; i--) {
+            const step_details = getStepDetails(steps[i]);
+            if (!step_details.is_disabled && !step_details.is_hidden) {
+                return i;
+            }
+        }
+    };
+
+    const getNextStepIndex = () => {
+        for (let i = current_step_index + 1; i < steps.length; i++) {
+            const step_details = getStepDetails(steps[i]);
+            if (!step_details.is_disabled && !step_details.is_hidden) {
+                return i;
+            }
+        }
+    };
+
     const prevStep = () => {
         clearTimeout(new_step_timeout);
+
+        // Final step secondary button
+        if (lock_final_step && current_step_index === steps.length - 1) {
+            onComplete('secondary');
+            return;
+        }
+
         slide('translateY(0)', 'translateY(100vh)');
-        if (current_step_index === steps.length - 1) {
-            onComplete();
-        } else {
+
+        const prev_step_index = getPrevStepIndex();
+
+        if (typeof prev_step_index === 'number') {
             new_step_timeout = setTimeout(() => {
-                setCurrentStepIndex(Number(previous_enabled_step_index));
+                setCurrentStepIndex(prev_step_index);
                 slide('translateY(-100vh)', 'translateY(0)');
             }, 250);
         }
@@ -315,49 +265,48 @@ const DesktopWizard = (props: DesktopWizardProps) => {
 
     const nextStep = () => {
         clearTimeout(new_step_timeout);
-        slide('translateY(0)', 'translateY(-100vh)');
+
+        // Final step primary button
         if (current_step_index === steps.length - 1) {
-            onComplete();
+            onComplete('primary');
             return;
         }
-        if (Number(next_incomplete_step_index) < steps.length) {
+
+        slide('translateY(0)', 'translateY(-100vh)');
+
+        const next_step_index = getNextStepIndex();
+
+        if (typeof next_step_index === 'number') {
             new_step_timeout = setTimeout(() => {
-                setCurrentStepIndex(Number(next_incomplete_step_index));
-                // last step is always 'Complete' and has to be completed automatically unless some incomplete steps are left:
-                if (incomplete_steps_indexes.length === 0)
-                    setCompleteStepsIndexes([...new Set([...complete_steps_indexes, steps.length - 1])]);
-                if (Number(next_incomplete_step_index) === steps.length - 1 && incomplete_steps_indexes.length > 0) {
-                    // switch from second-to-last step before 'Complete' to the first incomplete step if any incomplete steps are left:
-                    setCurrentStepIndex(incomplete_steps_indexes[0] as number);
-                }
+                setCurrentStepIndex(next_step_index);
+                setCompleteStepsIndexes([...new Set([...complete_steps_indexes, current_step_index])]);
                 slide('translateY(100vh)', 'translateY(0)');
             }, 250);
-        } else {
-            setCurrentStepIndex(steps.length - 1);
+
+            if (lock_final_step && next_step_index === steps.length - 1) {
+                setIsCompleted(true);
+            }
         }
     };
 
     const handleStepClick = (index: number) => {
+        if (lock_final_step && is_completed) return;
+
         if (
-            (index <= Number(last_complete_step_index) + 1 ||
-                index === Number(next_incomplete_step_index) ||
-                complete_steps_indexes.some((i) => i === current_step_index)) &&
-            (index < steps.length - 1 ||
-                (incomplete_steps_indexes.length === 0 && complete_steps_indexes.some((i) => i === index)))
+            complete_steps_indexes.includes(index) ||
+            (getNextStepIndex() === index && !getStepDetails(current_step).is_submit_disabled)
         ) {
             clearTimeout(new_step_timeout);
             if (index < current_step_index) slide('translateY(0)', 'translateY(100vh)');
             if (index > current_step_index) slide('translateY(0)', 'translateY(-100vh)');
             new_step_timeout = setTimeout(() => {
                 setCurrentStepIndex(index);
+                setCompleteStepsIndexes([...new Set([...complete_steps_indexes, current_step_index])]);
+
                 if (index < current_step_index) slide('translateY(-100vh)', 'translateY(0)');
                 if (index > current_step_index) slide('translateY(100vh)', 'translateY(0)');
             }, 250);
         }
-    };
-
-    const handleDataSubmit = () => {
-        setCompleteStepsIndexes([...new Set([...complete_steps_indexes, current_step_index])]);
     };
 
     return (
@@ -372,7 +321,7 @@ const DesktopWizard = (props: DesktopWizardProps) => {
                     >
                         {wizard_title}
                     </Text>
-                    <DesktopWizard.StepNavigation
+                    <StepNavigation
                         steps={steps}
                         current_step_index={current_step_index}
                         complete_steps_indexes={complete_steps_indexes}
@@ -382,39 +331,14 @@ const DesktopWizard = (props: DesktopWizardProps) => {
                 </LeftPanel>
                 <WizardBody>
                     <ContentContainer>
-                        <FixedWidthContainer is_fullwidth={steps[current_step_index].is_fullwidth}>
+                        <FixedWidthContainer is_fullwidth={current_step.props.is_fullwidth}>
                             <DesktopWizard.Body
                                 animated_div_ref={animated_div_ref}
                                 current_step={steps[current_step_index]}
                                 dark={dark}
                             />
                         </FixedWidthContainer>
-                        {steps[current_step_index].right_panel_content && (
-                            <RightPanel dark={dark}>
-                                <Scrollbars dark={dark} is_scrollbar_hidden has_y_scroll_on_drag_effect>
-                                    {['upper', 'middle', 'lower'].map((placement, i) => {
-                                        const RightPanelComponent = steps[current_step_index].right_panel_content?.[
-                                            `${placement}_block` as keyof StepData['right_panel_content']
-                                        ] as RightPanelComponentType | undefined;
-
-                                        return (
-                                            RightPanelComponent && (
-                                                <RightPanelBlock
-                                                    key={i + 1}
-                                                    placement={placement as RightPanelBlockType}
-                                                    dark={dark}
-                                                >
-                                                    <RightPanelComponent
-                                                        current_step_index={current_step_index}
-                                                        dark={dark}
-                                                    />
-                                                </RightPanelBlock>
-                                            )
-                                        );
-                                    })}
-                                </Scrollbars>
-                            </RightPanel>
-                        )}
+                        {right_panel}
                     </ContentContainer>
                     <Footer dark={dark}>
                         <Button
@@ -424,18 +348,15 @@ const DesktopWizard = (props: DesktopWizardProps) => {
                             disabled={current_step_index < 1}
                             dark={dark}
                         >
-                            {current_left_button_name}
+                            {current_step.props?.secondary_button_label || secondary_button_label}
                         </Button>
                         <Button
                             size="large"
                             onClick={nextStep}
-                            disabled={
-                                complete_steps_indexes.every((i) => i !== current_step_index) &&
-                                current_step_index !== steps.length - 1
-                            }
+                            disabled={current_step.props.is_submit_disabled}
                             dark={dark}
                         >
-                            {current_right_button_name}
+                            {current_step.props?.primary_button_label || primary_button_label}
                         </Button>
                     </Footer>
                 </WizardBody>
@@ -448,5 +369,7 @@ const DesktopWizard = (props: DesktopWizardProps) => {
 // DesktopWizard.Body is where the main_content of the step is rendered:
 DesktopWizard.Body = DesktopWizardBody;
 DesktopWizard.StepNavigation = StepNavigation;
+DesktopWizard.Step = Step;
+DesktopWizard.RightPanel = RightPanel;
 
 export default DesktopWizard;

@@ -4,7 +4,8 @@ import Text from '@core/text/text';
 import { styled } from 'Styles/stitches.config';
 import BackArrowIconDark from '@assets/svg/wizard/ic-back-arrow-dark.svg';
 import BackArrowIconLight from '@assets/svg/wizard/ic-back-arrow-light.svg';
-import { DesktopWizardProps, StepData } from './desktop-wizard';
+import { DesktopWizardProps } from './desktop-wizard';
+import { StepProps } from './step';
 
 const MainTitleContainer = styled('div', {
     position: 'relative',
@@ -33,14 +34,16 @@ const GoBackArrow = styled('div', {
 
 type DesktopWizardBody = Partial<DesktopWizardProps> & {
     animated_div_ref: React.RefObject<HTMLDivElement | null>;
-    current_step: StepData;
+    current_step: React.ReactElement<StepProps>;
     dark?: boolean;
 };
 
-const DesktopWizardBody = React.memo((props: DesktopWizardBody) => {
+const DesktopWizardBody = (props: DesktopWizardBody) => {
     const { current_step, dark, animated_div_ref } = props;
     const [should_show_scrollbar, setShouldShowScrollbar] = React.useState(false);
-    const MainComponent = current_step.main_content?.component;
+
+    if (!current_step) return null;
+
     let scroll_timeout: NodeJS.Timeout;
 
     const handleScroll = () => {
@@ -53,9 +56,13 @@ const DesktopWizardBody = React.memo((props: DesktopWizardBody) => {
         }
     };
 
+    const props_to_main_component = {
+        dark,
+    };
+
     return (
         <Scrollbars dark={dark} ref={animated_div_ref} onScroll={handleScroll} autohide={!should_show_scrollbar}>
-            <MainTitleContainer data-testid="body-heading">
+            {/* <MainTitleContainer data-testid="body-heading">
                 <div>
                     <Text
                         as="div"
@@ -63,7 +70,7 @@ const DesktopWizardBody = React.memo((props: DesktopWizardBody) => {
                         bold
                         css={{ marginBottom: '8px', color: dark ? '$white' : '#333333' }}
                     >
-                        {current_step.main_content?.header}
+                        {header}
                     </Text>
                     <Text
                         as="div"
@@ -71,13 +78,13 @@ const DesktopWizardBody = React.memo((props: DesktopWizardBody) => {
                         bold={false}
                         css={{ color: dark ? '#C2C2C2' : '#333333', marginBottom: '24px' }}
                     >
-                        {current_step.main_content?.subheader}
+                        {subheader}
                     </Text>
                 </div>
-            </MainTitleContainer>
-            {MainComponent && <MainComponent dark={dark} />}
+            </MainTitleContainer> */}
+            {React.cloneElement(current_step.props.children, props_to_main_component)}
         </Scrollbars>
     );
-});
+};
 
 export default DesktopWizardBody;

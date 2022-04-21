@@ -71,9 +71,9 @@ export type ProductType = 'cfds' | 'multipliers' | 'options';
 type ProductCardProps = {
     active: boolean;
     description: string;
-    onProductSelect: (selected_product: ProductType) => void;
+    onProductSelect: (selected_product: string) => void;
     title: string;
-    type: ProductType;
+    type: string;
 };
 
 const ProductCard = ({ active, description, onProductSelect, title, type }: ProductCardProps) => {
@@ -82,12 +82,12 @@ const ProductCard = ({ active, description, onProductSelect, title, type }: Prod
     };
 
     return (
-        <ProductCardContainer type={type} onClick={handleClick} data-testid="product-card">
+        <ProductCardContainer type={type as ProductType} onClick={handleClick} data-testid="product-card">
             <Text as="div" type="small" css={{ color: '$white', marginBottom: '8px' }}>
                 {title}
             </Text>
             <ProductCardContentWrapper>
-                <ProductCardIcon type={type} />
+                <ProductCardIcon type={type as ProductType} />
                 <Text as="div" type="extra-small" css={{ color: '$white', width: '128px', height: '56px' }}>
                     {description}
                 </Text>
