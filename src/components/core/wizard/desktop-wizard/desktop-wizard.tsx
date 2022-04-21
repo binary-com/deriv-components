@@ -189,14 +189,14 @@ const DesktopWizard = (props: DesktopWizardProps) => {
     }) as React.ReactElement<RightPanelProps>;
 
     const getStepDetails = (_step: React.ReactElement<StepProps>) => ({
-        key: _step.props.key,
+        step_key: _step.props.step_key,
         is_disabled: _step.props.is_disabled,
         is_hidden: _step.props.is_hidden,
         is_submit_disabled: _step.props.is_submit_disabled,
     });
 
     const current_step = steps[current_step_index];
-    const current_step_key = getStepDetails(current_step).key;
+    const current_step_key = getStepDetails(current_step).step_key;
 
     let new_step_timeout: NodeJS.Timeout;
 

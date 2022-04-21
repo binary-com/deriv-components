@@ -124,14 +124,13 @@ const Template: Story<DesktopWizardProps> = (args) => {
         <>
             {is_wizard_open ? (
                 <DesktopWizard
+                    {...args}
                     onClose={() => setIsWizardOpen(false)}
                     onComplete={handleComplete}
                     wizard_title="Let's get you a new app."
                     primary_button_label={is_final_step ? 'Deposit' : 'Next'}
                     secondary_button_label={is_final_step ? 'Maybe later' : 'Back'}
                     onChangeStep={onChangeStep}
-                    lock_final_step
-                    {...args}
                 >
                     <DesktopWizard.Step title="Product" is_submit_disabled={!create_app_state.product_type}>
                         <StepChooseProductMain
@@ -160,7 +159,7 @@ const Template: Story<DesktopWizardProps> = (args) => {
                     <DesktopWizard.Step title="Terms of use">
                         <StepTermsOfUseMain />
                     </DesktopWizard.Step>
-                    <DesktopWizard.Step key="complete_step" title="Complete">
+                    <DesktopWizard.Step step_key="complete_step" title="Complete">
                         <StepComplete />
                     </DesktopWizard.Step>
                     <DesktopWizard.RightPanel>
@@ -183,12 +182,14 @@ LightDesktopAppWizard.args = {
     dark: false,
     has_dark_background: true,
     wizard_title: "Let's get you a new app.",
+    lock_final_step: true,
 };
 export const LightDesktopAppWizardWithoutDarkBackground = Template.bind({});
 LightDesktopAppWizardWithoutDarkBackground.args = {
     dark: false,
     has_dark_background: false,
     wizard_title: "Let's get you a new app.",
+    lock_final_step: true,
 };
 
 export const DesktopWizardWithoutLockedFinalStep = Template.bind({});
@@ -196,5 +197,4 @@ DesktopWizardWithoutLockedFinalStep.args = {
     dark: false,
     has_dark_background: false,
     wizard_title: "Let's get you a new app.",
-    lock_final_step: false,
 };

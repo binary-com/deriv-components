@@ -2,7 +2,7 @@ import React from 'react';
 
 export type StepProps = {
     title: string;
-    key?: string;
+    step_key?: string;
     is_fullwidth?: boolean;
     is_disabled?: boolean;
     is_hidden?: boolean;
