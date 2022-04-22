@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { render, screen } from 'test-setup';
 import DesktopWizard from '../desktop-wizard';
+import DesktopWizardBody from '../desktop-wizard-body';
 import { StepTermsOfUseMain } from '../stories/steps/steps-content';
 
 jest.mock('react', () => ({
@@ -16,12 +17,20 @@ describe('DesktopWizard Component', () => {
 
     const props = {
         dark: false,
-        current_step: <StepTermsOfUseMain />,
         animated_div_ref: animated_div_ref,
     };
 
     it('DesktopWizard.Body renders properly with the 1st step content', () => {
-        render(<DesktopWizard.Body {...props} />);
+        render(
+            <DesktopWizardBody
+                current_step={
+                    <DesktopWizard.Step title="Terms of use">
+                        <StepTermsOfUseMain />
+                    </DesktopWizard.Step>
+                }
+                {...props}
+            />,
+        );
 
         expect(screen.getByText('Jurisdiction and choice of law')).toBeInTheDocument();
     });

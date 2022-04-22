@@ -1,4 +1,5 @@
 export type WizardProps = {
+    // TODO: remove dark props. It should be configured in context so that it's available throughout all the components
     dark?: boolean;
     lock_final_step?: boolean;
     has_dark_background?: boolean;

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { render, screen } from 'test-setup';
-import DesktopWizard, { StepData } from './desktop-wizard';
+import DesktopWizard from '../desktop-wizard';
 import {
     StepAddAppMain,
     StepChooseProductMain,
     StepComplete,
-    TestLongRightUpperComponent,
-    TestRightMiddleComponent,
     TestRightUpperComponent,
-} from './stories/steps/steps-content';
+} from '../stories/steps/steps-content';
 
 jest.mock('react', () => ({
     ...jest.requireActual('react'),
@@ -18,47 +16,14 @@ jest.mock('react', () => ({
 describe('DesktopWizard Component', () => {
     const setState = jest.fn();
 
-    const mocked_steps: StepData[] = [
-        {
-            step_title: 'Product',
-            main_content: {
-                component: StepChooseProductMain,
-                header: 'Choose a product',
-                subheader: 'Choose a product to start.',
-            },
-            right_panel_content: {
-                upper_block: TestRightUpperComponent,
-                middle_block: TestRightMiddleComponent,
-            },
-        },
-        {
-            step_title: 'App',
-            main_content: {
-                component: StepAddAppMain,
-                header: 'Add an app',
-                subheader: 'Choose an app to start.',
-            },
-            right_panel_content: { upper_block: TestLongRightUpperComponent },
-        },
-        {
-            step_title: 'Complete',
-            main_content: {
-                component: StepComplete,
-                header: 'Completed',
-            },
-            is_fullwidth: true,
-            secondary_button_label: 'Maybe later',
-            primary_button_label: 'Deposit',
-        },
-    ];
-
     const props = {
         dark: false,
         has_dark_background: true,
-        steps: mocked_steps,
-        wizard_title: "Let's get you a new app.",
         onClose: jest.fn(),
         onComplete: jest.fn(),
+        wizard_title: "Let's get you a new app.",
+        primary_button_label: 'Next',
+        secondary_button_label: 'Back',
     };
 
     beforeEach(() => {
@@ -70,7 +35,16 @@ describe('DesktopWizard Component', () => {
     });
 
     it('DesktopWizard renders properly with a 1st step header, step navigation and initially disabled Back and Next buttons', () => {
-        render(<DesktopWizard {...props} />);
+        render(
+            <DesktopWizard {...props}>
+                <DesktopWizard.Step title="Product" is_submit_disabled={true}>
+                    <StepChooseProductMain product_type={'cfd'} onSelect={jest.fn} />
+                </DesktopWizard.Step>
+                <DesktopWizard.Step title="Complete">
+                    <StepComplete />
+                </DesktopWizard.Step>
+            </DesktopWizard>,
+        );
 
         const products = screen.getAllByTestId('product-card');
 
@@ -78,7 +52,7 @@ describe('DesktopWizard Component', () => {
         expect(screen.getByText("Let's get you a new app.")).toBeInTheDocument();
         expect(screen.queryByText("Let's get you a new wallet.")).not.toBeInTheDocument();
         expect(screen.getByTestId('step-navigation')).toBeInTheDocument();
-        expect(screen.getAllByTestId('step-item').length).toBe(3);
+        expect(screen.getAllByTestId('step-item').length).toBe(2);
         expect(products.length).toBe(3);
         expect(screen.getByRole('button', { name: /back/i })).toBeDisabled();
         expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
@@ -90,14 +64,23 @@ describe('DesktopWizard Component', () => {
             .mockReturnValueOnce([0, () => {}])
             .mockReturnValueOnce([[0], () => {}]);
 
-        render(<DesktopWizard {...props} />);
+        render(
+            <DesktopWizard {...props}>
+                <DesktopWizard.Step title="Product" is_submit_disabled={false}>
+                    <StepChooseProductMain product_type={'cfd'} onSelect={jest.fn} />
+                </DesktopWizard.Step>
+                <DesktopWizard.Step title="Complete">
+                    <StepComplete />
+                </DesktopWizard.Step>
+            </DesktopWizard>,
+        );
 
         const products = screen.getAllByTestId('product-card');
 
         expect(products.length).toBe(3);
         expect(screen.getByTestId('desktop-wizard')).toBeInTheDocument();
         expect(screen.getByText("Let's get you a new app.")).toBeInTheDocument();
-        expect(screen.getByText('Choose a product')).toBeInTheDocument();
+        expect(screen.getByText(/A very long content for scroll/i)).toBeInTheDocument();
         expect(screen.getAllByRole('button').length).toBe(2);
         expect(screen.getByRole('button', { name: /back/i })).toBeDisabled();
         expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
@@ -109,63 +92,70 @@ describe('DesktopWizard Component', () => {
             .mockReturnValueOnce([1, () => {}])
             .mockReturnValueOnce([[0], () => {}]);
 
-        render(<DesktopWizard {...props} />);
+        render(
+            <DesktopWizard {...props}>
+                <DesktopWizard.Step title="Product" is_submit_disabled={false}>
+                    <StepChooseProductMain product_type={'cfd'} onSelect={jest.fn} />
+                </DesktopWizard.Step>
+                <DesktopWizard.Step title="App" is_submit_disabled={true}>
+                    <StepAddAppMain account_type={'demo'} onSelect={jest.fn} />
+                </DesktopWizard.Step>
+            </DesktopWizard>,
+        );
 
         expect(screen.getByTestId('desktop-wizard')).toBeInTheDocument();
         expect(screen.getByText("Let's get you a new app.")).toBeInTheDocument();
-        expect(screen.getByText('Add an app')).toBeInTheDocument();
+        expect(screen.getByText(/Selected account type/i)).toBeInTheDocument();
         expect(screen.getByTestId('step-navigation')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Real' })).toBeEnabled();
-        expect(screen.getByRole('button', { name: 'Demo' })).toBeEnabled();
         expect(screen.getByRole('button', { name: /back/i })).toBeEnabled();
         expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
-        expect(screen.getByRole('button', { name: /select a real app/i })).toBeEnabled();
     });
 
-    it('DesktopWizard Next button is enabled when a real app is selected on the 2nd step', () => {
+    it('DesktopWizard: Long upper test blocks on the right panel displays a current step index', () => {
         // mocking useState values in the order of declaration: current_step_index: 1, complete_steps_indexes: [0, 1]:
         jest.spyOn(React, 'useState')
-            .mockReturnValueOnce([1, () => {}])
-            .mockReturnValueOnce([[0, 1], () => {}]);
+            .mockReturnValueOnce([0, () => {}])
+            .mockReturnValueOnce([[0, 0], () => {}]);
 
-        render(<DesktopWizard {...props} />);
+        render(
+            <DesktopWizard {...props}>
+                <DesktopWizard.Step title="Product" is_submit_disabled={false}>
+                    <StepChooseProductMain product_type={'cfd'} onSelect={jest.fn} />
+                </DesktopWizard.Step>
+                <DesktopWizard.RightPanel>
+                    <TestRightUpperComponent current_step_index={1} />
+                </DesktopWizard.RightPanel>
+            </DesktopWizard>,
+        );
 
         expect(screen.getByTestId('desktop-wizard')).toBeInTheDocument();
         expect(screen.getByText("Let's get you a new app.")).toBeInTheDocument();
-        expect(screen.getByText('Add an app')).toBeInTheDocument();
-        expect(screen.getByTestId('step-navigation')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Real' })).toBeEnabled();
-        expect(screen.getByRole('button', { name: 'Demo' })).toBeEnabled();
-        expect(screen.getByRole('button', { name: /back/i })).toBeEnabled();
-        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
-    });
-
-    it('DesktopWizard Step 2: Long upper test blocks on the right panel displays a current step index', () => {
-        // mocking useState values in the order of declaration: current_step_index: 1, complete_steps_indexes: [0, 1]:
-        jest.spyOn(React, 'useState')
-            .mockReturnValueOnce([1, () => {}])
-            .mockReturnValueOnce([[0, 1], () => {}]);
-
-        render(<DesktopWizard {...props} />);
-
-        expect(screen.getByTestId('desktop-wizard')).toBeInTheDocument();
-        expect(screen.getByText("Let's get you a new app.")).toBeInTheDocument();
-        expect(screen.getByText('Add an app')).toBeInTheDocument();
-        expect(screen.getAllByRole('button').length).toBe(5);
         expect(screen.getAllByText(/current_step_index is: 1/i).length).toBe(1);
     });
 
     it('DesktopWizard "Complete" Step: Step is displayed fullwidth without right panel, and both buttons are enabled ', () => {
         // mocking useState values in the order of declaration: current_step_index: 2, complete_steps_indexes: [0, 1]:
         jest.spyOn(React, 'useState')
-            .mockReturnValueOnce([2, () => {}])
+            .mockReturnValueOnce([1, () => {}])
             .mockReturnValueOnce([[0, 1], () => {}]);
 
-        render(<DesktopWizard {...props} />);
+        render(
+            <DesktopWizard {...props}>
+                <DesktopWizard.Step title="Product" is_submit_disabled={false}>
+                    <StepChooseProductMain product_type={'cfd'} onSelect={jest.fn} />
+                </DesktopWizard.Step>
+                <DesktopWizard.Step title="Complete" is_fullwidth>
+                    <StepComplete />
+                </DesktopWizard.Step>
+                <DesktopWizard.RightPanel>
+                    <TestRightUpperComponent current_step_index={1} />
+                </DesktopWizard.RightPanel>
+            </DesktopWizard>,
+        );
 
         expect(screen.getByTestId('desktop-wizard')).toBeInTheDocument();
         expect(screen.getByText("Let's get you a new app.")).toBeInTheDocument();
-        expect(screen.getByText('Completed')).toBeInTheDocument();
+        expect(screen.getByText(/You can now use your USD wallet/i)).toBeInTheDocument();
         expect(screen.getAllByRole('button').length).toBe(2);
         expect(screen.queryAllByText(/current_step_index is: 1/i).length).toBe(0);
     });
