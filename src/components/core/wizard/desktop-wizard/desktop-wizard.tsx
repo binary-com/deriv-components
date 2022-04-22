@@ -176,7 +176,10 @@ const DesktopWizard = (props: WizardProps) => {
         return step_element?.type === DesktopWizard.RightPanel;
     }) as React.ReactElement<RightPanelProps>;
 
+    const steps_config = steps.map((_step) => getStepDetails(_step));
+
     const getStepDetails = (_step: React.ReactElement<StepProps>) => ({
+        title: _step.props.title,
         step_key: _step.props.step_key,
         is_disabled: _step.props.is_disabled,
         is_hidden: _step.props.is_hidden,
@@ -306,7 +309,7 @@ const DesktopWizard = (props: WizardProps) => {
                         {wizard_title}
                     </Text>
                     <StepNavigation
-                        steps={steps}
+                        steps={steps_config}
                         current_step_index={current_step_index}
                         complete_steps_indexes={complete_steps_indexes}
                         dark={dark}
@@ -316,7 +319,7 @@ const DesktopWizard = (props: WizardProps) => {
                 <WizardBody>
                     <ContentContainer>
                         <FixedWidthContainer is_fullwidth={current_step.props.is_fullwidth}>
-                            <DesktopWizard.Body
+                            <DesktopWizardBody
                                 animated_div_ref={animated_div_ref}
                                 current_step={steps[current_step_index]}
                                 dark={dark}

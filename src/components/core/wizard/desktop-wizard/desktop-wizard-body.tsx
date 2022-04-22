@@ -1,9 +1,8 @@
 import Scrollbars from '@core/scrollbars/scrollbars';
 import React from 'react';
-import { DesktopWizardProps } from './desktop-wizard';
-import { StepProps } from './step';
+import { WizardProps, StepProps } from '@core/wizard/types';
 
-type DesktopWizardBody = Partial<DesktopWizardProps> & {
+type DesktopWizardBody = Partial<WizardProps> & {
     animated_div_ref: React.RefObject<HTMLDivElement | null>;
     current_step: React.ReactElement<StepProps>;
     dark?: boolean;
@@ -33,26 +32,6 @@ const DesktopWizardBody = (props: DesktopWizardBody) => {
 
     return (
         <Scrollbars dark={dark} ref={animated_div_ref} onScroll={handleScroll} autohide={!should_show_scrollbar}>
-            {/* <MainTitleContainer data-testid="body-heading">
-                <div>
-                    <Text
-                        as="div"
-                        type="subtitle-1"
-                        bold
-                        css={{ marginBottom: '8px', color: dark ? '$white' : '#333333' }}
-                    >
-                        {header}
-                    </Text>
-                    <Text
-                        as="div"
-                        type="paragraph-1"
-                        bold={false}
-                        css={{ color: dark ? '#C2C2C2' : '#333333', marginBottom: '24px' }}
-                    >
-                        {subheader}
-                    </Text>
-                </div>
-            </MainTitleContainer> */}
             {React.cloneElement(current_step.props.children, props_to_main_component)}
         </Scrollbars>
     );

@@ -2,7 +2,7 @@ import CircularCheckIcon from '@assets/svg/circular-check-icon.svg';
 import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
-import { StepProps } from './step';
+import { StepNavigationProps } from '../types';
 
 const Bullet = styled('div', {
     width: '16px',
@@ -135,14 +135,6 @@ const StepBreadcrumb = styled('div', {
     ],
 });
 
-type StepNavigationProps = {
-    steps: React.ReactElement<StepProps>[];
-    current_step_index: number;
-    complete_steps_indexes?: number[];
-    dark?: boolean;
-    onClick?: (idx: number) => void;
-};
-
 const StepNavigation = React.memo(
     ({ steps, current_step_index, complete_steps_indexes, dark, onClick }: StepNavigationProps) => {
         return (
@@ -153,32 +145,39 @@ const StepNavigation = React.memo(
                         height: `calc(100% * ${steps.length - 1} / ${steps.length})`,
                     }}
                 />
-                {steps.map((step, idx) => {
-                    const active = idx === current_step_index;
-                    const disabled = steps[current_step_index].props.is_disabled;
-                    return (
-                        <StepBreadcrumb
-                            key={idx + 1}
-                            onClick={() => onClick?.(idx)}
-                            disabled={disabled}
-                            dark={dark}
-                            data-testid="step-item"
-                        >
-                            <Bullet
-                                status={
-                                    (complete_steps_indexes?.some((i) => i === idx) && 'complete') ||
-                                    (disabled && 'disabled') ||
-                                    (active && 'active') ||
-                                    undefined
-                                }
+                {steps
+                    .filter((step) => !step.is_hidden)
+                    .map((step, idx) => {
+                        const active = idx === current_step_index;
+                        const { is_disabled, is_submit_disabled } = steps[current_step_index];
+                        return (
+                            <StepBreadcrumb
+                                key={idx + 1}
+                                onClick={() => onClick?.(idx)}
+                                disabled={is_disabled}
                                 dark={dark}
-                            />
-                            <Text as="label" type="paragraph-2" bold={active} css={{ cursor: 'pointer' }}>
-                                {step.props.title}
-                            </Text>
-                        </StepBreadcrumb>
-                    );
-                })}
+                                data-testid="step-item"
+                            >
+                                <Bullet
+                                    status={
+                                        (complete_steps_indexes?.some((i) => i === idx) && 'complete') ||
+                                        (is_disabled && 'disabled') ||
+                                        (active && 'active') ||
+                                        undefined
+                                    }
+                                    dark={dark}
+                                />
+                                <Text
+                                    as="label"
+                                    type="paragraph-2"
+                                    bold={active}
+                                    css={{ cursor: is_submit_disabled ? '' : 'pointer' }}
+                                >
+                                    {step.title}
+                                </Text>
+                            </StepBreadcrumb>
+                        );
+                    })}
                 <After
                     css={{
                         height: `${current_step_index * (100 / steps.length)}%`,

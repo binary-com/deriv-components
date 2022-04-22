@@ -25,3 +25,19 @@ export type RightPanelProps = {
     is_hidden?: boolean;
     children: React.ReactElement | React.ReactElement[];
 };
+
+export type StepsConfig = {
+    title: string;
+    step_key?: StepProps['step_key'];
+    is_disabled?: StepProps['is_disabled'];
+    is_hidden?: StepProps['is_hidden'];
+    is_submit_disabled?: StepProps['is_submit_disabled'];
+}[];
+
+export type StepNavigationProps = {
+    steps: StepsConfig;
+    current_step_index: number;
+    complete_steps_indexes?: number[];
+    dark?: boolean;
+    onClick?: (idx: number) => void;
+};
