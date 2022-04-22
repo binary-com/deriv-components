@@ -9,6 +9,9 @@ const Button = styled('button', {
     border: 'none',
     width: 'fit-content',
     borderRadius: '$default',
+    fontSize: '$2xs',
+    fontWeight: '$bold',
+    lineHeight: '$lineHeight20',
 
     '&:hover': {
         cursor: 'pointer',
@@ -60,6 +63,7 @@ const Button = styled('button', {
             secondary: {
                 border: '1px solid $greyLight600',
                 color: '$greyLight700',
+                backgroundColor: 'transparent',
 
                 '&:hover': {
                     backgroundColor: '$greyLight700_8',

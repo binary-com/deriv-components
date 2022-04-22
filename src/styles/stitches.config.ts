@@ -49,6 +49,7 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         marginY: (value: string) => ({ marginTop: value, marginBottom: value }),
         paddingX: (value: string) => ({ paddingLeft: value, paddingRight: value }),
         paddingY: (value: string) => ({ paddingTop: value, paddingBottom: value }),
+        boxSizingForAllChildren: (value: string) => ({ '*': { boxSizing: value } }),
     },
 });
 
