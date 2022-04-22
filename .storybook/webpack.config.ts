@@ -1,4 +1,3 @@
-import path from 'path';
 import { Configuration } from 'webpack';
 
 export default async ({ config }: { config: Configuration }) => {
