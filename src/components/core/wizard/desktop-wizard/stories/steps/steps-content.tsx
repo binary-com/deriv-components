@@ -5,22 +5,22 @@ import Text from '@core/text/text';
 import ProductCard from './components/product-card';
 
 type StepChooseProductMainProps = {
-    product_type: string;
+    product_type?: string;
     onSelect: (product_type: string) => void;
 };
 
 type StepAddAppMainProps = {
-    account_type: string;
+    account_type?: string;
     onSelect: (account_type: string) => void;
 };
 
 type StepCreateWalletMainProps = {
-    wallet: string;
+    wallet?: string;
     onSelect: (wallet: string) => void;
 };
 
 type RightPanelComponentProps = {
-    current_step_index: number;
+    current_step_index?: number;
 };
 
 const ProductsContainer = styled('div', {
