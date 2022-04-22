@@ -234,7 +234,7 @@ const DesktopWizard = (props: WizardProps) => {
 
         // Final step secondary button
         if (lock_final_step && current_step_index === steps.length - 1) {
-            onComplete('secondary');
+            onComplete?.('secondary');
             return;
         }
 
@@ -255,7 +255,7 @@ const DesktopWizard = (props: WizardProps) => {
 
         // Final step primary button
         if (current_step_index === steps.length - 1) {
-            onComplete('primary');
+            onComplete?.('primary');
             return;
         }
 

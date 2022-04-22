@@ -137,50 +137,59 @@ const StepBreadcrumb = styled('div', {
 
 const StepNavigation = React.memo(
     ({ steps, current_step_index, complete_steps_indexes, dark, onClick }: StepNavigationProps) => {
+        const filtered_steps = steps.filter((step) => !step.is_hidden);
+
+        const getNavLineHeight = () => {
+            const no_of_hidden_index = steps.filter((step, idx) => step.is_hidden && idx < current_step_index).length;
+            return (current_step_index - no_of_hidden_index) * (100 / filtered_steps.length);
+        };
+
         return (
             <div style={{ position: 'relative' }} data-testid="step-navigation">
                 <Before
                     dark={dark}
                     css={{
-                        height: `calc(100% * ${steps.length - 1} / ${steps.length})`,
+                        height: `calc(100% * ${filtered_steps.length - 1} / ${filtered_steps.length})`,
                     }}
                 />
-                {steps
-                    .filter((step) => !step.is_hidden)
-                    .map((step, idx) => {
-                        const active = idx === current_step_index;
-                        const { is_disabled, is_submit_disabled } = steps[current_step_index];
-                        return (
-                            <StepBreadcrumb
-                                key={idx + 1}
-                                onClick={() => onClick?.(idx)}
-                                disabled={is_disabled}
+                {steps.map((step, idx) => {
+                    if (step.is_hidden) return null;
+
+                    const active = idx === current_step_index;
+                    const { is_disabled } = steps[current_step_index];
+                    return (
+                        <StepBreadcrumb
+                            key={idx + 1}
+                            onClick={() => onClick?.(idx)}
+                            disabled={is_disabled}
+                            dark={dark}
+                            data-testid="step-item"
+                        >
+                            <Bullet
+                                status={
+                                    (complete_steps_indexes?.some((i) => i === idx) && 'complete') ||
+                                    (is_disabled && 'disabled') ||
+                                    (active && 'active') ||
+                                    undefined
+                                }
                                 dark={dark}
-                                data-testid="step-item"
+                            />
+                            <Text
+                                as="label"
+                                type="paragraph-2"
+                                bold={active}
+                                css={{
+                                    cursor: 'pointer',
+                                }}
                             >
-                                <Bullet
-                                    status={
-                                        (complete_steps_indexes?.some((i) => i === idx) && 'complete') ||
-                                        (is_disabled && 'disabled') ||
-                                        (active && 'active') ||
-                                        undefined
-                                    }
-                                    dark={dark}
-                                />
-                                <Text
-                                    as="label"
-                                    type="paragraph-2"
-                                    bold={active}
-                                    css={{ cursor: is_submit_disabled ? '' : 'pointer' }}
-                                >
-                                    {step.title}
-                                </Text>
-                            </StepBreadcrumb>
-                        );
-                    })}
+                                {step.title}
+                            </Text>
+                        </StepBreadcrumb>
+                    );
+                })}
                 <After
                     css={{
-                        height: `${current_step_index * (100 / steps.length)}%`,
+                        height: `${getNavLineHeight()}%`,
                     }}
                 />
             </div>

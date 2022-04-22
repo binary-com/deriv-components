@@ -31,20 +31,26 @@ export default {
         },
         has_dark_background: {
             description:
-                'Optional. If set to false`, the wizard will be displayed without dark background surrounding it.',
+                'Optional. If set to false, the wizard will be displayed without dark background surrounding it.',
             defaultValue: true,
             table: {
                 type: { summary: 'boolean | undefined' },
                 defaultValue: { summary: true },
             },
         },
-        onComplete: {
+        lock_final_step: {
             description:
-                'Required. A callback triggered on the last step and used to send collected data to a parent together with the clicked button name providing opportunity to choose what to do with the received data depending on the button. ' +
-                'Data object contains values collected for each step index starting with 0, e.g.: {"0":{"selected_product":"multipliers"},"1":{"selected_app":"real_mt5_financial"},"2":{"wallet_name":"BTC"}, ...}. ' +
-                'Collected values are the values you submit using onSubmit() inside child components that you add to the steps as main content or right panel content.',
+                'Optional. If set to true, the wizard will lock the navigation when you reach the final step and you wont be able to go to other steps.',
+            defaultValue: false,
             table: {
-                type: { summary: '(data: { [key: string]: { [key: string]: unknown } }, button_name: string) => void' },
+                type: { summary: 'boolean | undefined' },
+                defaultValue: { summary: false },
+            },
+        },
+        onComplete: {
+            description: 'A callback triggered on the last step and used to send the clicked button typee',
+            table: {
+                type: { summary: '(button_type: "primary" | "secondary") => void' },
             },
         },
         onClose: {
@@ -145,7 +151,7 @@ const Template: Story<WizardProps> = (args) => {
                             onSelect={(account_type: string) => updateCreateAppState({ account_type })}
                         />
                     </DesktopWizard.Step>
-                    <DesktopWizard.Step title="Wallet" is_submit_disabled={!create_app_state.wallet}>
+                    <DesktopWizard.Step title="Wallet" is_submit_disabled={!create_app_state.wallet} is_hidden>
                         <StepCreateWalletMain
                             wallet={create_app_state.wallet}
                             onSelect={(wallet: string) => updateCreateAppState({ wallet })}

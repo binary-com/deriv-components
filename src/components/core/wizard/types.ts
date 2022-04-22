@@ -3,7 +3,7 @@ export type WizardProps = {
     dark?: boolean;
     lock_final_step?: boolean;
     has_dark_background?: boolean;
-    onComplete: (button_type: 'primary' | 'secondary') => void;
+    onComplete?: (button_type: 'primary' | 'secondary') => void;
     onClose: () => void;
     onChangeStep?: (current_step_index: number, current_step_key?: string) => void;
     wizard_title: string;
