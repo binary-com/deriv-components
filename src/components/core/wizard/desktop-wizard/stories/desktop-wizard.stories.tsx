@@ -1,8 +1,8 @@
 import { Meta, Story } from '@storybook/react';
 import { useState } from 'react';
+import { WizardProps } from '@core/wizard/types';
+import Button from '@core/button/button';
 import DesktopWizard from '../desktop-wizard';
-import { WizardProps } from '../../types';
-import Button from '../../../button/button';
 import {
     StepChooseProductMain,
     StepAddAppMain,

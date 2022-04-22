@@ -1,12 +1,12 @@
 import { styled } from 'Styles/stitches.config';
 import Text from '@core/text/text';
 import WhiteCircularCheckIcon from '@assets/svg/circular-check-icon-white.svg';
-import CFDsIcon from '../../assets/ic-cfds-logo.svg';
-import CFDsBackground from '../../assets/cfds-background.svg';
-import MultipliersIcon from '../../assets/ic-multipliers-logo.svg';
-import MultipliersBackground from '../../assets/multipliers-background.svg';
-import OptionsIcon from '../../assets/ic-options-logo.svg';
-import OptionsBackground from '../../assets/options-background.svg';
+import CFDsIcon from '@core/wizard/desktop-wizard/stories/assets/ic-cfds-logo.svg';
+import CFDsBackground from '@core/wizard/desktop-wizard/stories/assets/cfds-background.svg';
+import MultipliersIcon from '@core/wizard/desktop-wizard/stories/assets/ic-multipliers-logo.svg';
+import MultipliersBackground from '@core/wizard/desktop-wizard/stories/assets/multipliers-background.svg';
+import OptionsIcon from '@core/wizard/desktop-wizard/stories/assets/ic-options-logo.svg';
+import OptionsBackground from '@core/wizard/desktop-wizard/stories/assets/options-background.svg';
 
 const ProductCardContainer = styled('div', {
     width: '200px',
