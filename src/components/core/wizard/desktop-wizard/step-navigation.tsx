@@ -156,7 +156,7 @@ const StepNavigation = React.memo(
                     if (step.is_hidden) return null;
 
                     const active = idx === current_step_index;
-                    const { is_disabled } = steps[current_step_index];
+                    const { is_disabled } = steps[idx];
                     return (
                         <StepBreadcrumb
                             key={idx + 1}
