@@ -9,6 +9,7 @@ const ScrollbarsContainer = styled('div', {
     marginRight: '-14px',
     paddingRight: '10px',
     scrollBehavior: 'smooth',
+    height: '100%',
 
     '&::-webkit-scrollbar': {
         width: '4px',
