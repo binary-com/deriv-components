@@ -33,5 +33,5 @@
         }
     },
     "include": ["src", "*.d.ts", "./jest.setup.ts"],
-    "exclude": ["node_modules", "dist", "*.md", "**/*.stories.tsx", "./src/test-setup.tsx"]
+    "exclude": ["node_modules", "dist", "*.md", "./src/test-setup.tsx", "**/text.stories.tsx", "**/button.stories.tsx"]
 }

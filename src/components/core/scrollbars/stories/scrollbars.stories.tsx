@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import React from 'react';
 import Scrollbars, { ScrollbarsProps } from '../scrollbars';
-import Text from '../../text/text';
+import Text from '@core/text/text';
 
 export default {
     title: 'Scrollbars',

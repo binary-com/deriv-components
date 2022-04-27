@@ -2,8 +2,8 @@ import React from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import classNames from 'classnames';
 import css from './checkbox.module.scss';
-import CheckIconSVG from '../../../images/svg/checkbox-icon.svg';
-import CheckIndetermineIconSVG from '../../../images/svg/checkbox-indetermine-icon.svg';
+import CheckIconSVG from '@assets/svg/checkbox-icon.svg';
+import CheckIndetermineIconSVG from '@assets/svg/checkbox-indetermine-icon.svg';
 
 export const CheckBox = CheckboxPrimitive.Root;
 
