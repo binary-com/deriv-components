@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactElement } from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import classNames from 'classnames';
 import { wallets } from './wallets';
@@ -8,7 +8,7 @@ import CloseIconLight from '@assets/svg/modal/ic-close-light.svg';
 import CloseIconDark from '@assets/svg/modal/ic-close-dark.svg';
 
 interface DialogContentProps {
-    children: React.ReactElement;
+    children: ReactElement;
 }
 
 const DialogContent = ({ children, ...props }: DialogContentProps) => (
@@ -22,7 +22,7 @@ const DialogClose = DialogPrimitive.Close;
 
 export interface ModalBodyProps {
     balance?: string;
-    children?: React.ReactElement | React.ReactElement[];
+    children?: ReactElement | ReactElement[];
     currency?: string;
     dark?: boolean;
     logo?: string;
@@ -71,8 +71,6 @@ const ModalBody = ({ children, balance, currency, dark, logo, message, message_t
                                         />
                                     </div>
                                 );
-
-                            return null;
                         })}
                     </div>
                 </div>
