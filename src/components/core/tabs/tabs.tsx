@@ -1,4 +1,4 @@
-import React from 'react';
+import { Children, ReactElement, useEffect, useRef, useState } from 'react';
 import type { HtmlHTMLAttributes } from 'react';
 import classNames from 'classnames';
 import type { TabProps } from './tab';
@@ -9,13 +9,13 @@ export interface TabsProps extends HtmlHTMLAttributes<HTMLDivElement> {
     active_index?: number;
     contained?: boolean;
     dark?: boolean;
-    children?: React.ReactElement<TabProps> | React.ReactElement<TabProps>[];
+    children?: ReactElement<TabProps> | ReactElement<TabProps>[];
 }
 
 const Tabs = ({ children, active_index = 0, contained, dark, ...props }: TabsProps) => {
-    const tabs_ref = React.useRef<HTMLUListElement | null>(null);
-    const active_tab_ref = React.useRef<HTMLLIElement | null>(null);
-    const [active_tab_index, setActiveTabIndex] = React.useState(active_index);
+    const tabs_ref = useRef<HTMLUListElement | null>(null);
+    const active_tab_ref = useRef<HTMLLIElement | null>(null);
+    const [active_tab_index, setActiveTabIndex] = useState(active_index);
 
     const scrollIntoActiveTab = () => {
         const active_tab_bounds = active_tab_ref?.current?.getBoundingClientRect();
@@ -23,7 +23,7 @@ const Tabs = ({ children, active_index = 0, contained, dark, ...props }: TabsPro
         if (active_tab_bounds) tabs_ref?.current?.scrollTo(active_tab_bounds.left, active_tab_bounds.y);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (active_index >= 0 && active_index !== active_tab_index) {
             setActiveTabIndex(active_index);
         }
@@ -31,7 +31,7 @@ const Tabs = ({ children, active_index = 0, contained, dark, ...props }: TabsPro
         scrollIntoActiveTab();
     }, [active_index]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         scrollIntoActiveTab();
     }, [active_tab_index]);
 
@@ -39,7 +39,7 @@ const Tabs = ({ children, active_index = 0, contained, dark, ...props }: TabsPro
         <div className={classNames(css.tabs, dark && css.dark)} {...props}>
             <div className={css.header}>
                 <ul className={css.list} ref={tabs_ref}>
-                    {React.Children.map(children, (child: any, idx: number) => {
+                    {Children.map(children, (child: any, idx: number) => {
                         const { icon, label } = child.props;
                         const active = idx === active_tab_index;
 
@@ -59,7 +59,7 @@ const Tabs = ({ children, active_index = 0, contained, dark, ...props }: TabsPro
                 </ul>
             </div>
             <div className={css.content}>
-                {React.Children.map(children, (child: any, idx: number) => {
+                {Children.map(children, (child: any, idx: number) => {
                     if (idx === active_tab_index) return child.props.children;
                 })}
             </div>

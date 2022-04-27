@@ -1,5 +1,5 @@
-import React from 'react';
-export interface IconProps extends React.SVGAttributes<HTMLOrSVGElement> {
+import { SVGAttributes } from 'react';
+export interface IconProps extends SVGAttributes<HTMLOrSVGElement> {
     custom_color?: string;
     icon?: string;
 }
