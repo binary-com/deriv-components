@@ -8,10 +8,10 @@ const Button = styled('button', {
     justifyContent: 'center',
     border: 'none',
     width: 'fit-content',
-    borderRadius: '4px',
-    fontSize: '14px',
-    fontWeight: '700',
-    lineHeight: '20px',
+    borderRadius: '$default',
+    fontSize: '$2xs',
+    fontWeight: '$bold',
+    lineHeight: '$lineHeight20',
 
     '&:hover': {
         cursor: 'pointer',
@@ -34,44 +34,47 @@ const Button = styled('button', {
             },
             hero: {
                 padding: '17px 24px',
-                borderRadius: '8px',
+                borderRadius: '$pill',
             },
         },
         color: {
             primary: {
-                backgroundColor: '#ff444f',
-                color: '$white',
+                backgroundColor: '$coral500',
+                color: '$greyLight100',
 
                 '&:hover': {
-                    backgroundColor: '#eb3e48',
+                    backgroundColor: '$coral600',
+                },
+                '&:disabled': {
+                    opacity: 0.32,
                 },
             },
             'primary-light': {
-                backgroundColor: 'rgba(255, 68, 79, 0.14)',
-                color: '#ff444f',
+                backgroundColor: '$coral500_16',
+                color: '$coral500',
 
                 '&:hover': {
-                    backgroundColor: 'rgba(255, 68, 79, 0.24)',
+                    backgroundColor: '$coral500_24',
                 },
                 '&:disabled': {
-                    opacity: 0.16,
+                    opacity: 0.32,
                 },
             },
             secondary: {
-                border: '1px solid #999999',
-                color: '#333333',
+                border: '1px solid $greyLight600',
+                color: '$greyLight700',
                 backgroundColor: 'transparent',
 
                 '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                    backgroundColor: '$greyLight700_8',
                 },
             },
             tertiary: {
                 backgroundColor: 'none',
-                color: '#ff444f',
+                color: '$coral500',
 
                 '&:hover': {
-                    backgroundColor: 'rgba(255, 68, 79, 0.08)',
+                    backgroundColor: '$coral500_8',
                 },
             },
         },
@@ -86,14 +89,29 @@ const Button = styled('button', {
     },
     compoundVariants: [
         {
+            color: 'primary',
+            dark: true,
+            css: {
+                backgroundColor: '$coral500',
+                color: '$greyLight100',
+
+                '&:hover': {
+                    backgroundColor: '$coral400',
+                },
+                '&:disabled': {
+                    opacity: 0.32,
+                },
+            },
+        },
+        {
             color: 'primary-light',
             dark: true,
             css: {
-                backgroundColor: 'rgba(255, 68, 79, 0.16)',
-                color: '#ff444f',
+                backgroundColor: '$coral500_16',
+                color: '$coral500',
 
                 '&:hover': {
-                    backgroundColor: 'rgba(255, 68, 79, 0.24)',
+                    backgroundColor: '$coral500_24',
                 },
                 '&:disabled': {
                     opacity: 0.32,
@@ -104,9 +122,9 @@ const Button = styled('button', {
             color: 'secondary',
             dark: true,
             css: {
-                borderColor: '#6e6e6e',
+                borderColor: '$greyDark200',
                 background: 'none',
-                color: '$white',
+                color: '$greyLight100',
 
                 '&:hover': {
                     backgroundColor: 'rgba(255, 255, 255, 0.08)',
@@ -117,28 +135,28 @@ const Button = styled('button', {
             color: 'secondary',
             size: 'medium',
             css: {
-                borderWidth: '1px',
+                borderWidth: '$1',
             },
         },
         {
             color: 'secondary',
             size: 'small',
             css: {
-                borderWidth: '1px',
+                borderWidth: '$1',
             },
         },
         {
             color: 'secondary',
             size: 'large',
             css: {
-                borderWidth: '2px',
+                borderWidth: '$2',
             },
         },
         {
             color: 'secondary',
             size: 'hero',
             css: {
-                borderWidth: '2px',
+                borderWidth: '$2',
             },
         },
     ],

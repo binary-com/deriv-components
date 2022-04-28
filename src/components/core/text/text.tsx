@@ -3,12 +3,12 @@ import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 
 const Text = styled('p', {
-    color: '#333333',
+    color: '$greyLight700',
 
     variants: {
         bold: {
             true: {
-                fontWeight: 'bold',
+                fontWeight: '$bold',
             },
         },
         align: {
@@ -24,93 +24,93 @@ const Text = styled('p', {
         },
         type: {
             hero: {
-                fontSize: '80px',
-                lineHeight: '100px',
+                fontSize: '$6xl',
+                lineHeight: '$lineHeight100',
 
                 '@mobile': {
-                    fontSize: '40px',
-                    lineHeight: '50px',
+                    fontSize: '$3xl',
+                    lineHeight: '$lineHeight50',
                 },
             },
             'heading-1': {
-                fontSize: '64px',
-                lineHeight: '80px',
+                fontSize: '$5xl',
+                lineHeight: '$lineHeight80',
 
                 '@mobile': {
-                    fontSize: '32px',
-                    lineHeight: '40px',
+                    fontSize: '2xl',
+                    lineHeight: '$lineHeight40',
                 },
             },
             'heading-2': {
-                fontSize: '48px',
-                lineHeight: '60px',
+                fontSize: '$4xl',
+                lineHeight: '$lineHeight60',
 
                 '@mobile': {
-                    fontSize: '28px',
-                    lineHeight: '34px',
+                    fontSize: '$xl',
+                    lineHeight: '$lineHeight34',
                 },
             },
             'heading-3': {
-                fontSize: '32px',
-                lineHeight: '40px',
+                fontSize: '$3xl',
+                lineHeight: '$lineHeight40',
 
                 '@mobile': {
-                    fontSize: '24px',
-                    lineHeight: '30px',
+                    fontSize: '$lg',
+                    lineHeight: '$lineHeight30',
                 },
             },
             'subtitle-1': {
-                fontSize: '24px',
-                lineHeight: '36px',
+                fontSize: '$lg',
+                lineHeight: '$lineHeight36',
 
                 '@mobile': {
-                    fontSize: '18px',
-                    lineHeight: '26px',
+                    fontSize: '$sm',
+                    lineHeight: '$lineHeight26',
                 },
             },
             'subtitle-2': {
-                fontSize: '20px',
-                lineHeight: '30px',
+                fontSize: '$md',
+                lineHeight: '$lineHeight30',
 
                 '@mobile': {
-                    fontSize: '16px',
-                    lineHeight: '24px',
+                    fontSize: '$xs',
+                    lineHeight: '$lineHeight24',
                 },
             },
             'paragraph-1': {
-                fontSize: '16px',
-                lineHeight: '24px',
+                fontSize: '$xs',
+                lineHeight: '$lineHeight24',
 
                 '@mobile': {
-                    fontSize: '14px',
-                    lineHeight: '20px',
+                    fontSize: '$2xs',
+                    lineHeight: '$lineHeight20',
                 },
             },
             'paragraph-2': {
-                fontSize: '14px',
-                lineHeight: '20px',
+                fontSize: '$2xs',
+                lineHeight: '$lineHeight20',
 
                 '@mobile': {
-                    fontSize: '12px',
-                    lineHeight: '18px',
+                    fontSize: '$3xs',
+                    lineHeight: '$lineHeight18',
                 },
             },
             small: {
-                fontSize: '12px',
-                lineHeight: '18px',
+                fontSize: '$3xs',
+                lineHeight: '$lineHeight18',
 
                 '@mobile': {
-                    fontSize: '10px',
-                    lineHeight: '14px',
+                    fontSize: '$4xs',
+                    lineHeight: '$lineHeight14',
                 },
             },
             'extra-small': {
-                fontSize: '10px',
-                lineHeight: '14px',
+                fontSize: '$4xs',
+                lineHeight: '$lineHeight14',
 
                 '@mobile': {
-                    fontSize: '8px',
-                    lineHeight: '12px',
+                    fontSize: '$5xs',
+                    lineHeight: '$lineHeight12',
                 },
             },
         },
