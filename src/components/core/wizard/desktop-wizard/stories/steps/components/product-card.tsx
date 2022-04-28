@@ -1,12 +1,12 @@
 import { styled } from 'Styles/stitches.config';
 import Text from '@core/text/text';
-import CFDsIcon from '@assets/svg/wizard/ic-cfds-logo.svg';
-import CFDsBackground from '@assets/svg/wizard/cfds-background.svg';
-import MultipliersIcon from '@assets/svg/wizard/ic-multipliers-logo.svg';
-import MultipliersBackground from '@assets/svg/wizard/multipliers-background.svg';
-import OptionsIcon from '@assets/svg/wizard/ic-options-logo.svg';
-import OptionsBackground from '@assets/svg/wizard/options-background.svg';
 import WhiteCircularCheckIcon from '@assets/svg/circular-check-icon-white.svg';
+import CFDsIcon from '@core/wizard/desktop-wizard/stories/assets/ic-cfds-logo.svg';
+import CFDsBackground from '@core/wizard/desktop-wizard/stories/assets/cfds-background.svg';
+import MultipliersIcon from '@core/wizard/desktop-wizard/stories/assets/ic-multipliers-logo.svg';
+import MultipliersBackground from '@core/wizard/desktop-wizard/stories/assets/multipliers-background.svg';
+import OptionsIcon from '@core/wizard/desktop-wizard/stories/assets/ic-options-logo.svg';
+import OptionsBackground from '@core/wizard/desktop-wizard/stories/assets/options-background.svg';
 
 const ProductCardContainer = styled('div', {
     width: '200px',
@@ -71,9 +71,9 @@ export type ProductType = 'cfds' | 'multipliers' | 'options';
 type ProductCardProps = {
     active: boolean;
     description: string;
-    onProductSelect: (selected_product: ProductType) => void;
+    onProductSelect: (selected_product: string) => void;
     title: string;
-    type: ProductType;
+    type: string;
 };
 
 const ProductCard = ({ active, description, onProductSelect, title, type }: ProductCardProps) => {
@@ -82,12 +82,12 @@ const ProductCard = ({ active, description, onProductSelect, title, type }: Prod
     };
 
     return (
-        <ProductCardContainer type={type} onClick={handleClick} data-testid="product-card">
+        <ProductCardContainer type={type as ProductType} onClick={handleClick} data-testid="product-card">
             <Text as="div" type="small" css={{ color: '$white', marginBottom: '8px' }}>
                 {title}
             </Text>
             <ProductCardContentWrapper>
-                <ProductCardIcon type={type} />
+                <ProductCardIcon type={type as ProductType} />
                 <Text as="div" type="extra-small" css={{ color: '$white', width: '128px', height: '56px' }}>
                     {description}
                 </Text>

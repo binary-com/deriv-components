@@ -9,6 +9,7 @@ const ScrollbarsContainer = styled('div', {
     marginRight: '-14px',
     paddingRight: '10px',
     scrollBehavior: 'smooth',
+    height: '100%',
 
     '&::-webkit-scrollbar': {
         width: '4px',
@@ -118,6 +119,10 @@ const Scrollbars = React.forwardRef(
         return (
             <ScrollbarsContainer
                 {...props}
+                // We need to Omit css as Emotions global css typedef clashes with the Stitches css typedef
+                // Storybook currently uses v10+ of Emotion, this issue is fixed in Emotion v11+
+                // TODO: Remove Omit once Storybook's Emotion is running on v11+
+                // @ts-ignore
                 css={style}
                 onMouseDown={scrollYAxisOnDrag}
                 onMouseUp={scrollYAxisOnDrag}

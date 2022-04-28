@@ -1,4 +1,5 @@
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
+import { Configuration } from 'webpack';
 
 module.exports = {
     stories: ['../src/**/stories/**/*.stories.mdx', '../src/**/stories/**/*.stories.@(ts|tsx|mdx)'],
@@ -7,13 +8,15 @@ module.exports = {
     core: {
         builder: 'webpack5',
     },
-    webpackFinal: async (config: any) => {
-        config.resolve.plugins = [
-            ...(config.resolve.plugins || []),
-            new TsconfigPathsPlugin({
-                extensions: config.resolve.extensions,
-            }),
-        ];
+    webpackFinal: async (config: Configuration) => {
+        if (config.resolve) {
+            config.resolve.plugins = [
+                ...(config.resolve.plugins || []),
+                new TsconfigPathsPlugin({
+                    extensions: config.resolve.extensions,
+                }),
+            ];
+        }
 
         return config;
     },

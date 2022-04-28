@@ -2,7 +2,7 @@ import CircularCheckIcon from '@assets/svg/circular-check-icon.svg';
 import Text from '@core/text/text';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
-import { StepData } from './desktop-wizard';
+import { StepNavigationProps } from '../types';
 
 const Bullet = styled('div', {
     width: '16px',
@@ -135,61 +135,61 @@ const StepBreadcrumb = styled('div', {
     ],
 });
 
-type StepNavigationProps = {
-    steps: StepData[];
-    current_step_index: number;
-    complete_steps_indexes?: number[];
-    disabled_steps_indexes?: number[];
-    dark?: boolean;
-    onClick?: (idx: number) => void;
-};
-
 const StepNavigation = React.memo(
-    ({
-        steps,
-        current_step_index,
-        complete_steps_indexes,
-        disabled_steps_indexes,
-        dark,
-        onClick,
-    }: StepNavigationProps) => {
+    ({ steps, current_step_index, complete_steps_indexes, dark, onClick }: StepNavigationProps) => {
+        const filtered_steps = steps.filter((step) => !step.is_hidden);
+
+        const getNavLineHeight = () => {
+            const no_of_hidden_index = steps.filter((step, idx) => step.is_hidden && idx < current_step_index).length;
+            return (current_step_index - no_of_hidden_index) * (100 / filtered_steps.length);
+        };
+
         return (
             <div style={{ position: 'relative' }} data-testid="step-navigation">
                 <Before
                     dark={dark}
                     css={{
-                        height: `calc(100% * ${steps.length - 1} / ${steps.length})`,
+                        height: `calc(100% * ${filtered_steps.length - 1} / ${filtered_steps.length})`,
                     }}
                 />
                 {steps.map((step, idx) => {
+                    if (step.is_hidden) return null;
+
                     const active = idx === current_step_index;
-                    const disabled = disabled_steps_indexes?.some((i) => i === idx);
+                    const { is_disabled } = steps[idx];
                     return (
                         <StepBreadcrumb
                             key={idx + 1}
                             onClick={() => onClick?.(idx)}
-                            disabled={disabled}
+                            disabled={is_disabled}
                             dark={dark}
                             data-testid="step-item"
                         >
                             <Bullet
                                 status={
                                     (complete_steps_indexes?.some((i) => i === idx) && 'complete') ||
-                                    (disabled && 'disabled') ||
+                                    (is_disabled && 'disabled') ||
                                     (active && 'active') ||
                                     undefined
                                 }
                                 dark={dark}
                             />
-                            <Text as="label" type="paragraph-2" bold={active} css={{ cursor: 'pointer' }}>
-                                {step.step_title}
+                            <Text
+                                as="label"
+                                type="paragraph-2"
+                                bold={active}
+                                css={{
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                {step.title}
                             </Text>
                         </StepBreadcrumb>
                     );
                 })}
                 <After
                     css={{
-                        height: `${current_step_index * (100 / steps.length)}%`,
+                        height: `${getNavLineHeight()}%`,
                     }}
                 />
             </div>
