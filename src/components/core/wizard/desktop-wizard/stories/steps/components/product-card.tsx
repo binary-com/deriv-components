@@ -83,12 +83,12 @@ const ProductCard = ({ active, description, onProductSelect, title, type }: Prod
 
     return (
         <ProductCardContainer type={type as ProductType} onClick={handleClick} data-testid="product-card">
-            <Text as="div" type="small" css={{ color: '$white', marginBottom: '8px' }}>
+            <Text as="div" type="small" css={{ color: '$greyLight100', marginBottom: '8px' }}>
                 {title}
             </Text>
             <ProductCardContentWrapper>
                 <ProductCardIcon type={type as ProductType} />
-                <Text as="div" type="extra-small" css={{ color: '$white', width: '128px', height: '56px' }}>
+                <Text as="div" type="extra-small" css={{ color: '$greyLight100', width: '128px', height: '56px' }}>
                     {description}
                 </Text>
             </ProductCardContentWrapper>
