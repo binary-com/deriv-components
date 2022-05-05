@@ -293,6 +293,10 @@ const DesktopWizard = (props: WizardProps) => {
                 if (index < current_step_index) slide('translateY(-100vh)', 'translateY(0)');
                 if (index > current_step_index) slide('translateY(100vh)', 'translateY(0)');
             }, 250);
+
+            if (lock_final_step && !is_completed && index === steps.length - 1) {
+                setIsCompleted(true);
+            }
         }
     };
 
