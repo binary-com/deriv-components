@@ -1,3 +1,4 @@
 export * from './components/core';
-export * from './components/wallet';
+
+// TODO: remove this when Modal component is done.
 export * as Dialog from '@radix-ui/react-dialog';
