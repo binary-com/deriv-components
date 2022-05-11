@@ -10,7 +10,7 @@ const Bullet = styled('div', {
     border: '2px solid #D6DADB',
     boxSizing: 'border-box',
     borderRadius: '50%',
-    background: '$white',
+    background: '$primary-background',
 
     variants: {
         status: {

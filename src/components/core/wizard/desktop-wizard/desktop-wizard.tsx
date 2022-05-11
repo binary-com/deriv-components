@@ -32,7 +32,7 @@ const WizardContainer = styled('div', {
     position: 'relative',
     width: '1040px',
     height: '640px',
-    backgroundColor: '$white',
+    backgroundColor: '$primary-background',
     borderRadius: '16px',
     display: 'flex',
     overflow: 'hidden',
@@ -293,6 +293,10 @@ const DesktopWizard = (props: WizardProps) => {
                 if (index < current_step_index) slide('translateY(-100vh)', 'translateY(0)');
                 if (index > current_step_index) slide('translateY(100vh)', 'translateY(0)');
             }, 250);
+
+            if (lock_final_step && !is_completed && index === steps.length - 1) {
+                setIsCompleted(true);
+            }
         }
     };
 
@@ -304,7 +308,7 @@ const DesktopWizard = (props: WizardProps) => {
                         as="div"
                         type="subtitle-2"
                         bold
-                        css={{ marginBottom: '24px', color: dark ? '$white' : '#333333' }}
+                        css={{ marginBottom: '24px', color: dark ? '$prominent-text' : '#333333' }}
                     >
                         {wizard_title}
                     </Text>
