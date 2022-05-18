@@ -77,6 +77,14 @@ const Button = styled('button', {
                     backgroundColor: '$coral500_8',
                 },
             },
+            monochrome: {
+                backgroundColor: '#0E0E0E',
+                color: '#FFFFFF',
+
+                '&:hover': {
+                    backgroundColor: '#323738',
+                },
+            },
         },
         block: {
             true: {
@@ -159,6 +167,18 @@ const Button = styled('button', {
                 borderWidth: '$2',
             },
         },
+        {
+            color: 'monochrome',
+            dark: true,
+            css: {
+                background: '#FFFFFF',
+                color: '#333333',
+
+                '&:hover': {
+                    backgroundColor: '#D6DADB',
+                },
+            },
+        },
     ],
     defaultVariants: {
         color: 'primary',
@@ -169,7 +189,7 @@ const Button = styled('button', {
 });
 
 export const button_size_type = ['small', 'medium', 'large', 'hero'];
-export const button_color_type = ['primary', 'primary-light', 'secondary', 'tertiary'];
+export const button_color_type = ['primary', 'primary-light', 'secondary', 'tertiary', 'monochrome'];
 
 export default Button;
 
