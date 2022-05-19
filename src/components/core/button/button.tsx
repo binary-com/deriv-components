@@ -78,11 +78,11 @@ const Button = styled('button', {
                 },
             },
             monochrome: {
-                backgroundColor: '#0E0E0E',
-                color: '#FFFFFF',
+                backgroundColor: '$greyDark700',
+                color: '$greyLight100',
 
                 '&:hover': {
-                    backgroundColor: '#323738',
+                    backgroundColor: '$greyDark400',
                 },
             },
         },
@@ -171,11 +171,11 @@ const Button = styled('button', {
             color: 'monochrome',
             dark: true,
             css: {
-                background: '#FFFFFF',
-                color: '#333333',
+                background: '$greyLight100',
+                color: '$greyLight700',
 
                 '&:hover': {
-                    backgroundColor: '#D6DADB',
+                    backgroundColor: '$greyLight400',
                 },
             },
         },
