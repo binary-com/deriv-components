@@ -79,7 +79,7 @@ const Breadcrumb = ({ items, dark, handleOnClick }: BreadcrumbProps) => {
                     <span onClick={() => handleOnClick(item)}>{item}</span>
                     {idx < items.length - 1 && (
                         <Svg viewBox="0 0 7 16" dark={dark}>
-                            <use xlinkHref={`${BreadcrumnSeperatorIcon}#breadcrumb-seperator`} />
+                            <use href={`${BreadcrumnSeperatorIcon}#breadcrumb`} />
                         </Svg>
                     )}
                 </ListItem>
