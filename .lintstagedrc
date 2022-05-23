@@ -3,6 +3,7 @@
         "prettier --write"
     ],
     "*.svg": [
-        "svgo"
+        "svgo",
+        "svgo -h"
     ]
 }
