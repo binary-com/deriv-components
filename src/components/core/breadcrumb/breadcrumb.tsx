@@ -48,6 +48,7 @@ const ListItem = styled('li', {
     ],
     '@mobile': {
         lineHeight: '$lineHeight18',
+        fontSize: '$3xs',
     },
 });
 
