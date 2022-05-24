@@ -1,12 +1,12 @@
 module.exports = {
     plugins: [
-      {
-        name: 'preset-default',
-        params: {
-          overrides: {
-            cleanupIDs: false,
-          },
+        {
+            name: 'preset-default',
+            params: {
+                overrides: {
+                    cleanupIDs: false,
+                },
+            },
         },
-      },
     ],
-  };
+};
