@@ -1,4 +1,4 @@
-import type * as Stitches from '@stitches/react';
+import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 import BreadcrumnSeperatorIcon from '@assets/svg/breadcrumb-seperator.svg';
