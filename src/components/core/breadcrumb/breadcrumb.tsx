@@ -6,7 +6,7 @@ import BreadcrumnSeperatorIcon from '@assets/svg/breadcrumb-seperator.svg';
 type BreadcrumbProps = {
     items: string[];
     dark: boolean;
-    handleOnClick: (item: string) => any;
+    handleOnClick: (item: string) => void;
 };
 
 const ListItem = styled('li', {
