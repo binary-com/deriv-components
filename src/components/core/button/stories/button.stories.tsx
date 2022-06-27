@@ -67,6 +67,26 @@ export default {
 
 const Template: ComponentStory<typeof ButtonStory> = (args) => <Button {...args}>{args.children}</Button>;
 
+export const Accessible = Template.bind({});
+Accessible.args = {
+    color: 'secondary',
+    size: 'large',
+    children: 'Button',
+};
+
+export const Inaccessible = Template.bind({});
+Inaccessible.args = {
+    style: { backgroundColor: 'red', color: 'darkRed' },
+    children: 'Button',
+};
+Inaccessible.parameters = {
+    a11y: {
+        config: {
+            rules: [{ id: 'color-contrast', enabled: true }],
+        },
+    },
+};
+
 export const Primary = Template.bind({});
 Primary.args = {
     block: false,
