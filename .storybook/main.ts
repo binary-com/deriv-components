@@ -3,7 +3,7 @@ import { Configuration } from 'webpack';
 
 module.exports = {
     stories: ['../src/**/stories/**/*.stories.mdx', '../src/**/stories/**/*.stories.@(ts|tsx|mdx)'],
-    addons: ['@storybook/addon-essentials', '@storybook/addon-docs', '@storybook/addon-links'],
+    addons: ['@storybook/addon-essentials', '@storybook/addon-docs', '@storybook/addon-links', '@storybook/addon-a11y'],
     framework: '@storybook/react',
     core: {
         builder: 'webpack5',
