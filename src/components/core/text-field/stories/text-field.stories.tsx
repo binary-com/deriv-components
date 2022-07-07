@@ -1,4 +1,5 @@
 import type { Meta, Story } from '@storybook/react';
+import LocationPin from '@assets/svg/location-pin.svg';
 import type { TextFieldProps } from '../text-field';
 import TextField from '../text-field';
 
@@ -34,9 +35,100 @@ export default {
             },
             description: 'Type of input field',
         },
+        disabled: {
+            description:
+                'Extends the style of HTML [disabled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled) attribute.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+            },
+        },
+        readonly: {
+            description: 'Makes the field still focusable and functional but value cannot be edited',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+            },
+        },
     },
 } as Meta<TextFieldProps>;
 
 const Template: Story<TextFieldProps> = (args) => <TextField {...args}></TextField>;
 
-export const TextFieldTesting = Template.bind({});
+export const SimpleTextField = Template.bind({});
+SimpleTextField.args = {
+    label: 'Text field',
+    type: 'text',
+    success: '',
+    error: '',
+    hint: '',
+    disabled: false,
+};
+
+export const TextFieldWithSuffixText = Template.bind({});
+TextFieldWithSuffixText.args = {
+    label: 'Currency',
+    type: 'number',
+    success: '',
+    error: '',
+    hint: '',
+    inline_suffix_element: <div>USD</div>,
+    disabled: false,
+};
+
+export const TextFieldWithPrefixText = Template.bind({});
+TextFieldWithPrefixText.args = {
+    label: 'Phone no.',
+    type: 'tel',
+    success: '',
+    error: '',
+    hint: '',
+    inline_prefix_element: <div>+971</div>,
+    disabled: false,
+    readonly: false,
+};
+
+export const TextFieldWithSuffixIcon = Template.bind({});
+TextFieldWithSuffixIcon.args = {
+    label: 'Location',
+    type: 'text',
+    success: '',
+    error: '',
+    hint: '',
+    inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
+    disabled: false,
+    readonly: false,
+};
+
+export const TextFieldWithCharacterLimit = Template.bind({});
+TextFieldWithCharacterLimit.args = {
+    label: 'Description',
+    type: 'text',
+    success: '',
+    error: '',
+    hint: '',
+    max_length: 10,
+    disabled: false,
+    readonly: false,
+};
+
+export const PasswordField = Template.bind({});
+PasswordField.args = {
+    label: 'Password',
+    type: 'password',
+    success: '',
+    error: '',
+    hint: '',
+    disabled: false,
+    readonly: false,
+};
+
+export const TextAreaField = Template.bind({});
+TextAreaField.args = {
+    label: 'Instruction',
+    type: 'textarea',
+    hint: '',
+    max_length: 250,
+    disabled: false,
+    readonly: false,
+};

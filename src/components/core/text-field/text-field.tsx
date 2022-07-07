@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import zxcvbn from 'zxcvbn';
 import * as Stitches from '@stitches/react';
-import { forwardRef, Fragment, InputHTMLAttributes, ReactNode, useState } from 'react';
+import { forwardRef, Fragment, InputHTMLAttributes, ReactNode, useEffect, useState } from 'react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 import css from './text-field.module.scss';
@@ -9,6 +9,7 @@ import css from './text-field.module.scss';
 type InputTypes = 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea';
 type TUserInputProps = { user_input: string };
 type TWordCountProps = { count: number; max_length: number };
+type TPasswordStrengthProps = { user_input: string; disable_meter: boolean };
 
 export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {
     inline_prefix_element?: ReactNode;
@@ -22,9 +23,11 @@ export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextArea
     error?: string;
     success?: string;
     hint?: string;
+    disabled?: boolean;
+    readonly?: boolean;
 };
 
-const PasswordStrengthMeter = ({ user_input }: TUserInputProps) => {
+const PasswordStrengthMeter = ({ user_input, disable_meter }: TPasswordStrengthProps) => {
     const test_result: zxcvbn.ZXCVBNResult = zxcvbn(user_input);
     const score: number = (test_result.score * 100) / 4;
     const meter_color: any = Object.freeze({
@@ -36,7 +39,11 @@ const PasswordStrengthMeter = ({ user_input }: TUserInputProps) => {
     });
 
     const generatePasswordStrengthColor = () => {
-        return { width: `${score}%`, background: meter_color[test_result.score], height: '0.25rem' };
+        return {
+            width: `${score}%`,
+            background: meter_color[test_result.score],
+            height: disable_meter ? '0' : '0.25rem',
+        };
     };
     return (
         <div className={css['password-meter']}>
@@ -69,6 +76,8 @@ const TextField = forwardRef(
             error,
             success,
             hint,
+            disabled,
+            readonly,
             ...props
         }: TextFieldProps,
         ref: any,
@@ -78,6 +87,9 @@ const TextField = forwardRef(
         const [count, setCount] = useState(0);
 
         const handleTextChange = (text: string) => {
+            if (disabled || readonly) {
+                return;
+            }
             if (max_length && text.length > max_length) {
                 return;
             }
@@ -101,19 +113,31 @@ const TextField = forwardRef(
                 <section
                     className={classNames(css['dc-text-field'], {
                         [css['dc-text-field--active']]: isActive,
+                        [css['dc-text-field--error-border']]: !!error,
+                        [css['dc-text-field--success-border']]: !!success,
+                        [css['dc-text-field--disabled']]: disabled,
                     })}
                 >
                     <div className={css['dc-text-field__wrapper']}>
-                        {type === 'text' && !!inline_prefix_element && (
+                        {type !== 'textarea' && !!inline_prefix_element && (
                             <div className={css['dc-text-field__prefix']}>{inline_prefix_element}</div>
                         )}
                         {type === 'textarea' ? (
-                            <textarea {...props} className={css['dc-text-field__input']} value={value} />
+                            <textarea
+                                {...props}
+                                className={css['dc-text-field__text-area']}
+                                value={value}
+                                readOnly={readonly}
+                                disabled={disabled}
+                                onChange={(e) => handleTextChange(e.target.value)}
+                            />
                         ) : (
                             <input
                                 className={css['dc-text-field__input']}
                                 type={type}
                                 value={value}
+                                readOnly={readonly}
+                                disabled={disabled}
                                 {...props}
                                 onChange={(e) => handleTextChange(e.target.value)}
                             />
@@ -122,19 +146,29 @@ const TextField = forwardRef(
                             <label
                                 htmlFor={id}
                                 className={classNames(css['dc-text-field__label'], {
-                                    [css['dc-text-field__label--active']]: isActive,
+                                    [css['dc-text-field__label--active-input']]: isActive && type !== 'textarea',
+                                    [css['dc-text-field__label--active-textarea']]: isActive && type === 'textarea',
+                                    [css['dc-text-field--error-text']]: !!error,
+                                    [css['dc-text-field--success-text']]: !!success,
                                 })}
                             >
                                 {label}
                             </label>
                         )}
-                        {type === 'text' && !!inline_suffix_element && (
+                        {type !== 'textarea' && !!inline_suffix_element && (
                             <div className={css['dc-text-field__suffix']}>{inline_suffix_element}</div>
                         )}
                     </div>
-                    {type === 'password' && <PasswordStrengthMeter user_input={value} />}
+                    {type === 'password' && (
+                        <PasswordStrengthMeter user_input={value} disable_meter={(readonly || disabled) ?? false} />
+                    )}
                 </section>
-                <section className={css['dc-text-field__helper']}>
+                <section
+                    className={classNames(css['dc-text-field__helper'], {
+                        [css['dc-text-field--error-text']]: !!error,
+                        [css['dc-text-field--success-text']]: !!success,
+                    })}
+                >
                     {generateHintText()}
                     {max_length && max_length > 0 && <WordCount count={count} max_length={max_length} />}
                 </section>
