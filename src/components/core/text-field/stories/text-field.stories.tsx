@@ -50,6 +50,13 @@ export default {
                 defaultValue: { summary: false },
             },
         },
+        dark: {
+            description: 'Displays content in dark theme',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+            },
+        },
     },
 } as Meta<TextFieldProps>;
 
@@ -63,6 +70,8 @@ SimpleTextField.args = {
     error: '',
     hint: '',
     disabled: false,
+    dark: false,
+    readonly: false,
 };
 
 export const TextFieldWithSuffixText = Template.bind({});
@@ -74,6 +83,8 @@ TextFieldWithSuffixText.args = {
     hint: '',
     inline_suffix_element: <div>USD</div>,
     disabled: false,
+    dark: false,
+    readonly: false,
 };
 
 export const TextFieldWithPrefixText = Template.bind({});
@@ -86,6 +97,7 @@ TextFieldWithPrefixText.args = {
     inline_prefix_element: <div>+971</div>,
     disabled: false,
     readonly: false,
+    dark: false,
 };
 
 export const TextFieldWithSuffixIcon = Template.bind({});
@@ -98,6 +110,7 @@ TextFieldWithSuffixIcon.args = {
     inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
     disabled: false,
     readonly: false,
+    dark: false,
 };
 
 export const TextFieldWithCharacterLimit = Template.bind({});
@@ -110,6 +123,7 @@ TextFieldWithCharacterLimit.args = {
     max_length: 10,
     disabled: false,
     readonly: false,
+    dark: false,
 };
 
 export const PasswordField = Template.bind({});
@@ -121,6 +135,7 @@ PasswordField.args = {
     hint: '',
     disabled: false,
     readonly: false,
+    dark: false,
 };
 
 export const TextAreaField = Template.bind({});
@@ -131,4 +146,5 @@ TextAreaField.args = {
     max_length: 250,
     disabled: false,
     readonly: false,
+    dark: false,
 };
