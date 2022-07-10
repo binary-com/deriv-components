@@ -12,8 +12,6 @@ export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextArea
     show_character_limit?: boolean;
     label?: string;
     type?: InputTypes;
-    required?: boolean;
-    id?: string;
     max_length?: number;
     error?: string;
     success?: string;
@@ -108,6 +106,7 @@ const TextFieldSection = styled('section', {
             true: {
                 borderColor: '$greyDark400',
                 backgroundColor: '$greyDark700',
+
                 '&:hover': {
                     borderColor: '$greyDark200',
                 },
@@ -126,6 +125,12 @@ const TextFieldSection = styled('section', {
                 borderColor: '$blue500',
             },
         },
+        disabled: {
+            true: {
+                opacity: '0.32',
+                cursor: 'not-allowed',
+            },
+        },
         error: {
             true: {
                 borderColor: '$coral500',
@@ -138,13 +143,25 @@ const TextFieldSection = styled('section', {
                 color: '$greenLight',
             },
         },
-        disabled: {
-            true: {
-                opacity: '0.32',
-                cursor: 'not-allowed',
+    },
+    compoundVariants: [
+        {
+            dark: true,
+            error: true,
+            css: {
+                borderColor: '$redDark',
+                color: '$redDark',
             },
         },
-    },
+        {
+            dark: true,
+            success: true,
+            css: {
+                borderColor: '$greenDark',
+                color: '$greenDark',
+            },
+        },
+    ],
 });
 
 /* Label component */
@@ -177,7 +194,7 @@ const LabelSection = styled('label', {
 });
 
 /* Input field */
-const InputFieldWrapper = styled('div', {
+const InputFieldSection = styled('div', {
     position: 'relative',
     display: 'inline-flex',
     width: '100%',
@@ -186,7 +203,7 @@ const InputFieldWrapper = styled('div', {
 });
 
 /* Supporting info component */
-const SupportingInfo = styled('div', {
+const SupportingInfoSection = styled('div', {
     display: 'block',
     variants: {
         prefix: { true: { paddingLeft: '1rem' } },
@@ -218,16 +235,16 @@ const TextAreaField = styled('textarea', {
             true: {
                 color: '$greyLight100',
 
-                // '&:readonly': {
-                //     color: '$greyDark200',
-                // },
+                '&:readonly': {
+                    color: '$greyDark200',
+                },
             },
             false: {
                 color: '$greyLight700',
 
-                // '&:readonly': {
-                //     color: '$greyLight600',
-                // },
+                '&:readonly': {
+                    color: '$greyLight600',
+                },
             },
         },
     },
@@ -350,9 +367,9 @@ const TextField = forwardRef(
                     disabled={!!props.disabled}
                     dark={!!dark}
                 >
-                    <InputFieldWrapper>
+                    <InputFieldSection>
                         {type !== 'textarea' && !!inline_prefix_element && (
-                            <SupportingInfo prefix>{inline_prefix_element}</SupportingInfo>
+                            <SupportingInfoSection prefix>{inline_prefix_element}</SupportingInfoSection>
                         )}
                         {type === 'textarea' ? (
                             <TextAreaField
@@ -386,9 +403,9 @@ const TextField = forwardRef(
                             </LabelSection>
                         )}
                         {type !== 'textarea' && !!inline_suffix_element && (
-                            <SupportingInfo suffix>{inline_suffix_element}</SupportingInfo>
+                            <SupportingInfoSection suffix>{inline_suffix_element}</SupportingInfoSection>
                         )}
-                    </InputFieldWrapper>
+                    </InputFieldSection>
                     {type === 'password' && (
                         <PasswordStrengthMeter
                             dark={!!dark}
