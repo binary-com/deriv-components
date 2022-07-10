@@ -21,7 +21,9 @@ export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextArea
     dark?: boolean;
 };
 
-/* PasswordStrengthMeter Component */
+/* 
+    PasswordStrengthMeter - This designs the section that displays the strength of password input 
+*/
 const StyledPasswordMeterWrapper = styled('div', {
     height: '0.25rem',
     width: '100%',
@@ -61,7 +63,9 @@ const PasswordStrengthMeter = ({ user_input, disable_meter, dark }: TPasswordStr
 
 const HintText = ({ children }: { children: React.ReactNode }) => <div>{children}</div>;
 
-/* Word Count component */
+/* 
+    Word Count component - Displays the total count of characters in the input field against a max allowed character length
+*/
 const StyledWordCount = styled('div', {
     marginLeft: 'auto',
 });
@@ -71,7 +75,9 @@ const WordCount = ({ count, max_length }: TWordCountProps) => (
     </StyledWordCount>
 );
 
-/* Helper component */
+/* 
+    HelperSection - This section displays hint, error or success text
+*/
 const HelperSection = styled('section', {
     paddingLeft: '1rem',
     fontSize: '$2xs',
@@ -92,8 +98,10 @@ const HelperSection = styled('section', {
     },
 });
 
-/* TextField component */
-const TextFieldSection = styled('section', {
+/* 
+    TextFieldWrapper - This acts as a wrapper and styles the input field section
+*/
+const TextFieldWrapper = styled('section', {
     position: 'relative',
     width: '100%',
     display: 'inline-flex',
@@ -164,7 +172,9 @@ const TextFieldSection = styled('section', {
     ],
 });
 
-/* Label component */
+/* 
+    LabelSection - Styles the input field label 
+*/
 const LabelSection = styled('label', {
     whiteSpace: 'nowrap',
     fontSize: '$xs',
@@ -193,7 +203,9 @@ const LabelSection = styled('label', {
     },
 });
 
-/* Input field */
+/* 
+    InputFieldSection - Styles the input field and wraps prefix, suffix and input field
+*/
 const InputFieldSection = styled('div', {
     position: 'relative',
     display: 'inline-flex',
@@ -202,7 +214,9 @@ const InputFieldSection = styled('div', {
     lineHeight: '$lineHeight20',
 });
 
-/* Supporting info component */
+/* 
+    SupportingInfoSection - Styles the prefix and suffix elements of input field
+*/
 const SupportingInfoSection = styled('div', {
     display: 'block',
     variants: {
@@ -211,7 +225,9 @@ const SupportingInfoSection = styled('div', {
     },
 });
 
-/* Text area */
+/* 
+    TextAreaField - Styles the Text area field
+*/
 const TextAreaField = styled('textarea', {
     resize: 'none',
     height: '6rem',
@@ -259,7 +275,9 @@ const TextAreaField = styled('textarea', {
     },
 });
 
-/* Input field */
+/* 
+    InputField - Styles the input field
+*/
 const InputField = styled('input', {
     borderRadius: '$default',
     background: 'none',
@@ -358,14 +376,21 @@ const TextField = forwardRef(
             }
         };
 
+        const styleTextFieldWrapper = () => {
+            if (label?.trim()?.length === 0) {
+                return dark ? { borderColor: '$greyDark700' } : { borderColor: '$greyLight100' };
+            }
+        };
+
         return (
             <Fragment>
-                <TextFieldSection
+                <TextFieldWrapper
                     active={!!isActive}
                     error={!!error}
                     success={!!success}
                     disabled={!!props.disabled}
                     dark={!!dark}
+                    css={styleTextFieldWrapper()}
                 >
                     <InputFieldSection>
                         {type !== 'textarea' && !!inline_prefix_element && (
@@ -413,7 +438,7 @@ const TextField = forwardRef(
                             disable_meter={(props.readonly || props.disabled) ?? false}
                         />
                     )}
-                </TextFieldSection>
+                </TextFieldWrapper>
                 <HelperSection error={!!error} success={!!success} dark={!!dark}>
                     {generateHintText()}
                     {max_length && max_length > 0 && <WordCount count={count} max_length={max_length} />}
