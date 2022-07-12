@@ -43,7 +43,7 @@ export default {
                 defaultValue: { summary: false },
             },
         },
-        readonly: {
+        readOnly: {
             description: 'Makes the field still focusable and functional but value cannot be edited',
             table: {
                 type: { summary: 'boolean' },
@@ -71,7 +71,7 @@ SimpleTextField.args = {
     hint: '',
     disabled: false,
     dark: false,
-    readonly: false,
+    readOnly: false,
 };
 
 export const TextFieldWithSuffixText = Template.bind({});
@@ -84,7 +84,7 @@ TextFieldWithSuffixText.args = {
     inline_suffix_element: <div>USD</div>,
     disabled: false,
     dark: false,
-    readonly: false,
+    readOnly: false,
 };
 
 export const TextFieldWithPrefixText = Template.bind({});
@@ -96,7 +96,7 @@ TextFieldWithPrefixText.args = {
     hint: '',
     inline_prefix_element: <div>+971</div>,
     disabled: false,
-    readonly: false,
+    readOnly: false,
     dark: false,
 };
 
@@ -109,7 +109,7 @@ TextFieldWithSuffixIcon.args = {
     hint: '',
     inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
     disabled: false,
-    readonly: false,
+    readOnly: false,
     dark: false,
 };
 
@@ -122,7 +122,7 @@ TextFieldWithCharacterLimit.args = {
     hint: '',
     max_length: 10,
     disabled: false,
-    readonly: false,
+    readOnly: false,
     dark: false,
 };
 
@@ -134,7 +134,7 @@ PasswordField.args = {
     error: '',
     hint: '',
     disabled: false,
-    readonly: false,
+    readOnly: false,
     dark: false,
 };
 
@@ -145,6 +145,6 @@ TextAreaField.args = {
     hint: '',
     max_length: 250,
     disabled: false,
-    readonly: false,
+    readOnly: false,
     dark: false,
 };

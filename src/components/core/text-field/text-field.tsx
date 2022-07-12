@@ -5,6 +5,7 @@ import { styled } from 'Styles/stitches.config';
 type InputTypes = 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea';
 type TWordCountProps = { count: number; max_length: number };
 type TPasswordStrengthProps = { user_input: string; disable_meter: boolean; dark: boolean };
+type THintTextProps = { error: string; success: string; hint: string };
 
 export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {
     inline_prefix_element?: ReactNode;
@@ -13,11 +14,7 @@ export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextArea
     label?: string;
     type?: InputTypes;
     max_length?: number;
-    error?: string;
-    success?: string;
-    hint?: string;
-    disabled?: boolean;
-    readonly?: boolean;
+    hint_text?: THintTextProps;
     dark?: boolean;
 };
 
@@ -55,7 +52,7 @@ const PasswordStrengthMeter = ({ user_input, disable_meter, dark }: TPasswordStr
         };
     };
     return (
-        <StyledPasswordMeterWrapper dark={!!dark}>
+        <StyledPasswordMeterWrapper dark={dark}>
             <StyledPasswordMeter css={generatePasswordStrengthColor()}></StyledPasswordMeter>
         </StyledPasswordMeterWrapper>
     );
@@ -190,7 +187,7 @@ const LabelSection = styled('label', {
                 backgroundColor: '$greyDark600',
             },
             false: {
-                color: '$greyLight700',
+                color: '$greyLight600',
                 backgroundColor: '$greyLight100',
             },
         },
@@ -328,20 +325,20 @@ const TextField = forwardRef(
             type,
             id,
             max_length,
-            error,
-            success,
-            hint,
+            hint_text,
             dark,
             ...props
         }: TextFieldProps,
         ref: any,
     ) => {
-        const [isActive, setIsActive] = useState(false);
+        const [is_active, setIsActive] = useState(false);
         const [value, setValue] = useState('');
         const [count, setCount] = useState(0);
 
+        const { error, hint, success } = hint_text ?? {};
+
         const handleTextChange = (text: string) => {
-            if (props.disabled || props.readonly) {
+            if (props.disabled || props.readOnly) {
                 return;
             }
             if (max_length && text.length > max_length) {
@@ -357,18 +354,18 @@ const TextField = forwardRef(
         };
 
         const generateHintText = () => {
-            if (!!success) return <HintText>{success}</HintText>;
-            else if (!!error) return <HintText>{error}</HintText>;
-            else if (!!hint) return <HintText>{hint}</HintText>;
+            if (success) return <HintText>{success}</HintText>;
+            else if (error) return <HintText>{error}</HintText>;
+            else if (hint) return <HintText>{hint}</HintText>;
         };
 
         const styleLabelFloat = () => {
-            if (isActive && type !== 'textarea') {
+            if (is_active && type !== 'textarea') {
                 return {
                     transform: 'translate(0, -1.2rem) scale(0.75)',
                     padding: '0 4px',
                 };
-            } else if (isActive && type === 'textarea') {
+            } else if (is_active && type === 'textarea') {
                 return {
                     transform: 'translate(0, -1.5rem) scale(0.75)',
                     padding: '0 4px',
@@ -385,61 +382,63 @@ const TextField = forwardRef(
         return (
             <Fragment>
                 <TextFieldWrapper
-                    active={!!isActive}
-                    error={!!error}
-                    success={!!success}
-                    disabled={!!props.disabled}
-                    dark={!!dark}
+                    active={is_active}
+                    error={Boolean(error)}
+                    success={Boolean(success)}
+                    disabled={props.disabled}
+                    dark={dark}
                     css={styleTextFieldWrapper()}
                 >
                     <InputFieldSection>
-                        {type !== 'textarea' && !!inline_prefix_element && (
-                            <SupportingInfoSection prefix>{inline_prefix_element}</SupportingInfoSection>
-                        )}
                         {type === 'textarea' ? (
                             <TextAreaField
                                 {...props}
                                 value={value}
-                                dark={!!dark}
-                                readOnly={props.readonly}
+                                dark={dark}
+                                readOnly={props.readOnly}
                                 disabled={props.disabled}
                                 onChange={(e) => handleTextChange(e.target.value)}
                             />
                         ) : (
-                            <InputField
-                                {...props}
-                                dark={!!dark}
-                                type={type}
-                                value={value}
-                                readOnly={props.readonly}
-                                disabled={props.disabled}
-                                onChange={(e) => handleTextChange(e.target.value)}
-                            />
+                            <Fragment>
+                                {inline_prefix_element && (
+                                    <SupportingInfoSection prefix>{inline_prefix_element}</SupportingInfoSection>
+                                )}
+                                <InputField
+                                    {...props}
+                                    dark={dark}
+                                    type={type}
+                                    value={value}
+                                    readOnly={props.readOnly}
+                                    disabled={props.disabled}
+                                    onChange={(e) => handleTextChange(e.target.value)}
+                                />
+                                {inline_suffix_element && (
+                                    <SupportingInfoSection suffix>{inline_suffix_element}</SupportingInfoSection>
+                                )}
+                            </Fragment>
                         )}
-                        {!!label && (
+                        {label && (
                             <LabelSection
                                 htmlFor={id}
-                                error={!!error}
-                                success={!!success}
-                                dark={!!dark}
+                                error={Boolean(error)}
+                                success={Boolean(success)}
+                                dark={dark}
                                 css={styleLabelFloat()}
                             >
                                 {label}
                             </LabelSection>
                         )}
-                        {type !== 'textarea' && !!inline_suffix_element && (
-                            <SupportingInfoSection suffix>{inline_suffix_element}</SupportingInfoSection>
-                        )}
                     </InputFieldSection>
                     {type === 'password' && (
                         <PasswordStrengthMeter
-                            dark={!!dark}
+                            dark={Boolean(dark)}
                             user_input={value}
-                            disable_meter={(props.readonly || props.disabled) ?? false}
+                            disable_meter={(props.readOnly || props.disabled) ?? false}
                         />
                     )}
                 </TextFieldWrapper>
-                <HelperSection error={!!error} success={!!success} dark={!!dark}>
+                <HelperSection error={Boolean(error)} success={Boolean(success)} dark={dark}>
                     {generateHintText()}
                     {max_length && max_length > 0 && <WordCount count={count} max_length={max_length} />}
                 </HelperSection>
