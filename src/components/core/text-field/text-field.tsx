@@ -1,5 +1,4 @@
-import zxcvbn from 'zxcvbn';
-import { forwardRef, Fragment, InputHTMLAttributes, ReactNode, useState } from 'react';
+import { forwardRef, Fragment, InputHTMLAttributes, ReactNode, useState, useRef, useEffect } from 'react';
 import { styled } from 'Styles/stitches.config';
 
 type InputTypes = 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea';
@@ -35,7 +34,20 @@ const StyledPasswordMeter = styled(StyledPasswordMeterWrapper, {
     transition: 'width 0.25s ease-in-out',
 });
 const PasswordStrengthMeter = ({ user_input, disable_meter, dark }: TPasswordStrengthProps) => {
-    const test_result: zxcvbn.ZXCVBNResult = zxcvbn(user_input);
+    const zxcvbn = useRef<any>();
+    let test_result = { score: 0 };
+
+    useEffect(() => {
+        async function loadLibrary() {
+            const { default: lib } = await import('zxcvbn');
+            zxcvbn.current = lib;
+        }
+        loadLibrary();
+    }, []);
+
+    if (typeof zxcvbn.current === 'function') {
+        test_result = zxcvbn.current(user_input);
+    }
     const score: number = (test_result.score * 100) / 4;
     const meter_color: any = Object.freeze({
         0: dark ? '$greyDark500' : '$greyLight300',
