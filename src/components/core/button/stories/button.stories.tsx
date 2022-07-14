@@ -119,3 +119,13 @@ Tertiary.args = {
     disabled: false,
     children: 'Button',
 };
+
+export const Monochrome = Template.bind({});
+Monochrome.args = {
+    block: false,
+    dark: false,
+    color: 'monochrome',
+    size: 'medium',
+    disabled: false,
+    children: 'Button',
+};
