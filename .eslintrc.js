@@ -13,7 +13,9 @@ module.exports = {
             jsx: true,
         },
     },
-    rules: {},
+    rules: {
+        "@typescript-eslint/no-explicit-any": "error"
+    },
     settings: {
         react: {
             version: 'detect',
