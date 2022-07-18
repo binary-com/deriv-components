@@ -79,6 +79,7 @@ jobs:
       - run:
           name: "Publish to cloudflare pages (staging)"
           command: |
+            npm i wrangler@2.0.19
             cd storybook-static
             npx wrangler pages publish . --project-name=deriv-components-pages --branch=staging
             echo "New staging website - http://staging.cf-pages-deriv-components.deriv.com"
@@ -93,6 +94,7 @@ jobs:
       - run:
           name: "Publish to cloudflare pages (production)"
           command: |
+            npm i wrangler@2.0.19
             cd storybook-static
             npx wrangler pages publish . --project-name=deriv-components-pages --branch=main
             echo "New website - http://cf-pages-deriv-components.deriv.com"
