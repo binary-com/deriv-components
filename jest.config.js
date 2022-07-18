@@ -14,7 +14,6 @@ module.exports = {
     moduleNameMapper: {
         '^@assets/(.*)$': '<rootDir>/src/images/$1',
         '^@core/(.*)$': '<rootDir>/src/components/core/$1',
-        '^@wallet/(.*)$': '<rootDir>/src/components/wallet/$1',
     },
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };

@@ -1,15 +1,15 @@
 import type { Story } from '@storybook/react';
+import DepositIconLight from './assets/ic-deposit-light.svg';
+import WithdrawIconLight from './assets/ic-withdraw-light.svg';
+import TransferIconLight from './assets/ic-transfer-light.svg';
+import TransactionIconLight from './assets/ic-transactions-light.svg';
+import DepositIconDark from './assets/ic-deposit-dark.svg';
+import WithdrawIconDark from './assets/ic-withdraw-dark.svg';
+import TransferIconDark from './assets/ic-transfer-dark.svg';
+import TransactionIconDark from './assets/ic-transactions-dark.svg';
 import type { TabsProps } from '../tabs';
 import Tabs from '../tabs';
 import Tab from '../tab';
-import DepositIconLight from '@assets/svg/modal/ic-deposit-light.svg';
-import WithdrawIconLight from '@assets/svg/modal/ic-withdraw-light.svg';
-import TransferIconLight from '@assets/svg/modal/ic-transfer-light.svg';
-import TransactionIconLight from '@assets/svg/modal/ic-transactions-light.svg';
-import DepositIconDark from '@assets/svg/modal/ic-deposit-dark.svg';
-import WithdrawIconDark from '@assets/svg/modal/ic-withdraw-dark.svg';
-import TransferIconDark from '@assets/svg/modal/ic-transfer-dark.svg';
-import TransactionIconDark from '@assets/svg/modal/ic-transactions-dark.svg';
 
 export default {
     title: 'Tabs',
