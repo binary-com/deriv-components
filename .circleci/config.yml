@@ -1,0 +1,124 @@
+version: 2.1
+orbs:
+  slack: circleci/slack@3.4.2
+commands:
+  git_checkout_from_cache:
+    description: "Git checkout and save cache"
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+      - run:
+          name: Fetch git tags
+          command: |
+            mkdir -p ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ== ' >> ~/.ssh/known_hosts
+            # Fetch tags if git cache is present
+            if [ -e /home/circleci/project/.git ]
+            then
+              git fetch origin --tags
+            fi
+      - checkout
+      - run:
+          name: Compress git objects
+          command: git gc
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
+  npm_install:
+    description: "npm install"
+    steps:
+      - run:
+          name: Install npm packages
+          command: |
+            npm ci
+  build:
+    description: "Build for release"
+    steps:
+      - run:
+          name: Building application
+          command: |
+            npm run build-storybook
+  tag:
+    description: "Tag version"
+    parameters:
+      target_version:
+        type: string
+        default: "staging"
+    steps:
+      - run:
+          name: Tag build
+          command: echo "<< parameters.target_version >> $(date -u +'%Y-%m-%dT%H:%M:%SZ')" > build_version
+  notify_slack:
+    description: "Notify slack"
+    steps:
+      - slack/status:
+          include_project_field: false
+          failure_message: "Release failed for deriv-components-software with version *$(cat build_version)*"
+          success_message: "Release succeeded for deriv-components-software with version *$(cat build_version)*"
+          webhook: ${SLACK_WEBHOOK}
+jobs:
+  test:
+    docker:
+      - image: cimg/node:18.4.0
+    steps:
+      - git_checkout_from_cache
+      - npm_install
+  release_staging:
+    docker:
+      - image: cimg/node:18.4.0
+    steps:
+      - git_checkout_from_cache
+      - tag
+      - npm_install
+      - build
+      - run:
+          name: "Publish to cloudflare pages (staging)"
+          command: |
+            npm i wrangler@2.0.19
+            cd storybook-static
+            npx wrangler pages publish . --project-name=deriv-components-pages --branch=staging
+            echo "New staging website - http://staging.cf-pages-deriv-components.deriv.com"
+      - notify_slack
+  release_production:
+    docker:
+      - image: cimg/node:18.4.0
+    steps:
+      - git_checkout_from_cache
+      - npm_install
+      - build
+      - run:
+          name: "Publish to cloudflare pages (production)"
+          command: |
+            npm i wrangler@2.0.19
+            cd storybook-static
+            npx wrangler pages publish . --project-name=deriv-components-pages --branch=main
+            echo "New website - http://cf-pages-deriv-components.deriv.com"
+      - tag:
+          target_version: 'production'
+      - notify_slack
+workflows:
+  development:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore: /^master$/
+  release:
+    jobs:
+      - release_staging:
+          filters:
+            branches:
+              only: /^master$/
+          context: binary-frontend-artifact-upload
+      - release_production:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^production.*/
+          context: binary-frontend-artifact-upload
