@@ -12,9 +12,9 @@ module.exports = {
     },
     collectCoverageFrom: ['./src/**/*.{ts,tsx}', '!**/node_modules/**', '!**/vendor/**'],
     moduleNameMapper: {
+        '^Styles/(.*)$': ['<rootDir>/src/styles/$1'],
         '^@assets/(.*)$': '<rootDir>/src/images/$1',
         '^@core/(.*)$': '<rootDir>/src/components/core/$1',
-        '^@wallet/(.*)$': '<rootDir>/src/components/wallet/$1',
     },
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };

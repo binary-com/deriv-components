@@ -1,6 +1,6 @@
 import React from 'react';
-import CloseIconDark from '@assets/svg/modal/ic-close-dark.svg';
-import CloseIconLight from '@assets/svg/modal/ic-close-light.svg';
+import CloseIconDark from '@assets/svg/ic-close-dark.svg';
+import CloseIconLight from '@assets/svg/ic-close-light.svg';
 import Button from '@core/button/button';
 import Text from '@core/text/text';
 import { WizardProps, StepProps, RightPanelProps } from '@core/wizard/types';
