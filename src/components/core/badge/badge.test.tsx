@@ -1,9 +1,9 @@
-import { render, screen } from 'test-setup';
+import { render } from 'test-setup';
 import Badge from './badge';
 import CheckIconSVG from '@assets/svg/circular-check-icon.svg';
 
 describe('Badge Component', () => {
-    it('Should render properly with default values and tgext as children', () => {
+    it('Should render properly with default values and text as children', () => {
         const badge = render(<Badge>Badge</Badge>);
         expect(badge).toBeTruthy();
     });
@@ -81,14 +81,5 @@ describe('Badge Component', () => {
         const { container } = render(<Badge spacing="loose">Badge Text Content</Badge>);
         const badgeContainer = container.querySelector('span');
         expect(badgeContainer).toHaveAttribute('class', expect.stringContaining('padding-loose'));
-    });
-
-    it('Should match with snapshot', () => {
-        const { container } = render(
-            <Badge visiblity="icon-and-label" icon_src={CheckIconSVG}>
-                Badge Text Content
-            </Badge>,
-        );
-        expect(container).toMatchSnapshot();
     });
 });
