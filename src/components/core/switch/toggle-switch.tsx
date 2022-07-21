@@ -1,9 +1,9 @@
 import * as Stitches from '@stitches/react';
+import * as SwitchPrimitive from '@radix-ui/react-switch';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
-import * as SwitchPrimitive from '@radix-ui/react-switch';
 
-export type SwitchProps = {
+export type ToggleSwitchProps = {
     dark?: boolean;
     class_name_label?: string;
     id?: string;
@@ -19,7 +19,6 @@ const StyledSwitch = styled(SwitchPrimitive.Root, {
     backgroundColor: '$greyLight500',
     borderRadius: '16px',
     position: 'relative',
-    WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
     '&[data-state="checked"]': { backgroundColor: '$greenLight' },
     variants: {
         dark: {
@@ -64,7 +63,7 @@ const Label = styled('label', {
     },
 });
 
-const Switch = ({
+const ToggleSwitch = ({
     dark,
     class_name_label,
     id,
@@ -72,7 +71,7 @@ const Switch = ({
     label,
     handleChange,
     ...props
-}: SwitchProps) => (
+}: ToggleSwitchProps) => (
     <Flex css={{ alignItems: 'center' }}>
         {label && (
             <Label htmlFor={id} className={class_name_label} dark={dark}>
@@ -91,8 +90,12 @@ const Switch = ({
     </Flex>
 );
 
-export default Switch;
+export default ToggleSwitch;
 
-type SwitchVariantProps = Stitches.VariantProps<typeof Switch>;
+type ToggleSwitchVariantProps = Stitches.VariantProps<typeof ToggleSwitch>;
 
-export const SwitchStory = modifyVariantsForStory<SwitchVariantProps, SwitchProps, typeof Switch>(Switch);
+export const ToggleSwitchStory = modifyVariantsForStory<
+    ToggleSwitchVariantProps,
+    ToggleSwitchProps,
+    typeof ToggleSwitch
+>(ToggleSwitch);

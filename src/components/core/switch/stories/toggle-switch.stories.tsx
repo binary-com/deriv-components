@@ -1,9 +1,9 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import Switch, { SwitchStory } from '../toggle-switch';
+import ToggleSwitch, { ToggleSwitchStory } from '../toggle-switch';
 
 export default {
     title: 'Switch',
-    component: Switch,
+    component: ToggleSwitch,
     parameters: {
         backgrounds: {
             default: 'light',
@@ -46,9 +46,9 @@ export default {
             defaultValue: (checked_value: boolean) => checked_value,
         },
     },
-} as ComponentMeta<typeof SwitchStory>;
+} as ComponentMeta<typeof ToggleSwitchStory>;
 
-const Template: ComponentStory<typeof SwitchStory> = (args) => <Switch {...args}></Switch>;
+const Template: ComponentStory<typeof ToggleSwitchStory> = (args) => <ToggleSwitch {...args}></ToggleSwitch>;
 
 export const SwitchLight = Template.bind({});
 
