@@ -22,6 +22,14 @@ export default {
                 defaultValue: { summary: false },
             },
         },
+        disabled: {
+            description: 'If set to `true`, toggleSwitch will be disabled',
+            defaultValue: false,
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+            },
+        },
         default_checked: {
             description: 'If set to `true`, by default the switch will be on',
             defaultValue: true,

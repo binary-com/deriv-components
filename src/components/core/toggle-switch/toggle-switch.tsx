@@ -9,6 +9,7 @@ export type ToggleSwitchProps = {
     id?: string;
     default_checked?: boolean;
     label: string;
+    disabled?: boolean;
     handleChange: (check: boolean) => void;
 };
 
@@ -20,6 +21,7 @@ const StyledSwitch = styled(SwitchPrimitive.Root, {
     borderRadius: '16px',
     position: 'relative',
     '&[data-state="checked"]': { backgroundColor: '$greenLight' },
+    cursor: 'pointer',
     variants: {
         dark: {
             true: {
@@ -39,7 +41,15 @@ const StyledThumb = styled(SwitchPrimitive.Thumb, {
     transition: 'transform 250ms',
     transform: 'translateX(3px)',
     willChange: 'transform',
+    cursor: 'pointer',
     '&[data-state="checked"]': { transform: 'translateX(23px)' },
+    variants: {
+        disabled: {
+            true: {
+                cursor: 'not-allowed',
+            },
+        },
+    },
 });
 
 const Flex = styled('div', { display: 'flex' });
@@ -50,10 +60,16 @@ const Label = styled('label', {
     fontWeight: 'normal',
     paddingRight: '1rem',
     color: '$greyLight700',
+    cursor: 'pointer',
     variants: {
         dark: {
             true: {
                 color: '$greyDark100',
+            },
+        },
+        disabled: {
+            true: {
+                cursor: 'not-allowed',
             },
         },
     },
@@ -69,12 +85,13 @@ const ToggleSwitch = ({
     id,
     default_checked = false,
     label,
+    disabled,
     handleChange,
     ...props
 }: ToggleSwitchProps) => (
     <Flex css={{ alignItems: 'center' }}>
         {label && (
-            <Label htmlFor={id} className={class_name_label} dark={dark}>
+            <Label htmlFor={id} className={class_name_label} dark={dark} disabled={disabled}>
                 {label}
             </Label>
         )}
@@ -82,10 +99,12 @@ const ToggleSwitch = ({
             id={id}
             dark={dark}
             defaultChecked={default_checked}
+            disabled={disabled}
+            css={disabled ? { cursor: 'not-allowed' } : {}}
             onCheckedChange={(check_value: boolean) => handleChange(check_value)}
             {...props}
         >
-            <StyledThumb />
+            <StyledThumb disabled={disabled} />
         </StyledSwitch>
     </Flex>
 );
