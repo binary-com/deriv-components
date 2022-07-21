@@ -50,7 +50,7 @@ export default {
 
 const Template: ComponentStory<typeof ToggleSwitchStory> = (args) => <ToggleSwitch {...args}></ToggleSwitch>;
 
-export const SwitchLight = Template.bind({});
+export const LightSwitch = Template.bind({});
 
 export const DarkSwitch = Template.bind({});
 DarkSwitch.args = {
