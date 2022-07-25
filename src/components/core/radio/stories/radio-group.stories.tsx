@@ -23,7 +23,7 @@ export default {
             },
         },
         handleChange: {
-            defaultValue: (value: string) => console.log(value),
+            defaultValue: (value: string) => value,
         },
         options: {
             description: 'The options to be displayed in radio group',
