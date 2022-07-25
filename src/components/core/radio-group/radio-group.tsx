@@ -7,11 +7,12 @@ type RadioGroupProps = {
     dark?: boolean;
     handleChange: (value: string) => void;
     selected_value: string;
+    disabled?: boolean;
     options: {
         label: string;
         value: string;
         name?: string;
-        id?: string;
+        id: string;
     }[];
 };
 
@@ -25,6 +26,7 @@ const StyledRadio = styled(RadioGroupPrimitive.Item, {
     '&[data-state|="unchecked"]': {
         border: '2px solid $greyLight600',
     },
+    cursor: 'pointer',
     variants: {
         dark: {
             true: {
@@ -64,6 +66,7 @@ const Label = styled('label', {
     lineHeight: '$lineHeight20',
     fontWeight: '$regular',
     color: '$greyLight700',
+    cursor: 'pointer',
     '@mobile': {
         lineHeight: '$lineHeight18',
         fontSize: '$3xs',
@@ -74,17 +77,32 @@ const Label = styled('label', {
                 color: '$greyDark100',
             },
         },
+        disabled: {
+            true: {
+                opacity: 0.32,
+                cursor: 'default',
+            },
+        },
     },
 });
 
-export const RadioGroup = ({ dark, options, selected_value, handleChange }: RadioGroupProps) => (
+export const RadioGroup = ({ dark, options, selected_value, disabled, handleChange, ...props }: RadioGroupProps) => (
     <RadioGroupPrimitive.Root defaultValue={selected_value} onValueChange={handleChange}>
         {options.map((option, index) => (
             <Flex key={index}>
-                <StyledRadio value={option.value} dark={dark}>
+                <StyledRadio
+                    value={option.value}
+                    dark={dark}
+                    disabled={disabled}
+                    css={disabled ? { opacity: 0.32, cursor: 'default' } : {}}
+                    id={option.id}
+                    {...props}
+                >
                     <StyledIndicator />
                 </StyledRadio>
-                <Label dark={dark}>{option.label}</Label>
+                <Label dark={dark} disabled={disabled} htmlFor={option.id}>
+                    {option.label}
+                </Label>
             </Flex>
         ))}
     </RadioGroupPrimitive.Root>

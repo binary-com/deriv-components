@@ -22,6 +22,14 @@ export default {
                 defaultValue: { summary: false },
             },
         },
+        disabled: {
+            description: 'If set to `true`, radio group will be disabled',
+            defaultValue: false,
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+            },
+        },
         handleChange: {
             defaultValue: (value: string) => value,
         },
@@ -36,12 +44,16 @@ const Template: ComponentStory<typeof RadioGroupStory> = (args) => <RadioGroup {
 export const LightRadioGroup = Template.bind({});
 LightRadioGroup.args = {
     dark: false,
+    selected_value: 'label1',
+    disabled: true,
     options: [
         {
+            id: '1',
             label: 'Label 1',
             value: 'label1',
         },
         {
+            id: '2',
             label: 'Label 2',
             value: 'label2',
         },
@@ -54,10 +66,12 @@ DarkRadioGroup.args = {
     selected_value: 'label2',
     options: [
         {
+            id: '1',
             label: 'Label 1',
             value: 'label1',
         },
         {
+            id: '2',
             label: 'Label 2',
             value: 'label2',
         },
