@@ -4,26 +4,22 @@ import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 import Checkbox, { CheckboxProps } from '@core/checkbox/checkbox';
 
-export type TCheckBoxType = {
-    label: string;
-    check?: boolean;
-};
-
 export interface CheckboxListProps extends HtmlHTMLAttributes<HTMLInputElement> {
     size?: 'default' | 'small';
     select_all_text?: string;
     dark?: boolean;
-    handleChange: (check_boxes: TCheckBoxType[]) => void;
-    check_boxes: TCheckBoxType[];
+    handleChange: (check_boxes: CheckboxProps[]) => void;
+    check_boxes: CheckboxProps[];
 }
 
 const CheckboxList = ({ check_boxes, size, dark, select_all_text = 'Select All', handleChange }: CheckboxListProps) => {
     const [check_boxes_array, setCheckBoxesArray] = useState(check_boxes);
     const [checked, setChecked] = useState(false);
     const [indetermine, setIndetermine] = useState(false);
+    const [disabled, setDisabled] = useState(false);
 
-    const setSelectAllCheckBox = () => {
-        const checkCount = check_boxes_array.filter((check_box) => check_box.check).length;
+    const setSelectAllCheckBox = (checkbox_array: CheckboxProps[]) => {
+        const checkCount = checkbox_array.filter((check_box) => check_box.check).length;
         if (checkCount === check_boxes.length || checkCount === 0) {
             setIndetermine(false);
             setChecked(checkCount ? true : false);
@@ -31,12 +27,15 @@ const CheckboxList = ({ check_boxes, size, dark, select_all_text = 'Select All',
             setChecked(false);
             setIndetermine(true);
         }
+        checkbox_array.filter((check_box) => check_box.disabled).length === check_boxes.length
+            ? setDisabled(true)
+            : setDisabled(false);
 
         handleChange(check_boxes_array);
     };
 
     useEffect(() => {
-        setSelectAllCheckBox();
+        setSelectAllCheckBox(check_boxes_array);
     }, []);
 
     const handleIndividualCheckboxChange = (value_to_be_set: boolean, check_box_item: Partial<CheckboxProps>) => {
@@ -44,22 +43,21 @@ const CheckboxList = ({ check_boxes, size, dark, select_all_text = 'Select All',
         if (check_box_to_be_changed) {
             check_box_to_be_changed.check = value_to_be_set;
             setCheckBoxesArray(check_boxes_array);
-            setSelectAllCheckBox();
+            setSelectAllCheckBox(check_boxes_array);
         }
     };
 
     const handleSelectAllCheckbox = (check_status: boolean) => {
-        setCheckBoxesArray([
+        const newCheckboxArray = [
             ...check_boxes_array.map((check_box_item) => {
                 return {
                     ...check_box_item,
-                    check: check_status,
+                    check: check_box_item.disabled ? check_box_item.check : check_status,
                 };
             }),
-        ]);
-        setChecked(check_status);
-        setIndetermine(false);
-        handleChange(check_boxes_array);
+        ];
+        setCheckBoxesArray(newCheckboxArray);
+        setSelectAllCheckBox(newCheckboxArray);
     };
 
     const SelectAllCheckBoxContainer = styled('div', {
@@ -78,12 +76,13 @@ const CheckboxList = ({ check_boxes, size, dark, select_all_text = 'Select All',
                     indetermine={indetermine}
                     dark={dark}
                     size={size}
+                    disabled={disabled}
                     handleChange={(check: boolean) => handleSelectAllCheckbox(check)}
                 >
                     {select_all_text}
                 </Checkbox>
             </SelectAllCheckBoxContainer>
-            {check_boxes_array.map((check_box: TCheckBoxType, index: number) => (
+            {check_boxes_array.map((check_box: CheckboxProps, index: number) => (
                 <CheckBoxListContainer key={index}>
                     <Checkbox
                         {...check_box}

@@ -12,10 +12,11 @@ export interface CheckboxProps extends HtmlHTMLAttributes<HTMLInputElement> {
     dark?: boolean;
     indetermine?: boolean;
     check?: boolean;
-    handleChange: (check: boolean) => void;
+    handleChange?: (check: boolean) => void;
     size?: 'default' | 'small';
     disabled?: boolean;
     name?: string;
+    label?: string;
 }
 
 const Label = styled('label', {
@@ -48,6 +49,12 @@ const Label = styled('label', {
         dark: {
             true: {
                 color: '$greyDark100',
+            },
+        },
+        disabled: {
+            true: {
+                cursor: 'default',
+                opacity: 0.32,
             },
         },
     },
@@ -136,6 +143,13 @@ const Checkbox = ({
     const [checked, setChecked] = useState(check);
     const [indetermine_checkbox, setindetermineCheckbox] = useState(indetermine);
 
+    const handleSelectionChange = () => {
+        if (!disabled) {
+            if (handleChange) handleChange(!checked);
+            setChecked((prev_state) => !prev_state);
+        }
+    };
+
     useEffect(() => setChecked(check), [check]);
 
     useEffect(() => setindetermineCheckbox(indetermine), [indetermine]);
@@ -149,27 +163,16 @@ const Checkbox = ({
                 indetermine_checkbox={indetermine_checkbox}
                 dark={dark}
                 disabled={disabled}
+                css={disabled ? { cursor: 'default', opacity: 0.32 } : {}}
                 id={id}
                 name={name}
-                onClick={() => {
-                    handleChange(!checked);
-                    setChecked((prev_state) => !prev_state);
-                }}
+                onClick={handleSelectionChange}
             >
                 {icon_src && (
                     <CheckboxIcon src={icon_src} checked={checked} indetermine_checkbox={indetermine_checkbox} />
                 )}
             </StyledCheckbox>
-            <Label
-                size={size}
-                dark={dark}
-                onClick={() => {
-                    if (!disabled) {
-                        handleChange(!checked);
-                        setChecked((prev_state) => !prev_state);
-                    }
-                }}
-            >
+            <Label size={size} dark={dark} onClick={handleSelectionChange} disabled={disabled}>
                 {children}
             </Label>
         </Container>

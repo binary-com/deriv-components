@@ -1,7 +1,8 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import CheckboxList, { CheckboxListStory, TCheckBoxType } from '@core/checkbox-list/checkbox-list';
+import { CheckboxProps } from '@core/checkbox/checkbox';
+import CheckboxList, { CheckboxListStory } from '@core/checkbox-list/checkbox-list';
 
-const handleChange = (check_boxes: TCheckBoxType) => check_boxes;
+const handleChange = (check_boxes: CheckboxProps) => check_boxes;
 
 export default {
     title: 'Checkbox-list',
@@ -54,10 +55,7 @@ export const Light = Template.bind({});
 Light.args = {
     size: 'default',
     dark: false,
-    check_boxes: [
-        { label: 'label 1', check: true },
-        { label: 'label 2', check: true },
-    ],
+    check_boxes: [{ label: 'label 1', check: true }, { label: 'label 2' }],
 };
 
 export const Dark = Template.bind({});
@@ -70,4 +68,14 @@ Dark.args = {
 
 Dark.parameters = {
     backgrounds: { default: 'dark' },
+};
+
+export const AllCheckboxDisabled = Template.bind({});
+AllCheckboxDisabled.args = {
+    size: 'default',
+    dark: false,
+    check_boxes: [
+        { label: 'label 1', check: true, disabled: true },
+        { label: 'label 2', disabled: true },
+    ],
 };
