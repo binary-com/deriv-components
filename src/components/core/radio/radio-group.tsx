@@ -3,80 +3,94 @@ import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 
+type RadioGroupProps = {
+    dark?: boolean;
+    handleChange: (value: string) => void;
+    selected_value: string;
+    options: {
+        label: string;
+        value: string;
+        name?: string;
+        id?: string;
+    }[];
+};
+
 const StyledRadio = styled(RadioGroupPrimitive.Item, {
     all: 'unset',
     backgroundColor: 'white',
-    width: 25,
-    height: 25,
-    borderRadius: '100%',
-    boxShadow: `0 2px 10px black`,
-    '&:hover': { backgroundColor: 'violet' },
-    '&:focus': { boxShadow: `0 0 0 2px black` },
+    width: 16,
+    height: 16,
+    borderRadius: '50%',
+    boxSizing: 'border-box',
+    '&[data-state|="unchecked"]': {
+        border: '2px solid $greyLight600',
+    },
+    variants: {
+        dark: {
+            true: {
+                '&[data-state|="unchecked"]': {
+                    border: '2px solid $greyDark200',
+                },
+            },
+        },
+    },
 });
 
 const StyledIndicator = styled(RadioGroupPrimitive.Indicator, {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'red',
     width: '100%',
     height: '100%',
     position: 'relative',
+    borderRadius: '50%',
     '&::after': {
         content: '""',
         display: 'block',
-        width: 11,
-        height: 11,
+        width: 8,
+        height: 8,
         borderRadius: '50%',
-        backgroundColor: 'violet',
+        backgroundColor: 'white',
     },
 });
 
-type RadioGroupProps = {
-    dark?: boolean;
-};
-
-// Exports
-export const RadioGroup = RadioGroupPrimitive.Root;
-export const RadioGroupRadio = StyledRadio;
-export const RadioGroupIndicator = StyledIndicator;
-
-// Your app...
-const Flex = styled('div', { display: 'flex' });
+const Flex = styled('div', { display: 'flex', marginBottom: '16px', alignItems: 'center' });
 
 const Label = styled('label', {
-    color: 'white',
-    fontSize: 15,
-    lineHeight: 1,
     userSelect: 'none',
-    paddingLeft: 15,
+    paddingLeft: 8,
+    fontSize: '$2xs',
+    lineHeight: '$lineHeight20',
+    fontWeight: '$regular',
+    color: '$greyLight700',
+    '@mobile': {
+        lineHeight: '$lineHeight18',
+        fontSize: '$3xs',
+    },
+    variants: {
+        dark: {
+            true: {
+                color: '$greyDark100',
+            },
+        },
+    },
 });
 
-export const RadioGroupDemo = ({ dark }: RadioGroupProps) => (
-    <form>
-        <RadioGroup defaultValue="default" aria-label="View density">
-            <Flex css={{ margin: '10px 0', alignItems: 'center' }}>
-                <RadioGroupRadio value="default" id="r1">
-                    <RadioGroupIndicator />
-                </RadioGroupRadio>
-                <Label htmlFor="r1">Default</Label>
+export const RadioGroup = ({ dark, options, selected_value, handleChange }: RadioGroupProps) => (
+    <RadioGroupPrimitive.Root defaultValue={selected_value} onValueChange={handleChange}>
+        {options.map((option, index) => (
+            <Flex key={index}>
+                <StyledRadio value={option.value} dark={dark}>
+                    <StyledIndicator />
+                </StyledRadio>
+                <Label dark={dark}>{option.label}</Label>
             </Flex>
-            <Flex css={{ margin: '10px 0', alignItems: 'center' }}>
-                <RadioGroupRadio value="comfortable" id="r2">
-                    <RadioGroupIndicator />
-                </RadioGroupRadio>
-                <Label htmlFor="r2">Comfortable</Label>
-            </Flex>
-            <Flex css={{ margin: '10px 0', alignItems: 'center' }}>
-                <RadioGroupRadio value="compact" id="r3">
-                    <RadioGroupIndicator />
-                </RadioGroupRadio>
-                <Label htmlFor="r3">Compact</Label>
-            </Flex>
-        </RadioGroup>
-    </form>
+        ))}
+    </RadioGroupPrimitive.Root>
 );
 
-export default RadioGroupDemo;
+export default RadioGroup;
 
 type RadioGroupVariantProps = Stitches.VariantProps<typeof RadioGroup>;
 

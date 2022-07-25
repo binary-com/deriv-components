@@ -1,8 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import RadioGroup, { RadioGroupStory } from '../radio-group';
 
-const handleOnClick = (item: string) => item;
-
 export default {
     title: 'RadioGroup',
     component: RadioGroup,
@@ -16,36 +14,56 @@ export default {
         },
     },
     argTypes: {
-        // items: {
-        //     description: 'Items that need to be sent to breadcrumb to display the list',
-        //     defaultValue: ['Home', 'About', 'CFD', 'mt5'],
-        // },
         dark: {
-            description: 'If set to `true`, breadcrumb color will be set to dark theme.',
+            description: 'If set to `true`, radio group color will be set to dark theme.',
             defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: false },
             },
         },
-        // handleOnClick: {
-        //     defaultValue: handleOnClick,
-        // },
+        handleChange: {
+            defaultValue: (value: string) => console.log(value),
+        },
+        options: {
+            description: 'The options to be displayed in radio group',
+        },
     },
 } as ComponentMeta<typeof RadioGroupStory>;
 
 const Template: ComponentStory<typeof RadioGroupStory> = (args) => <RadioGroup {...args} />;
 
-export const LightBreadcrumb = Template.bind({});
-LightBreadcrumb.args = {
+export const LightRadioGroup = Template.bind({});
+LightRadioGroup.args = {
     dark: false,
+    options: [
+        {
+            label: 'Label 1',
+            value: 'label1',
+        },
+        {
+            label: 'Label 2',
+            value: 'label2',
+        },
+    ],
 };
 
-export const DarkBreadcrumb = Template.bind({});
-DarkBreadcrumb.args = {
+export const DarkRadioGroup = Template.bind({});
+DarkRadioGroup.args = {
     dark: true,
+    selected_value: 'label2',
+    options: [
+        {
+            label: 'Label 1',
+            value: 'label1',
+        },
+        {
+            label: 'Label 2',
+            value: 'label2',
+        },
+    ],
 };
 
-DarkBreadcrumb.parameters = {
+DarkRadioGroup.parameters = {
     backgrounds: { default: 'dark' },
 };
