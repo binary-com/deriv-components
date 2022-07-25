@@ -46,7 +46,8 @@ const StyledThumb = styled(SwitchPrimitive.Thumb, {
     variants: {
         disabled: {
             true: {
-                cursor: 'not-allowed',
+                cursor: 'default',
+                opacity: 0.32,
             },
         },
     },
@@ -69,7 +70,8 @@ const Label = styled('label', {
         },
         disabled: {
             true: {
-                cursor: 'not-allowed',
+                cursor: 'default',
+                opacity: 0.32,
             },
         },
     },
@@ -100,7 +102,7 @@ const ToggleSwitch = ({
             dark={dark}
             defaultChecked={default_checked}
             disabled={disabled}
-            css={disabled ? { cursor: 'not-allowed' } : {}}
+            css={disabled ? { cursor: 'default', opacity: 0.32 } : {}}
             onCheckedChange={(check_value: boolean) => handleChange(check_value)}
             {...props}
         >
