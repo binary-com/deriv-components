@@ -1,9 +1,11 @@
-import type { Meta, Story } from '@storybook/react';
-import type { CheckboxProps } from '../checkbox';
-import Checkbox from '../checkbox';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import Checkbox, { CheckboxStory } from '../checkbox';
+
+const handleChange = (check: boolean) => check;
 
 export default {
     title: 'Checkbox',
+    component: Checkbox,
     argTypes: {
         dark: {
             description: 'If set to `true`, checkbox border and text will be set to `dark` theme',
@@ -45,10 +47,13 @@ export default {
                 defaultValue: { summary: 'default' },
             },
         },
+        handleChange: {
+            defaultValue: handleChange,
+        },
     },
-} as Meta<CheckboxProps>;
+} as ComponentMeta<typeof CheckboxStory>;
 
-const Template: Story<CheckboxProps> = (args) => <Checkbox {...args}>{args.children}</Checkbox>;
+const Template: ComponentStory<typeof CheckboxStory> = (args) => <Checkbox {...args}>{args.children}</Checkbox>;
 
 export const Light = Template.bind({});
 Light.args = {
