@@ -15,12 +15,12 @@ export interface TabProps extends LiHTMLAttributes<HTMLLIElement> {
 }
 
 const List = styled('li', {
-    padding: '0 16px',
+    padding: '0 1rem',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: '14px',
-    lineHeight: '20px',
+    fontSize: '$2xs',
+    lineHeight: '$lineHeight20',
     color: '$greyLight700',
     borderBottom: '2px solid $greyLight200',
     transition: 'all ease-in-out 0.3s',
@@ -129,8 +129,8 @@ const List = styled('li', {
         },
     ],
     '@mobile': {
-        fontSize: '12px',
-        lineHeight: '18px',
+        fontSize: '$3xs',
+        lineHeight: '$lineHeight18',
     },
 });
 
