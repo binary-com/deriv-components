@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/react';
 import { useState } from 'react';
 import { WizardProps } from '@core/wizard/types';
 import Button from '@core/button/button';
-import MobileWizard from '../mobile-wizard';
+import Wizard from '../wizard';
 import {
     StepChooseProductMain,
     StepAddAppMain,
@@ -17,8 +17,8 @@ import {
 } from './steps/steps-content';
 
 export default {
-    title: 'MobileWizard',
-    component: MobileWizard,
+    title: 'Wizard',
+    component: Wizard,
     parameters: { controls: { sort: 'alpha' } },
     argTypes: {
         dark: {
@@ -130,7 +130,7 @@ const Template: Story<WizardProps> = (args) => {
     return (
         <>
             {is_wizard_open ? (
-                <MobileWizard
+                <Wizard
                     {...args}
                     onClose={() => setIsWizardOpen(false)}
                     onComplete={handleComplete}
@@ -139,68 +139,68 @@ const Template: Story<WizardProps> = (args) => {
                     secondary_button_label={is_final_step ? 'Maybe later' : 'Back'}
                     onChangeStep={onChangeStep}
                 >
-                    <MobileWizard.Step title="Product" is_submit_disabled={!create_app_state.product_type} is_fullwidth>
+                    <Wizard.Step title="Product" is_submit_disabled={!create_app_state.product_type} is_fullwidth>
                         <StepChooseProductMain
                             product_type={create_app_state.product_type}
                             onSelect={(product_type: string) => updateCreateAppState({ product_type })}
                         />
-                    </MobileWizard.Step>
-                    <MobileWizard.Step title="App" is_submit_disabled={!create_app_state.account_type} is_fullwidth>
+                    </Wizard.Step>
+                    <Wizard.Step title="App" is_submit_disabled={!create_app_state.account_type} is_fullwidth>
                         <StepAddAppMain
                             account_type={create_app_state.account_type}
                             onSelect={(account_type: string) => updateCreateAppState({ account_type })}
                         />
-                    </MobileWizard.Step>
-                    <MobileWizard.Step title="Wallet" is_submit_disabled={!create_app_state.wallet} is_hidden>
+                    </Wizard.Step>
+                    <Wizard.Step title="Wallet" is_submit_disabled={!create_app_state.wallet} is_hidden>
                         <StepCreateWalletMain
                             wallet={create_app_state.wallet}
                             onSelect={(wallet: string) => updateCreateAppState({ wallet })}
                         />
-                    </MobileWizard.Step>
-                    <MobileWizard.Step title="Personal details" is_fullwidth>
+                    </Wizard.Step>
+                    <Wizard.Step title="Personal details" is_fullwidth>
                         <StepPersonalDetailsMain />
-                    </MobileWizard.Step>
-                    <MobileWizard.Step title="Address" is_fullwidth>
+                    </Wizard.Step>
+                    <Wizard.Step title="Address" is_fullwidth>
                         <StepAddressInfoMain />
-                    </MobileWizard.Step>
-                    <MobileWizard.Step title="Terms of use" is_fullwidth>
+                    </Wizard.Step>
+                    <Wizard.Step title="Terms of use" is_fullwidth>
                         <StepTermsOfUseMain />
-                    </MobileWizard.Step>
-                    <MobileWizard.Step step_key="complete_step" title="Complete" is_fullwidth>
+                    </Wizard.Step>
+                    <Wizard.Step step_key="complete_step" title="Complete" is_fullwidth>
                         <StepComplete />
-                    </MobileWizard.Step>
-                    <MobileWizard.RightPanel>
+                    </Wizard.Step>
+                    <Wizard.RightPanel>
                         <TestRightUpperComponent current_step_index={current_step} />
                         <TestRightMiddleComponent current_step_index={current_step} />
                         <TestRightLowerComponent current_step_index={current_step} />
-                    </MobileWizard.RightPanel>
-                </MobileWizard>
+                    </Wizard.RightPanel>
+                </Wizard>
             ) : (
                 <>
-                    <Button onClick={onWizardOpening}>Open Mobile Wizard</Button>
+                    <Button onClick={onWizardOpening}>Open Wizard</Button>
                 </>
             )}
         </>
     );
 };
 
-export const LightMobileAppWizard = Template.bind({});
-LightMobileAppWizard.args = {
+export const LightWizard = Template.bind({});
+LightWizard.args = {
     dark: false,
     has_dark_background: true,
     wizard_title: "Let's get you a new app.",
     lock_final_step: true,
 };
-export const LightMobileAppWizardWithoutDarkBackground = Template.bind({});
-LightMobileAppWizardWithoutDarkBackground.args = {
+export const LightWizardWithoutDarkBackground = Template.bind({});
+LightWizardWithoutDarkBackground.args = {
     dark: false,
     has_dark_background: false,
     wizard_title: "Let's get you a new app.",
     lock_final_step: true,
 };
 
-export const MobileWizardWithoutLockedFinalStep = Template.bind({});
-MobileWizardWithoutLockedFinalStep.args = {
+export const WizardWithoutLockedFinalStep = Template.bind({});
+WizardWithoutLockedFinalStep.args = {
     dark: false,
     has_dark_background: false,
     wizard_title: "Let's get you a new app.",
