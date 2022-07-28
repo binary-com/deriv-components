@@ -11,12 +11,14 @@ export interface TabProps extends LiHTMLAttributes<HTMLLIElement> {
     size?: 'default' | 'small';
     icon?: string;
     label?: string;
+    width_of_tab?: string;
 }
 
 const List = styled('li', {
     padding: '0 16px',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     fontSize: '14px',
     lineHeight: '20px',
     color: '$greyLight700',
@@ -139,9 +141,19 @@ const Icon = styled('img', {
 });
 
 const Tab = React.forwardRef(
-    ({ active, contained, dark, size = 'default', icon, label, ...props }: TabProps, ref: any) => {
+    ({ active, contained, dark, size = 'default', icon, label, width_of_tab, ...props }: TabProps, ref: any) => {
         return (
-            <List active={active} dark={dark} size={size} contained={contained} {...props} ref={ref}>
+            <List
+                active={active}
+                dark={dark}
+                size={size}
+                contained={contained}
+                {...props}
+                ref={ref}
+                css={{
+                    width: width_of_tab ? width_of_tab : 'auto',
+                }}
+            >
                 <Icon src={icon} />
                 <span>{label}</span>
             </List>

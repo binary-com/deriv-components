@@ -17,8 +17,8 @@ export default {
         backgrounds: {
             default: 'light',
             values: [
-                { name: 'light', value: '#ffffff' },
-                { name: 'dark', value: '#0e0e0e' },
+                { name: 'light', value: '#FFFFFF' },
+                { name: 'dark', value: '#0E0E0E' },
                 { name: 'greyDark', value: '#C2C2C2' },
                 { name: 'greyLight', value: '#333333' },
             ],
