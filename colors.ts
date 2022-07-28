@@ -46,6 +46,7 @@ export const colors = {
 
     // GreyLight
     greyLight100: TOKEN.General.colors.theme.greylight.shade.greylight100.value,
+    greyLight100_4: TOKEN.General.colors.theme.greylight.alpha['greylight100-4'].value,
     greyLight200: TOKEN.General.colors.theme.greylight.shade.greylight200.value,
     greyLight300: TOKEN.General.colors.theme.greylight.shade.greylight300.value,
     greyLight400: TOKEN.General.colors.theme.greylight.shade.greylight400.value,
@@ -62,6 +63,7 @@ export const colors = {
     greyDark500: TOKEN.General.colors.theme.greydark.shade.greydark500.value,
     greyDark600: TOKEN.General.colors.theme.greydark.shade.greydark600.value,
     greyDark700: TOKEN.General.colors.theme.greydark.shade.greydark700.value,
+    greyDark700_4: TOKEN.General.colors.theme.greydark.alpha['greydark700-4'].value,
     greyDark800: TOKEN.General.colors.theme.greydark.shade.greydark800.value,
     greyDark800_8: TOKEN.General.colors.theme.greydark.alpha['greydark800-8'].value,
     greyDark800_16: TOKEN.General.colors.theme.greydark.alpha['greydark800-16'].value,

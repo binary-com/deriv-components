@@ -1,27 +1,156 @@
 import React from 'react';
 import type { LiHTMLAttributes } from 'react';
-import classNames from 'classnames';
-import css from './tab.module.scss';
+import * as Stitches from '@stitches/react';
+import { styled } from 'Styles/stitches.config';
+import { modifyVariantsForStory } from 'Styles/type-utils';
 
 export interface TabProps extends LiHTMLAttributes<HTMLLIElement> {
     active?: boolean;
     contained?: boolean;
     dark?: boolean;
+    size?: 'default' | 'small';
     icon?: string;
     label?: string;
 }
 
-const Tab = React.forwardRef(({ active, contained, dark, icon, label, ...props }: TabProps, ref: any) => {
-    return (
-        <li
-            className={classNames(css.tab, dark && css.dark, contained && css.contained, active && css.active)}
-            {...props}
-            ref={ref}
-        >
-            {icon && <img className={css.icon} src={icon} />}
-            <span>{label}</span>
-        </li>
-    );
+const List = styled('li', {
+    padding: '0 16px',
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '14px',
+    lineHeight: '20px',
+    color: '$greyLight700',
+    borderBottom: '2px solid $greyLight200',
+    transition: 'all ease-in-out 0.3s',
+    '&:hover': {
+        backgroundColor: '$greyLight300',
+        borderRadius: '0',
+        cursor: 'pointer',
+        borderBottom: '2px solid $greyLight200',
+    },
+    variants: {
+        size: {
+            default: {
+                height: '40px',
+            },
+            small: {
+                height: '32px',
+            },
+        },
+        active: {
+            true: {
+                backgroundColor: 'transparent',
+                borderBottom: '2px solid $coral500',
+                fontWeight: '$bold',
+                '&:hover': {
+                    backgroundColor: 'transparent',
+                    borderBottom: '2px solid $coral500',
+                },
+            },
+        },
+        contained: {
+            true: {
+                backgroundColor: 'transparent',
+                borderRadius: '16px 16px 0 0',
+                borderBottom: 'unset',
+                '&:hover': {
+                    backgroundColor: '$greyLight100_4',
+                    borderRadius: '16px 16px 0 0',
+                    borderBottom: 'unset',
+                },
+            },
+        },
+        dark: {
+            true: {
+                color: '$greyDark100',
+                borderBottom: '2px solid $greyDark600',
+                '&:hover': {
+                    backgroundColor: '$greyDark500',
+                    borderRadius: 0,
+                    borderBottom: 'unset',
+                },
+            },
+        },
+    },
+    compoundVariants: [
+        {
+            dark: true,
+            active: true,
+            css: {
+                color: '$greyLight100',
+                backgroundColor: 'transparent',
+                borderBottom: '2px solid $coral500',
+                '&:hover': {
+                    backgroundColor: 'transparent',
+                    borderBottom: '2px solid $coral500',
+                },
+            },
+        },
+        {
+            contained: true,
+            active: true,
+            css: {
+                backgroundColor: '$greyLight100',
+                borderBottom: 'unset',
+                '&:hover': {
+                    backgroundColor: '$greyLight100',
+                    borderBottom: 'unset',
+                },
+            },
+        },
+        {
+            contained: true,
+            dark: true,
+            css: {
+                borderBottom: 'unset',
+                '&:hover': {
+                    backgroundColor: '$greyDark700_4',
+                    borderRadius: '16px 16px 0 0',
+                    borderBottom: 'unset',
+                },
+            },
+        },
+        {
+            contained: true,
+            dark: true,
+            active: true,
+            css: {
+                backgroundColor: '$greyDark700',
+                borderBottom: 'unset',
+                color: '$greyLight100',
+                '&:hover': {
+                    backgroundColor: '$greyDark700',
+                    borderRadius: '16px 16px 0 0',
+                    borderBottom: 'unset',
+                },
+            },
+        },
+    ],
+    '@mobile': {
+        fontSize: '12px',
+        lineHeight: '18px',
+    },
 });
 
+const Icon = styled('img', {
+    width: '16px',
+    height: '16px',
+    marginRight: '8px',
+});
+
+const Tab = React.forwardRef(
+    ({ active, contained, dark, size = 'default', icon, label, ...props }: TabProps, ref: any) => {
+        return (
+            <List active={active} dark={dark} size={size} contained={contained} {...props} ref={ref}>
+                <Icon src={icon} />
+                <span>{label}</span>
+            </List>
+        );
+    },
+);
+
 export default Tab;
+
+type TabVariantProps = Stitches.VariantProps<typeof Tab>;
+
+export const BreadcrumbStory = modifyVariantsForStory<TabVariantProps, TabProps, typeof Tab>(Tab);
