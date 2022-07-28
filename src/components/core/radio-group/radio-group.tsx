@@ -1,20 +1,23 @@
+import { HtmlHTMLAttributes } from 'react';
 import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 
-type RadioGroupProps = {
+type TRadioButtonOptions = {
+    label: string;
+    value: string;
+    name?: string;
+    id: string;
+};
+
+export interface RadioGroupProps extends HtmlHTMLAttributes<HTMLButtonElement> {
     dark?: boolean;
     handleChange: (value: string) => void;
     selected_value: string;
     disabled?: boolean;
-    options: {
-        label: string;
-        value: string;
-        name?: string;
-        id: string;
-    }[];
-};
+    options: TRadioButtonOptions[];
+}
 
 const StyledRadio = styled(RadioGroupPrimitive.Item, {
     all: 'unset',
@@ -79,7 +82,7 @@ const Label = styled('label', {
         },
         disabled: {
             true: {
-                opacity: 0.32,
+                opacity: '$opacity-32',
                 cursor: 'default',
             },
         },
@@ -88,13 +91,13 @@ const Label = styled('label', {
 
 export const RadioGroup = ({ dark, options, selected_value, disabled, handleChange, ...props }: RadioGroupProps) => (
     <RadioGroupPrimitive.Root defaultValue={selected_value} onValueChange={handleChange}>
-        {options.map((option, index) => (
-            <Flex key={index}>
+        {options.map((option) => (
+            <Flex key={option.id}>
                 <StyledRadio
                     value={option.value}
                     dark={dark}
                     disabled={disabled}
-                    css={disabled ? { opacity: 0.32, cursor: 'default' } : {}}
+                    css={disabled ? { opacity: '$opacity-32', cursor: 'default' } : {}}
                     id={option.id}
                     {...props}
                 >
