@@ -45,43 +45,41 @@ const Inner = styled('div', {
     },
 });
 
-const StepNavigation = React.memo(
-    ({ steps, current_step_index, complete_steps_indexes, dark, onClick }: StepNavigationProps) => {
-        const [progress_angel, setProgressAngel] = React.useState<string>();
-        const filtered_steps = steps.filter((step) => !step.is_hidden);
-        const current_step = current_step_index + 1;
-        const total_steps_count = filtered_steps.length;
-        const current = filtered_steps.filter((step, idx) => idx === current_step_index)[0];
-        const next_current = filtered_steps.filter((step, idx) => idx === current_step_index + 1)[0];
+const StepNavigation = React.memo(({ steps, current_step_index, dark }: StepNavigationProps) => {
+    const [progress_angel, setProgressAngel] = React.useState<string>();
+    const filtered_steps = steps.filter((step) => !step.is_hidden);
+    const current_step = current_step_index + 1;
+    const total_steps_count = filtered_steps.length;
+    const current = filtered_steps.filter((step, idx) => idx === current_step_index)[0];
+    const next_current = filtered_steps.filter((step, idx) => idx === current_step_index + 1)[0];
 
-        React.useEffect(() => {
-            setProgressAngel(`conic-gradient(
+    React.useEffect(() => {
+        setProgressAngel(`conic-gradient(
                 #FF444F ${current_step * (360 / total_steps_count)}deg,
                 #D6DADB ${current_step * (360 / total_steps_count)}deg)`);
-        }, [current_step_index]);
+    }, [current_step_index]);
 
-        return (
-            <StepContainer data-testid="step-navigation">
-                <ProcessCircle style={{ background: `${progress_angel}` }}>
-                    <Inner dark={dark}>
-                        <Text as="label" type="paragraph-1" bold style={{ color: dark ? '#FFFFFF' : '$greyLight700' }}>
-                            {current_step}/{total_steps_count}
-                        </Text>
-                    </Inner>
-                </ProcessCircle>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
+    return (
+        <StepContainer data-testid="step-navigation">
+            <ProcessCircle style={{ background: `${progress_angel}` }}>
+                <Inner dark={dark}>
                     <Text as="label" type="paragraph-1" bold style={{ color: dark ? '#FFFFFF' : '$greyLight700' }}>
-                        {current?.title}
+                        {current_step}/{total_steps_count}
                     </Text>
-                    {!!next_current && (
-                        <Text as="label" style={{ fontSize: '14px', color: '#999999', fontWeight: '400' }}>
-                            Next: {next_current.title}
-                        </Text>
-                    )}
-                </div>
-            </StepContainer>
-        );
-    },
-);
+                </Inner>
+            </ProcessCircle>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <Text as="label" type="paragraph-1" bold style={{ color: dark ? '#FFFFFF' : '$greyLight700' }}>
+                    {current?.title}
+                </Text>
+                {!!next_current && (
+                    <Text as="label" style={{ fontSize: '14px', color: '#999999', fontWeight: '400' }}>
+                        Next: {next_current.title}
+                    </Text>
+                )}
+            </div>
+        </StepContainer>
+    );
+});
 
 export default StepNavigation;

@@ -24,7 +24,8 @@
             "Styles/*": ["styles/*"],
             // TODO: Remove @ to replace with Capitalisation to avoid conflicts with node modules
             "@assets/*": ["images/*"],
-            "@core/*": ["components/core/*"]
+            "@core/*": ["components/core/*"],
+            "@utils/*": ["utils/*"]
         }
     },
     "ts-node": {

@@ -1,14 +1,13 @@
 import React from 'react';
-import { WizardProps, StepProps, RightPanelProps, StepsConfig } from '@core/wizard/types';
+import { WizardProps, StepProps, RightPanelProps } from '@core/wizard/types';
 import { styled } from 'Styles/stitches.config';
 import { DesktopWizard } from './desktop-wizard';
 import { MobileWizard } from './mobile-wizard';
-import { isDesktop, isMobile } from '../../../utils';
+import { isDesktop, isMobile } from 'utils';
 import DesktopStepNavigation from './desktop-wizard/step-navigation';
 import DesktopStep from './desktop-wizard/step';
 import DesktopRightPanel from './desktop-wizard/right-panel';
 import DesktopWizardBody from './desktop-wizard/desktop-wizard-body';
-
 import MobileStepNavigation from './mobile-wizard/step-navigation';
 import MobileStep from './mobile-wizard/step';
 import MobileRightPanel from './mobile-wizard/right-panel';
@@ -77,18 +76,7 @@ const MobileWizardContainer = styled('div', {
 });
 
 const Wizard = (props: WizardProps) => {
-    const {
-        dark,
-        lock_final_step,
-        has_dark_background = true,
-        onComplete,
-        onChangeStep,
-        onClose,
-        wizard_title,
-        primary_button_label,
-        secondary_button_label,
-        children,
-    } = props;
+    const { dark, lock_final_step, has_dark_background = true, onComplete, onChangeStep, onClose, children } = props;
 
     const [current_step_index, setCurrentStepIndex] = React.useState(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);

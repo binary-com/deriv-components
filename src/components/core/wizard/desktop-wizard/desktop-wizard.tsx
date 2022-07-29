@@ -3,50 +3,10 @@ import CloseIconDark from '@assets/svg/ic-close-dark.svg';
 import CloseIconLight from '@assets/svg/ic-close-light.svg';
 import Button from '@core/button/button';
 import Text from '@core/text/text';
-import { WizardProps, StepProps, StepsConfig, RightPanelProps } from '@core/wizard/types';
+import { WizardProps, StepProps, RightPanelProps } from '@core/wizard/types';
 import { styled } from 'Styles/stitches.config';
 import StepNavigation from './step-navigation';
-import Step from './step';
-import RightPanel from './right-panel';
 import DesktopWizardBody from './desktop-wizard-body';
-
-const DarkBackgroundContainer = styled('div', {
-    position: 'absolute',
-    inset: '0',
-    background: 'rgba(0, 0, 0, 0.72)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    variants: {
-        visible: {
-            false: {
-                display: 'unset',
-                background: 'unset',
-            },
-        },
-    },
-});
-
-const WizardContainer = styled('div', {
-    position: 'relative',
-    width: '1040px',
-    height: '640px',
-    backgroundColor: '$primary-background',
-    borderRadius: '16px',
-    display: 'flex',
-    overflow: 'hidden',
-    boxShadow: '0px 0px 24px rgba(0, 0, 0, 0.08), 0px 24px 24px rgba(0, 0, 0, 0.08)',
-    boxSizingForAllChildren: 'border-box',
-
-    variants: {
-        dark: {
-            true: {
-                backgroundColor: '#0E0E0E',
-            },
-        },
-    },
-});
 
 const LeftPanel = styled('div', {
     width: '256px',

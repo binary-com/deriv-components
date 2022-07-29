@@ -5,62 +5,15 @@ import Button from '@core/button/button';
 import { WizardProps, StepProps, StepsConfig, RightPanelProps } from '@core/wizard/types';
 import { styled } from 'Styles/stitches.config';
 import StepNavigation from './step-navigation';
-import Step from './step';
-import RightPanel from './right-panel';
 import MobileWizardBody from './mobile-wizard-body';
-
-const DarkBackgroundContainer = styled('div', {
-    position: 'absolute',
-    inset: '0',
-    background: 'rgba(0, 0, 0, 0.72)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    variants: {
-        visible: {
-            false: {
-                display: 'unset',
-                background: 'unset',
-            },
-        },
-    },
-});
-
-const WizardContainer = styled('div', {
-    width: '360px',
-    height: '100%',
-    // height: '640px',
-    backgroundColor: '$primary-background',
-
-    variants: {
-        dark: {
-            true: {
-                backgroundColor: '#0E0E0E',
-            },
-        },
-
-        is_fullwidth: {
-            true: {
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                overflow: 'hidden',
-            },
-        },
-    },
-});
 
 const TopPanel = styled('div', {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     padding: '0 24px',
-    // gap: '16px',
     backgroundColor: '#F2F3F4',
     flex: 'none',
-    // order: '0',
     alignSelf: 'stretch',
     flexGrow: '0',
 
@@ -78,10 +31,8 @@ const WizardBody = styled('div', {
         is_fullwidth: {
             true: {
                 padding: '24px',
-                // height: '432px',
             },
             false: {
-                // height: '568px',
                 zIndex: '100',
                 top: '0',
                 position: 'absolute',
