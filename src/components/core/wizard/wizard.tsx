@@ -63,8 +63,8 @@ const MobileWizardContainer = styled('div', {
             },
         },
 
-        is_fullwidth: {
-            true: {
+        is_right_panel: {
+            false: {
                 position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
@@ -81,6 +81,7 @@ const Wizard = (props: WizardProps) => {
     const [current_step_index, setCurrentStepIndex] = React.useState(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
     const [is_completed, setIsCompleted] = React.useState(false);
+    const [is_right_panel, setIsRightPanel] = React.useState(false);
 
     const animated_div_ref = React.useRef<HTMLDivElement>(null);
 
@@ -167,6 +168,7 @@ const Wizard = (props: WizardProps) => {
     };
 
     const nextStep = () => {
+        setIsRightPanel(false);
         clearTimeout(new_step_timeout);
 
         // Final step primary button
@@ -174,17 +176,30 @@ const Wizard = (props: WizardProps) => {
             onComplete?.('primary');
             return;
         }
-
         slide('translateY(0)', 'translateY(-100vh)');
 
         const next_step_index = getNextStepIndex();
 
         if (typeof next_step_index === 'number') {
-            new_step_timeout = setTimeout(() => {
-                setCurrentStepIndex(next_step_index);
-                setCompleteStepsIndexes([...new Set([...complete_steps_indexes, current_step_index])]);
-                slide('translateY(100vh)', 'translateY(0)');
-            }, 250);
+            new_step_timeout = setTimeout(
+                () => {
+                    setCompleteStepsIndexes([...new Set([...complete_steps_indexes, current_step_index])]);
+                    slide('translateY(100vh)', 'translateY(0)');
+
+                    if (isMobile()) {
+                        const has_current_step_right_panel: boolean =
+                            !!right_panel?.props?.children[current_step_index];
+                        const is_current_step_complete: boolean = complete_steps_indexes.includes(current_step_index);
+                        if (has_current_step_right_panel && !is_current_step_complete) {
+                            setIsRightPanel(true);
+                            return;
+                        }
+                    }
+
+                    setCurrentStepIndex(next_step_index);
+                },
+                isMobile() ? 0 : 250,
+            );
 
             if (lock_final_step && next_step_index === steps.length - 1) {
                 setIsCompleted(true);
@@ -234,11 +249,7 @@ const Wizard = (props: WizardProps) => {
                 </DesktopWizardContainer>
             )}
             {isMobile() && (
-                <MobileWizardContainer
-                    dark={dark}
-                    is_fullwidth={!!current_step.props.is_fullwidth}
-                    data-testid="mobile-wizard"
-                >
+                <MobileWizardContainer dark={dark} is_right_panel={is_right_panel} data-testid="mobile-wizard">
                     <MobileWizard
                         {...props}
                         animated_div_ref={animated_div_ref}
@@ -246,7 +257,9 @@ const Wizard = (props: WizardProps) => {
                         current_step_index={current_step_index}
                         complete_steps_indexes={complete_steps_indexes}
                         handleStepClick={handleStepClick}
+                        is_right_panel={is_right_panel}
                         nextStep={nextStep}
+                        next_step_index={getNextStepIndex()}
                         prevStep={prevStep}
                         right_panel={right_panel}
                     />

@@ -45,18 +45,31 @@ const Inner = styled('div', {
     },
 });
 
-const StepNavigation = React.memo(({ steps, current_step_index, dark }: StepNavigationProps) => {
+type MobileStepNavigationProps = Partial<StepNavigationProps> & {
+    next_step_index?: number;
+};
+
+const StepNavigation = React.memo(({ steps, current_step_index, dark, next_step_index }: MobileStepNavigationProps) => {
     const [progress_angel, setProgressAngel] = React.useState<string>();
-    const filtered_steps = steps.filter((step) => !step.is_hidden);
-    const current_step = current_step_index + 1;
-    const total_steps_count = filtered_steps.length;
-    const current = filtered_steps.filter((step, idx) => idx === current_step_index)[0];
-    const next_current = filtered_steps.filter((step, idx) => idx === current_step_index + 1)[0];
+    const filtered_steps = steps?.filter((step) => !step.is_hidden && !step.is_disabled);
+    const total_steps_count = filtered_steps?.length;
+    const current = steps?.filter((step, idx) => idx === current_step_index)[0];
+    const next_current = steps?.filter((step, idx) => idx === next_step_index)[0];
+
+    const current_step_key = filtered_steps
+        ?.map((a, idx) => {
+            if (a.title === current?.title) {
+                return idx;
+            }
+        })
+        .find((a) => a);
+
+    const current_step_number = !current_step_key ? 1 : current_step_key + 1;
 
     React.useEffect(() => {
         setProgressAngel(`conic-gradient(
-                #FF444F ${current_step * (360 / total_steps_count)}deg,
-                #D6DADB ${current_step * (360 / total_steps_count)}deg)`);
+                #FF444F ${current_step_number * (360 / total_steps_count)}deg,
+                #D6DADB ${current_step_number * (360 / total_steps_count)}deg)`);
     }, [current_step_index]);
 
     return (
@@ -64,7 +77,7 @@ const StepNavigation = React.memo(({ steps, current_step_index, dark }: StepNavi
             <ProcessCircle style={{ background: `${progress_angel}` }}>
                 <Inner dark={dark}>
                     <Text as="label" type="paragraph-1" bold style={{ color: dark ? '#FFFFFF' : '$greyLight700' }}>
-                        {current_step}/{total_steps_count}
+                        {current_step_number}/{total_steps_count}
                     </Text>
                 </Inner>
             </ProcessCircle>

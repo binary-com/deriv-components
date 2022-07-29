@@ -139,13 +139,13 @@ const Template: Story<WizardProps> = (args) => {
                     secondary_button_label={is_final_step ? 'Maybe later' : 'Back'}
                     onChangeStep={onChangeStep}
                 >
-                    <Wizard.Step title="Product" is_submit_disabled={!create_app_state.product_type} is_fullwidth>
+                    <Wizard.Step title="Product" is_submit_disabled={!create_app_state.product_type}>
                         <StepChooseProductMain
                             product_type={create_app_state.product_type}
                             onSelect={(product_type: string) => updateCreateAppState({ product_type })}
                         />
                     </Wizard.Step>
-                    <Wizard.Step title="App" is_submit_disabled={!create_app_state.account_type} is_fullwidth>
+                    <Wizard.Step title="App" is_submit_disabled={!create_app_state.account_type}>
                         <StepAddAppMain
                             account_type={create_app_state.account_type}
                             onSelect={(account_type: string) => updateCreateAppState({ account_type })}
