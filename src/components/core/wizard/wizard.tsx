@@ -78,7 +78,7 @@ const MobileWizardContainer = styled('div', {
 const Wizard = (props: WizardProps) => {
     const { dark, lock_final_step, has_dark_background = true, onComplete, onChangeStep, onClose, children } = props;
 
-    const [current_step_index, setCurrentStepIndex] = React.useState(0);
+    const [current_step_index, setCurrentStepIndex] = React.useState<number>(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
     const [is_completed, setIsCompleted] = React.useState(false);
     const [is_right_panel, setIsRightPanel] = React.useState(false);
@@ -187,8 +187,9 @@ const Wizard = (props: WizardProps) => {
                     slide('translateY(100vh)', 'translateY(0)');
 
                     if (isMobile()) {
-                        const has_current_step_right_panel: boolean =
-                            !!right_panel?.props?.children[current_step_index];
+                        const has_current_step_right_panel: boolean = !!React.Children.toArray(
+                            right_panel?.props?.children,
+                        )[current_step_index];
                         const is_current_step_complete: boolean = complete_steps_indexes.includes(current_step_index);
                         if (has_current_step_right_panel && !is_current_step_complete) {
                             setIsRightPanel(true);

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { render, screen } from 'test-setup';
-import MobileWizard from '../mobile-wizard';
+import Wizard from '../../wizard';
 import {
     StepAddAppMain,
     StepChooseProductMain,
     StepComplete,
     TestRightUpperComponent,
-} from '../stories/steps/steps-content';
+} from '../../stories/steps/steps-content';
 
 jest.mock('react', () => ({
     ...jest.requireActual('react'),
@@ -36,14 +36,14 @@ describe('MobileWizard Component', () => {
 
     it('MobileWizard renders properly with a 1st step header, step navigation and initially disabled Back and Next buttons', () => {
         render(
-            <MobileWizard {...props}>
-                <MobileWizard.Step title="Product" is_submit_disabled={true}>
+            <Wizard {...props}>
+                <Wizard.Step title="Product" is_submit_disabled={true}>
                     <StepChooseProductMain product_type={'cfd'} onSelect={jest.fn} />
-                </MobileWizard.Step>
-                <MobileWizard.Step title="Complete">
+                </Wizard.Step>
+                <Wizard.Step title="Complete">
                     <StepComplete />
-                </MobileWizard.Step>
-            </MobileWizard>,
+                </Wizard.Step>
+            </Wizard>,
         );
 
         const products = screen.getAllByTestId('product-card');
@@ -65,14 +65,14 @@ describe('MobileWizard Component', () => {
             .mockReturnValueOnce([[0], () => {}]);
 
         render(
-            <MobileWizard {...props}>
-                <MobileWizard.Step title="Product" is_submit_disabled={false}>
+            <Wizard {...props}>
+                <Wizard.Step title="Product" is_submit_disabled={false}>
                     <StepChooseProductMain product_type={'cfd'} onSelect={jest.fn} />
-                </MobileWizard.Step>
-                <MobileWizard.Step title="Complete">
+                </Wizard.Step>
+                <Wizard.Step title="Complete">
                     <StepComplete />
-                </MobileWizard.Step>
-            </MobileWizard>,
+                </Wizard.Step>
+            </Wizard>,
         );
 
         const products = screen.getAllByTestId('product-card');
@@ -93,14 +93,14 @@ describe('MobileWizard Component', () => {
             .mockReturnValueOnce([[0], () => {}]);
 
         render(
-            <MobileWizard {...props}>
-                <MobileWizard.Step title="Product" is_submit_disabled={false}>
+            <Wizard {...props}>
+                <Wizard.Step title="Product" is_submit_disabled={false}>
                     <StepChooseProductMain product_type={'cfd'} onSelect={jest.fn} />
-                </MobileWizard.Step>
-                <MobileWizard.Step title="App" is_submit_disabled={true}>
+                </Wizard.Step>
+                <Wizard.Step title="App" is_submit_disabled={true}>
                     <StepAddAppMain account_type={'demo'} onSelect={jest.fn} />
-                </MobileWizard.Step>
-            </MobileWizard>,
+                </Wizard.Step>
+            </Wizard>,
         );
 
         expect(screen.getByTestId('mobile-wizard')).toBeInTheDocument();
@@ -118,14 +118,14 @@ describe('MobileWizard Component', () => {
             .mockReturnValueOnce([[0, 0], () => {}]);
 
         render(
-            <MobileWizard {...props}>
-                <MobileWizard.Step title="Product" is_submit_disabled={false}>
+            <Wizard {...props}>
+                <Wizard.Step title="Product" is_submit_disabled={false}>
                     <StepChooseProductMain product_type={'cfd'} onSelect={jest.fn} />
-                </MobileWizard.Step>
-                <MobileWizard.RightPanel>
+                </Wizard.Step>
+                <Wizard.RightPanel>
                     <TestRightUpperComponent current_step_index={1} />
-                </MobileWizard.RightPanel>
-            </MobileWizard>,
+                </Wizard.RightPanel>
+            </Wizard>,
         );
 
         expect(screen.getByTestId('mobile-wizard')).toBeInTheDocument();
@@ -140,17 +140,17 @@ describe('MobileWizard Component', () => {
             .mockReturnValueOnce([[0, 1], () => {}]);
 
         render(
-            <MobileWizard {...props}>
-                <MobileWizard.Step title="Product" is_submit_disabled={false}>
+            <Wizard {...props}>
+                <Wizard.Step title="Product" is_submit_disabled={false}>
                     <StepChooseProductMain product_type={'cfd'} onSelect={jest.fn} />
-                </MobileWizard.Step>
-                <MobileWizard.Step title="Complete" is_fullwidth>
+                </Wizard.Step>
+                <Wizard.Step title="Complete" is_fullwidth>
                     <StepComplete />
-                </MobileWizard.Step>
-                <MobileWizard.RightPanel>
+                </Wizard.Step>
+                <Wizard.RightPanel>
                     <TestRightUpperComponent current_step_index={1} />
-                </MobileWizard.RightPanel>
-            </MobileWizard>,
+                </Wizard.RightPanel>
+            </Wizard>,
         );
 
         expect(screen.getByTestId('mobile-wizard')).toBeInTheDocument();

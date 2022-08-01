@@ -6,7 +6,7 @@ type MobileWizardBody = Partial<WizardProps> & {
     animated_div_ref: React.RefObject<HTMLDivElement | null>;
     current_step: React.ReactElement<StepProps>;
     dark?: boolean;
-    onScroll: () => void;
+    onScroll?: () => void;
 };
 
 const MobileWizardBody = (props: MobileWizardBody) => {

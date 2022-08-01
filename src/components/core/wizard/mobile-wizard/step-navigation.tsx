@@ -52,7 +52,7 @@ type MobileStepNavigationProps = Partial<StepNavigationProps> & {
 const StepNavigation = React.memo(({ steps, current_step_index, dark, next_step_index }: MobileStepNavigationProps) => {
     const [progress_angel, setProgressAngel] = React.useState<string>();
     const filtered_steps = steps?.filter((step) => !step.is_hidden && !step.is_disabled);
-    const total_steps_count = filtered_steps?.length;
+    const total_steps_count: number = filtered_steps ? filtered_steps.length : 0;
     const current = steps?.filter((step, idx) => idx === current_step_index)[0];
     const next_current = steps?.filter((step, idx) => idx === next_step_index)[0];
 

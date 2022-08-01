@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { render, screen } from 'test-setup';
-import MobileWizard from '../mobile-wizard';
+import Wizard from '../../wizard';
 import MobileWizardBody from '../mobile-wizard-body';
-import { StepTermsOfUseMain } from '../stories/steps/steps-content';
+import { StepTermsOfUseMain } from '../../stories/steps/steps-content';
 
 jest.mock('react', () => ({
     ...jest.requireActual('react'),
@@ -24,9 +24,9 @@ describe('MobileWizard Component', () => {
         render(
             <MobileWizardBody
                 current_step={
-                    <MobileWizard.Step title="Terms of use">
+                    <Wizard.Step title="Terms of use">
                         <StepTermsOfUseMain />
-                    </MobileWizard.Step>
+                    </Wizard.Step>
                 }
                 {...props}
             />,
