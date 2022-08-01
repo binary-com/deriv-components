@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/react';
 import { useState } from 'react';
 import { WizardProps } from '@core/wizard/types';
 import Button from '@core/button/button';
-import DesktopWizard from '../desktop-wizard';
+import Wizard from '../wizard';
 import {
     StepChooseProductMain,
     StepAddAppMain,
@@ -17,8 +17,8 @@ import {
 } from './steps/steps-content';
 
 export default {
-    title: 'DesktopWizard',
-    component: DesktopWizard,
+    title: 'Wizard',
+    component: Wizard,
     parameters: { controls: { sort: 'alpha' } },
     argTypes: {
         dark: {
@@ -130,7 +130,7 @@ const Template: Story<WizardProps> = (args) => {
     return (
         <>
             {is_wizard_open ? (
-                <DesktopWizard
+                <Wizard
                     {...args}
                     onClose={() => setIsWizardOpen(false)}
                     onComplete={handleComplete}
@@ -139,68 +139,68 @@ const Template: Story<WizardProps> = (args) => {
                     secondary_button_label={is_final_step ? 'Maybe later' : 'Back'}
                     onChangeStep={onChangeStep}
                 >
-                    <DesktopWizard.Step title="Product" is_submit_disabled={!create_app_state.product_type}>
+                    <Wizard.Step title="Product" is_submit_disabled={!create_app_state.product_type}>
                         <StepChooseProductMain
                             product_type={create_app_state.product_type}
                             onSelect={(product_type: string) => updateCreateAppState({ product_type })}
                         />
-                    </DesktopWizard.Step>
-                    <DesktopWizard.Step title="App" is_submit_disabled={!create_app_state.account_type}>
+                    </Wizard.Step>
+                    <Wizard.Step title="App" is_submit_disabled={!create_app_state.account_type}>
                         <StepAddAppMain
                             account_type={create_app_state.account_type}
                             onSelect={(account_type: string) => updateCreateAppState({ account_type })}
                         />
-                    </DesktopWizard.Step>
-                    <DesktopWizard.Step title="Wallet" is_submit_disabled={!create_app_state.wallet} is_hidden>
+                    </Wizard.Step>
+                    <Wizard.Step title="Wallet" is_submit_disabled={!create_app_state.wallet} is_hidden>
                         <StepCreateWalletMain
                             wallet={create_app_state.wallet}
                             onSelect={(wallet: string) => updateCreateAppState({ wallet })}
                         />
-                    </DesktopWizard.Step>
-                    <DesktopWizard.Step title="Personal details">
+                    </Wizard.Step>
+                    <Wizard.Step title="Personal details" is_fullwidth>
                         <StepPersonalDetailsMain />
-                    </DesktopWizard.Step>
-                    <DesktopWizard.Step title="Address">
+                    </Wizard.Step>
+                    <Wizard.Step title="Address" is_fullwidth>
                         <StepAddressInfoMain />
-                    </DesktopWizard.Step>
-                    <DesktopWizard.Step title="Terms of use">
+                    </Wizard.Step>
+                    <Wizard.Step title="Terms of use" is_fullwidth>
                         <StepTermsOfUseMain />
-                    </DesktopWizard.Step>
-                    <DesktopWizard.Step step_key="complete_step" title="Complete">
+                    </Wizard.Step>
+                    <Wizard.Step step_key="complete_step" title="Complete" is_fullwidth>
                         <StepComplete />
-                    </DesktopWizard.Step>
-                    <DesktopWizard.RightPanel>
+                    </Wizard.Step>
+                    <Wizard.RightPanel>
                         <TestRightUpperComponent current_step_index={current_step} />
                         <TestRightMiddleComponent current_step_index={current_step} />
                         <TestRightLowerComponent current_step_index={current_step} />
-                    </DesktopWizard.RightPanel>
-                </DesktopWizard>
+                    </Wizard.RightPanel>
+                </Wizard>
             ) : (
                 <>
-                    <Button onClick={onWizardOpening}>Open Desktop Wizard</Button>
+                    <Button onClick={onWizardOpening}>Open Wizard</Button>
                 </>
             )}
         </>
     );
 };
 
-export const LightDesktopAppWizard = Template.bind({});
-LightDesktopAppWizard.args = {
+export const LightWizard = Template.bind({});
+LightWizard.args = {
     dark: false,
     has_dark_background: true,
     wizard_title: "Let's get you a new app.",
     lock_final_step: true,
 };
-export const LightDesktopAppWizardWithoutDarkBackground = Template.bind({});
-LightDesktopAppWizardWithoutDarkBackground.args = {
+export const LightWizardWithoutDarkBackground = Template.bind({});
+LightWizardWithoutDarkBackground.args = {
     dark: false,
     has_dark_background: false,
     wizard_title: "Let's get you a new app.",
     lock_final_step: true,
 };
 
-export const DesktopWizardWithoutLockedFinalStep = Template.bind({});
-DesktopWizardWithoutLockedFinalStep.args = {
+export const WizardWithoutLockedFinalStep = Template.bind({});
+WizardWithoutLockedFinalStep.args = {
     dark: false,
     has_dark_background: false,
     wizard_title: "Let's get you a new app.",
