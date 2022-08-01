@@ -43,6 +43,7 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
     },
     media: {
         mobile: `(max-width: ${default_bp}px)`,
+        desktop: `(min-width: ${default_bp}px)`,
     },
     utils: {
         marginX: (value: string) => ({ marginLeft: value, marginRight: value }),
