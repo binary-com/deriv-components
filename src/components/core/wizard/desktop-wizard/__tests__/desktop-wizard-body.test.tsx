@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { render, screen } from 'test-setup';
-import DesktopWizard from '../desktop-wizard';
+import Wizard from '../../wizard';
 import DesktopWizardBody from '../desktop-wizard-body';
-import { StepTermsOfUseMain } from '../stories/steps/steps-content';
+import { StepTermsOfUseMain } from '../../stories/steps/steps-content';
 
 jest.mock('react', () => ({
     ...jest.requireActual('react'),
@@ -24,9 +24,9 @@ describe('DesktopWizard Component', () => {
         render(
             <DesktopWizardBody
                 current_step={
-                    <DesktopWizard.Step title="Terms of use">
+                    <Wizard.Step title="Terms of use">
                         <StepTermsOfUseMain />
-                    </DesktopWizard.Step>
+                    </Wizard.Step>
                 }
                 {...props}
             />,
