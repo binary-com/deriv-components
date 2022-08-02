@@ -4,24 +4,7 @@ import RadioGroup, { RadioGroupStory } from '../radio-group';
 export default {
     title: 'RadioGroup',
     component: RadioGroup,
-    parameters: {
-        backgrounds: {
-            default: 'light',
-            values: [
-                { name: 'light', value: '#ffffff' },
-                { name: 'dark', value: '#0E0E0E' },
-            ],
-        },
-    },
     argTypes: {
-        dark: {
-            description: 'If set to `true`, radio group color will be set to dark theme.',
-            defaultValue: false,
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false },
-            },
-        },
         disabled: {
             description: 'If set to `true`, radio group will be disabled',
             defaultValue: false,
@@ -31,7 +14,8 @@ export default {
             },
         },
         handleChange: {
-            defaultValue: (value: string) => value,
+            control: false,
+            action: 'handleChange',
         },
         options: {
             description: 'The options to be displayed in radio group',
@@ -41,9 +25,8 @@ export default {
 
 const Template: ComponentStory<typeof RadioGroupStory> = (args) => <RadioGroup {...args} />;
 
-export const LightRadioGroup = Template.bind({});
-LightRadioGroup.args = {
-    dark: false,
+export const Default = Template.bind({});
+Default.args = {
     selected_value: 'label1',
     disabled: true,
     options: [
@@ -58,26 +41,4 @@ LightRadioGroup.args = {
             value: 'label2',
         },
     ],
-};
-
-export const DarkRadioGroup = Template.bind({});
-DarkRadioGroup.args = {
-    dark: true,
-    selected_value: 'label2',
-    options: [
-        {
-            id: '1',
-            label: 'Label 1',
-            value: 'label1',
-        },
-        {
-            id: '2',
-            label: 'Label 2',
-            value: 'label2',
-        },
-    ],
-};
-
-DarkRadioGroup.parameters = {
-    backgrounds: { default: 'dark' },
 };
