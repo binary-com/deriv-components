@@ -138,6 +138,12 @@ const Svg = styled('svg', {
     width: 14,
     height: 8,
     variants: {
+        size: {
+            small: {
+                width: 12,
+                height: 6.5,
+            },
+        },
         dark: {
             true: {
                 fill: '$greyDark100',
