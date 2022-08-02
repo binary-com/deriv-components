@@ -1,8 +1,10 @@
-import type * as Stitches from '@stitches/react';
-import { styled } from 'Styles/stitches.config';
-import { modifyVariantsForStory } from 'Styles/type-utils';
+import useTheme from '@core/theme-context/use-theme';
+import * as Stitches from '@stitches/react';
+import { forwardRef } from 'react';
 
-const Button = styled('button', {
+import { styled } from 'Styles/stitches.config';
+
+const StyledButton = styled('button', {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -188,19 +190,12 @@ const Button = styled('button', {
     },
 });
 
-export const button_size_type = ['small', 'medium', 'large', 'hero'];
-export const button_color_type = ['primary', 'primary-light', 'secondary', 'tertiary', 'monochrome'];
+type StyledButtonProps = Stitches.VariantProps<typeof StyledButton>;
+type TButtonProps = Omit<StyledButtonProps, 'dark'>;
+
+const Button = forwardRef<HTMLButtonElement, TButtonProps>((props, ref) => {
+    const { isDark } = useTheme();
+    return <StyledButton {...props} ref={ref} dark={isDark} />;
+});
 
 export default Button;
-
-type NativeButtonProps = React.ComponentPropsWithoutRef<'button'>;
-
-// Only export/use these in Storybook since they are just for the Stitchs x SB handshake
-// Can be here or in the story
-// We need to Omit css as Emotions global css typedef clashes with the Stitches css typedef
-// Storybook currently uses v10+ of Emotion, this issue is fixed in Emotion v11+
-// TODO: Remove Omit once Storybook's Emotion is running on v11+
-type ButtonVariantProps = Stitches.VariantProps<typeof Button> & Omit<NativeButtonProps, 'css'>;
-interface ButtonProps extends ButtonVariantProps {}
-// Use this as the type in Story; i.e. `ComponentMeta<typeof ButtonStory>`
-export const ButtonStory = modifyVariantsForStory<ButtonVariantProps, ButtonProps, typeof Button>(Button);

@@ -2,8 +2,7 @@ import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 import BreadcrumnSeperatorIcon from '@assets/svg/breadcrumb-seperator.svg';
-import { useContext } from 'react';
-import ThemeContext from '@core/theme-context/theme-context';
+import useTheme from '@core/theme-context/use-theme';
 
 type BreadcrumbProps = {
     items: string[];
@@ -79,7 +78,7 @@ const Svg = styled('svg', {
 });
 
 const Breadcrumb = ({ items, handleOnClick }: BreadcrumbProps) => {
-    const { isDark } = useContext(ThemeContext);
+    const { isDark } = useTheme();
     return (
         <BreadcrumbContainer>
             {items.map((item: string, idx: number) => (
