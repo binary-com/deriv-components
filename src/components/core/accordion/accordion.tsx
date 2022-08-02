@@ -65,7 +65,14 @@ const AccordionDiv = styled('div', {
     },
     compoundVariants: [
         {
-            type: 'bottomBorder' || 'containerWithBorder',
+            type: 'bottomBorder',
+            dark: true,
+            css: {
+                borderColor: '$greyDark500',
+            },
+        },
+        {
+            type: 'containerWithBorder',
             dark: true,
             css: {
                 borderColor: '$greyDark500',
