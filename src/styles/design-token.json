@@ -1329,6 +1329,36 @@
                     }
                 }
             }
+        },
+        "boxShadow": {
+            "xs": {
+                "value": "0.0px 1.0px 2.0px 0px rgba(14, 14, 14, 0.05)",
+                "type": "boxShadow"
+            },
+            "sm": {
+                "value": "0.0px 1.0px 2.0px 0px rgba(14, 14, 14, 0.06),0.0px 1.0px 3.0px 0px rgba(14, 14, 14, 0.1)",
+                "type": "boxShadow"
+            },
+            "md": {
+                "value": "0.0px 2.0px 4.0px -2.0px rgba(14, 14, 14, 0.06),0.0px 4.0px 8.0px -2.0px rgba(14, 14, 14, 0.1)",
+                "type": "boxShadow"
+            },
+            "lg": {
+                "value": "0.0px 4.0px 6.0px -2.0px rgba(14, 14, 14, 0.03),0.0px 12.0px 16.0px -4.0px rgba(14, 14, 14, 0.08)",
+                "type": "boxShadow"
+            },
+            "xl": {
+                "value": "0.0px 8.0px 8.0px -4.0px rgba(14, 14, 14, 0.03),0.0px 20.0px 24.0px -4.0px rgba(14, 14, 14, 0.08)",
+                "type": "boxShadow"
+            },
+            "xxl": {
+                "value": "0.0px 24.0px 48.0px -12.0px rgba(14, 14, 14, 0.18)",
+                "type": "boxShadow"
+            },
+            "xxxl": {
+                "value": "0.0px 32.0px 64.0px -12.0px rgba(14, 14, 14, 0.14)",
+                "type": "boxShadow"
+            }
         }
     },
     "Desktop": {

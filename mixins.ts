@@ -28,3 +28,14 @@ export const opacity = {
     50: TOKEN.General['opacity']['50'].value,
     75: TOKEN.General['opacity']['75'].value,
 };
+
+export const box_shadow = {
+    xs :TOKEN.General['boxShadow']['xs'].value,
+    sm :TOKEN.General['boxShadow']['sm'].value,
+    md :TOKEN.General['boxShadow']['md'].value,
+    lg :TOKEN.General['boxShadow']['lg'].value,
+    xl :TOKEN.General['boxShadow']['xl'].value,
+    xxl :TOKEN.General['boxShadow']['xxl'].value,
+    xxxl :TOKEN.General['boxShadow']['xxxl'].value,
+
+}
