@@ -5,11 +5,11 @@ const withBackground = (Story, context) => {
     const isDark = colorMode === 'dark';
 
     if (isDark) {
-        document.documentElement.style.background = '#0E0E0E';
-        document.body.style.background = '#0E0E0E';
+        document.documentElement.style.background = 'var(--dark-background)';
+        document.body.style.background = 'var(--dark-background)';
     } else {
-        document.documentElement.style.background = '#ffffff';
-        document.body.style.background = '#ffffff';
+        document.documentElement.style.background = 'var(--light-background)';
+        document.body.style.background = 'var(--light-background)';
     }
     return <Story {...context} />;
 };
