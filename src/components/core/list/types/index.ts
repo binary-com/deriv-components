@@ -41,20 +41,18 @@ export type TCheckListItemProps = {
     dark?: boolean;
 };
 
-export type TSimpleListProps = { items: ISimpleListItem[]; size?: TSizeType; dark?: boolean };
+export type TSimpleListProps = { items: ISimpleListItem[]; size?: TSizeType };
 
-export type TBulletedListProps = { items: ISimpleListItem[]; size?: TSizeType; dark?: boolean };
+export type TBulletedListProps = { items: ISimpleListItem[]; size?: TSizeType };
 
 export type TCheckListProps = {
     items: ICheckListItem[];
     size?: TSizeType;
-    dark?: boolean;
 };
 
 export type TCompoundProps = {
     items: ICompoundListItem[];
     label?: TLabelType;
     size?: TSizeType;
-    dark?: boolean;
     onClickItem?: TOnClickItem;
 };

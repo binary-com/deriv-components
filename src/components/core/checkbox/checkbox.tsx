@@ -5,11 +5,11 @@ import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 import CheckIconSVG from '@assets/svg/checkbox-icon.svg';
 import CheckIndetermineIconSVG from '@assets/svg/checkbox-indetermine-icon.svg';
+import useTheme from '@core/theme-context/use-theme';
 
 export const CheckBox = CheckboxPrimitive.Root;
 
 export interface CheckboxProps extends HtmlHTMLAttributes<HTMLInputElement> {
-    dark?: boolean;
     indetermine?: boolean;
     check?: boolean;
     handleChange?: (check: boolean) => void;
@@ -131,7 +131,6 @@ const CheckboxIcon = styled('img', {
 
 const Checkbox = ({
     children,
-    dark,
     indetermine,
     check = false,
     handleChange,
@@ -142,6 +141,7 @@ const Checkbox = ({
 }: CheckboxProps) => {
     const [checked, setChecked] = useState(check);
     const [indetermine_checkbox, setindetermineCheckbox] = useState(indetermine);
+    const { isDark } = useTheme();
 
     const handleSelectionChange = () => {
         if (!disabled) {
@@ -161,7 +161,7 @@ const Checkbox = ({
                 defaultChecked={checked}
                 checked={checked}
                 indetermine_checkbox={indetermine_checkbox}
-                dark={dark}
+                dark={isDark}
                 disabled={disabled}
                 css={disabled ? { cursor: 'default', opacity: 0.32 } : {}}
                 id={id}
@@ -172,7 +172,7 @@ const Checkbox = ({
                     <CheckboxIcon src={icon_src} checked={checked} indetermine_checkbox={indetermine_checkbox} />
                 )}
             </StyledCheckbox>
-            <Label size={size} dark={dark} onClick={handleSelectionChange} disabled={disabled}>
+            <Label size={size} dark={isDark} onClick={handleSelectionChange} disabled={disabled}>
                 {children}
             </Label>
         </Container>

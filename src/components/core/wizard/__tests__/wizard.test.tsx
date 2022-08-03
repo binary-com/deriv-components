@@ -17,7 +17,6 @@ describe('MobileWizard Component', () => {
     const setState = jest.fn();
 
     const props = {
-        dark: false,
         has_dark_background: true,
         onClose: jest.fn(),
         onComplete: jest.fn(),

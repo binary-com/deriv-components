@@ -1,5 +1,6 @@
 import CircularCheckIcon from '@assets/svg/circular-check-icon.svg';
 import Text from '@core/text/text';
+import useTheme from '@core/theme-context/use-theme';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
 import { StepNavigationProps } from '../types';
@@ -136,7 +137,7 @@ const StepBreadcrumb = styled('div', {
 });
 
 const StepNavigation = React.memo(
-    ({ steps, current_step_index, complete_steps_indexes, dark, onClick }: StepNavigationProps) => {
+    ({ steps, current_step_index, complete_steps_indexes, onClick }: StepNavigationProps) => {
         const filtered_steps = steps.filter((step) => !step.is_hidden);
 
         const getNavLineHeight = () => {
@@ -144,10 +145,12 @@ const StepNavigation = React.memo(
             return (current_step_index - no_of_hidden_index) * (100 / filtered_steps.length);
         };
 
+        const { isDark } = useTheme();
+
         return (
             <div style={{ position: 'relative' }} data-testid="step-navigation">
                 <Before
-                    dark={dark}
+                    dark={isDark}
                     css={{
                         height: `calc(100% * ${filtered_steps.length - 1} / ${filtered_steps.length})`,
                     }}
@@ -162,7 +165,7 @@ const StepNavigation = React.memo(
                             key={idx + 1}
                             onClick={() => onClick?.(idx)}
                             disabled={is_disabled}
-                            dark={dark}
+                            dark={isDark}
                             data-testid="step-item"
                         >
                             <Bullet
@@ -172,7 +175,7 @@ const StepNavigation = React.memo(
                                     (active && 'active') ||
                                     undefined
                                 }
-                                dark={dark}
+                                dark={isDark}
                             />
                             <Text
                                 as="label"

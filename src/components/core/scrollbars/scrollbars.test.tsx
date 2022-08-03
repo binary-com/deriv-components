@@ -15,7 +15,6 @@ describe('Scrollbars Component', () => {
 
     const props = {
         autohide: false,
-        dark: false,
         has_horizontal: false,
         is_only_horizontal: false,
         is_only_horizontal_overlay: false,
@@ -31,16 +30,10 @@ describe('Scrollbars Component', () => {
                     width: '300px',
                     height: '400px',
                     borderRadius: '10px',
-                    background: props.dark ? '#C15D5D' : '#F7F8F1',
                 }}
             >
                 {'275577587687785657687567'.split('').map((el, i) => (
-                    <Text
-                        key={i + 1}
-                        as="p"
-                        bold={false}
-                        css={{ color: props.dark ? 'white' : 'black', marginRight: '400px' }}
-                    >
+                    <Text key={i + 1} as="p" bold={false} css={{ marginRight: '400px' }}>
                         {el}
                     </Text>
                 ))}

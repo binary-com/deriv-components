@@ -2,9 +2,9 @@ import * as Stitches from '@stitches/react';
 import * as SwitchPrimitive from '@radix-ui/react-switch';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
+import useTheme from '@core/theme-context/use-theme';
 
 export type ToggleSwitchProps = {
-    dark?: boolean;
     class_name_label?: string;
     id?: string;
     default_checked?: boolean;
@@ -82,7 +82,6 @@ const Label = styled('label', {
 });
 
 const ToggleSwitch = ({
-    dark,
     class_name_label,
     id,
     default_checked = false,
@@ -90,26 +89,29 @@ const ToggleSwitch = ({
     disabled,
     handleChange,
     ...props
-}: ToggleSwitchProps) => (
-    <Flex css={{ alignItems: 'center' }}>
-        {label && (
-            <Label htmlFor={id} className={class_name_label} dark={dark} disabled={disabled}>
-                {label}
-            </Label>
-        )}
-        <StyledSwitch
-            id={id}
-            dark={dark}
-            defaultChecked={default_checked}
-            disabled={disabled}
-            css={disabled ? { cursor: 'default', opacity: 0.32 } : {}}
-            onCheckedChange={(check_value: boolean) => handleChange(check_value)}
-            {...props}
-        >
-            <StyledThumb disabled={disabled} />
-        </StyledSwitch>
-    </Flex>
-);
+}: ToggleSwitchProps) => {
+    const { isDark } = useTheme();
+    return (
+        <Flex css={{ alignItems: 'center' }}>
+            {label && (
+                <Label htmlFor={id} className={class_name_label} dark={isDark} disabled={disabled}>
+                    {label}
+                </Label>
+            )}
+            <StyledSwitch
+                id={id}
+                dark={isDark}
+                defaultChecked={default_checked}
+                disabled={disabled}
+                css={disabled ? { cursor: 'default', opacity: 0.32 } : {}}
+                onCheckedChange={(check_value: boolean) => handleChange(check_value)}
+                {...props}
+            >
+                <StyledThumb disabled={disabled} />
+            </StyledSwitch>
+        </Flex>
+    );
+};
 
 export default ToggleSwitch;
 

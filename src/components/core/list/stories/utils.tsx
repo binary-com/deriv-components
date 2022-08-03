@@ -114,12 +114,4 @@ export const ListStoriesArgTypes = {
         control: false,
         description: 'Array of list items, they should have type',
     },
-    dark: {
-        description: 'to enable dark version of the list please set it to true',
-        defaultValue: false,
-        control: false,
-        table: {
-            defaultValue: { summary: false },
-        },
-    },
 };

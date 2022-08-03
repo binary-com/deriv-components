@@ -7,12 +7,11 @@ import Checkbox, { CheckboxProps } from '@core/checkbox/checkbox';
 export interface CheckboxListProps extends HtmlHTMLAttributes<HTMLInputElement> {
     size?: 'default' | 'small';
     select_all_text?: string;
-    dark?: boolean;
     handleChange: (check_boxes: CheckboxProps[]) => void;
     check_boxes: CheckboxProps[];
 }
 
-const CheckboxList = ({ check_boxes, size, dark, select_all_text = 'Select All', handleChange }: CheckboxListProps) => {
+const CheckboxList = ({ check_boxes, size, select_all_text = 'Select All', handleChange }: CheckboxListProps) => {
     const [check_boxes_array, setCheckBoxesArray] = useState(check_boxes);
     const [checked, setChecked] = useState(false);
     const [indetermine, setIndetermine] = useState(false);
@@ -74,7 +73,6 @@ const CheckboxList = ({ check_boxes, size, dark, select_all_text = 'Select All',
                 <Checkbox
                     check={checked}
                     indetermine={indetermine}
-                    dark={dark}
                     size={size}
                     disabled={disabled}
                     handleChange={(check: boolean) => handleSelectAllCheckbox(check)}
@@ -88,7 +86,6 @@ const CheckboxList = ({ check_boxes, size, dark, select_all_text = 'Select All',
                         {...check_box}
                         check={check_box.check}
                         size={size}
-                        dark={dark}
                         handleChange={(check: boolean) => handleIndividualCheckboxChange(check, check_box)}
                     >
                         {check_box.label}

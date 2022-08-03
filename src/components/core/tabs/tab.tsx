@@ -3,11 +3,11 @@ import type { LiHTMLAttributes } from 'react';
 import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
+import useTheme from '@core/theme-context/use-theme';
 
 export interface TabProps extends LiHTMLAttributes<HTMLLIElement> {
     active?: boolean;
     contained?: boolean;
-    dark?: boolean;
     size?: 'default' | 'small';
     icon?: string;
     label?: string;
@@ -141,11 +141,12 @@ const Icon = styled('img', {
 });
 
 const Tab = React.forwardRef(
-    ({ active, contained, dark, size = 'default', icon, label, width_of_tab, ...props }: TabProps, ref: any) => {
+    ({ active, contained, size = 'default', icon, label, width_of_tab, ...props }: TabProps, ref: any) => {
+        const { isDark } = useTheme();
         return (
             <List
                 active={active}
-                dark={dark}
+                dark={isDark}
                 size={size}
                 contained={contained}
                 {...props}

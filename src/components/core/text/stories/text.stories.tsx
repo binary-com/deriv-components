@@ -1,6 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { TextStory, type_array, align_array } from '../text';
 import Text from '../text';
+import React from 'react';
 
 export default {
     title: 'Text',

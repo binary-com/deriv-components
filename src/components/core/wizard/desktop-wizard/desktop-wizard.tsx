@@ -7,6 +7,7 @@ import { WizardProps, StepProps, RightPanelProps } from '@core/wizard/types';
 import { styled } from 'Styles/stitches.config';
 import StepNavigation from './step-navigation';
 import DesktopWizardBody from './desktop-wizard-body';
+import useTheme from '@core/theme-context/use-theme';
 
 const LeftPanel = styled('div', {
     width: '256px',
@@ -123,7 +124,6 @@ const DesktopWizard = (props: DesktopWizard) => {
         animated_div_ref,
         current_step_index,
         complete_steps_indexes,
-        dark,
         handleStepClick,
         onClose,
         wizard_title,
@@ -146,14 +146,16 @@ const DesktopWizard = (props: DesktopWizard) => {
     const steps_config = steps.map((_step) => getStepDetails(_step));
     const current_step = steps[current_step_index];
 
+    const { isDark } = useTheme();
+
     return (
         <>
-            <LeftPanel dark={dark}>
+            <LeftPanel dark={isDark}>
                 <Text
                     as="div"
                     type="subtitle-2"
                     bold
-                    css={{ marginBottom: '24px', color: dark ? '$prominent-text' : '#333333' }}
+                    css={{ marginBottom: '24px', color: isDark ? '$prominent-text' : '#333333' }}
                 >
                     {wizard_title}
                 </Text>
@@ -161,7 +163,6 @@ const DesktopWizard = (props: DesktopWizard) => {
                     steps={steps_config}
                     current_step_index={current_step_index}
                     complete_steps_indexes={complete_steps_indexes}
-                    dark={dark}
                     onClick={handleStepClick}
                 />
             </LeftPanel>
@@ -171,32 +172,20 @@ const DesktopWizard = (props: DesktopWizard) => {
                         <DesktopWizardBody
                             animated_div_ref={animated_div_ref}
                             current_step={steps[current_step_index]}
-                            dark={dark}
                         />
                     </FixedWidthContainer>
                     {current_step.props.is_fullwidth ? null : right_panel}
                 </ContentContainer>
-                <Footer dark={dark}>
-                    <Button
-                        color="secondary"
-                        size="large"
-                        onClick={prevStep}
-                        disabled={current_step_index < 1}
-                        dark={dark}
-                    >
+                <Footer dark={isDark}>
+                    <Button color="secondary" size="large" onClick={prevStep} disabled={current_step_index < 1}>
                         {secondary_button_label}
                     </Button>
-                    <Button
-                        size="large"
-                        onClick={nextStep}
-                        disabled={current_step.props.is_submit_disabled}
-                        dark={dark}
-                    >
+                    <Button size="large" onClick={nextStep} disabled={current_step.props.is_submit_disabled}>
                         {primary_button_label}
                     </Button>
                 </Footer>
             </WizardBody>
-            <CloseIcon dark={dark} onClick={onClose} />
+            <CloseIcon dark={isDark} onClick={onClose} />
         </>
     );
 };

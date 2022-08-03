@@ -21,14 +21,6 @@ export default {
     component: Wizard,
     parameters: { controls: { sort: 'alpha' } },
     argTypes: {
-        dark: {
-            description: 'Optional. If set to `true`, the wizard will be set to dark theme.',
-            defaultValue: false,
-            table: {
-                type: { summary: 'boolean | undefined' },
-                defaultValue: { summary: false },
-            },
-        },
         has_dark_background: {
             description:
                 'Optional. If set to false, the wizard will be displayed without dark background surrounding it.',
@@ -186,14 +178,12 @@ const Template: Story<WizardProps> = (args) => {
 
 export const LightWizard = Template.bind({});
 LightWizard.args = {
-    dark: false,
     has_dark_background: true,
     wizard_title: "Let's get you a new app.",
     lock_final_step: true,
 };
 export const LightWizardWithoutDarkBackground = Template.bind({});
 LightWizardWithoutDarkBackground.args = {
-    dark: false,
     has_dark_background: false,
     wizard_title: "Let's get you a new app.",
     lock_final_step: true,
@@ -201,7 +191,6 @@ LightWizardWithoutDarkBackground.args = {
 
 export const WizardWithoutLockedFinalStep = Template.bind({});
 WizardWithoutLockedFinalStep.args = {
-    dark: false,
     has_dark_background: false,
     wizard_title: "Let's get you a new app.",
 };

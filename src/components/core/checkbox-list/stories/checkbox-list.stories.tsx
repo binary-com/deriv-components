@@ -1,29 +1,10 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { CheckboxProps } from '@core/checkbox/checkbox';
 import CheckboxList, { CheckboxListStory } from '@core/checkbox-list/checkbox-list';
-
-const handleChange = (check_boxes: CheckboxProps) => check_boxes;
 
 export default {
     title: 'Checkbox-list',
-    parameters: {
-        backgrounds: {
-            default: 'light',
-            values: [
-                { name: 'light', value: '#ffffff' },
-                { name: 'dark', value: '#0E0E0E' },
-            ],
-        },
-    },
+
     argTypes: {
-        dark: {
-            description: 'If set to `true`, checkbox border and text will be set to `dark` theme',
-            defaultValue: `dark`,
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false },
-            },
-        },
         size: {
             control: {
                 type: 'select',
@@ -44,7 +25,8 @@ export default {
             defaultValue: [{ label: 'label 1', check: true }, { label: 'label 2' }, { label: 'label 3', check: true }],
         },
         handleChange: {
-            defaultValue: handleChange,
+            control: false,
+            action: 'handleChange',
         },
     },
 } as ComponentMeta<typeof CheckboxListStory>;
@@ -54,7 +36,6 @@ const Template: ComponentStory<typeof CheckboxListStory> = (args) => <CheckboxLi
 export const Light = Template.bind({});
 Light.args = {
     size: 'default',
-    dark: false,
     check_boxes: [{ label: 'label 1', check: true }, { label: 'label 2' }],
 };
 
@@ -62,18 +43,12 @@ export const Dark = Template.bind({});
 Dark.args = {
     children: 'Label',
     size: 'default',
-    dark: true,
     check_boxes: [{ label: 'label 1', check: true }, { label: 'label 2' }, { label: 'label 3' }],
-};
-
-Dark.parameters = {
-    backgrounds: { default: 'dark' },
 };
 
 export const AllCheckboxDisabled = Template.bind({});
 AllCheckboxDisabled.args = {
     size: 'default',
-    dark: false,
     check_boxes: [
         { label: 'label 1', check: true, disabled: true },
         { label: 'label 2', disabled: true },

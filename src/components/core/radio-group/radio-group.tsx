@@ -3,6 +3,7 @@ import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
+import useTheme from '@core/theme-context/use-theme';
 
 type TRadioButtonOptions = {
     label: string;
@@ -12,7 +13,6 @@ type TRadioButtonOptions = {
 };
 
 export interface RadioGroupProps extends HtmlHTMLAttributes<HTMLButtonElement> {
-    dark?: boolean;
     handleChange: (value: string) => void;
     selected_value: string;
     disabled?: boolean;
@@ -89,27 +89,30 @@ const Label = styled('label', {
     },
 });
 
-export const RadioGroup = ({ dark, options, selected_value, disabled, handleChange, ...props }: RadioGroupProps) => (
-    <RadioGroupPrimitive.Root defaultValue={selected_value} onValueChange={handleChange}>
-        {options.map((option) => (
-            <Flex key={option.id}>
-                <StyledRadio
-                    value={option.value}
-                    dark={dark}
-                    disabled={disabled}
-                    css={disabled ? { opacity: '$opacity-32', cursor: 'default' } : {}}
-                    id={option.id}
-                    {...props}
-                >
-                    <StyledIndicator />
-                </StyledRadio>
-                <Label dark={dark} disabled={disabled} htmlFor={option.id}>
-                    {option.label}
-                </Label>
-            </Flex>
-        ))}
-    </RadioGroupPrimitive.Root>
-);
+export const RadioGroup = ({ options, selected_value, disabled, handleChange, ...props }: RadioGroupProps) => {
+    const { isDark } = useTheme();
+    return (
+        <RadioGroupPrimitive.Root defaultValue={selected_value} onValueChange={handleChange}>
+            {options.map((option) => (
+                <Flex key={option.id}>
+                    <StyledRadio
+                        value={option.value}
+                        dark={isDark}
+                        disabled={disabled}
+                        css={disabled ? { opacity: '$opacity-32', cursor: 'default' } : {}}
+                        id={option.id}
+                        {...props}
+                    >
+                        <StyledIndicator />
+                    </StyledRadio>
+                    <Label dark={isDark} disabled={disabled} htmlFor={option.id}>
+                        {option.label}
+                    </Label>
+                </Flex>
+            ))}
+        </RadioGroupPrimitive.Root>
+    );
+};
 
 export default RadioGroup;
 
