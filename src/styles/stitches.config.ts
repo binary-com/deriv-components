@@ -1,7 +1,7 @@
 import { createStitches } from '@stitches/react';
 import { colors } from '../../colors';
 import { font, font_size, font_weights, line_heights } from '../../typography';
-import { border_width, radii, opacity } from '../../mixins';
+import { border_width, box_shadow, opacity, radii } from '../../mixins';
 
 // source from provider
 const default_bp = 992;
@@ -42,6 +42,9 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         },
         opacity: {
             ...opacity,
+        },
+        shadows: {
+            ...box_shadow,
         },
     },
     media: {
