@@ -79,13 +79,18 @@ const StepNavigation = React.memo(({ steps, current_step_index, next_step_index 
         <StepContainer data-testid="step-navigation">
             <ProcessCircle style={{ background: `${progress_angel}` }}>
                 <Inner dark={isDark}>
-                    <Text as="label" type="paragraph-1" bold style={{ color: isDark ? '#FFFFFF' : '$greyLight700' }}>
+                    <Text
+                        as="label"
+                        type="paragraph-1"
+                        bold
+                        style={{ color: isDark ? '$greyLight100' : '$greyLight700' }}
+                    >
                         {current_step_number}/{total_steps_count}
                     </Text>
                 </Inner>
             </ProcessCircle>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <Text as="label" type="paragraph-1" bold style={{ color: isDark ? '#FFFFFF' : '$greyLight700' }}>
+                <Text as="label" type="paragraph-1" bold style={{ color: isDark ? '$greyLight100' : '$greyLight700' }}>
                     {current?.title}
                 </Text>
                 {!!next_current && (
