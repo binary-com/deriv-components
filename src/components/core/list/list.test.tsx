@@ -96,15 +96,6 @@ describe('List Component', () => {
         it('Should render light bulleted list', () => {
             expect(list).not.toHaveAttribute('class', expect.stringContaining('dark'));
         });
-
-        it('Should render dark bulleted list', () => {
-            // clean up the screen since we are using beforeEach in the describe block. if we don't use it there will be two instances of list
-            cleanup();
-
-            render(<List.BulletedList items={simpleDataList} dark />);
-            const list = screen.getByRole('list');
-            expect(list).toHaveAttribute('class', expect.stringContaining('dark'));
-        });
     });
 
     describe('Numbered List', () => {
@@ -126,15 +117,6 @@ describe('List Component', () => {
 
         it('Should render light numbered list', () => {
             expect(list).not.toHaveAttribute('class', expect.stringContaining('dark'));
-        });
-
-        it('Should render dark numbered list', () => {
-            // clean up the screen since we are using beforeEach in the describe block. if we don't use it there will be two instances of list
-            cleanup();
-
-            render(<List.NumberList items={simpleDataList} dark />);
-            const list = screen.getByRole('list');
-            expect(list).toHaveAttribute('class', expect.stringContaining('dark'));
         });
     });
 
@@ -159,15 +141,6 @@ describe('List Component', () => {
 
         it('Should render light checked list', () => {
             expect(list).not.toHaveAttribute('class', expect.stringContaining('dark'));
-        });
-
-        it('Should render dark checked List', () => {
-            // clean up the screen since we are using beforeEach in the describe block. if we don't use it there will be two instances of list
-            cleanup();
-
-            render(<List.CheckList items={checkedListData} dark />);
-            const list = screen.getByRole('list');
-            expect(list).toHaveAttribute('class', expect.stringContaining('dark'));
         });
     });
 
@@ -200,15 +173,6 @@ describe('List Component', () => {
 
         it('Should render light compound list', () => {
             expect(list).not.toHaveAttribute('class', expect.stringContaining('dark'));
-        });
-
-        it('Should render dark compound List', () => {
-            // clean up the screen since we are using beforeEach in the describe block. if we don't use it there will be two instances of list
-            cleanup();
-
-            render(<List.CompoundList items={compoundListData} dark />);
-            const list = screen.getByRole('list');
-            expect(list).toHaveAttribute('class', expect.stringContaining('dark'));
         });
 
         it('Should be able to click on compond list item', () => {
