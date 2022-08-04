@@ -1,7 +1,11 @@
-import { FC, useMemo, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import ThemeContext, { EColorMode, ThemeContextValueType } from './theme-context';
 
-const ThemeProvider: FC = ({ children }) => {
+type TThemeProviderProps = {
+    children: ReactNode;
+};
+
+const ThemeProvider = ({ children }: TThemeProviderProps) => {
     const [colorMode, setRawColorMode] = useState<EColorMode>(EColorMode.LIGHT);
 
     const contextValue: ThemeContextValueType = useMemo(() => {
