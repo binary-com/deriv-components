@@ -5,12 +5,12 @@ import AccordionExpandIcon from '@assets/svg/accordion-expand.svg';
 import AccordionSmallCollapseIcon from '@assets/svg/accordion-small-collapse.svg';
 import AccordionSmallExpandIcon from '@assets/svg/accordion-small-expand.svg';
 
-export type AccordionTtileProps = {
+export type AccordionTileProps = {
     children: ReactElement[] | ReactElement;
-    expand_section: boolean;
+    expand_section?: boolean;
     size: 'medium' | 'small';
     dark: boolean;
-    handleClick: () => void;
+    handleClick?: (expand: boolean) => void;
 };
 
 const Svg = styled('svg', {
@@ -75,18 +75,17 @@ const HeaderDiv = styled('div', {
     cursor: 'pointer',
 });
 
-const AccordionTitle = ({ children, expand_section, size, dark, handleClick }: AccordionTtileProps) => {
+const AccordionTitle = ({ children, expand_section, size, dark, handleClick }: AccordionTileProps) => {
     const getAccordionIcon = () => {
         if (expand_section) {
             if (size === 'small') return AccordionSmallCollapseIcon;
             return AccordionCollapseIcon;
         }
-
         return size === 'small' ? AccordionSmallExpandIcon : AccordionExpandIcon;
     };
 
     return (
-        <HeaderDiv onClick={handleClick}>
+        <HeaderDiv onClick={() => (handleClick ? handleClick(!expand_section) : '')}>
             <Header size={size}>{children}</Header>
             <IconDiv size={size}>
                 <Svg dark={dark}>

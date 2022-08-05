@@ -2,7 +2,9 @@ import { useState } from '@storybook/addons';
 import type { Story } from '@storybook/react';
 import Accordion, { AccordionProps } from '../accordion';
 import { AccordionContentProps } from '../accordion-content';
-import { AccordionTtileProps } from '../accordion-title';
+import { AccordionTileProps } from '../accordion-title';
+
+const onToggle = (expand: boolean) => console.log(expand);
 
 export default {
     title: 'Accordion',
@@ -77,28 +79,39 @@ export default {
                 defaultValue: { summary: false },
             },
         },
+        expand_section: {
+            description: 'If set to `true`, accordion will be open.',
+            defaultValue: false,
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+            },
+        },
         title_content: {
             defaultValue: <div>Title</div>,
         },
         main_content: {
             defaultValue: <div>Content</div>,
         },
+        onToggle: {
+            defaultValue: onToggle,
+        },
     },
 };
 
-const Template: Story<AccordionProps & AccordionTtileProps & AccordionContentProps> = (args) => {
-    const [expand_section, setExpandSection] = useState(args.expand_section);
+const Template: Story<AccordionProps & AccordionTileProps & AccordionContentProps> = (args) => {
     return (
-        <Accordion type={args.type} dark={args.dark} elevation_type={args.elevation_type}>
-            <Accordion.Title
-                size={args.size}
-                dark={args.dark}
-                expand_section={expand_section}
-                handleClick={() => setExpandSection(!expand_section)}
-            >
+        <Accordion
+            type={args.type}
+            dark={args.dark}
+            elevation_type={args.elevation_type}
+            expand_section={args.expand_section}
+            onToggle={onToggle}
+        >
+            <Accordion.Title size={args.size} dark={args.dark}>
                 <p>Title</p>
             </Accordion.Title>
-            <Accordion.Content expand_section={expand_section} size={args.size}>
+            <Accordion.Content size={args.size}>
                 <p>Content</p>
             </Accordion.Content>
         </Accordion>

@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactElement } from 'react';
+import { Children, useState, useEffect, ReactElement, cloneElement } from 'react';
 import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
@@ -6,10 +6,12 @@ import AccordionTitle from './accordion-title';
 import AccordionContent from './accordion-content';
 
 export type AccordionProps = {
-    children?: ReactElement[] | ReactElement;
+    children?: ReactElement[];
+    expand_section: boolean;
     dark: boolean;
     elevation_type: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
     type: 'bottomBorder' | 'container' | 'containerWithBorder' | 'containerWithShadow';
+    onToggle: (expand: boolean) => void;
 };
 
 const AccordionDiv = styled('div', {
@@ -125,10 +127,25 @@ const AccordionDiv = styled('div', {
     ],
 });
 
-const Accordion = ({ type, children, dark, elevation_type = 'xs' }: AccordionProps) => {
+const Accordion = ({ type, children, dark, elevation_type = 'xs', expand_section, onToggle }: AccordionProps) => {
+    const [toggle_accordion, setToggleAccordion] = useState(expand_section);
+
+    useEffect(() => {
+        setToggleAccordion(expand_section);
+    }, [expand_section]);
+
+    const handleClick = (expand: boolean) => {
+        setToggleAccordion(expand);
+        onToggle(expand);
+    };
+
     return (
         <AccordionDiv type={type} dark={dark} elevation_type={elevation_type}>
-            {children}
+            {Children.map(children, (child) => {
+                if (child) {
+                    return cloneElement(child, { expand_section: toggle_accordion, handleClick });
+                }
+            })}
         </AccordionDiv>
     );
 };

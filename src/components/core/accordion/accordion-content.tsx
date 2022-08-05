@@ -3,7 +3,7 @@ import { styled } from 'Styles/stitches.config';
 
 export type AccordionContentProps = {
     children: ReactElement[] | ReactElement;
-    expand_section: boolean;
+    expand_section?: boolean;
     size: 'medium' | 'small';
 };
 
