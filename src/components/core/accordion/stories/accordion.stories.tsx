@@ -4,7 +4,7 @@ import Accordion, { AccordionProps } from '../accordion';
 import { AccordionContentProps } from '../accordion-content';
 import { AccordionTitleProps } from '../accordion-title';
 
-const onToggle = (expand: boolean) => console.log(expand);
+const onToggle = (expand: boolean) => expand;
 
 export default {
     title: 'Accordion',
