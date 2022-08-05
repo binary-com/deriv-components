@@ -5,7 +5,7 @@ import AccordionExpandIcon from '@assets/svg/accordion-expand.svg';
 import AccordionSmallCollapseIcon from '@assets/svg/accordion-small-collapse.svg';
 import AccordionSmallExpandIcon from '@assets/svg/accordion-small-expand.svg';
 
-export type AccordionTileProps = {
+export type AccordionTitleProps = {
     children: ReactElement[] | ReactElement;
     expand_section?: boolean;
     size: 'medium' | 'small';
@@ -75,7 +75,7 @@ const HeaderDiv = styled('div', {
     cursor: 'pointer',
 });
 
-const AccordionTitle = ({ children, expand_section, size, dark, handleClick }: AccordionTileProps) => {
+const AccordionTitle = ({ children, expand_section, size, dark, handleClick }: AccordionTitleProps) => {
     const getAccordionIcon = () => {
         if (expand_section) {
             if (size === 'small') return AccordionSmallCollapseIcon;

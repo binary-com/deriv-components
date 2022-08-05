@@ -2,7 +2,7 @@ import { useState } from '@storybook/addons';
 import type { Story } from '@storybook/react';
 import Accordion, { AccordionProps } from '../accordion';
 import { AccordionContentProps } from '../accordion-content';
-import { AccordionTileProps } from '../accordion-title';
+import { AccordionTitleProps } from '../accordion-title';
 
 const onToggle = (expand: boolean) => console.log(expand);
 
@@ -99,7 +99,7 @@ export default {
     },
 };
 
-const Template: Story<AccordionProps & AccordionTileProps & AccordionContentProps> = (args) => {
+const Template: Story<AccordionProps & AccordionTitleProps & AccordionContentProps> = (args) => {
     return (
         <Accordion
             type={args.type}
