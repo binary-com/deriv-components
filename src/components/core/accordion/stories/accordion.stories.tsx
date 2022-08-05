@@ -1,5 +1,8 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import Accordion, { AccordionStory } from '../accordion';
+import { useState } from '@storybook/addons';
+import type { Story } from '@storybook/react';
+import Accordion, { AccordionProps } from '../accordion';
+import { AccordionContentProps } from '../accordion-content';
+import { AccordionTtileProps } from '../accordion-title';
 
 export default {
     title: 'Accordion',
@@ -81,9 +84,26 @@ export default {
             defaultValue: <div>Content</div>,
         },
     },
-} as ComponentMeta<typeof AccordionStory>;
+};
 
-const Template: ComponentStory<typeof AccordionStory> = (args) => <Accordion {...args} />;
+const Template: Story<AccordionProps & AccordionTtileProps & AccordionContentProps> = (args) => {
+    const [expand_section, setExpandSection] = useState(args.expand_section);
+    return (
+        <Accordion type={args.type} dark={args.dark} elevation_type={args.elevation_type}>
+            <Accordion.Title
+                size={args.size}
+                dark={args.dark}
+                expand_section={expand_section}
+                handleClick={() => setExpandSection(!expand_section)}
+            >
+                <p>Title</p>
+            </Accordion.Title>
+            <Accordion.Content expand_section={expand_section} size={args.size}>
+                <p>Content</p>
+            </Accordion.Content>
+        </Accordion>
+    );
+};
 
 export const LightAccordion = Template.bind({});
 LightAccordion.args = {

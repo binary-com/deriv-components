@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { styled } from 'Styles/stitches.config';
 
-type AccordionContentProps = {
+export type AccordionContentProps = {
     children: ReactElement[] | ReactElement;
     expand_section: boolean;
     size: 'medium' | 'small';

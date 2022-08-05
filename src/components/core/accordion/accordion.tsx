@@ -5,14 +5,10 @@ import { modifyVariantsForStory } from 'Styles/type-utils';
 import AccordionTitle from './accordion-title';
 import AccordionContent from './accordion-content';
 
-type AccordionProps = {
-    title_content: ReactElement;
-    main_content: ReactElement;
+export type AccordionProps = {
     children?: ReactElement[] | ReactElement;
     dark: boolean;
     elevation_type: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
-    is_expanded: boolean;
-    size: 'medium' | 'small';
     type: 'bottomBorder' | 'container' | 'containerWithBorder' | 'containerWithShadow';
 };
 
@@ -129,34 +125,10 @@ const AccordionDiv = styled('div', {
     ],
 });
 
-const Accordion = ({
-    title_content,
-    type,
-    size,
-    dark,
-    is_expanded = false,
-    main_content,
-    elevation_type = 'xs',
-}: AccordionProps) => {
-    const [expand_section, setExpandSection] = useState(is_expanded);
-
-    useEffect(() => {
-        setExpandSection(expand_section);
-    }, [expand_section]);
-
+const Accordion = ({ type, children, dark, elevation_type = 'xs' }: AccordionProps) => {
     return (
         <AccordionDiv type={type} dark={dark} elevation_type={elevation_type}>
-            <Accordion.Title
-                size={size}
-                dark={dark}
-                expand_section={expand_section}
-                handleClick={() => setExpandSection(!expand_section)}
-            >
-                {title_content}
-            </Accordion.Title>
-            <Accordion.Content expand_section={expand_section} size={size}>
-                {main_content}
-            </Accordion.Content>
+            {children}
         </AccordionDiv>
     );
 };
