@@ -2,9 +2,8 @@ import BaseList from '@core/list/base/base-list';
 import { renderCheckListItems } from '@core/list/render-functions';
 import { TCheckListProps } from '@core/list/types';
 import useTheme from '@core/theme-context/use-theme';
-import { FC } from 'react';
 
-export const CheckList: FC<TCheckListProps> = ({ items, ...rest }) => {
+export const CheckList = ({ items, ...rest }: TCheckListProps) => {
     const { isDark } = useTheme();
 
     return (

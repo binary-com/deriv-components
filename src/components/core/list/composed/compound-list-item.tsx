@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { styled } from 'Styles/stitches.config';
 import StyledLi from '../base/base-list-item';
 import { TCompoundListItemProps } from '../types';
@@ -85,7 +84,7 @@ const CompoundLi = styled(StyledLi, {
     },
 });
 
-const CompoundListItem: FC<TCompoundListItemProps> = ({ item, dark, onClickItem, label = 'default' }) => {
+const CompoundListItem = ({ item, dark, onClickItem, label = 'default' }: TCompoundListItemProps) => {
     return (
         <CompoundLi
             type={'compound'}
