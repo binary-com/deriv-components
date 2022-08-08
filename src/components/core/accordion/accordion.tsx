@@ -4,11 +4,11 @@ import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 import AccordionTitle from './accordion-title';
 import AccordionContent from './accordion-content';
+import useTheme from '@core/theme-context/use-theme';
 
 export type AccordionProps = {
     children?: ReactElement[];
     expand_section: boolean;
-    dark: boolean;
     elevation_type: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
     type: 'bottomBorder' | 'container' | 'containerWithBorder' | 'containerWithShadow';
     onToggle: (expand: boolean) => void;
@@ -127,8 +127,9 @@ const AccordionDiv = styled('div', {
     ],
 });
 
-const Accordion = ({ type, children, dark, elevation_type = 'xs', expand_section, onToggle }: AccordionProps) => {
+const Accordion = ({ type, children, elevation_type = 'xs', expand_section, onToggle }: AccordionProps) => {
     const [toggle_accordion, setToggleAccordion] = useState(expand_section);
+    const { isDark } = useTheme();
 
     useEffect(() => {
         setToggleAccordion(expand_section);
@@ -140,7 +141,7 @@ const Accordion = ({ type, children, dark, elevation_type = 'xs', expand_section
     };
 
     return (
-        <AccordionDiv type={type} dark={dark} elevation_type={elevation_type}>
+        <AccordionDiv type={type} dark={isDark} elevation_type={elevation_type}>
             {Children.map(children, (child) => {
                 if (child) {
                     return cloneElement(child, { expand_section: toggle_accordion, handleClick });

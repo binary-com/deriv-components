@@ -1,4 +1,3 @@
-import { useState } from '@storybook/addons';
 import type { Story } from '@storybook/react';
 import Accordion, { AccordionProps } from '../accordion';
 import { AccordionContentProps } from '../accordion-content';
@@ -9,15 +8,6 @@ const onToggle = (expand: boolean) => expand;
 export default {
     title: 'Accordion',
     component: Accordion,
-    parameters: {
-        backgrounds: {
-            default: 'light',
-            values: [
-                { name: 'light', value: '#ffffff' },
-                { name: 'dark', value: '#0E0E0E' },
-            ],
-        },
-    },
     argTypes: {
         size: {
             control: {
@@ -71,14 +61,6 @@ export default {
                 defaultValue: { summary: 'xs' },
             },
         },
-        dark: {
-            description: 'If set to `true`, accordion color will be set to dark theme.',
-            defaultValue: false,
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false },
-            },
-        },
         expand_section: {
             description: 'If set to `true`, accordion will be open.',
             defaultValue: false,
@@ -103,12 +85,11 @@ const Template: Story<AccordionProps & AccordionTitleProps & AccordionContentPro
     return (
         <Accordion
             type={args.type}
-            dark={args.dark}
             elevation_type={args.elevation_type}
             expand_section={args.expand_section}
             onToggle={onToggle}
         >
-            <Accordion.Title size={args.size} dark={args.dark}>
+            <Accordion.Title size={args.size}>
                 <p>Title</p>
             </Accordion.Title>
             <Accordion.Content size={args.size}>
@@ -118,16 +99,5 @@ const Template: Story<AccordionProps & AccordionTitleProps & AccordionContentPro
     );
 };
 
-export const LightAccordion = Template.bind({});
-LightAccordion.args = {
-    dark: false,
-};
-
-export const DarkAccordion = Template.bind({});
-DarkAccordion.args = {
-    dark: true,
-};
-
-DarkAccordion.parameters = {
-    backgrounds: { default: 'dark' },
-};
+export const DefaultAccordion = Template.bind({});
+DefaultAccordion.args = {};

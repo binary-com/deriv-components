@@ -4,12 +4,12 @@ import AccordionCollapseIcon from '@assets/svg/accordion-collapse.svg';
 import AccordionExpandIcon from '@assets/svg/accordion-expand.svg';
 import AccordionSmallCollapseIcon from '@assets/svg/accordion-small-collapse.svg';
 import AccordionSmallExpandIcon from '@assets/svg/accordion-small-expand.svg';
+import useTheme from '@core/theme-context/use-theme';
 
 export type AccordionTitleProps = {
     children: ReactElement[] | ReactElement;
     expand_section?: boolean;
     size: 'medium' | 'small';
-    dark: boolean;
     handleClick?: (expand: boolean) => void;
 };
 
@@ -41,9 +41,15 @@ const IconDiv = styled('div', {
         size: {
             small: {
                 padding: '0 1rem 0 1rem',
+                '@mobile': {
+                    padding: '0 0.5rem 0 0.5rem',
+                },
             },
             medium: {
                 padding: '0 1.5rem 0 1.5rem',
+                '@mobile': {
+                    padding: '0 1rem 0 1rem',
+                },
             },
         },
     },
@@ -75,7 +81,8 @@ const HeaderDiv = styled('div', {
     cursor: 'pointer',
 });
 
-const AccordionTitle = ({ children, expand_section, size, dark, handleClick }: AccordionTitleProps) => {
+const AccordionTitle = ({ children, expand_section, size, handleClick }: AccordionTitleProps) => {
+    const { isDark } = useTheme();
     const getAccordionIcon = () => {
         if (expand_section) {
             if (size === 'small') return AccordionSmallCollapseIcon;
@@ -88,7 +95,7 @@ const AccordionTitle = ({ children, expand_section, size, dark, handleClick }: A
         <HeaderDiv onClick={() => (handleClick ? handleClick(!expand_section) : '')}>
             <Header size={size}>{children}</Header>
             <IconDiv size={size}>
-                <Svg dark={dark}>
+                <Svg dark={isDark}>
                     <use href={`${getAccordionIcon()}#accordion`} />
                 </Svg>
             </IconDiv>
