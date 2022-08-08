@@ -5,11 +5,12 @@ import { modifyVariantsForStory } from 'Styles/type-utils';
 import AccordionTitle from './accordion-title';
 import AccordionContent from './accordion-content';
 import useTheme from '@core/theme-context/use-theme';
+import { TElevationType } from 'types/elevation.type';
 
 export type AccordionProps = {
     children?: ReactElement[];
     expand_section: boolean;
-    elevation_type: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
+    elevation_type: TElevationType;
     type: 'bottomBorder' | 'container' | 'containerWithBorder' | 'containerWithShadow';
     onToggle: (expand: boolean) => void;
 };
