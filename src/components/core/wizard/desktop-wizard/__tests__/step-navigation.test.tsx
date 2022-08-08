@@ -15,7 +15,6 @@ describe('StepNavigation Component', () => {
                 title: 'Complete',
             },
         ],
-        dark: false,
         current_step_index: 0,
         complete_steps_indexes: [],
         onClick: jest.fn(),

@@ -4,24 +4,7 @@ import ToggleSwitch, { ToggleSwitchStory } from '../toggle-switch';
 export default {
     title: 'Switch',
     component: ToggleSwitch,
-    parameters: {
-        backgrounds: {
-            default: 'light',
-            values: [
-                { name: 'light', value: '#ffffff' },
-                { name: 'dark', value: '#0E0E0E' },
-            ],
-        },
-    },
     argTypes: {
-        dark: {
-            description: 'If set to `true`, toggleSwitch will be displayed as per day mode',
-            defaultValue: false,
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false },
-            },
-        },
         disabled: {
             description: 'If set to `true`, toggleSwitch will be disabled',
             defaultValue: false,
@@ -58,13 +41,4 @@ export default {
 
 const Template: ComponentStory<typeof ToggleSwitchStory> = (args) => <ToggleSwitch {...args}></ToggleSwitch>;
 
-export const LightSwitch = Template.bind({});
-
-export const DarkSwitch = Template.bind({});
-DarkSwitch.args = {
-    dark: true,
-};
-
-DarkSwitch.parameters = {
-    backgrounds: { default: 'dark' },
-};
+export const Default = Template.bind({});
