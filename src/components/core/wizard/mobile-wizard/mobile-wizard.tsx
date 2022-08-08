@@ -6,6 +6,7 @@ import { WizardProps, StepProps, RightPanelProps } from '@core/wizard/types';
 import { styled } from 'Styles/stitches.config';
 import StepNavigation from './step-navigation';
 import MobileWizardBody from './mobile-wizard-body';
+import useTheme from '@core/theme-context/use-theme';
 
 const TopPanel = styled('div', {
     height: '88px',
@@ -132,7 +133,6 @@ const MobileWizard = (props: MobileWizard) => {
         animated_div_ref,
         current_step_index,
         complete_steps_indexes,
-        dark,
         is_right_panel,
         onClose,
         primary_button_label,
@@ -154,6 +154,8 @@ const MobileWizard = (props: MobileWizard) => {
         is_submit_disabled: _step.props.is_submit_disabled,
     });
 
+    const { isDark } = useTheme();
+
     const steps_config = steps.map((_step) => getStepDetails(_step));
     const current_step = steps[current_step_index];
 
@@ -168,13 +170,12 @@ const MobileWizard = (props: MobileWizard) => {
     return (
         <>
             {!current_step.props?.hide_steps_panel_in_mobile && !is_right_panel && (
-                <TopPanel dark={dark}>
+                <TopPanel dark={isDark}>
                     {!is_right_panel && (
                         <StepNavigation
                             steps={steps_config}
                             current_step_index={current_step_index}
                             complete_steps_indexes={complete_steps_indexes}
-                            dark={dark}
                             next_step_index={next_step_index}
                         />
                     )}
@@ -195,38 +196,25 @@ const MobileWizard = (props: MobileWizard) => {
                         <MobileWizardBody
                             animated_div_ref={animated_div_ref}
                             current_step={steps[current_step_index]}
-                            dark={dark}
+                            dark={isDark}
                             onScroll={handleScroll}
                         />
                     </ContentContainer>
                 )}
                 {is_right_panel && right_panel}
             </WizardBody>
-            <Footer dark={dark} is_right_panel={is_right_panel}>
+            <Footer dark={isDark} is_right_panel={is_right_panel}>
                 {!is_right_panel && (
-                    <Button
-                        color="secondary"
-                        size="large"
-                        onClick={prevStep}
-                        disabled={current_step_index < 1}
-                        dark={dark}
-                        block
-                    >
+                    <Button color="secondary" size="large" onClick={prevStep} disabled={current_step_index < 1} block>
                         {secondary_button_label}
                     </Button>
                 )}
-                <Button
-                    size="large"
-                    onClick={nextStep}
-                    disabled={current_step.props.is_submit_disabled}
-                    dark={dark}
-                    block
-                >
+                <Button size="large" onClick={nextStep} disabled={current_step.props.is_submit_disabled} block>
                     {primary_button_label}
                 </Button>
             </Footer>
             {!is_right_panel && !current_step.props?.hide_steps_panel_in_mobile && (
-                <CloseIcon dark={dark} onClick={onClose} />
+                <CloseIcon dark={isDark} onClick={onClose} />
             )}
         </>
     );

@@ -1,12 +1,14 @@
 import BaseList from '@core/list/base/base-list';
 import { renderCompoundListItems } from '@core/list/render-functions';
 import { TCompoundProps } from '@core/list/types';
-import { FC } from 'react';
+import useTheme from '@core/theme-context/use-theme';
 
-export const CompoundList: FC<TCompoundProps> = ({ items, onClickItem, dark = false, label = 'default', ...rest }) => {
+export const CompoundList = ({ items, onClickItem, label = 'default', ...rest }: TCompoundProps) => {
+    const { isDark } = useTheme();
+
     return (
-        <BaseList type="compound" dark={dark} {...rest}>
-            {renderCompoundListItems(items, label, dark, onClickItem)}
+        <BaseList {...rest} type="compound" dark={isDark}>
+            {renderCompoundListItems(items, label, isDark, onClickItem)}
         </BaseList>
     );
 };

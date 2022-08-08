@@ -12,6 +12,7 @@ import MobileStepNavigation from './mobile-wizard/step-navigation';
 import MobileStep from './mobile-wizard/step';
 import MobileRightPanel from './mobile-wizard/right-panel';
 import MobileWizardBody from './mobile-wizard/mobile-wizard-body';
+import useTheme from '@core/theme-context/use-theme';
 
 const DarkBackgroundContainer = styled('div', {
     position: 'absolute',
@@ -76,7 +77,7 @@ const MobileWizardContainer = styled('div', {
 });
 
 const Wizard = (props: WizardProps) => {
-    const { dark, lock_final_step, has_dark_background = true, onComplete, onChangeStep, onClose, children } = props;
+    const { lock_final_step, has_dark_background = true, onComplete, onChangeStep, onClose, children } = props;
 
     const [current_step_index, setCurrentStepIndex] = React.useState<number>(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
@@ -84,6 +85,8 @@ const Wizard = (props: WizardProps) => {
     const [is_right_panel, setIsRightPanel] = React.useState(false);
 
     const animated_div_ref = React.useRef<HTMLDivElement>(null);
+
+    const { isDark } = useTheme();
 
     let new_step_timeout: NodeJS.Timeout;
 
@@ -258,7 +261,7 @@ const Wizard = (props: WizardProps) => {
     return (
         <DarkBackgroundContainer visible={has_dark_background}>
             {isDesktop() && (
-                <DesktopWizardContainer dark={dark} data-testid="desktop-wizard">
+                <DesktopWizardContainer dark={isDark} data-testid="desktop-wizard">
                     <DesktopWizard
                         {...props}
                         animated_div_ref={animated_div_ref}
@@ -273,7 +276,7 @@ const Wizard = (props: WizardProps) => {
                 </DesktopWizardContainer>
             )}
             {isMobile() && (
-                <MobileWizardContainer dark={dark} is_right_panel={is_right_panel} data-testid="mobile-wizard">
+                <MobileWizardContainer dark={isDark} is_right_panel={is_right_panel} data-testid="mobile-wizard">
                     <MobileWizard
                         {...props}
                         animated_div_ref={animated_div_ref}

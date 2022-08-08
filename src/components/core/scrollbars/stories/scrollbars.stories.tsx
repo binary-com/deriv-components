@@ -16,14 +16,7 @@ export default {
                 defaultValue: { summary: false },
             },
         },
-        dark: {
-            description: 'If set to `true`, scrollbar thumb color will be set to dark theme.',
-            defaultValue: false,
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false },
-            },
-        },
+
         has_horizontal: {
             description:
                 "If set to `true` and there's content overflow, horizontal scrollbar will appear in case of X-axis overflow.",
@@ -85,21 +78,31 @@ export default {
     },
 } as Meta<ScrollbarsProps>;
 
-const BasicTemplate: Story<ScrollbarsProps> = (args) => (
-    <Scrollbars
-        {...args}
-        style={{ width: '300px', height: '400px', borderRadius: '10px', background: args.dark ? '#C15D5D' : '#F7F8F1' }}
-    >
-        {'275577587687785657687567'.split('').map((el, i) => (
-            <Text key={i + 1} as="p" bold={false} css={{ color: args.dark ? 'white' : 'black', marginRight: '400px' }}>
-                {el}
-            </Text>
-        ))}
-    </Scrollbars>
-);
-const TemplateWithOnScroll: Story<ScrollbarsProps> = (args) => {
+const BasicTemplate: Story<ScrollbarsProps> = (args, { globals: { theme } }) => {
+    const isDark = theme === 'dark';
+
+    return (
+        <Scrollbars
+            {...args}
+            style={{
+                width: '300px',
+                height: '400px',
+                borderRadius: '10px',
+                background: isDark ? '#C15D5D' : '#F7F8F1',
+            }}
+        >
+            {'275577587687785657687567'.split('').map((el, i) => (
+                <Text key={i + 1} as="p" bold={false} css={{ color: isDark ? 'white' : 'black', marginRight: '400px' }}>
+                    {el}
+                </Text>
+            ))}
+        </Scrollbars>
+    );
+};
+const TemplateWithOnScroll: Story<ScrollbarsProps> = (args, { globals: { theme } }) => {
     const [should_show_scrollbar, setShouldShowScrollbar] = React.useState(false);
     let scroll_timeout: NodeJS.Timeout;
+    const isDark = theme === 'dark';
 
     const handleScroll = () => {
         clearTimeout(scroll_timeout);
@@ -120,16 +123,11 @@ const TemplateWithOnScroll: Story<ScrollbarsProps> = (args) => {
                 width: '300px',
                 height: '400px',
                 borderRadius: '10px',
-                background: args.dark ? '#C15D5D' : '#F7F8F1',
+                background: isDark ? '#C15D5D' : '#F7F8F1',
             }}
         >
             {'275577587687785657687567'.split('').map((el, i) => (
-                <Text
-                    key={i + 1}
-                    as="p"
-                    bold={false}
-                    css={{ color: args.dark ? 'white' : 'black', marginRight: '400px' }}
-                >
+                <Text key={i + 1} as="p" bold={false} css={{ color: isDark ? 'white' : 'black', marginRight: '400px' }}>
                     {el}
                 </Text>
             ))}
@@ -137,10 +135,9 @@ const TemplateWithOnScroll: Story<ScrollbarsProps> = (args) => {
     );
 };
 
-export const LightWithVerticalScrollbarOnly = BasicTemplate.bind({});
-LightWithVerticalScrollbarOnly.args = {
+export const WithVerticalScrollbarOnly = BasicTemplate.bind({});
+WithVerticalScrollbarOnly.args = {
     autohide: false,
-    dark: false,
     has_horizontal: false,
     is_only_horizontal: false,
     is_only_horizontal_overlay: false,
@@ -148,10 +145,9 @@ LightWithVerticalScrollbarOnly.args = {
     has_y_scroll_on_drag_effect: false,
 };
 
-export const LightWithHorizontalScrollbarOnly = BasicTemplate.bind({});
-LightWithHorizontalScrollbarOnly.args = {
+export const WithHorizontalScrollbarOnly = BasicTemplate.bind({});
+WithHorizontalScrollbarOnly.args = {
     autohide: false,
-    dark: false,
     has_horizontal: undefined,
     is_only_horizontal: true,
     is_only_horizontal_overlay: false,
@@ -159,10 +155,9 @@ LightWithHorizontalScrollbarOnly.args = {
     has_y_scroll_on_drag_effect: false,
 };
 
-export const DarkWithBothScrollbars = BasicTemplate.bind({});
-DarkWithBothScrollbars.args = {
+export const WithBothScrollbars = BasicTemplate.bind({});
+WithBothScrollbars.args = {
     autohide: false,
-    dark: true,
     has_horizontal: true,
     is_only_horizontal: false,
     is_only_horizontal_overlay: false,
@@ -170,10 +165,9 @@ DarkWithBothScrollbars.args = {
     has_y_scroll_on_drag_effect: false,
 };
 
-export const LightShowingScrollbarOnScrollAndWhenHovered = TemplateWithOnScroll.bind({});
-LightShowingScrollbarOnScrollAndWhenHovered.args = {
+export const ShowingScrollbarOnScrollAndWhenHovered = TemplateWithOnScroll.bind({});
+ShowingScrollbarOnScrollAndWhenHovered.args = {
     // onScroll and autohide are defined inside TemplateWithOnScroll above
-    dark: false,
     has_horizontal: false,
     is_only_horizontal: false,
     is_only_horizontal_overlay: false,
@@ -181,32 +175,9 @@ LightShowingScrollbarOnScrollAndWhenHovered.args = {
     has_y_scroll_on_drag_effect: false,
 };
 
-export const DarkShowingScrollbarOnScrollAndWhenHovered = TemplateWithOnScroll.bind({});
-DarkShowingScrollbarOnScrollAndWhenHovered.args = {
-    // onScroll and autohide are defined inside TemplateWithOnScroll above
-    dark: true,
-    has_horizontal: false,
-    is_only_horizontal: false,
-    is_only_horizontal_overlay: false,
-    is_scrollbar_hidden: false,
-    has_y_scroll_on_drag_effect: false,
-};
-
-export const LightWithDragEffectAndHiddenScrollbar = BasicTemplate.bind({});
-LightWithDragEffectAndHiddenScrollbar.args = {
+export const WithDragEffectAndHiddenScrollbar = BasicTemplate.bind({});
+WithDragEffectAndHiddenScrollbar.args = {
     autohide: false,
-    dark: false,
-    has_horizontal: false,
-    is_only_horizontal: false,
-    is_only_horizontal_overlay: false,
-    is_scrollbar_hidden: true,
-    has_y_scroll_on_drag_effect: true,
-};
-
-export const DarkWithDragEffectAndHiddenScrollbar = BasicTemplate.bind({});
-DarkWithDragEffectAndHiddenScrollbar.args = {
-    autohide: false,
-    dark: true,
     has_horizontal: false,
     is_only_horizontal: false,
     is_only_horizontal_overlay: false,
