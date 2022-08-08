@@ -56,7 +56,7 @@ const List = styled('li', {
                 borderRadius: '16px 16px 0 0',
                 borderBottom: 'unset',
                 '&:hover': {
-                    backgroundColor: '$greyLight100_4',
+                    backgroundColor: '#FFFFFF66',
                     borderRadius: '16px 16px 0 0',
                     borderBottom: 'unset',
                 },
@@ -106,7 +106,7 @@ const List = styled('li', {
             css: {
                 borderBottom: 'unset',
                 '&:hover': {
-                    backgroundColor: '$greyDark700_4',
+                    backgroundColor: '#0E0E0E66',
                     borderRadius: '16px 16px 0 0',
                     borderBottom: 'unset',
                 },

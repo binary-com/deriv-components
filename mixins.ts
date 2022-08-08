@@ -29,13 +29,13 @@ export const opacity = {
     75: TOKEN.General['opacity']['75'].value,
 };
 
-export const box_shadow = {
-    xs :TOKEN.General['boxShadow']['xs'].value,
-    sm :TOKEN.General['boxShadow']['sm'].value,
-    md :TOKEN.General['boxShadow']['md'].value,
-    lg :TOKEN.General['boxShadow']['lg'].value,
-    xl :TOKEN.General['boxShadow']['xl'].value,
-    xxl :TOKEN.General['boxShadow']['xxl'].value,
-    xxxl :TOKEN.General['boxShadow']['xxxl'].value,
+export const elevation_box_shadow = {
+    xs :TOKEN.General['xs'].value,
+    sm :TOKEN.General['sm'].value,
+    md :TOKEN.General['md'].value,
+    lg :TOKEN.General['lg'].value,
+    xl :TOKEN.General['xl'].value,
+    xxl :TOKEN.General['xxl'].value,
+    xxxl :TOKEN.General['xxxl'].value,
 
 }

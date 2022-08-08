@@ -79,49 +79,49 @@ const AccordionDiv = styled('div', {
             type: 'containerWithShadow',
             elevation_type: 'xs',
             css: {
-                boxShadow: '$xs',
+                elevationBoxShadow: 'xs',
             },
         },
         {
             type: 'containerWithShadow',
             elevation_type: 'sm',
             css: {
-                boxShadow: '$sm',
+                elevationBoxShadow: 'sm',
             },
         },
         {
             type: 'containerWithShadow',
             elevation_type: 'md',
             css: {
-                boxShadow: '$md',
+                elevationBoxShadow: 'md',
             },
         },
         {
             type: 'containerWithShadow',
             elevation_type: 'lg',
             css: {
-                boxShadow: '$lg',
+                elevationBoxShadow: 'lg',
             },
         },
         {
             type: 'containerWithShadow',
             elevation_type: 'xl',
             css: {
-                boxShadow: '$xl',
+                elevationBoxShadow: 'xl',
             },
         },
         {
             type: 'containerWithShadow',
             elevation_type: 'xxl',
             css: {
-                boxShadow: '$xxl',
+                elevationBoxShadow: 'xxl',
             },
         },
         {
             type: 'containerWithShadow',
             elevation_type: 'xxxl',
             css: {
-                boxShadow: '$xxxl',
+                elevationBoxShadow: 'xxxl',
             },
         },
     ],

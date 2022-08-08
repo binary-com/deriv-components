@@ -1,7 +1,7 @@
 import { createStitches } from '@stitches/react';
 import { colors } from '../../colors';
 import { font, font_size, font_weights, line_heights } from '../../typography';
-import { border_width, box_shadow, opacity, radii } from '../../mixins';
+import { border_width, elevation_box_shadow, opacity, radii } from '../../mixins';
 
 // source from provider
 const default_bp = 992;
@@ -43,9 +43,6 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         opacity: {
             ...opacity,
         },
-        shadows: {
-            ...box_shadow,
-        },
     },
     media: {
         mobile: `(max-width: ${default_bp}px)`,
@@ -57,6 +54,32 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         paddingX: (value: string) => ({ paddingLeft: value, paddingRight: value }),
         paddingY: (value: string) => ({ paddingTop: value, paddingBottom: value }),
         boxSizingForAllChildren: (value: string) => ({ '*': { boxSizing: value } }),
+        elevationBoxShadow: (value: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl') => {
+            if (!Array.isArray(elevation_box_shadow[`${value}`])) {
+                const { x, y, blur, spread, color } = elevation_box_shadow[`${value}`] as {
+                    x: string;
+                    y: string;
+                    blur: string;
+                    spread: string;
+                    color: string;
+                };
+                return {
+                    boxShadow: `${x} ${y} ${blur} ${spread} ${color}`,
+                };
+            }
+
+            const box_shadow_array = (
+                elevation_box_shadow[`${value}`] as {
+                    x: string;
+                    y: string;
+                    blur: string;
+                    spread: string;
+                    color: string;
+                }[]
+            ).map(({ x, y, blur, spread, color }) => `${x} ${y} ${blur} ${spread} ${color}`);
+
+            return { boxShadow: box_shadow_array.join(',').toString() };
+        },
     },
 });
 
