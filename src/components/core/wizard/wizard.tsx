@@ -52,7 +52,7 @@ const DesktopWizardContainer = styled('div', {
 });
 
 const MobileWizardContainer = styled('div', {
-    width: '360px',
+    width: '100%',
     height: '100%',
     backgroundColor: '$primary-background',
 
@@ -155,14 +155,25 @@ const Wizard = (props: WizardProps) => {
             return;
         }
 
-        slide('translateY(0)', 'translateY(100vh)');
+        if (isDesktop()) {
+            slide('translateY(0)', 'translateY(100vh)');
+        }
+
+        if (isMobile()) {
+            slide('translateX(0)', 'translateX(100vw)');
+        }
 
         const prev_step_index = getPrevStepIndex();
 
         if (typeof prev_step_index === 'number') {
             new_step_timeout = setTimeout(() => {
                 setCurrentStepIndex(prev_step_index);
-                slide('translateY(-100vh)', 'translateY(0)');
+                if (isDesktop()) {
+                    slide('translateY(-100vh)', 'translateY(0)');
+                }
+                if (isMobile()) {
+                    slide('translateX(-100vw)', 'translatex(0)');
+                }
             }, 250);
         }
     };
@@ -176,7 +187,12 @@ const Wizard = (props: WizardProps) => {
             onComplete?.('primary');
             return;
         }
-        slide('translateY(0)', 'translateY(-100vh)');
+        if (isDesktop()) {
+            slide('translateY(0)', 'translateY(-100vh)');
+        }
+        if (isMobile()) {
+            slide('translateX(0)', 'translateX(-100vw)');
+        }
 
         const next_step_index = getNextStepIndex();
 
@@ -184,7 +200,13 @@ const Wizard = (props: WizardProps) => {
             new_step_timeout = setTimeout(
                 () => {
                     setCompleteStepsIndexes([...new Set([...complete_steps_indexes, current_step_index])]);
-                    slide('translateY(100vh)', 'translateY(0)');
+                    if (isDesktop()) {
+                        slide('translateY(100vh)', 'translateY(0)');
+                    }
+
+                    if (isMobile()) {
+                        slide('translateX(100vw)', 'translateX(0)');
+                    }
 
                     if (isMobile()) {
                         const has_current_step_right_panel: boolean = !!React.Children.toArray(
@@ -193,6 +215,7 @@ const Wizard = (props: WizardProps) => {
                         const is_current_step_complete: boolean = complete_steps_indexes.includes(current_step_index);
                         if (has_current_step_right_panel && !is_current_step_complete) {
                             setIsRightPanel(true);
+                            slide('translateX(100vw)', 'translateX(0)');
                             return;
                         }
                     }
@@ -257,7 +280,6 @@ const Wizard = (props: WizardProps) => {
                         steps={steps}
                         current_step_index={current_step_index}
                         complete_steps_indexes={complete_steps_indexes}
-                        handleStepClick={handleStepClick}
                         is_right_panel={is_right_panel}
                         nextStep={nextStep}
                         next_step_index={getNextStepIndex()}
@@ -273,6 +295,6 @@ const Wizard = (props: WizardProps) => {
 Wizard.Body = isMobile() ? MobileWizardBody : DesktopWizardBody;
 Wizard.StepNavigation = isMobile() ? MobileStepNavigation : DesktopStepNavigation;
 Wizard.Step = isMobile() ? MobileStep : DesktopStep;
-Wizard.RightPanel = isMobile() ? DesktopRightPanel : MobileRightPanel;
+Wizard.RightPanel = isMobile() ? MobileRightPanel : DesktopRightPanel;
 
 export default Wizard;

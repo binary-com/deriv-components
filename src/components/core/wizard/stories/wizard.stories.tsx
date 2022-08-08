@@ -145,7 +145,11 @@ const Template: Story<WizardProps> = (args) => {
                             onSelect={(product_type: string) => updateCreateAppState({ product_type })}
                         />
                     </Wizard.Step>
-                    <Wizard.Step title="App" is_submit_disabled={!create_app_state.account_type}>
+                    <Wizard.Step
+                        title="App"
+                        is_submit_disabled={!create_app_state.account_type}
+                        hide_steps_panel_in_mobile
+                    >
                         <StepAddAppMain
                             account_type={create_app_state.account_type}
                             onSelect={(account_type: string) => updateCreateAppState({ account_type })}
