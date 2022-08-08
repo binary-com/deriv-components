@@ -16,7 +16,6 @@ describe('MobileWizard Component', () => {
     const animated_div_ref = React.useRef<HTMLDivElement>(null);
 
     const props = {
-        dark: false,
         animated_div_ref: animated_div_ref,
     };
 

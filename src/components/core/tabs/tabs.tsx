@@ -8,7 +8,6 @@ import Tab from './tab';
 export interface TabsProps extends HtmlHTMLAttributes<HTMLDivElement> {
     active_index?: number;
     contained?: boolean;
-    dark?: boolean;
     size?: 'default' | 'small';
     children?: ReactElement<TabProps> | ReactElement<TabProps>[];
 }
@@ -18,7 +17,7 @@ const List = styled('ul', {
     padding: 0,
 });
 
-const Tabs = ({ children, active_index = 0, contained, dark, size, ...props }: TabsProps) => {
+const Tabs = ({ children, active_index = 0, contained, size, ...props }: TabsProps) => {
     const tabs_ref = useRef<HTMLUListElement | null>(null);
     const active_tab_ref = useRef<HTMLLIElement | null>(null);
     const [active_tab_index, setActiveTabIndex] = useState(active_index);
@@ -52,7 +51,6 @@ const Tabs = ({ children, active_index = 0, contained, dark, size, ...props }: T
                             active={active}
                             ref={active ? active_tab_ref : null}
                             contained={contained}
-                            dark={dark}
                             icon={icon}
                             key={idx}
                             label={label}

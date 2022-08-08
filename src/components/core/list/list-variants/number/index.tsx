@@ -1,11 +1,13 @@
 import BaseList from '@core/list/base/base-list';
 import { renderListItems } from '@core/list/render-functions';
 import { TSimpleListProps } from '@core/list/types';
-import { FC } from 'react';
+import useTheme from '@core/theme-context/use-theme';
 
-export const NumberList: FC<TSimpleListProps> = ({ items, ...rest }) => {
+export const NumberList = ({ items, ...rest }: TSimpleListProps) => {
+    const { isDark } = useTheme();
+
     return (
-        <BaseList type="numbered" {...rest}>
+        <BaseList {...rest} type="numbered" dark={isDark}>
             {renderListItems(items, 'numbered')}
         </BaseList>
     );
