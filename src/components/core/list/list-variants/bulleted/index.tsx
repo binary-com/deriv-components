@@ -3,9 +3,7 @@ import { renderListItems } from '@core/list/render-functions';
 import { TBulletedListProps } from '@core/list/types';
 import useTheme from '@core/theme-context/use-theme';
 
-import { FC } from 'react';
-
-export const BulletedList: FC<TBulletedListProps> = ({ items, ...rest }) => {
+export const BulletedList = ({ items, ...rest }: TBulletedListProps) => {
     const { isDark } = useTheme();
     return (
         <BaseList {...rest} dark={isDark} type="bulleted">
