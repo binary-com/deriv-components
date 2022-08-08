@@ -150,6 +150,7 @@ const Wizard = (props: WizardProps) => {
     };
 
     const prevStep = () => {
+        setIsRightPanel(false);
         clearTimeout(new_step_timeout);
 
         // Final step secondary button
@@ -174,8 +175,18 @@ const Wizard = (props: WizardProps) => {
                 if (isDesktop()) {
                     slide('translateY(-100vh)', 'translateY(0)');
                 }
+
                 if (isMobile()) {
                     slide('translateX(-100vw)', 'translatex(0)');
+
+                    const has_current_step_right_panel: boolean = !!React.Children.toArray(
+                        right_panel?.props?.children,
+                    )[current_step_index];
+                    const is_current_step_complete: boolean = complete_steps_indexes.includes(current_step_index);
+                    if (has_current_step_right_panel && !is_current_step_complete) {
+                        setIsRightPanel(true);
+                        return;
+                    }
                 }
             }, 250);
         }
@@ -209,16 +220,13 @@ const Wizard = (props: WizardProps) => {
 
                     if (isMobile()) {
                         slide('translateX(100vw)', 'translateX(0)');
-                    }
 
-                    if (isMobile()) {
                         const has_current_step_right_panel: boolean = !!React.Children.toArray(
                             right_panel?.props?.children,
                         )[current_step_index];
                         const is_current_step_complete: boolean = complete_steps_indexes.includes(current_step_index);
                         if (has_current_step_right_panel && !is_current_step_complete) {
                             setIsRightPanel(true);
-                            slide('translateX(100vw)', 'translateX(0)');
                             return;
                         }
                     }
