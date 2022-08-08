@@ -1,18 +1,11 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import Button, { button_color_type, button_size_type, ButtonStory } from '../button';
+import React from 'react';
+import Button from '../button';
 
 export default {
     title: 'Button',
     component: Button,
-    parameters: {
-        backgrounds: {
-            default: 'light',
-            values: [
-                { name: 'light', value: '#ffffff' },
-                { name: 'dark', value: '#0E0E0E' },
-            ],
-        },
-    },
+
     argTypes: {
         block: {
             description: 'If set to `true`, button width will be full-width relative to the container size.',
@@ -22,18 +15,17 @@ export default {
                 defaultValue: { summary: false },
             },
         },
-        dark: {
-            description: 'If set to `true`, button color will be set to dark theme.',
-            defaultValue: false,
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false },
-            },
+
+        onClick: {
+            description: 'onClick event handler for the button',
+            control: false,
+            action: 'onClick',
         },
+
         color: {
             control: {
                 type: 'select',
-                options: button_color_type,
+                options: ['primary', 'primary-light', 'secondary', 'tertiary', 'monochrome'],
             },
             description: '`color` controls the color sets of the button.',
             defaultValue: 'primary',
@@ -45,7 +37,7 @@ export default {
         size: {
             control: {
                 type: 'select',
-                options: button_size_type,
+                options: ['small', 'medium', 'large', 'hero'],
             },
             description:
                 "`size` actually controls the padding of the button. It will always fit to it's children size and align it to the center.",
@@ -63,14 +55,13 @@ export default {
             },
         },
     },
-} as ComponentMeta<typeof ButtonStory>;
+} as ComponentMeta<typeof Button>;
 
-const Template: ComponentStory<typeof ButtonStory> = (args) => <Button {...args}>{args.children}</Button>;
+const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
     block: false,
-    dark: false,
     color: 'primary',
     size: 'medium',
     disabled: false,
@@ -80,7 +71,6 @@ Primary.args = {
 export const PrimaryLight = Template.bind({});
 PrimaryLight.args = {
     block: false,
-    dark: false,
     color: 'primary-light',
     size: 'medium',
     disabled: false,
@@ -90,30 +80,15 @@ PrimaryLight.args = {
 export const SecondaryLight = Template.bind({});
 SecondaryLight.args = {
     block: false,
-    dark: false,
     color: 'secondary',
     size: 'medium',
     disabled: false,
     children: 'Button',
-};
-
-export const SecondaryDark = Template.bind({});
-SecondaryDark.args = {
-    block: false,
-    dark: true,
-    color: 'secondary',
-    size: 'medium',
-    disabled: false,
-    children: 'Button',
-};
-SecondaryDark.parameters = {
-    backgrounds: { default: 'dark' },
 };
 
 export const Tertiary = Template.bind({});
 Tertiary.args = {
     block: false,
-    dark: false,
     color: 'tertiary',
     size: 'medium',
     disabled: false,
@@ -123,7 +98,6 @@ Tertiary.args = {
 export const Monochrome = Template.bind({});
 Monochrome.args = {
     block: false,
-    dark: false,
     color: 'monochrome',
     size: 'medium',
     disabled: false,

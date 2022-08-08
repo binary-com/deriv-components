@@ -1,6 +1,4 @@
 export type WizardProps = {
-    // TODO: remove dark props. It should be configured in context so that it's available throughout all the components
-    dark?: boolean;
     lock_final_step?: boolean;
     has_dark_background?: boolean;
     onComplete?: (button_type: 'primary' | 'secondary') => void;
@@ -39,6 +37,5 @@ export type StepNavigationProps = {
     steps: StepsConfig;
     current_step_index: number;
     complete_steps_indexes?: number[];
-    dark?: boolean;
     onClick?: (idx: number) => void;
 };

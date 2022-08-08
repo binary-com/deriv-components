@@ -19,7 +19,7 @@ const MobileWizardBody = (props: MobileWizardBody) => {
     };
 
     return (
-        <Scrollbars dark={dark} ref={animated_div_ref} onScroll={onScroll} autohide has_y_scroll_on_drag_effect>
+        <Scrollbars ref={animated_div_ref} onScroll={onScroll} autohide has_y_scroll_on_drag_effect>
             {React.cloneElement(current_step.props.children, props_to_main_component)}
         </Scrollbars>
     );

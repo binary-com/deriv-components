@@ -1,4 +1,5 @@
 import Text from '@core/text/text';
+import useTheme from '@core/theme-context/use-theme';
 import React from 'react';
 import { styled } from 'Styles/stitches.config';
 import { StepNavigationProps } from '../types';
@@ -49,12 +50,14 @@ type MobileStepNavigationProps = Partial<StepNavigationProps> & {
     next_step_index?: number;
 };
 
-const StepNavigation = React.memo(({ steps, current_step_index, dark, next_step_index }: MobileStepNavigationProps) => {
+const StepNavigation = React.memo(({ steps, current_step_index, next_step_index }: MobileStepNavigationProps) => {
     const [progress_angel, setProgressAngel] = React.useState<string>();
     const filtered_steps = steps?.filter((step) => !step.is_hidden && !step.is_disabled);
     const total_steps_count: number = filtered_steps ? filtered_steps.length : 0;
     const current = steps?.filter((step, idx) => idx === current_step_index)[0];
     const next_current = steps?.filter((step, idx) => idx === next_step_index)[0];
+
+    const { isDark } = useTheme();
 
     const current_step_key = filtered_steps
         ?.map((a, idx) => {
@@ -75,14 +78,19 @@ const StepNavigation = React.memo(({ steps, current_step_index, dark, next_step_
     return (
         <StepContainer data-testid="step-navigation">
             <ProcessCircle style={{ background: `${progress_angel}` }}>
-                <Inner dark={dark}>
-                    <Text as="label" type="paragraph-1" bold style={{ color: dark ? '#FFFFFF' : '$greyLight700' }}>
+                <Inner dark={isDark}>
+                    <Text
+                        as="label"
+                        type="paragraph-1"
+                        bold
+                        style={{ color: isDark ? '$greyLight100' : '$greyLight700' }}
+                    >
                         {current_step_number}/{total_steps_count}
                     </Text>
                 </Inner>
             </ProcessCircle>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <Text as="label" type="paragraph-1" bold style={{ color: dark ? '#FFFFFF' : '$greyLight700' }}>
+                <Text as="label" type="paragraph-1" bold style={{ color: isDark ? '$greyLight100' : '$greyLight700' }}>
                     {current?.title}
                 </Text>
                 {!!next_current && (

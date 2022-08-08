@@ -1,3 +1,4 @@
+import ThemeProvider from '@core/theme-context/theme-provider';
 import { render, RenderOptions } from '@testing-library/react';
 import type { ReactElement, ReactNode } from 'react';
 
@@ -7,7 +8,7 @@ type GlobalProviderProps = {
 
 // Entry point for all ThemeProviders, Stores, Contexts, etc.
 const GlobalProvider = ({ children }: GlobalProviderProps) => {
-    return <div>{children}</div>;
+    return <ThemeProvider>{children}</ThemeProvider>;
 };
 
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
