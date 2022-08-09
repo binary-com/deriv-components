@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+import classNames from 'classnames';
 import * as Stitches from '@stitches/react';
 import CurvedArrowIcon from '@assets/svg/curved-arrow.svg';
 import StraightArrowIcon from '@assets/svg/straight-arrow.svg';
@@ -174,7 +175,7 @@ const ArrowTooltip = ({
                             width: is_fixed_width ? 200 : 'fit-content',
                         },
                     }}
-                    className={class_name}
+                    className={classNames(class_name)}
                 >
                     <Flex>
                         {icon && <Icon src={icon} />}
@@ -184,7 +185,7 @@ const ArrowTooltip = ({
                         css={{ stroke: arrow_color, width: arrow_size, height: arrow_size }}
                         arrow_direction={arrow_direction}
                         viewBox={getArrowIcon().viewBox}
-                        className={class_name_arrow}
+                        className={classNames(class_name_arrow)}
                     >
                         <use href={`${getArrowIcon().icon}#tooltip`} />
                     </ArrowImage>
