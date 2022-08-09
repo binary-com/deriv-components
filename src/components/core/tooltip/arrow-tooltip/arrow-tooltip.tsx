@@ -1,11 +1,10 @@
+import { ReactElement } from 'react';
 import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
-import { keyframes } from '@stitches/react';
-import * as TooltipPrimitive from '@radix-ui/react-tooltip';
+import useTheme from '@core/theme-context/use-theme';
 import CurvedArrowIcon from '@assets/svg/curved-arrow.svg';
 import StraightArrowIcon from '@assets/svg/straight-arrow.svg';
-import BreadCrumbIcon from '@assets/svg/breadcrumb-seperator.svg';
 
 type ArrowDirection =
     | 'top_left'
@@ -22,33 +21,59 @@ type ArrowDirection =
     | 'left_bottom';
 
 type ArrowTooltipProps = {
-    dark: boolean;
-    arrow_direction: ArrowDirection;
+    arrow_direction?: ArrowDirection;
+    arrow_color?: string;
+    arrow_size?: number;
+    class_name?: string;
+    class_name_arrow?: string;
+    icon?: string;
+    is_fixed_width?: boolean;
+    tooltip_content: ReactElement;
+    open_tooltip: boolean;
 };
 
 const TooltipContainer = styled('div', {
-    backgroundColor: '#D6DADB',
+    backgroundColor: '$greyLight400',
+    color: '$greyLight700',
     borderRadius: '8px',
     width: 'fit-content',
+    fontSize: '$2xs',
+    lineHeight: '$lineHeight20',
+    padding: 16,
     margin: 0,
     position: 'relative',
-    left: 100, // to remove
-    top: 100,
+    '@mobile': {
+        fontSize: '$3xs',
+        lineHeight: '$lineHeight18',
+    },
+    variants: {
+        dark: {
+            true: {
+                backgroundColor: '$greyDark400',
+                color: '$greyLight100',
+            },
+        },
+    },
 });
 
-const Svg = styled('svg', {
+const Icon = styled('img', {
+    width: 16,
+    height: 16,
+    paddingRight: 16,
+});
+
+const ArrowImage = styled('svg', {
+    position: 'absolute',
     xmlnsXlink: 'http://www.w3.org/1999/xlink',
     xmlns: 'http://www.w3.org/2000/svg',
     verticalAlign: 'middle',
-    width: 40,
-    height: 40,
-    fill: '$coral500',
-});
-
-const ArrowImage = styled('img', {
-    position: 'absolute',
-    width: 40,
-    height: 40,
+    viewBox: '0 0 38 38',
+    width: 78,
+    height: 78,
+    '@mobile': {
+        width: 38,
+        height: 38,
+    },
     variants: {
         arrow_direction: {
             top_left: {
@@ -116,24 +141,55 @@ const ArrowImage = styled('img', {
     },
 });
 
-const ArrowTooltip = ({ dark, arrow_direction = 'top_center' }: ArrowTooltipProps) => {
+const Flex = styled('div', {
+    display: 'flex',
+});
+
+const ArrowTooltip = ({
+    arrow_direction = 'top_center',
+    arrow_color = '$coral500',
+    class_name,
+    class_name_arrow,
+    icon,
+    is_fixed_width,
+    tooltip_content,
+    open_tooltip = true,
+    arrow_size,
+}: ArrowTooltipProps) => {
+    const { isDark } = useTheme();
     const getArrowIcon = () => {
         if (['top_center', 'right_center', 'bottom_center', 'left_center'].includes(arrow_direction))
-            return StraightArrowIcon;
+            return { icon: StraightArrowIcon, viewBox: '0 0 26 40' };
 
-        return CurvedArrowIcon;
+        return { icon: CurvedArrowIcon, viewBox: '0 0 40 40' };
     };
     return (
         <>
-            <TooltipContainer>
-                <div style={{ padding: 16 }}>
-                    <span>this si sample text contetnt</span>
-                </div>
-                <ArrowImage src={getArrowIcon()} arrow_direction={arrow_direction} />
-            </TooltipContainer>
-            {/* <Svg>
-                            <use href={`${CurvedArrowIcon}#tooltip`} />
-                        </Svg> */}
+            {open_tooltip && (
+                <TooltipContainer
+                    dark={isDark}
+                    css={{
+                        width: is_fixed_width ? 280 : 'fit-content',
+                        '@mobile': {
+                            width: is_fixed_width ? 200 : 'fit-content',
+                        },
+                    }}
+                    className={class_name}
+                >
+                    <Flex>
+                        {icon && <Icon src={icon} />}
+                        <div>{tooltip_content}</div>
+                    </Flex>
+                    <ArrowImage
+                        css={{ stroke: arrow_color, width: arrow_size, height: arrow_size }}
+                        arrow_direction={arrow_direction}
+                        viewBox={getArrowIcon().viewBox}
+                        className={class_name_arrow}
+                    >
+                        <use href={`${getArrowIcon().icon}#tooltip`} />
+                    </ArrowImage>
+                </TooltipContainer>
+            )}
         </>
     );
 };
