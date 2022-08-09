@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import ArrowTooltip, { ArrowTooltipStory } from '../arrow-tooltip';
 import CheckIconSVG from '@assets/svg/circular-check-icon.svg';
+import ArrowTooltip, { ArrowTooltipStory } from '../arrow-tooltip';
 
 export default {
     title: 'Tooltip / ArrowTooltip',
@@ -50,11 +50,7 @@ export default {
     },
 } as ComponentMeta<typeof ArrowTooltipStory>;
 
-const Template: ComponentStory<typeof ArrowTooltipStory> = (args) => (
-    <div style={{ position: 'relative', top: 100, left: 100 }}>
-        <ArrowTooltip {...args} />
-    </div>
-);
+const Template: ComponentStory<typeof ArrowTooltipStory> = (args) => <ArrowTooltip {...args} />;
 
 export const DefaultArrowTooltip = Template.bind({});
 

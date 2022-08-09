@@ -1,10 +1,10 @@
 import { ReactElement } from 'react';
 import * as Stitches from '@stitches/react';
-import { styled } from 'Styles/stitches.config';
-import { modifyVariantsForStory } from 'Styles/type-utils';
-import useTheme from '@core/theme-context/use-theme';
 import CurvedArrowIcon from '@assets/svg/curved-arrow.svg';
 import StraightArrowIcon from '@assets/svg/straight-arrow.svg';
+import useTheme from '@core/theme-context/use-theme';
+import { styled } from 'Styles/stitches.config';
+import { modifyVariantsForStory } from 'Styles/type-utils';
 
 type ArrowDirection =
     | 'top_left'

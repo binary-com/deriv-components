@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import Tooltip, { TooltipStory } from '../tooltip';
 import CheckIconSVG from '@assets/svg/circular-check-icon.svg';
+import Tooltip, { TooltipStory } from '../tooltip';
 
 export default {
     title: 'Tooltip / Tooltip',
