@@ -39,7 +39,7 @@ const TooltipContainer = styled('div', {
     width: 'fit-content',
     fontSize: '$2xs',
     lineHeight: '$lineHeight20',
-    padding: 16,
+    padding: '1rem',
     margin: 0,
     position: 'relative',
     '@mobile': {
@@ -59,7 +59,7 @@ const TooltipContainer = styled('div', {
 const Icon = styled('img', {
     width: 16,
     height: 16,
-    paddingRight: 16,
+    paddingRight: '1rem',
 });
 
 const ArrowImage = styled('svg', {

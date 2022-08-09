@@ -23,7 +23,7 @@ const Flex = styled('div', {
 const Icon = styled('img', {
     width: 16,
     height: 16,
-    paddingRight: 8,
+    paddingRight: '0.5rem',
 });
 
 const slideUpAndFade = keyframes({
@@ -47,7 +47,7 @@ const slideLeftAndFade = keyframes({
 });
 
 const StyledContent = styled(TooltipPrimitive.Content, {
-    padding: 8,
+    padding: '0.5rem',
     fontSize: '$3xs',
     lineHeight: '$lineHeight18',
     borderRadius: 4,
