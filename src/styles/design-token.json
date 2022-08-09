@@ -1136,10 +1136,10 @@
         "xs": {
             "value": {
                 "x": "0px",
-                "y": "0px",
-                "blur": "0px",
+                "y": "1px",
+                "blur": "2px",
                 "spread": "0px",
-                "color": "rgba(0,0,0,0.0)",
+                "color": "rgba(14, 14, 14, 0.05)",
                 "type": "dropShadow"
             },
             "type": "boxShadow"
