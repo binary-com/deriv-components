@@ -4,8 +4,48 @@ import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 import useTheme from '@core/theme-context/use-theme';
 
+export const type_array: TTextProps['type'][] = [
+    'hero',
+    'heading-1',
+    'heading-2',
+    'heading-3',
+    'subtitle-1',
+    'subtitle-2',
+    'paragraph-1',
+    'paragraph-2',
+    'small',
+    'extra-small',
+];
+
+export const color_array: TTextProps['color'][] = [
+    'prominent',
+    'general',
+    'less-prominent',
+    'disabled',
+    'active',
+    'hover',
+    'secondary',
+    'primary',
+];
+
+export const align_array: TTextProps['align'][] = ['left', 'center', 'right'];
+
 type TTextProps = {
+    align: 'left' | 'center' | 'right';
+    bold: boolean;
     children?: string | JSX.Element;
+    color: 'prominent' | 'general' | 'less-prominent' | 'disabled' | 'active' | 'hover' | 'secondary' | 'primary';
+    type:
+        | 'hero'
+        | 'heading-1'
+        | 'heading-2'
+        | 'heading-3'
+        | 'subtitle-1'
+        | 'subtitle-2'
+        | 'paragraph-1'
+        | 'paragraph-2'
+        | 'small'
+        | 'extra-small';
 };
 
 const StyledText = styled('p', {
@@ -214,37 +254,14 @@ const StyledText = styled('p', {
     },
 });
 
-// Using in Story
-export const type_array = [
-    'hero',
-    'heading-1',
-    'heading-2',
-    'heading-3',
-    'subtitle-1',
-    'subtitle-2',
-    'paragraph-1',
-    'paragraph-2',
-    'small',
-    'extra-small',
-];
-
-export const color_array = [
-    'prominent',
-    'general',
-    'less-prominent',
-    'disabled',
-    'active',
-    'hover',
-    'secondary',
-    'primary',
-];
-
-export const align_array = ['left', 'center', 'right'];
-
-const Text = ({ children }: TTextProps) => {
+const Text = ({ children, color, align, type, bold }: TTextProps) => {
     const { isDark } = useTheme();
 
-    return <StyledText dark={isDark}>{children}</StyledText>;
+    return (
+        <StyledText dark={isDark} color={color} align={align} type={type} bold={bold}>
+            {children}
+        </StyledText>
+    );
 };
 
 export default Text;
