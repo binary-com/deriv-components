@@ -4,7 +4,7 @@ import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 import useTheme from '@core/theme-context/use-theme';
 
-export const type_array: TTextProps['type'][] = [
+export const type_array = [
     'hero',
     'heading-1',
     'heading-2',
@@ -15,9 +15,9 @@ export const type_array: TTextProps['type'][] = [
     'paragraph-2',
     'small',
     'extra-small',
-];
+] as const;
 
-export const color_array: TTextProps['color'][] = [
+export const color_array = [
     'prominent',
     'general',
     'less-prominent',
@@ -26,26 +26,16 @@ export const color_array: TTextProps['color'][] = [
     'hover',
     'secondary',
     'primary',
-];
+] as const;
 
-export const align_array: TTextProps['align'][] = ['left', 'center', 'right'];
+export const align_array = ['left', 'center', 'right'] as const;
 
 type TTextProps = {
-    align: 'left' | 'center' | 'right';
+    align: typeof align_array[number];
     bold: boolean;
     children?: string | JSX.Element;
-    color: 'prominent' | 'general' | 'less-prominent' | 'disabled' | 'active' | 'hover' | 'secondary' | 'primary';
-    type:
-        | 'hero'
-        | 'heading-1'
-        | 'heading-2'
-        | 'heading-3'
-        | 'subtitle-1'
-        | 'subtitle-2'
-        | 'paragraph-1'
-        | 'paragraph-2'
-        | 'small'
-        | 'extra-small';
+    color: typeof color_array[number];
+    type: typeof type_array[number];
 };
 
 const StyledText = styled('p', {
