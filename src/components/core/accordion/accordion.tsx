@@ -1,4 +1,4 @@
-import { Children, useState, useEffect, ReactElement, cloneElement } from 'react';
+import { Children, useState, useEffect, ReactElement, cloneElement, HTMLAttributes } from 'react';
 import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
@@ -7,13 +7,13 @@ import AccordionContent from './accordion-content';
 import useTheme from '@core/theme-context/use-theme';
 import { TElevationType } from 'types/elevation.type';
 
-export type AccordionProps = {
+export interface AccordionProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactElement[];
     expand_section: boolean;
     elevation_type: TElevationType;
     type: 'bottomBorder' | 'container' | 'containerWithBorder' | 'containerWithShadow';
     onToggle: (expand: boolean) => void;
-};
+}
 
 const AccordionDiv = styled('div', {
     variants: {
@@ -128,7 +128,7 @@ const AccordionDiv = styled('div', {
     ],
 });
 
-const Accordion = ({ type, children, elevation_type = 'xs', expand_section, onToggle }: AccordionProps) => {
+const Accordion = ({ type, children, elevation_type = 'xs', expand_section, onToggle, ...props }: AccordionProps) => {
     const [toggle_accordion, setToggleAccordion] = useState(expand_section);
     const { isDark } = useTheme();
 
@@ -136,16 +136,17 @@ const Accordion = ({ type, children, elevation_type = 'xs', expand_section, onTo
         setToggleAccordion(expand_section);
     }, [expand_section]);
 
-    const handleClick = (expand: boolean) => {
-        setToggleAccordion(expand);
-        onToggle(expand);
+    const handleClick = () => {
+        const current_state = toggle_accordion;
+        setToggleAccordion((prev_state) => !prev_state);
+        onToggle(!current_state);
     };
 
     return (
-        <AccordionDiv type={type} dark={isDark} elevation_type={elevation_type}>
+        <AccordionDiv type={type} dark={isDark} elevation_type={elevation_type} {...props}>
             {Children.map(children, (child) => {
                 if (child) {
-                    return cloneElement(child, { expand_section: toggle_accordion, handleClick });
+                    return cloneElement(child, { expand_section: toggle_accordion, onClick: handleClick });
                 }
             })}
         </AccordionDiv>

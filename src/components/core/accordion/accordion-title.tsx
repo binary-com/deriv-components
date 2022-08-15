@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { HTMLAttributes, ReactElement } from 'react';
 import { styled } from 'Styles/stitches.config';
 import AccordionCollapseIcon from '@assets/svg/accordion-collapse.svg';
 import AccordionExpandIcon from '@assets/svg/accordion-expand.svg';
@@ -6,12 +6,11 @@ import AccordionSmallCollapseIcon from '@assets/svg/accordion-small-collapse.svg
 import AccordionSmallExpandIcon from '@assets/svg/accordion-small-expand.svg';
 import useTheme from '@core/theme-context/use-theme';
 
-export type AccordionTitleProps = {
+export interface AccordionTitleProps extends HTMLAttributes<HTMLDivElement> {
     children: ReactElement[] | ReactElement;
     expand_section?: boolean;
     size: 'medium' | 'small';
-    handleClick?: (expand: boolean) => void;
-};
+}
 
 const Svg = styled('svg', {
     xmlnsXlink: 'http://www.w3.org/1999/xlink',
@@ -81,7 +80,7 @@ const HeaderDiv = styled('div', {
     cursor: 'pointer',
 });
 
-const AccordionTitle = ({ children, expand_section, size, handleClick }: AccordionTitleProps) => {
+const AccordionTitle = ({ children, expand_section, size, ...props }: AccordionTitleProps) => {
     const { isDark } = useTheme();
     const getAccordionIcon = () => {
         if (expand_section) {
@@ -92,7 +91,7 @@ const AccordionTitle = ({ children, expand_section, size, handleClick }: Accordi
     };
 
     return (
-        <HeaderDiv onClick={() => (handleClick ? handleClick(!expand_section) : '')}>
+        <HeaderDiv {...props}>
             <Header size={size}>{children}</Header>
             <IconDiv size={size}>
                 <Svg dark={isDark}>

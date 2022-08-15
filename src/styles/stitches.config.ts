@@ -64,18 +64,21 @@ export const { styled, css, globalCss, keyframes, getCssText, theme, createTheme
         paddingY: (value: string) => ({ paddingTop: value, paddingBottom: value }),
         boxSizingForAllChildren: (value: string) => ({ '*': { boxSizing: value } }),
         elevationBoxShadow: (value: TElevationType) => {
-            if (!Array.isArray(elevation_box_shadow[`${value}`])) {
-                const { x, y, blur, spread, color } = elevation_box_shadow[`${value}`] as TBoxShadowProperties;
-                return {
-                    boxShadow: `${x} ${y} ${blur} ${spread} ${color}`,
-                };
+            if (elevation_box_shadow[`${value}`]) {
+                if (!Array.isArray(elevation_box_shadow[`${value}`])) {
+                    const { x, y, blur, spread, color } = elevation_box_shadow[`${value}`] as TBoxShadowProperties;
+                    return {
+                        boxShadow: `${x} ${y} ${blur} ${spread} ${color}`,
+                    };
+                }
+
+                const box_shadow_array = (elevation_box_shadow[`${value}`] as TBoxShadowProperties[]).map(
+                    ({ x, y, blur, spread, color }) => `${x} ${y} ${blur} ${spread} ${color}`,
+                );
+
+                return { boxShadow: box_shadow_array.join(',').toString() };
             }
-
-            const box_shadow_array = (elevation_box_shadow[`${value}`] as TBoxShadowProperties[]).map(
-                ({ x, y, blur, spread, color }) => `${x} ${y} ${blur} ${spread} ${color}`,
-            );
-
-            return { boxShadow: box_shadow_array.join(',').toString() };
+            return { boxShadow: 'none' };
         },
     },
 });

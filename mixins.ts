@@ -30,12 +30,11 @@ export const opacity = {
 };
 
 export const elevation_box_shadow = {
-    xs :TOKEN.General['xs'].value,
-    sm :TOKEN.General['sm'].value,
-    md :TOKEN.General['md'].value,
-    lg :TOKEN.General['lg'].value,
-    xl :TOKEN.General['xl'].value,
-    xxl :TOKEN.General['xxl'].value,
-    xxxl :TOKEN.General['xxxl'].value,
-
-}
+    xs: TOKEN.General['xs'].value,
+    sm: TOKEN.General['sm'].value,
+    md: TOKEN.General['md'].value,
+    lg: TOKEN.General['lg'].value,
+    xl: TOKEN.General['xl'].value,
+    xxl: TOKEN.General['xxl'].value,
+    xxxl: TOKEN.General['xxxl'].value,
+};
