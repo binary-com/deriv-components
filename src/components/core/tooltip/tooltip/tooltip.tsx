@@ -7,7 +7,6 @@ import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 
 type TooltipProps = {
-    dark: boolean;
     type?: 'default' | 'error';
     side: 'top' | 'bottom' | 'left' | 'right';
     children: ReactElement;
