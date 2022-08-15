@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import React, { HTMLAttributes, ReactNode } from 'react';
 
 export type TListType = 'numbered' | 'bulleted' | 'checklist' | 'compound';
 export type TLabelType = 'default' | 'pill';
@@ -29,6 +29,7 @@ export interface ListItemProps extends HTMLAttributes<HTMLUListElement | HTMLLIE
 }
 
 export type TCompoundListItemProps = {
+    children?: ReactNode;
     item: ICompoundListItem;
     label?: TLabelType;
     dark?: boolean;
@@ -36,21 +37,24 @@ export type TCompoundListItemProps = {
 };
 
 export type TCheckListItemProps = {
+    children?: ReactNode;
     checked?: boolean;
     crossed?: boolean;
     dark?: boolean;
 };
 
-export type TSimpleListProps = { items: ISimpleListItem[]; size?: TSizeType };
+export type TSimpleListProps = { items: ISimpleListItem[]; size?: TSizeType; children?: ReactNode };
 
-export type TBulletedListProps = { items: ISimpleListItem[]; size?: TSizeType };
+export type TBulletedListProps = { items: ISimpleListItem[]; size?: TSizeType; children?: ReactNode };
 
 export type TCheckListProps = {
     items: ICheckListItem[];
+    children?: ReactNode;
     size?: TSizeType;
 };
 
 export type TCompoundProps = {
+    children?: ReactNode;
     items: ICompoundListItem[];
     label?: TLabelType;
     size?: TSizeType;
