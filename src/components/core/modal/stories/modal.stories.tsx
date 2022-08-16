@@ -4,15 +4,6 @@ import Modal from '../modal';
 export default {
     title: 'Modal',
     component: Modal,
-    parameters: {
-        backgrounds: {
-            default: 'light',
-            values: [
-                { name: 'light', value: '#F2F3F4' },
-                { name: 'dark', value: '#0E0E0E' },
-            ],
-        },
-    },
     argTypes: {
         type: {
             description: 'type of the modal container',
@@ -27,14 +18,6 @@ export default {
         close_icon: {
             description: 'having close icon on the header',
             defaultValue: true,
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false },
-            },
-        },
-        dark: {
-            description: 'If set to `true`, button color will be set to dark theme.',
-            defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: false },
@@ -84,36 +67,10 @@ DefaultLightDialog.args = {
     ],
 };
 
-export const DefaultDarkDialog = Template.bind({});
-DefaultDarkDialog.args = {
-    type: 'dialog',
-    title: 'Dialog',
-    dark: true,
-    action_buttons: [
-        {
-            name: 'Secondary action',
-            color: 'secondary',
-            onClick: () => console.log('Secondary action'),
-        },
-        {
-            name: 'Primary action',
-            color: 'primary',
-            onClick: () => console.log('Primary action'),
-        },
-    ],
-};
-
 export const DefaultLightPage = Template.bind({});
 DefaultLightPage.args = {
     type: 'page',
     title: 'Page',
-};
-
-export const DefaultDarkPage = Template.bind({});
-DefaultDarkPage.args = {
-    type: 'page',
-    title: 'Page',
-    dark: true,
 };
 
 export const PageWithFooter = Template.bind({});

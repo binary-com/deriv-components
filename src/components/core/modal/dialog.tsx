@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes } from 'react';
+import { forwardRef } from 'react';
 import { styled } from 'Styles/stitches.config';
 import Button from '../button/button';
 import Text from '../text/text';
@@ -118,12 +118,8 @@ const DialogFooter = styled('div', {
     },
 });
 
-export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
-    ({ children, close_icon = true, title, action_buttons, dark, button_block, is_open, setIsOpen }, ref) => {
-        const onCloseButton = () => {
-            console.log('close');
-        };
-
+export const DialogContent = forwardRef<HTMLDivElement, DialogProps>(
+    ({ children, close_icon = true, title, action_buttons, dark, button_block, setIsOpen }, ref) => {
         return (
             <DialogContainer ref={ref} dark={dark} data-testid="dt_dialog_modal">
                 <DialogHeader>
@@ -145,10 +141,9 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
                     {action_buttons?.map((button) => {
                         return (
                             <Button
-                                dark={dark}
+                                key={button.name}
                                 color={button.color}
                                 size={'medium'}
-                                key={button.name}
                                 block={button_block}
                                 onClick={() => button.onClick}
                             >
@@ -162,4 +157,4 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
     },
 );
 
-export default Dialog;
+export default DialogContent;

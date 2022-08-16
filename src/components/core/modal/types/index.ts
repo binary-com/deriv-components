@@ -9,27 +9,26 @@ export type ActionButtonProps = {
 };
 
 export type PanelProps = { label: string; icon?: string; content: HTMLElement | any };
-
 export interface ModalProps extends HTMLAttributes<HTMLDivElement> {
     title?: string;
     close_icon?: boolean;
     action_buttons?: ActionButtonProps[];
-    dark?: boolean;
     button_block?: boolean;
 }
 
 export interface DialogProps extends ModalProps {
-    is_open: boolean;
     setIsOpen: (arg: boolean) => void;
+    dark?: boolean;
 }
 
 export interface PageProps extends ModalProps {
-    is_open: boolean;
     setIsOpen: (arg: boolean) => void;
+    dark?: boolean;
     panel?: PanelProps[];
 }
 
 export interface ModalContainerProps extends ModalProps {
     type: 'dialog' | 'page';
+    dark?: boolean;
     panel?: PanelProps[];
 }

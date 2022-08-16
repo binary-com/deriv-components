@@ -236,7 +236,7 @@ export const PageCloseIcon = styled(CloseIcon, {
     top: 'initial',
     right: 'initial',
     '&:hover': {
-        top: '11px',
+        top: 'initial',
         right: '14px',
     },
 });
@@ -320,10 +320,7 @@ export const PageTitle = styled(Text, {
 });
 
 export const Page = forwardRef<HTMLDivElement, PageProps>(
-    (
-        { title = '', close_icon = true, action_buttons, panel, children, dark, button_block, is_open, setIsOpen },
-        ref,
-    ) => {
+    ({ title = '', close_icon = true, action_buttons, panel, children, dark, button_block, setIsOpen }, ref) => {
         const [active_tab, setActiveTab] = React.useState<number>(0);
         const has_action_buttons = action_buttons?.length ? true : false;
         const has_panel = panel?.length ? true : false;
@@ -388,7 +385,6 @@ export const Page = forwardRef<HTMLDivElement, PageProps>(
                         {action_buttons?.map((button) => {
                             return (
                                 <Button
-                                    dark={dark}
                                     color={button.color}
                                     size={'medium'}
                                     key={button.name}
