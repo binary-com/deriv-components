@@ -1,7 +1,7 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { TextStory, type_array, align_array } from '../text';
-import Text from '../text';
 import React from 'react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { TextStory, type_array, align_array, color_array } from '../text';
+import Text from '../text';
 
 export default {
     title: 'Text',
@@ -15,10 +15,18 @@ export default {
             },
             control: 'none',
         },
+        color: {
+            control: { type: 'select', options: color_array },
+            description: 'Controls the color of the text component mapping to the configuration in Figma.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'prominent' },
+            },
+        },
         type: {
             control: { type: 'select', options: type_array },
             description:
-                'Controls the font size and line height of the text component mapping to the configuation in Figma.',
+                'Controls the font size and line height of the text component mapping to the configuration in Figma.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'subtitle-1' },
@@ -48,6 +56,12 @@ export const Controls = Template.bind({});
 Controls.args = {
     children: 'Text',
     type: 'subtitle-1',
-    bold: true,
+    color: 'prominent',
+    bold: false,
     align: 'left',
+};
+Controls.parameters = {
+    controls: {
+        exclude: ['dark', 'as'],
+    },
 };

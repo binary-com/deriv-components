@@ -52,7 +52,6 @@
         "@types/react": "^17.0.39",
         "@types/webpack": "^5.28.0",
         "babel-loader": "^8.2.3",
-        "file-loader": "^6.2.0",
         "fork-ts-checker-webpack-plugin": "^7.2.1",
         "hash-generator": "^0.1.0",
         "husky": "^7.0.4",
@@ -60,6 +59,8 @@
         "jest-css-modules-transform": "^4.3.0",
         "lint-staged": "^12.3.5",
         "prettier": "^2.5.1",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
         "sass": "^1.49.7",
         "sass-loader": "^12.6.0",
         "svgo": "^2.8.0",
@@ -79,7 +80,9 @@
         "@radix-ui/react-switch": "^0.1.5",
         "@stitches/react": "^1.2.6",
         "@storybook/addon-a11y": "^6.5.9",
-        "classnames": "^2.3.1",
+        "classnames": "^2.3.1"
+    },
+    "peerDependencies": {
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-spring": "^9.5.2"

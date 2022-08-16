@@ -15,7 +15,7 @@ const ThemeProvider = ({ children }: TThemeProviderProps) => {
         const isDark = colorMode === 'dark';
 
         return { isDark, setColorMode };
-    }, []);
+    }, [colorMode]);
 
     return <ThemeContext.Provider value={contextValue}>{children}</ThemeContext.Provider>;
 };
