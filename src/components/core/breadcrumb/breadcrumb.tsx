@@ -1,7 +1,7 @@
 import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
-import BreadcrumnSeperatorIcon from '@assets/svg/breadcrumb-seperator.svg';
+import BreadcrumbSeperatorIcon from '@assets/svg/breadcrumb-seperator.svg';
 import useTheme from '@core/theme-context/use-theme';
 
 type BreadcrumbProps = {
@@ -86,7 +86,7 @@ const Breadcrumb = ({ items, handleOnClick }: BreadcrumbProps) => {
                     <span onClick={() => handleOnClick(item)}>{item}</span>
                     {idx < items.length - 1 && (
                         <Svg dark={isDark}>
-                            <use href={`${BreadcrumnSeperatorIcon}#breadcrumb`} />
+                            <use href={`${BreadcrumbSeperatorIcon}#breadcrumb`} />
                         </Svg>
                     )}
                 </ListItem>
