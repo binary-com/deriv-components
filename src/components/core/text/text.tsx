@@ -31,9 +31,12 @@ export const color_array = [
 export const align_array = ['left', 'center', 'right'] as const;
 
 type TTextProps = {
+    as?: string;
+    css?: React.CSSProperties;
+    style?: React.CSSProperties;
     align?: typeof align_array[number];
     bold?: boolean;
-    children?: string | JSX.Element;
+    children?: React.ReactNode;
     color?: typeof color_array[number];
     type?: typeof type_array[number];
 };
