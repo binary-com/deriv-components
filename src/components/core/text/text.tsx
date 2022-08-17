@@ -32,13 +32,14 @@ export const align_array = ['left', 'center', 'right'] as const;
 
 type TTextProps = {
     as?: string;
-    css?: React.CSSProperties;
+    css?: any;
     style?: React.CSSProperties;
     align?: typeof align_array[number];
     bold?: boolean;
-    children?: React.ReactNode;
+    children?: React.ReactNode | React.ReactNode[];
     color?: typeof color_array[number];
     type?: typeof type_array[number];
+    [k: string]: any;
 };
 
 const StyledText = styled('p', {
