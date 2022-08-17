@@ -32,7 +32,7 @@ export const align_array = ['left', 'center', 'right'] as const;
 
 type TTextProps = {
     as?: string;
-    css?: any;
+    css?: Stitches.CSS;
     style?: React.CSSProperties;
     align?: typeof align_array[number];
     bold?: boolean;
