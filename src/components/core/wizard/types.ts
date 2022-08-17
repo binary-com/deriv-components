@@ -11,6 +11,7 @@ export type WizardProps = {
 };
 
 export type StepProps = {
+    hide_steps_panel_in_mobile?: boolean;
     title: string;
     step_key?: string;
     is_fullwidth?: boolean;
