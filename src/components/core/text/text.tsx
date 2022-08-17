@@ -31,11 +31,11 @@ export const color_array = [
 export const align_array = ['left', 'center', 'right'] as const;
 
 type TTextProps = {
-    align: typeof align_array[number];
-    bold: boolean;
+    align?: typeof align_array[number];
+    bold?: boolean;
     children?: string | JSX.Element;
-    color: typeof color_array[number];
-    type: typeof type_array[number];
+    color?: typeof color_array[number];
+    type?: typeof type_array[number];
 };
 
 const StyledText = styled('p', {
@@ -244,11 +244,11 @@ const StyledText = styled('p', {
     },
 });
 
-const Text = ({ children, color, align, type, bold }: TTextProps) => {
+const Text = ({ children, color, align, type, bold, ...props }: TTextProps) => {
     const { isDark } = useTheme();
 
     return (
-        <StyledText dark={isDark} color={color} align={align} type={type} bold={bold}>
+        <StyledText dark={isDark} color={color} align={align} type={type} bold={bold} {...props}>
             {children}
         </StyledText>
     );
