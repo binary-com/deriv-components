@@ -30,17 +30,11 @@ export const color_array = [
 
 export const align_array = ['left', 'center', 'right'] as const;
 
-type TTextProps = {
-    as?: string;
-    css?: Stitches.CSS;
-    style?: React.CSSProperties;
-    align?: typeof align_array[number];
-    bold?: boolean;
-    children?: React.ReactNode | React.ReactNode[];
-    color?: typeof color_array[number];
-    type?: typeof type_array[number];
-    [k: string]: any;
-};
+type StyledTextProps = Omit<Stitches.ComponentProps<typeof StyledText>, 'dark'>;
+
+interface ITextProps extends StyledTextProps {
+    as?: React.ElementType;
+}
 
 const StyledText = styled('p', {
     variants: {
@@ -248,7 +242,7 @@ const StyledText = styled('p', {
     },
 });
 
-const Text = ({ children, color, align, type, bold, ...props }: TTextProps) => {
+const Text = ({ children, color, align, type, bold, ...props }: ITextProps) => {
     const { isDark } = useTheme();
 
     return (
