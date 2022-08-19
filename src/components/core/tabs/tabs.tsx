@@ -152,10 +152,10 @@ const Icon = styled('img', {
 
 const Box = styled('div', {});
 
-const Tabs = ({ contained = false, size = 'default', default_selected, tabs }: TabsProps) => {
+const Tabs = ({ contained = false, size = 'default', default_selected, tabs, ...props }: TabsProps) => {
     const { isDark } = useTheme();
     return (
-        <Box css={{}}>
+        <div {...props}>
             <StyledTabs defaultValue={default_selected}>
                 <StyledList>
                     {tabs.map(({ label, icon, iconAlt }) => (
@@ -171,7 +171,7 @@ const Tabs = ({ contained = false, size = 'default', default_selected, tabs }: T
                     </StyledContent>
                 ))}
             </StyledTabs>
-        </Box>
+        </div>
     );
 };
 
