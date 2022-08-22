@@ -43,7 +43,7 @@ const RightPanelContainer = styled('div', {
 });
 
 type RightPane = Partial<RightPanelProps> & {
-    dark: boolean;
+    dark?: boolean;
     onScroll?: () => void;
 };
 

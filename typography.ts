@@ -1,4 +1,4 @@
-import * as TOKEN from './src/styles/design-token.json';
+import TOKEN from './src/styles/design-token.json';
 
 export const font = {
     ibm: TOKEN.General.fontFamilies['ibm-plex-sans'].value,
