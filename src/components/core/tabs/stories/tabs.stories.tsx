@@ -1,5 +1,5 @@
 import { Story } from '@storybook/react';
-import Tabs, { TabsProps } from '../tabs';
+import Tabs, { TabsProps, TabsContent } from '../tabs';
 import DepositIconLight from './assets/ic-deposit-light.svg';
 import WithdrawIconLight from './assets/ic-withdraw-light.svg';
 import TransferIconLight from './assets/ic-transfer-light.svg';
@@ -35,6 +35,9 @@ export default {
                 defaultValue: { summary: 'default' },
             },
         },
+        default_selected: {
+            defaultValue: 'Deposit',
+        },
     },
 };
 
@@ -62,7 +65,36 @@ const Template: Story<TabsProps> = (args, { globals: { theme } }) => {
             content: 'Transactions',
         },
     ];
-    return <Tabs {...args} tabs={tabs} default_selected="Withdraw" />;
+    return (
+        <Tabs {...args}>
+            <Tabs.List {...args}>
+                <Tabs.Trigger value="Deposit" icon={isDark ? DepositIconDark : DepositIconLight}>
+                    Deposit
+                </Tabs.Trigger>
+                <Tabs.Trigger value="Withdraw" icon={isDark ? WithdrawIconDark : WithdrawIconLight}>
+                    Withdraw
+                </Tabs.Trigger>
+                <Tabs.Trigger value="Transfer" icon={isDark ? TransferIconDark : TransferIconLight}>
+                    Transfer
+                </Tabs.Trigger>
+                <Tabs.Trigger value="Transactions" icon={isDark ? TransactionIconDark : TransactionIconLight}>
+                    Transactions
+                </Tabs.Trigger>
+            </Tabs.List>
+            <TabsContent value="Deposit">
+                <p>Deposit</p>
+            </TabsContent>
+            <TabsContent value="Withdraw">
+                <p>Withdraw</p>
+            </TabsContent>
+            <TabsContent value="Transfer">
+                <p>Transfer</p>
+            </TabsContent>
+            <TabsContent value="Transactions">
+                <p>Transactions</p>
+            </TabsContent>
+        </Tabs>
+    );
 };
 
 export const Bordered = Template.bind({});

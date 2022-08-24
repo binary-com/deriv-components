@@ -1,22 +1,20 @@
 import { Children, HtmlHTMLAttributes, ReactElement, cloneElement } from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import useTheme from '@core/theme-context/use-theme';
-import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
-import { modifyVariantsForStory } from 'Styles/type-utils';
-import TabsList, { TabsTrigger } from './tabs-list';
 
-export interface TabsProps extends HtmlHTMLAttributes<HTMLDivElement> {
-    contained?: boolean;
-    size?: 'default' | 'small';
-    default_selected: string;
+export interface TabsListProps extends HtmlHTMLAttributes<HTMLDivElement> {
     children?: ReactElement[];
 }
 
-const StyledTabs = styled(TabsPrimitive.Root, {
-    display: 'flex',
-    flexDirection: 'column',
-});
+export interface TabsTriggerProps extends HtmlHTMLAttributes<HTMLDivElement> {
+    contained?: boolean;
+    size?: 'default' | 'small';
+    children?: string;
+    icon?: string;
+    icon_alt?: string;
+    value: string;
+}
 
 const StyledList = styled(TabsPrimitive.List, {
     display: 'flex',
@@ -138,8 +136,6 @@ const StyledTrigger = styled(TabsPrimitive.Trigger, {
     },
 });
 
-const StyledContent = styled(TabsPrimitive.Content, {});
-
 const Icon = styled('img', {
     width: '16px',
     height: '16px',
@@ -148,22 +144,25 @@ const Icon = styled('img', {
 
 const Box = styled('div', {});
 
-const Tabs = ({ contained = false, size = 'default', default_selected, children, ...props }: TabsProps) => {
+export const TabsTrigger = ({ contained, size, children, icon, icon_alt, value }: TabsTriggerProps) => {
     const { isDark } = useTheme();
     return (
-        <div {...props}>
-            <StyledTabs defaultValue={default_selected}>{children}</StyledTabs>
-        </div>
+        <StyledTrigger value={value} size={size} contained={contained} dark={isDark}>
+            {icon && <Icon src={icon} alt={icon_alt} />} {children}
+        </StyledTrigger>
     );
 };
 
-Tabs.List = TabsList;
-Tabs.Trigger = TabsTrigger;
+const TabsList = ({ children, ...props }: TabsListProps) => {
+    return (
+        <StyledList>
+            {Children.map(children, (child) => {
+                if (child) {
+                    return cloneElement(child, { ...props });
+                }
+            })}
+        </StyledList>
+    );
+};
 
-export default Tabs;
-
-export const TabsContent = StyledContent;
-
-type TabsVariantProps = Stitches.VariantProps<typeof Tabs>;
-
-export const TabsStory = modifyVariantsForStory<TabsVariantProps, TabsProps, typeof Tabs>(Tabs);
+export default TabsList;
