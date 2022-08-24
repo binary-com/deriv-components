@@ -1,4 +1,4 @@
-import * as TOKEN from './src/styles/design-token.json';
+import TOKEN from './src/styles/design-token.json';
 
 export const radii = {
     sharp: TOKEN.General['border-radius'].sharp.value,
@@ -27,4 +27,14 @@ export const opacity = {
     32: TOKEN.General['opacity']['32'].value,
     50: TOKEN.General['opacity']['50'].value,
     75: TOKEN.General['opacity']['75'].value,
+};
+
+export const elevation_box_shadow = {
+    xs: TOKEN.General['xs'].value,
+    sm: TOKEN.General['sm'].value,
+    md: TOKEN.General['md'].value,
+    lg: TOKEN.General['lg'].value,
+    xl: TOKEN.General['xl'].value,
+    xxl: TOKEN.General['xxl'].value,
+    xxxl: TOKEN.General['xxxl'].value,
 };

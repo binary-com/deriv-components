@@ -1,11 +1,72 @@
+import React from 'react';
 import type * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
+import useTheme from '@core/theme-context/use-theme';
 
-const Text = styled('p', {
-    color: '$greyLight700',
+export const type_array = [
+    'hero',
+    'heading-1',
+    'heading-2',
+    'heading-3',
+    'subtitle-1',
+    'subtitle-2',
+    'paragraph-1',
+    'paragraph-2',
+    'small',
+    'extra-small',
+] as const;
 
+export const color_array = [
+    'prominent',
+    'general',
+    'less-prominent',
+    'disabled',
+    'active',
+    'hover',
+    'secondary',
+    'primary',
+] as const;
+
+export const align_array = ['left', 'center', 'right'] as const;
+
+type StyledTextProps = Omit<Stitches.ComponentProps<typeof StyledText>, 'dark'>;
+
+interface ITextProps extends StyledTextProps {
+    as?: React.ElementType;
+}
+
+const StyledText = styled('p', {
     variants: {
+        color: {
+            prominent: {
+                color: '$greyLight700',
+            },
+            general: {
+                color: '$greyLight700',
+            },
+            'less-prominent': {
+                color: '$greyLight600',
+            },
+            disabled: {
+                color: '$greyLight500',
+            },
+            active: {
+                color: '$greyLight400',
+            },
+            hover: {
+                color: '$greyLight300',
+            },
+            secondary: {
+                color: '$greyLight200',
+            },
+            primary: {
+                color: '$greyLight100',
+            },
+        },
+        dark: {
+            true: {},
+        },
         bold: {
             true: {
                 fontWeight: '$bold',
@@ -115,38 +176,90 @@ const Text = styled('p', {
             },
         },
     },
+    compoundVariants: [
+        {
+            color: 'prominent',
+            dark: true,
+            css: {
+                color: '$greyLight100',
+            },
+        },
+        {
+            color: 'general',
+            dark: true,
+            css: {
+                color: '$greyDark100',
+            },
+        },
+        {
+            color: 'less-prominent',
+            dark: true,
+            css: {
+                color: '$greyDark200',
+            },
+        },
+        {
+            color: 'disabled',
+            dark: true,
+            css: {
+                color: '$greyDark300',
+            },
+        },
+        {
+            color: 'active',
+            dark: true,
+            css: {
+                color: '$greyDark400',
+            },
+        },
+        {
+            color: 'hover',
+            dark: true,
+            css: {
+                color: '$greyDark500',
+            },
+        },
+        {
+            color: 'secondary',
+            dark: true,
+            css: {
+                color: '$greyDark600',
+            },
+        },
+        {
+            color: 'primary',
+            dark: true,
+            css: {
+                color: '$greyDark700',
+            },
+        },
+    ],
     defaultVariants: {
+        color: 'prominent',
         type: 'subtitle-1',
         align: 'left',
-        bold: true,
+        bold: false,
     },
 });
 
-export const type_array = [
-    'hero',
-    'heading-1',
-    'heading-2',
-    'heading-3',
-    'subtitle-1',
-    'subtitle-2',
-    'paragraph-1',
-    'paragraph-2',
-    'small',
-    'extra-small',
-];
+const Text = ({ children, color, align, type, bold, ...props }: ITextProps) => {
+    const { isDark } = useTheme();
 
-export const align_array = ['left', 'center', 'right'];
+    return (
+        <StyledText dark={isDark} color={color} align={align} type={type} bold={bold} {...props}>
+            {children}
+        </StyledText>
+    );
+};
 
 export default Text;
-
-type NativeParagraphProps = React.ComponentPropsWithoutRef<'p'>;
 
 // Only export/use these in Storybook since they are just for the Stitchs x SB handshake
 // Can be here or in the story
 // We need to Omit css as Emotions global css typedef clashes with the Stitches css typedef
 // Storybook currently uses v10+ of Emotion, this issue is fixed in Emotion v11+
 // TODO: Remove Omit once Storybook's Emotion is running on v11+
-type TextVariantProps = Stitches.VariantProps<typeof Text> & Omit<NativeParagraphProps, 'css'>;
-interface TextProps extends TextVariantProps {}
-// Use this as the type in Story; i.e. `ComponentMeta<typeof ButtonStory>`
+type TextVariantProps = Stitches.VariantProps<typeof Text> & Omit<React.ComponentPropsWithoutRef<'p'>, 'css'>;
+type TextProps = TextVariantProps;
+// Use this as the type in Story; i.e. `ComponentMeta<typeof TextStory>`
 export const TextStory = modifyVariantsForStory<TextVariantProps, TextProps, typeof Text>(Text);

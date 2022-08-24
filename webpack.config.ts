@@ -27,7 +27,12 @@ const config = (env: EnvConfig): Configuration => {
                                         modules: modules === 'es' ? false : 'cjs',
                                     },
                                 ],
-                                '@babel/preset-react',
+                                [
+                                    '@babel/preset-react',
+                                    {
+                                        runtime: 'automatic',
+                                    },
+                                ],
                                 '@babel/preset-typescript',
                             ],
                         },
@@ -49,14 +54,7 @@ const config = (env: EnvConfig): Configuration => {
                 },
                 {
                     test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-                    use: [
-                        {
-                            loader: 'file-loader',
-                            options: {
-                                name: 'assets/[name].[hash].[ext]',
-                            },
-                        },
-                    ],
+                    type: 'asset/inline',
                 },
             ],
         },
@@ -67,6 +65,7 @@ const config = (env: EnvConfig): Configuration => {
         output: {
             path: path.resolve(__dirname, 'dist'),
             filename: `${modules}/components.js`,
+            assetModuleFilename: 'assets/[name].[hash].[ext]',
             library: {
                 name: 'components',
                 type: 'umd',
