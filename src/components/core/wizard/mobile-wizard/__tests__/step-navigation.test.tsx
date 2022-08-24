@@ -27,9 +27,7 @@ describe('StepNavigation Component', () => {
         const steps = screen.getAllByTestId('step-item');
 
         expect(step_navigation).toBeInTheDocument();
-        expect(steps.length).toBe(3);
+        expect(steps.length).toBe(1);
         expect(steps[0]).toHaveTextContent(/product/i);
-        expect(steps[1]).toHaveTextContent(/app/i);
-        expect(steps[2]).toHaveTextContent(/complete/i);
     });
 });

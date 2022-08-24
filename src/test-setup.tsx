@@ -14,5 +14,11 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
     render(ui, { wrapper: GlobalProvider, ...options });
 
+const resizeWindow = (x: number, y: number) => {
+    window.innerWidth = x;
+    window.innerHeight = y;
+    window.dispatchEvent(new Event('resize'));
+};
+
 export * from '@testing-library/react';
-export { customRender as render };
+export { customRender as render, resizeWindow };
