@@ -1,9 +1,8 @@
 import { Close as PrimitiveClose } from '@radix-ui/react-dialog';
-
 import CloseIconDarkSVG from '@assets/svg/ic-close-dark.svg';
 import CloseIconLightSVG from '@assets/svg/ic-close-light.svg';
-import { styled } from 'Styles/stitches.config';
 import useTheme from '@core/theme-context/use-theme';
+import { styled } from 'Styles/stitches.config';
 import { TCloseIconButtonProps } from '../types';
 
 const IconButton = styled('button', {

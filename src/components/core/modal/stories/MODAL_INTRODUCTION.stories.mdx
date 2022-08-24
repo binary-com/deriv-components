@@ -130,3 +130,58 @@ but if you do include it inside the `Modal` component there will be an overlay o
 2. `DialogContent`: The content component only for `Dialog` type.
 3. `PageContent`: The content component only for `Page` type.
 4. `CloseIconButton`: The close Icon button.
+
+### DialogContent / PageContent Own Props Vs Radix Content BaseProps
+
+We don't want to re-implement the feature provided by `@radix-ui/react-dialog` instead we want to have them and have our own props as well, to acheive this DialogContent and PageContent accepts both of them, please check this out:
+
+```tsx
+import { Content as PrimitiveContent } from '@radix-ui/react-dialog';
+
+type TBaseContentProps = React.ComponentProps<typeof PrimitiveContent>;
+
+export type TDialogContentOwnProps = {
+    content?: string;
+    title?: string | ReactNode;
+    has_close_button?: boolean;
+    action_buttons?: TModalActionButton[];
+    block_action_buttons?: boolean;
+};
+
+export type TDialogContentProps = TDialogContentOwnProps & TBaseContentProps;
+```
+
+with this approach we will access to all the features provided by `@radix-ui/react-dialog`, such as:
+
+-   `onOpenAutoFocus`
+-   `onInteractOutside`
+-   `onPointerDownOutSide`
+
+You can check all the available items on [here](https://www.radix-ui.com/docs/primitives/components/dialog#content).
+
+### Prevent Closing the Modal On clicking outside
+
+One way would like so:
+
+```tsx
+return (
+    <Modal>
+        <Modal.Trigger asChild>
+            <Button>Open</Button>
+        </Modal.Trigger>
+        <Modal.Portal>
+            <Modal.Overlay />
+            <Modal.DialogContent
+                onInteractOutside={(event) => {
+                    event.preventDefault();
+                }}
+                title={args.title}
+                content={args.content}
+                has_close_button={args.has_close_button}
+                action_buttons={actionButtons}
+                block_action_buttons={args.block_action_buttons}
+            />
+        </Modal.Portal>
+    </Modal>
+);
+```
