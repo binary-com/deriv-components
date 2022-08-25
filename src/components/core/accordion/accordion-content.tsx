@@ -34,7 +34,7 @@ const Content = styled('div', {
     },
 });
 
-const AccordionContent = ({ children, expand_section, size }: AccordionContentProps) => {
+const AccordionContent = ({ children, expand_section, size, ...props }: AccordionContentProps) => {
     return (
         <Content expand={expand_section} size={size}>
             {children}
