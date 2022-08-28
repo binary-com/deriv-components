@@ -37,6 +37,20 @@ export default {
             },
             description: 'If you pass `true` the action buttons will have block display',
         },
+        should_prevent_close_on_click_outside: {
+            control: {
+                type: 'boolean',
+            },
+            description: 'If you pass `true` it will prevent closing the dialog on interaction outside of the dialog',
+        },
+    },
+    args: {
+        title: 'Title',
+        has_close_button: false,
+        has_title_separator: false,
+        has_footer_separator: false,
+        block_action_buttons: false,
+        should_prevent_close_on_click_outside: false,
     },
     component: Modal,
 } as ComponentMeta<typeof Modal>;
@@ -80,6 +94,7 @@ const PageTemplate: ComponentStory<typeof Modal & typeof Modal.PageContent> = (a
                     has_footer_separator={args.has_footer_separator}
                     block_action_buttons={args.block_action_buttons}
                     action_buttons={actionButtons}
+                    should_prevent_close_on_click_outside={args.should_prevent_close_on_click_outside}
                 >
                     <Box></Box>
                 </Modal.PageContent>
@@ -89,55 +104,35 @@ const PageTemplate: ComponentStory<typeof Modal & typeof Modal.PageContent> = (a
 };
 
 export const Default = PageTemplate.bind({});
-Default.args = {
-    title: 'Title',
-    has_close_button: false,
-    has_title_separator: false,
-    has_footer_separator: false,
-    block_action_buttons: false,
+Default.args = {};
+
+export const PreventClosingOnClickOutside = PageTemplate.bind({});
+PreventClosingOnClickOutside.args = {
+    should_prevent_close_on_click_outside: true,
 };
 
 export const WithBlockActionButtons = PageTemplate.bind({});
 WithBlockActionButtons.args = {
-    title: 'Title',
-    has_close_button: false,
-    has_title_separator: false,
-    has_footer_separator: false,
     block_action_buttons: true,
 };
 
 export const WithCloseIcon = PageTemplate.bind({});
 WithCloseIcon.args = {
-    title: 'Title',
     has_close_button: true,
-    has_title_separator: false,
-    has_footer_separator: false,
-    block_action_buttons: false,
 };
 
 export const WithTitleSeparator = PageTemplate.bind({});
 WithTitleSeparator.args = {
-    title: 'Title',
-    has_close_button: false,
     has_title_separator: true,
-    has_footer_separator: false,
-    block_action_buttons: false,
 };
 
 export const WithFooterSeparator = PageTemplate.bind({});
 WithFooterSeparator.args = {
-    title: 'Title',
-    has_close_button: false,
-    has_title_separator: false,
     has_footer_separator: true,
-    block_action_buttons: false,
 };
 
 export const WithBothSeparator = PageTemplate.bind({});
 WithBothSeparator.args = {
-    title: 'Title',
-    has_close_button: false,
     has_title_separator: true,
     has_footer_separator: true,
-    block_action_buttons: false,
 };

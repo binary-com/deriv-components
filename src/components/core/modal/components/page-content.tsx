@@ -15,13 +15,26 @@ const PageContent = forwardRef<HTMLDivElement, TPageContentProps>(
             has_footer_separator = false,
             action_buttons,
             block_action_buttons,
+            should_prevent_close_on_click_outside = false,
+            onInteractOutside,
         },
         ref,
     ) => {
         const { isDark } = useTheme();
 
         return (
-            <ModalContentContainer dark={isDark} type={'page'} ref={ref}>
+            <ModalContentContainer
+                dark={isDark}
+                type={'page'}
+                onInteractOutside={(event) => {
+                    if (should_prevent_close_on_click_outside) {
+                        event?.preventDefault();
+                    } else {
+                        onInteractOutside?.(event);
+                    }
+                }}
+                ref={ref}
+            >
                 <TextTitle type={'page'} has_close_button={has_close_button} has_title_separator={has_title_separator}>
                     {title}
                 </TextTitle>

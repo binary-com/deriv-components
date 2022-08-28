@@ -24,6 +24,7 @@ export type TDialogContentOwnProps = {
     has_close_button?: boolean;
     action_buttons?: TModalActionButton[];
     block_action_buttons?: boolean;
+    should_prevent_close_on_click_outside?: boolean;
 };
 
 export type TDialogContentProps = TDialogContentOwnProps & TBaseContentProps;
@@ -36,6 +37,7 @@ export type TPageContentOwnProps = {
     has_footer_separator?: boolean;
     action_buttons?: TModalActionButton[];
     block_action_buttons?: boolean;
+    should_prevent_close_on_click_outside?: boolean;
 };
 
 export type TPageContentProps = TPageContentOwnProps & TBaseContentProps;

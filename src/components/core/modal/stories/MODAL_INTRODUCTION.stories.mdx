@@ -172,6 +172,29 @@ return (
         <Modal.Portal>
             <Modal.Overlay />
             <Modal.DialogContent
+                should_prevent_close_on_click_outside={true}
+                title={args.title}
+                content={args.content}
+                has_close_button={args.has_close_button}
+                action_buttons={actionButtons}
+                block_action_buttons={args.block_action_buttons}
+            />
+        </Modal.Portal>
+    </Modal>
+);
+```
+
+the Other way would be like so:
+
+```tsx
+return (
+    <Modal>
+        <Modal.Trigger asChild>
+            <Button>Open</Button>
+        </Modal.Trigger>
+        <Modal.Portal>
+            <Modal.Overlay />
+            <Modal.DialogContent
                 onInteractOutside={(event) => {
                     event.preventDefault();
                 }}

@@ -15,11 +15,35 @@ const ContentContainer = styled('div', {
 });
 
 const DialogContent = forwardRef<HTMLDivElement, TDialogContentProps>(
-    ({ title, content, action_buttons, has_close_button = true, block_action_buttons, ...rest }, ref) => {
+    (
+        {
+            title,
+            content,
+            should_prevent_close_on_click_outside = false,
+            onInteractOutside,
+            action_buttons,
+            has_close_button = true,
+            block_action_buttons,
+            ...rest
+        },
+        ref,
+    ) => {
         const { isDark } = useTheme();
 
         return (
-            <ModalContentContainer dark={isDark} type={'dialog'} ref={ref} {...rest}>
+            <ModalContentContainer
+                dark={isDark}
+                type={'dialog'}
+                ref={ref}
+                onInteractOutside={(event) => {
+                    if (should_prevent_close_on_click_outside) {
+                        event?.preventDefault();
+                    } else {
+                        onInteractOutside?.(event);
+                    }
+                }}
+                {...rest}
+            >
                 <TextTitle type={'dialog'} has_close_button={has_close_button}>
                     {title}
                 </TextTitle>
