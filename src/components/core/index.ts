@@ -9,3 +9,4 @@ export { default as List } from './list/list';
 export { default as Wizard } from './wizard/wizard';
 export { default as ThemeProvider } from './theme-context/theme-provider';
 export { default as useTheme } from './theme-context/use-theme';
+export { default as Modal } from './modal';

@@ -17,6 +17,7 @@ const PageContent = forwardRef<HTMLDivElement, TPageContentProps>(
             block_action_buttons,
             should_prevent_close_on_click_outside = false,
             onInteractOutside,
+            ...rest
         },
         ref,
     ) => {
@@ -34,6 +35,7 @@ const PageContent = forwardRef<HTMLDivElement, TPageContentProps>(
                     }
                 }}
                 ref={ref}
+                {...rest}
             >
                 <TextTitle type={'page'} has_close_button={has_close_button} has_title_separator={has_title_separator}>
                     {title}
