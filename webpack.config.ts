@@ -60,6 +60,10 @@ const config = (env: EnvConfig): Configuration => {
         },
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
+            extensionAlias: {
+                '.js': ['.ts', '.js'],
+                '.mjs': ['.mts', '.mjs'],
+            },
             plugins: [new TsconfigPathsPlugin() as TsconfigPathsPlugin & ResolvePluginInstance],
         },
         output: {
