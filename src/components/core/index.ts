@@ -13,5 +13,6 @@ export { default as ChechboxList } from './checkbox-list/checkbox-list';
 export { default as RadioGroup } from './radio-group/radio-group';
 export { default as ToggleSwitch } from './toggle-switch/toggle-switch';
 export { default as Scrollbars } from './scrollbars/scrollbars';
+export { default as Modal } from './modal';
 export { default as ArrowTooltip } from './tooltip/arrow-tooltip/arrow-tooltip';
 export { default as Tooltip } from './tooltip/tooltip/tooltip';
