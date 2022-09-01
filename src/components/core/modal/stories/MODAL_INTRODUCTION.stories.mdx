@@ -1,0 +1,210 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Modal / Introduction" />
+
+# Modal
+
+We based our own custom modal on `@radix-ui/react-dialog`, you still have access to everything from `@radix-ui/react-dialog` and you can create your own very custom modals if the requirements need it.
+So you have to be familiar with how the `@radix-ui/react-dialog` works, please check out [their documentation](https://www.radix-ui.com/docs/primitives/components/dialog#title)
+
+## Zero Height docs
+
+Please check out the [Zero Height](https://zeroheight.com/36313d3c8/p/06e7fa-modal/b/584e17) for more info on the `Modal`'s design.
+
+## Modal Types
+
+We have two modal `type`s:
+
+1. `Dialog`: With this type you can show simple dialogs which their main purpose is to get user's approval on something.
+2. `Page`: With this type you can provide your own `content` as it's `children`.
+
+### Dialog Type
+
+Your Dialog will be something like:
+
+```tsx
+return (
+    <Modal>
+        <Modal.Trigger asChild>
+            <Button>Open</Button>
+        </Modal.Trigger>
+        <Modal.Portal>
+            <Modal.Overlay />
+            <Modal.DialogContent
+                title={args.title}
+                content={args.content}
+                has_close_button={args.has_close_button}
+                action_buttons={actionButtons}
+                block_action_buttons={args.block_action_buttons}
+            />
+        </Modal.Portal>
+    </Modal>
+);
+```
+
+### Page Type
+
+Your Page Dialog will be something like:
+
+```tsx
+const Box = styled('div', {
+    width: '30rem',
+    height: '30rem',
+});
+return (
+    <Modal>
+        <Modal.Trigger asChild>
+            <Button>Open Page </Button>
+        </Modal.Trigger>
+        <Modal.Portal>
+            <Modal.Overlay />
+            <Modal.PageContent
+                title={args.title}
+                has_close_button={args.has_close_button}
+                has_title_separator={args.has_title_separator}
+                has_footer_separator={args.has_footer_separator}
+                block_action_buttons={args.block_action_buttons}
+                action_buttons={actionButtons}
+            >
+                <Box></Box>
+            </Modal.PageContent>
+        </Modal.Portal>
+    </Modal>
+);
+```
+
+## Controlled Vs Un-Controlled
+
+You can use both `Controlled` and `Un-Controlled` with both `dialog` and `page` types.
+
+### Un-Controlled
+
+With `Un-Controlled` version the modal will handle the `open/close` state internally and you don't have access to it with `JS/TS`, although you still can check the `data-state` attribute on the rendered html if you only need to apply some css goodies on the modal.
+
+### Controlled
+
+With `Controlled` the `opne/close` state will be handle externally, please be aware that `Close Button` still works and closes the modal and you don't have to worry about it.
+to enable this you just have to create an state and pass it to `props` of the `Modal` like so:
+
+```tsx
+// This is the open state
+const [open, setOpen] = useState(false);
+return (
+    <Modal open={open} onOpenChange={setOpen}>
+        <Modal.Trigger asChild>
+            <Button>Open</Button>
+        </Modal.Trigger>
+        <Modal.Portal>
+            <Modal.Overlay />
+            <Modal.DialogContent
+                title={args.title}
+                content={args.content}
+                has_close_button={args.has_close_button}
+                action_buttons={actionButtons}
+                block_action_buttons={args.block_action_buttons}
+            />
+        </Modal.Portal>
+    </Modal>
+);
+```
+
+### Portal Vs Non-Portal
+
+We don't want to force you to use the component in a specific way, you have all the control on where you want to render the modal.
+if you want to render the actual html on `Body` or some other `container` you have to use `Portal` but if you want to render the modal inside your component you don't have to use the `Portal`.
+Please checkout [Portal Docs](https://www.radix-ui.com/docs/primitives/components/dialog#portal) for more info.
+
+if you use the `Portal` the defualt `container` will be `body` and you can even pass your own `container` to it, for example if you want to render the `Modal` and all of it's
+components (Overlay, Title, Content, etc) inside some part of your application ( not on the whole application)
+
+### Overlay
+
+This component is Optional and you don't have to use it, we didn't put it inside our own Custom Content components so you could have the freedom to include it yourself
+but if you do include it inside the `Modal` component there will be an overlay on top of the whole `container` and the dialog will be rendered on top of it.
+
+### Custom Inner Components
+
+`Modal` exposes all of the components provided by `@radix-ui/react-dialog` and on top of them, it will expose several custom components as well:
+
+1. `TextTitle`: The title component based on our designs.
+2. `DialogContent`: The content component only for `Dialog` type.
+3. `PageContent`: The content component only for `Page` type.
+4. `CloseIconButton`: The close Icon button.
+
+### DialogContent / PageContent Own Props Vs Radix Content BaseProps
+
+We don't want to re-implement the feature provided by `@radix-ui/react-dialog` instead we want to have them and have our own props as well, to acheive this DialogContent and PageContent accepts both of them, please check this out:
+
+```tsx
+import { Content as PrimitiveContent } from '@radix-ui/react-dialog';
+
+type TBaseContentProps = React.ComponentProps<typeof PrimitiveContent>;
+
+export type TDialogContentOwnProps = {
+    content?: string;
+    title?: string | ReactNode;
+    has_close_button?: boolean;
+    action_buttons?: TModalActionButton[];
+    block_action_buttons?: boolean;
+};
+
+export type TDialogContentProps = TDialogContentOwnProps & TBaseContentProps;
+```
+
+with this approach we will access to all the features provided by `@radix-ui/react-dialog`, such as:
+
+-   `onOpenAutoFocus`
+-   `onInteractOutside`
+-   `onPointerDownOutSide`
+
+You can check all the available items on [here](https://www.radix-ui.com/docs/primitives/components/dialog#content).
+
+### Prevent Closing the Modal On clicking outside
+
+One way would like so:
+
+```tsx
+return (
+    <Modal>
+        <Modal.Trigger asChild>
+            <Button>Open</Button>
+        </Modal.Trigger>
+        <Modal.Portal>
+            <Modal.Overlay />
+            <Modal.DialogContent
+                should_prevent_close_on_click_outside={true}
+                title={args.title}
+                content={args.content}
+                has_close_button={args.has_close_button}
+                action_buttons={actionButtons}
+                block_action_buttons={args.block_action_buttons}
+            />
+        </Modal.Portal>
+    </Modal>
+);
+```
+
+the Other way would be like so:
+
+```tsx
+return (
+    <Modal>
+        <Modal.Trigger asChild>
+            <Button>Open</Button>
+        </Modal.Trigger>
+        <Modal.Portal>
+            <Modal.Overlay />
+            <Modal.DialogContent
+                onInteractOutside={(event) => {
+                    event.preventDefault();
+                }}
+                title={args.title}
+                content={args.content}
+                has_close_button={args.has_close_button}
+                action_buttons={actionButtons}
+                block_action_buttons={args.block_action_buttons}
+            />
+        </Modal.Portal>
+    </Modal>
+);
+```
