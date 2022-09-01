@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import type * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
@@ -242,15 +242,17 @@ const StyledText = styled('p', {
     },
 });
 
-const Text = ({ children, color, align, type, bold, ...props }: ITextProps) => {
+const Text = forwardRef<HTMLParagraphElement, ITextProps>(({ children, color, align, type, bold, ...props }, ref) => {
     const { isDark } = useTheme();
 
     return (
-        <StyledText dark={isDark} color={color} align={align} type={type} bold={bold} {...props}>
+        <StyledText dark={isDark} color={color} align={align} type={type} bold={bold} ref={ref} {...props}>
             {children}
         </StyledText>
     );
-};
+});
+
+Text.displayName = 'Text';
 
 export default Text;
 

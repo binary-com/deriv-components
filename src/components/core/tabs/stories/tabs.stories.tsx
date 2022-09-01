@@ -1,5 +1,5 @@
 import { Story } from '@storybook/react';
-import Tabs, { TabsProps, TabsContent } from '../tabs';
+import Tabs, { TabsProps } from '../tabs';
 import DepositIconLight from './assets/ic-deposit-light.svg';
 import WithdrawIconLight from './assets/ic-withdraw-light.svg';
 import TransferIconLight from './assets/ic-transfer-light.svg';
@@ -47,52 +47,40 @@ const Template: Story<TabsProps> = (args, { globals: { theme } }) => {
         {
             label: 'Deposit',
             icon: isDark ? DepositIconDark : DepositIconLight,
-            content: 'Deposit',
+            content: <p>Deposit</p>,
         },
         {
             label: 'Withdraw',
             icon: isDark ? WithdrawIconDark : WithdrawIconLight,
-            content: 'Withdraw',
+            content: <p>Withdraw</p>,
         },
         {
             label: 'Transfer',
             icon: isDark ? TransferIconDark : TransferIconLight,
-            content: 'Transfer',
+            content: <p>Transfer</p>,
         },
         {
             label: 'Transactions',
             icon: isDark ? TransactionIconDark : TransactionIconLight,
-            content: 'Transactions',
+            content: <p>Transactions</p>,
         },
     ];
     return (
         <Tabs {...args}>
             <Tabs.List {...args}>
-                <Tabs.Trigger value="Deposit" icon={isDark ? DepositIconDark : DepositIconLight}>
-                    Deposit
-                </Tabs.Trigger>
-                <Tabs.Trigger value="Withdraw" icon={isDark ? WithdrawIconDark : WithdrawIconLight}>
-                    Withdraw
-                </Tabs.Trigger>
-                <Tabs.Trigger value="Transfer" icon={isDark ? TransferIconDark : TransferIconLight}>
-                    Transfer
-                </Tabs.Trigger>
-                <Tabs.Trigger value="Transactions" icon={isDark ? TransactionIconDark : TransactionIconLight}>
-                    Transactions
-                </Tabs.Trigger>
+                {tabs.map((tab) => (
+                    <Tabs.Trigger key={tab.label} value={tab.label} icon={tab.icon}>
+                        {tab.label}
+                    </Tabs.Trigger>
+                ))}
             </Tabs.List>
-            <TabsContent value="Deposit">
-                <p>Deposit</p>
-            </TabsContent>
-            <TabsContent value="Withdraw">
-                <p>Withdraw</p>
-            </TabsContent>
-            <TabsContent value="Transfer">
-                <p>Transfer</p>
-            </TabsContent>
-            <TabsContent value="Transactions">
-                <p>Transactions</p>
-            </TabsContent>
+            <>
+                {tabs.map((tab) => (
+                    <Tabs.Content key={tab.label} value={tab.label}>
+                        {tab.content}
+                    </Tabs.Content>
+                ))}
+            </>
         </Tabs>
     );
 };

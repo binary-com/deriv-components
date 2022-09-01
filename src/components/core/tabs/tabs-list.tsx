@@ -142,8 +142,6 @@ const Icon = styled('img', {
     marginRight: '8px',
 });
 
-const Box = styled('div', {});
-
 export const TabsTrigger = ({ contained, size, children, icon, icon_alt, value }: TabsTriggerProps) => {
     const { isDark } = useTheme();
     return (

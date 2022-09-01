@@ -82,7 +82,7 @@
     },
     "dependencies": {
         "@radix-ui/react-checkbox": "^0.1.4",
-        "@radix-ui/react-dialog": "^0.1.5",
+        "@radix-ui/react-dialog": "^1.0.0",
         "@radix-ui/react-radio-group": "^1.0.0",
         "@radix-ui/react-switch": "^0.1.5",
         "@radix-ui/react-tabs": "^1.0.0",
