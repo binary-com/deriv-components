@@ -29,7 +29,7 @@ type ArrowTooltipProps = {
     class_name_arrow?: string;
     icon?: string;
     is_fixed_width?: boolean;
-    tooltip_content: ReactElement;
+    children: ReactElement;
     open_tooltip: boolean;
 };
 
@@ -153,7 +153,7 @@ const ArrowTooltip = ({
     class_name_arrow,
     icon,
     is_fixed_width,
-    tooltip_content,
+    children,
     open_tooltip = true,
     arrow_size,
 }: ArrowTooltipProps) => {
@@ -179,7 +179,7 @@ const ArrowTooltip = ({
                 >
                     <Flex>
                         {icon && <Icon src={icon} />}
-                        <div>{tooltip_content}</div>
+                        <div>{children}</div>
                     </Flex>
                     <ArrowImage
                         css={{ stroke: arrow_color, width: arrow_size, height: arrow_size }}

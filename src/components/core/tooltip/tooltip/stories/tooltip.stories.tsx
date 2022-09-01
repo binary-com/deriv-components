@@ -1,6 +1,20 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { styled } from '@stitches/react';
 import CheckIconSVG from '@assets/svg/circular-check-icon.svg';
 import Tooltip, { TooltipStory } from '../tooltip';
+
+const TooltipContainer = styled('div', {
+    position: 'relative',
+    top: 200,
+    left: 200,
+    variants: {
+        dark: {
+            true: {
+                color: 'white',
+            },
+        },
+    },
+});
 
 export default {
     title: 'Tooltip / Tooltip',
@@ -35,11 +49,16 @@ export default {
     },
 } as ComponentMeta<typeof TooltipStory>;
 
-const Template: ComponentStory<typeof TooltipStory> = (args) => (
-    <Tooltip {...args}>
-        <span>Hover over this content</span>
-    </Tooltip>
-);
+const Template: ComponentStory<typeof TooltipStory> = (args, { globals: { theme } }) => {
+    const isDark = theme === 'dark';
+    return (
+        <TooltipContainer dark={isDark}>
+            <Tooltip {...args}>
+                <span>Hover over this content</span>
+            </Tooltip>
+        </TooltipContainer>
+    );
+};
 
 export const DefaultTooltip = Template.bind({});
 DefaultTooltip.args = {

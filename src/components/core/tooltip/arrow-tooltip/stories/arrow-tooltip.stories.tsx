@@ -1,6 +1,13 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { styled } from '@stitches/react';
 import CheckIconSVG from '@assets/svg/circular-check-icon.svg';
 import ArrowTooltip, { ArrowTooltipStory } from '../arrow-tooltip';
+
+const TooltipContainer = styled('div', {
+    position: 'relative',
+    top: 200,
+    left: 200,
+});
 
 export default {
     title: 'Tooltip / ArrowTooltip',
@@ -44,34 +51,33 @@ export default {
                 defaultValue: { summary: true },
             },
         },
-        tooltip_content: {
-            defaultValue: <span>This is arrow tooltip content</span>,
-        },
     },
 } as ComponentMeta<typeof ArrowTooltipStory>;
 
-const Template: ComponentStory<typeof ArrowTooltipStory> = (args) => <ArrowTooltip {...args} />;
+const Template: ComponentStory<typeof ArrowTooltipStory> = (args) => (
+    <TooltipContainer>
+        <ArrowTooltip {...args}>
+            <span>This is arrow tooltip content</span>
+        </ArrowTooltip>
+    </TooltipContainer>
+);
 
 export const DefaultArrowTooltip = Template.bind({});
-
 DefaultArrowTooltip.args = {
     is_fixed_width: false,
 };
 
 export const ArrowTooltipWithIcon = Template.bind({});
-
 ArrowTooltipWithIcon.args = {
     icon: CheckIconSVG,
 };
 
 export const ArrowTooltipWithDifferentColor = Template.bind({});
-
 ArrowTooltipWithDifferentColor.args = {
     arrow_color: 'black',
 };
 
 export const ArrowTooltipWithAdjustableSizeOfArraow = Template.bind({});
-
 ArrowTooltipWithAdjustableSizeOfArraow.args = {
     arrow_size: 20,
 };
