@@ -1,12 +1,14 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, Story } from '@storybook/react';
 import { styled } from '@stitches/react';
 import CheckIconSVG from '@assets/svg/circular-check-icon.svg';
-import Tooltip, { TooltipStory } from '../tooltip';
+import Tooltip, { TooltipProps } from '../tooltip';
+import { TTooltipContentProps } from '../tooltip-content';
+import { TTooltipTriggerProps } from '../tooltip-trigger';
 
 const TooltipContainer = styled('div', {
     position: 'relative',
     top: 200,
-    left: 200,
+    left: 300,
     variants: {
         dark: {
             true: {
@@ -28,9 +30,6 @@ export default {
             },
             defaultValue: 'error',
         },
-        tooltip_content: {
-            defaultValue: <span>this is a tooltip</span>,
-        },
         side: {
             description: 'controls the side of tooltip ',
             control: {
@@ -41,29 +40,33 @@ export default {
         },
         is_fixed_width: {
             description: 'If set to `true`, width will be fixed.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: true },
+            control: {
+                type: 'boolean',
             },
+            defaultValue: false,
         },
     },
-} as ComponentMeta<typeof TooltipStory>;
+} as ComponentMeta<typeof Tooltip>;
 
-const Template: ComponentStory<typeof TooltipStory> = (args, { globals: { theme } }) => {
+const Template: Story<TooltipProps & TTooltipTriggerProps & TTooltipContentProps> = (args, { globals: { theme } }) => {
     const isDark = theme === 'dark';
     return (
         <TooltipContainer dark={isDark}>
-            <Tooltip {...args}>
-                <span>Hover over this content</span>
-            </Tooltip>
+            <Tooltip.Provider>
+                <Tooltip>
+                    <Tooltip.Trigger>
+                        <span>Hover over this content</span>
+                    </Tooltip.Trigger>
+                    <Tooltip.Content {...args}>
+                        <span>This is tooltip</span>
+                    </Tooltip.Content>
+                </Tooltip>
+            </Tooltip.Provider>
         </TooltipContainer>
     );
 };
 
 export const DefaultTooltip = Template.bind({});
-DefaultTooltip.args = {
-    is_fixed_width: false,
-};
 
 export const TooltipWithIcon = Template.bind({});
 TooltipWithIcon.args = {
