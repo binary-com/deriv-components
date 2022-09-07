@@ -1,7 +1,5 @@
-import type { Story } from '@storybook/react';
-import Tab from '@core/tabs/tab';
-import type { TabsProps } from '@core/tabs/tabs';
-import Tabs from '@core/tabs/tabs';
+import { Story } from '@storybook/react';
+import Tabs, { TabsProps } from '../tabs';
 import DepositIconLight from './assets/ic-deposit-light.svg';
 import WithdrawIconLight from './assets/ic-withdraw-light.svg';
 import TransferIconLight from './assets/ic-transfer-light.svg';
@@ -14,9 +12,6 @@ import TransactionIconDark from './assets/ic-transactions-dark.svg';
 export default {
     title: 'Tabs',
     argTypes: {
-        active_index: {
-            description: 'Sets the active tab index.',
-        },
         contained: {
             description: 'If set to `true`, the tab background will be changed.',
             defaultValue: false,
@@ -25,7 +20,6 @@ export default {
                 defaultValue: { summary: false },
             },
         },
-
         size: {
             control: {
                 type: 'select',
@@ -41,37 +35,62 @@ export default {
                 defaultValue: { summary: 'default' },
             },
         },
+        default_selected: {
+            defaultValue: 'Deposit',
+        },
     },
 };
 
 const Template: Story<TabsProps> = (args, { globals: { theme } }) => {
     const isDark = theme === 'dark';
+    const tabs = [
+        {
+            label: 'Deposit',
+            icon: isDark ? DepositIconDark : DepositIconLight,
+            content: <p>Deposit</p>,
+        },
+        {
+            label: 'Withdraw',
+            icon: isDark ? WithdrawIconDark : WithdrawIconLight,
+            content: <p>Withdraw</p>,
+        },
+        {
+            label: 'Transfer',
+            icon: isDark ? TransferIconDark : TransferIconLight,
+            content: <p>Transfer</p>,
+        },
+        {
+            label: 'Transactions',
+            icon: isDark ? TransactionIconDark : TransactionIconLight,
+            content: <p>Transactions</p>,
+        },
+    ];
     return (
         <Tabs {...args}>
-            <Tab icon={isDark ? DepositIconDark : DepositIconLight} label="Deposit">
-                Deposit
-            </Tab>
-            <Tab icon={isDark ? WithdrawIconDark : WithdrawIconLight} label="Withdraw">
-                Withdraw
-            </Tab>
-            <Tab icon={isDark ? TransferIconDark : TransferIconLight} label="Transfer">
-                Transfer
-            </Tab>
-            <Tab icon={isDark ? TransactionIconDark : TransactionIconLight} label="Transactions">
-                Transactions
-            </Tab>
+            <Tabs.List {...args}>
+                {tabs.map((tab) => (
+                    <Tabs.Trigger key={tab.label} value={tab.label} icon={tab.icon}>
+                        {tab.label}
+                    </Tabs.Trigger>
+                ))}
+            </Tabs.List>
+            <>
+                {tabs.map((tab) => (
+                    <Tabs.Content key={tab.label} value={tab.label}>
+                        {tab.content}
+                    </Tabs.Content>
+                ))}
+            </>
         </Tabs>
     );
 };
 
 export const Bordered = Template.bind({});
 Bordered.args = {
-    active_index: 0,
     contained: false,
 };
 
 export const Contained = Template.bind({});
 Contained.args = {
-    active_index: 0,
     contained: true,
 };
