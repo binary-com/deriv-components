@@ -1,8 +1,8 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 
 export type TTooltipTriggerProps = {
-    children: ReactElement;
+    children: ReactNode;
     setOpenTooltip?: (value: boolean) => void;
 };
 

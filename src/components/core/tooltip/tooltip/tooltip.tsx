@@ -1,4 +1,4 @@
-import { Children, ReactElement, ReactNode, cloneElement, useState } from 'react';
+import { Children, ReactElement, cloneElement, useState } from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import TooltipContent from './tooltip-content';
 import TooltipTrigger from './tooltip-trigger';

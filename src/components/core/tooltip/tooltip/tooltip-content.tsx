@@ -1,11 +1,11 @@
-import { HTMLAttributes, ReactElement } from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import { keyframes } from '@stitches/react';
 import useTheme from '@core/theme-context/use-theme';
 import { styled } from 'Styles/stitches.config';
 
 export type TTooltipContentProps = HTMLAttributes<HTMLDivElement> & {
-    children: ReactElement;
+    children: ReactNode;
     type?: 'default' | 'error';
     side: 'top' | 'bottom' | 'left' | 'right';
     icon?: string;

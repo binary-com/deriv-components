@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import classNames from 'classnames';
 import * as Stitches from '@stitches/react';
 import CurvedArrowIcon from '@assets/svg/curved-arrow.svg';
@@ -29,7 +29,7 @@ type ArrowTooltipProps = {
     class_name_arrow?: string;
     icon?: string;
     is_fixed_width?: boolean;
-    children: ReactElement;
+    children: ReactNode;
     open_tooltip: boolean;
 };
 
