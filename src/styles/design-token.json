@@ -1233,7 +1233,7 @@
                 "x": "0px",
                 "y": "24px",
                 "blur": "48px",
-                "spread": "-12px",
+                "spread": "0px",
                 "color": "rgba(0,0,0,0.18)",
                 "type": "dropShadow"
             },
@@ -1244,7 +1244,7 @@
                 "x": "0px",
                 "y": "32px",
                 "blur": "64px",
-                "spread": "-12px",
+                "spread": "0px",
                 "color": "rgba(0,0,0,0.14)",
                 "type": "dropShadow"
             },
