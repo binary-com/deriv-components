@@ -10,7 +10,6 @@ const ModalContentContainer = styled(PrimitiveContent, {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    maxWidth: '90vw',
     padding: '0px',
 
     '@media (prefers-reduced-motion: no-preference)': {
@@ -45,7 +44,14 @@ const ModalContentContainer = styled(PrimitiveContent, {
                     width: '328px',
                 },
             },
-            page: {},
+            page: {
+                display: 'flex',
+                flexDirection: 'column',
+                '@mobile': {
+                    width: '100%',
+                    height: '100%',
+                },
+            },
         },
     },
     defaultVariants: {

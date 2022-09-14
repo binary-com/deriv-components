@@ -57,7 +57,7 @@ export default {
 
 const Box = styled('div', {
     width: '30rem',
-    height: '30rem',
+    height: '20rem',
 });
 
 const actionButtons: TModalActionButton[] = [

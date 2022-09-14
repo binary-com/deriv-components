@@ -4,7 +4,11 @@ import { TPageContentProps } from '../types';
 import ModalContentContainer from './modal-content-container';
 import ModalFooterContainer from './modal-footer-container';
 import TextTitle from './text-title';
+import { styled } from 'Styles/stitches.config';
 
+const ContentContainer = styled('div', {
+    flex: 1,
+});
 const PageContent = forwardRef<HTMLDivElement, TPageContentProps>(
     (
         {
@@ -40,7 +44,7 @@ const PageContent = forwardRef<HTMLDivElement, TPageContentProps>(
                 <TextTitle type={'page'} has_close_button={has_close_button} has_title_separator={has_title_separator}>
                     {title}
                 </TextTitle>
-                {children}
+                <ContentContainer>{children}</ContentContainer>
                 <ModalFooterContainer
                     block_action_buttons={block_action_buttons}
                     action_buttons={action_buttons}
