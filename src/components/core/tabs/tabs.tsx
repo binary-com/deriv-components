@@ -1,6 +1,5 @@
-import { Children, HtmlHTMLAttributes, ReactElement, cloneElement } from 'react';
+import { HtmlHTMLAttributes, ReactElement } from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
-import useTheme from '@core/theme-context/use-theme';
 import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
@@ -21,7 +20,6 @@ const StyledTabs = styled(TabsPrimitive.Root, {
 const StyledContent = styled(TabsPrimitive.Content, {});
 
 const Tabs = ({ contained = false, size = 'default', default_selected, children, ...props }: TabsProps) => {
-    const { isDark } = useTheme();
     return (
         <div {...props}>
             <StyledTabs defaultValue={default_selected}>{children}</StyledTabs>
