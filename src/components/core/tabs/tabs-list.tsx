@@ -1,20 +1,27 @@
-import React from 'react';
-import type { LiHTMLAttributes } from 'react';
-import * as Stitches from '@stitches/react';
-import { styled } from 'Styles/stitches.config';
-import { modifyVariantsForStory } from 'Styles/type-utils';
+import { Children, HtmlHTMLAttributes, ReactElement, cloneElement } from 'react';
+import * as TabsPrimitive from '@radix-ui/react-tabs';
 import useTheme from '@core/theme-context/use-theme';
+import { styled } from 'Styles/stitches.config';
 
-export interface TabProps extends LiHTMLAttributes<HTMLLIElement> {
-    active?: boolean;
-    contained?: boolean;
-    size?: 'default' | 'small';
-    icon?: string;
-    label?: string;
-    width_of_tab?: string;
+export interface TabsListProps extends HtmlHTMLAttributes<HTMLDivElement> {
+    children?: ReactElement[];
 }
 
-const List = styled('li', {
+export interface TabsTriggerProps extends HtmlHTMLAttributes<HTMLDivElement> {
+    contained?: boolean;
+    size?: 'default' | 'small';
+    children?: string;
+    icon?: string;
+    icon_alt?: string;
+    value: string;
+}
+
+const StyledList = styled(TabsPrimitive.List, {
+    display: 'flex',
+});
+
+const StyledTrigger = styled(TabsPrimitive.Trigger, {
+    all: 'unset',
     padding: '0 1rem',
     display: 'flex',
     alignItems: 'center',
@@ -30,6 +37,15 @@ const List = styled('li', {
         cursor: 'pointer',
         borderBottom: '2px solid $greyLight200',
     },
+    '&[data-state="active"]': {
+        backgroundColor: 'transparent',
+        borderBottom: '2px solid $coral500',
+        fontWeight: '$bold',
+        '&:hover': {
+            backgroundColor: 'transparent',
+            borderBottom: '2px solid $coral500',
+        },
+    },
     variants: {
         size: {
             default: {
@@ -37,17 +53,6 @@ const List = styled('li', {
             },
             small: {
                 height: '32px',
-            },
-        },
-        active: {
-            true: {
-                backgroundColor: 'transparent',
-                borderBottom: '2px solid $coral500',
-                fontWeight: '$bold',
-                '&:hover': {
-                    backgroundColor: 'transparent',
-                    borderBottom: '2px solid $coral500',
-                },
             },
         },
         contained: {
@@ -77,26 +82,28 @@ const List = styled('li', {
     compoundVariants: [
         {
             dark: true,
-            active: true,
             css: {
-                color: '$greyLight100',
-                backgroundColor: 'transparent',
-                borderBottom: '2px solid $coral500',
-                '&:hover': {
+                '&[data-state="active"]': {
+                    color: '$greyLight100',
                     backgroundColor: 'transparent',
                     borderBottom: '2px solid $coral500',
+                    '&:hover': {
+                        backgroundColor: 'transparent',
+                        borderBottom: '2px solid $coral500',
+                    },
                 },
             },
         },
         {
             contained: true,
-            active: true,
             css: {
-                backgroundColor: '$greyLight100',
-                borderBottom: 'unset',
-                '&:hover': {
+                '&[data-state="active"]': {
                     backgroundColor: '$greyLight100',
                     borderBottom: 'unset',
+                    '&:hover': {
+                        backgroundColor: '$greyLight100',
+                        borderBottom: 'unset',
+                    },
                 },
             },
         },
@@ -105,23 +112,18 @@ const List = styled('li', {
             dark: true,
             css: {
                 borderBottom: 'unset',
+                '&[data-state="active"]': {
+                    backgroundColor: '$greyDark700',
+                    borderBottom: 'unset',
+                    color: '$greyLight100',
+                    '&:hover': {
+                        backgroundColor: '$greyDark700',
+                        borderRadius: '16px 16px 0 0',
+                        borderBottom: 'unset',
+                    },
+                },
                 '&:hover': {
                     backgroundColor: '#0E0E0E66',
-                    borderRadius: '16px 16px 0 0',
-                    borderBottom: 'unset',
-                },
-            },
-        },
-        {
-            contained: true,
-            dark: true,
-            active: true,
-            css: {
-                backgroundColor: '$greyDark700',
-                borderBottom: 'unset',
-                color: '$greyLight100',
-                '&:hover': {
-                    backgroundColor: '$greyDark700',
                     borderRadius: '16px 16px 0 0',
                     borderBottom: 'unset',
                 },
@@ -140,30 +142,25 @@ const Icon = styled('img', {
     marginRight: '8px',
 });
 
-const Tab = React.forwardRef(
-    ({ active, contained, size = 'default', icon, label, width_of_tab, ...props }: TabProps, ref: any) => {
-        const { isDark } = useTheme();
-        return (
-            <List
-                active={active}
-                dark={isDark}
-                size={size}
-                contained={contained}
-                {...props}
-                ref={ref}
-                css={{
-                    width: width_of_tab ? width_of_tab : 'auto',
-                }}
-            >
-                <Icon src={icon} />
-                <span>{label}</span>
-            </List>
-        );
-    },
-);
+export const TabsTrigger = ({ contained, size, children, icon, icon_alt, value }: TabsTriggerProps) => {
+    const { isDark } = useTheme();
+    return (
+        <StyledTrigger value={value} size={size} contained={contained} dark={isDark}>
+            {icon && <Icon src={icon} alt={icon_alt} />} {children}
+        </StyledTrigger>
+    );
+};
 
-export default Tab;
+const TabsList = ({ children, ...props }: TabsListProps) => {
+    return (
+        <StyledList>
+            {Children.map(children, (child) => {
+                if (child) {
+                    return cloneElement(child, { ...props });
+                }
+            })}
+        </StyledList>
+    );
+};
 
-type TabVariantProps = Stitches.VariantProps<typeof Tab>;
-
-export const BreadcrumbStory = modifyVariantsForStory<TabVariantProps, TabProps, typeof Tab>(Tab);
+export default TabsList;
