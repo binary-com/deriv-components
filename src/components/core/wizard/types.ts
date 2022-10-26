@@ -17,6 +17,7 @@ export type StepProps = {
     is_fullwidth?: boolean;
     is_disabled?: boolean;
     is_hidden?: boolean;
+    is_previous_disabled?: boolean;
     is_submit_disabled?: boolean;
     children: React.ReactElement;
 };
@@ -31,6 +32,7 @@ export type StepsConfig = {
     step_key?: StepProps['step_key'];
     is_disabled?: StepProps['is_disabled'];
     is_hidden?: StepProps['is_hidden'];
+    is_previous_disabled?: StepProps['is_previous_disabled'];
     is_submit_disabled?: StepProps['is_submit_disabled'];
 }[];
 

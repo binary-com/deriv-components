@@ -177,7 +177,12 @@ const DesktopWizard = (props: DesktopWizard) => {
                     {current_step.props.is_fullwidth ? null : right_panel}
                 </ContentContainer>
                 <Footer dark={isDark}>
-                    <Button color="secondary" size="large" onClick={prevStep} disabled={current_step_index < 1}>
+                    <Button
+                        color="secondary"
+                        size="large"
+                        onClick={prevStep}
+                        disabled={current_step_index < 1 || current_step.props.is_previous_disabled}
+                    >
                         {secondary_button_label}
                     </Button>
                     <Button size="large" onClick={nextStep} disabled={current_step.props.is_submit_disabled}>
