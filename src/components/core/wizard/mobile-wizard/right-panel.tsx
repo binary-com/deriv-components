@@ -30,6 +30,7 @@ const RightPanelContainer = styled('div', {
     top: '0',
     right: '0',
     bottom: '0',
+    left: '0',
     borderLeft: '2px solid #F2F3F4',
     boxSizing: 'border-box',
 

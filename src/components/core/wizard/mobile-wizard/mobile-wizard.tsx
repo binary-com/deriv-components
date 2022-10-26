@@ -205,7 +205,13 @@ const MobileWizard = (props: MobileWizard) => {
             </WizardBody>
             <Footer dark={isDark} is_right_panel={is_right_panel}>
                 {!is_right_panel && (
-                    <Button color="secondary" size="large" onClick={prevStep} disabled={current_step_index < 1} block>
+                    <Button
+                        color="secondary"
+                        size="large"
+                        onClick={prevStep}
+                        disabled={current_step_index < 1 || current_step.props.is_previous_disabled}
+                        block
+                    >
                         {secondary_button_label}
                     </Button>
                 )}
