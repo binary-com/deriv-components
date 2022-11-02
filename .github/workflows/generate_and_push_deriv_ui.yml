@@ -1,0 +1,45 @@
+name: Generate and push @deriv/ui
+on: 
+  workflow-dispatch:
+
+jobs:
+  generate_and_push_deriv_ui:
+    if: github.repository == 'binary-com/deriv-components'
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Setup node and npm
+        id: step1
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          check-latest: true
+          registry-url: "https://registry.npmjs.org"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+      - Checkout repo
+        id: step2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          ref: master
+      - name: Bump version
+        id: step3
+        run: |
+          # Patch the version with minor patch
+          npm version minor
+
+          # Regenerate package-lock.json
+          npm install --package-lock-json
+      - name: Build package
+        id: step4
+        run: |
+          npm run clean
+          npm run build
+      - name: Publish package
+        id: step5
+        run: |
+          npm publish
+
+
+
+
