@@ -67,4 +67,4 @@ jobs:
                   # close the PR if it already exists and create a new one
                   gh pr close "$package_name" || true
                   # Create new PR with diff as body
-                  gh pr create --title "Bump $package_name from $old_version to $new_version" --body "\`\`\`diff ${pr_body:0:5000} \`\`\` Diff url: $diff_url" --base "master" --head "$package_name"
+                  gh pr create --title "Bump $package_name from $old_version to $new_version" --body "\`\`\`diff ${pr_body:0:5000} \`\`\` Diff url: $diff_url" --base "master" --head "binary-com:$package_name"
