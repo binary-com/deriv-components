@@ -30,7 +30,7 @@ jobs:
                   git config --global user.name "DerivFE"
                   git config --global user.email "80095553+DerivFE@users.noreply.github.com"
 
-                  npm i -g json@latest npm@latest
+                  npm i && npm i -g json@latest
                   old_version=$(json -f ./package.json version)
 
                   # check if branch already exists in remote
