@@ -33,6 +33,7 @@ jobs:
                   npm i -g json@latest npm@latest
                   old_version=$(json -f ./package.json version)
 
+                  # check if branch already exists in remote
                   if [ $( git ls-remote origin "$package_name" ) ]
                   then
                     # if the branch already exists delete it
@@ -54,7 +55,7 @@ jobs:
                   rm package-lock.json
                   npm install --package-lock-json
 
-                  git commit --allow-empty -a -m "feat: bump from $old_version to $new_version"
+                  git commit -a -m "feat: bump from $old_version to $new_version"
 
                   git push --set-upstream origin "$package_name" -f
                   sudo apt install gh
@@ -65,4 +66,5 @@ jobs:
 
                   # close the PR if it already exists and create a new one
                   gh pr close "$package_name" || true
+                  # Create new PR with diff as body
                   gh pr create --title "Bump $package_name from $old_version to $new_version" --body "\`\`\`diff ${pr_body:0:5000} \`\`\` Diff url: $diff_url" --base "main" --head "$package_name"
