@@ -21,7 +21,7 @@ jobs:
               uses: actions/checkout@v3
               with:
                   fetch-depth: 1
-                  ref: main
+                  ref: master
             - name: Bump version and create PR
               id: step3
               run: |
