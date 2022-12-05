@@ -4,7 +4,7 @@ on:
 
 jobs:
     generate_and_push_deriv_ui:
-        if: github.repository == 'deriv-com/deriv-components'
+        if: github.repository == 'binary-com/deriv-components'
         runs-on: 'ubuntu-latest'
         steps:
             - name: Setup node and npm
