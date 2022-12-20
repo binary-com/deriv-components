@@ -70,6 +70,7 @@ const config = (env: EnvConfig): Configuration => {
             path: path.resolve(__dirname, 'dist'),
             filename: `${modules}/components.js`,
             assetModuleFilename: 'assets/[name].[hash].[ext]',
+            globalObject: 'this',
             library: {
                 name: 'components',
                 type: 'umd',
