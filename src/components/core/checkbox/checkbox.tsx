@@ -3,7 +3,6 @@ import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
-import CheckIconSVG from '@assets/svg/checkbox-icon.svg';
 import CheckIndetermineIconSVG from '@assets/svg/checkbox-indetermine-icon.svg';
 import useTheme from '@core/theme-context/use-theme';
 
@@ -88,7 +87,6 @@ const StyledCheckbox = styled(CheckBox, {
         checked: {
             true: {
                 border: '2px solid $coral500',
-                backgroundColor: '$coral500',
             },
         },
         indetermine_checkbox: {
@@ -104,7 +102,6 @@ const StyledCheckbox = styled(CheckBox, {
             checked: true,
             css: {
                 border: '2px solid $coral500',
-                backgroundColor: '$coral500',
             },
         },
         {
@@ -119,14 +116,12 @@ const StyledCheckbox = styled(CheckBox, {
 });
 
 const CheckboxIcon = styled('img', {
-    variants: {
-        checked: {
-            true: { color: '$greyLight100', width: '12px', height: '9px' },
-        },
-        indetermine_checkbox: {
-            true: { color: '$greyLight100', width: '12px' },
-        },
-    },
+    color: '$greyLight100',
+    width: '12px',
+});
+
+const CheckboxCheckedInput = styled('input', {
+    accentColor: '$colors$coral500',
 });
 
 const Checkbox = ({
@@ -154,7 +149,6 @@ const Checkbox = ({
 
     useEffect(() => setindetermineCheckbox(indetermine), [indetermine]);
 
-    const icon_src = checked ? CheckIconSVG : indetermine_checkbox && CheckIndetermineIconSVG;
     return (
         <Container>
             <StyledCheckbox
@@ -168,8 +162,10 @@ const Checkbox = ({
                 name={name}
                 onClick={handleSelectionChange}
             >
-                {icon_src && (
-                    <CheckboxIcon src={icon_src} checked={checked} indetermine_checkbox={indetermine_checkbox} />
+                {checked ? (
+                    <CheckboxCheckedInput type="checkbox" readOnly checked={checked} />
+                ) : (
+                    indetermine && <CheckboxIcon src={CheckIndetermineIconSVG} />
                 )}
             </StyledCheckbox>
             <Label size={size} dark={isDark} onClick={handleSelectionChange} disabled={disabled}>
