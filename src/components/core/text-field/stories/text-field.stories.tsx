@@ -182,7 +182,11 @@ export const TextAreaField = Template.bind({});
 TextAreaField.args = {
     label: 'Instruction',
     type: 'textarea',
-    hint: '',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
     max_length: 250,
     disabled: false,
     readOnly: false,
