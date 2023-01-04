@@ -10,6 +10,9 @@ export default {
         label: {
             description: 'Displays a label for the input field',
         },
+        button_label: {
+            description: 'Displays the provided button',
+        },
         inline_prefix_element: {
             description: 'Displays the provided inline-prefix element',
         },
@@ -27,6 +30,12 @@ export default {
         },
         max_length: {
             description: 'Max length that the field can accept',
+        },
+        onButtonClickHandler: {
+            description: 'Runs custom callback when the button is clicked',
+        },
+        onChange: {
+            description: 'On button click',
         },
         type: {
             defaultValue: 'text',
@@ -66,6 +75,19 @@ const Template: Story<TextFieldProps> = (args) => <TextField {...args}></TextFie
 export const SimpleTextField = Template.bind({});
 SimpleTextField.args = {
     label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    disabled: false,
+    dark: false,
+    readOnly: false,
+};
+
+export const LabellessTextField = Template.bind({});
+LabellessTextField.args = {
     type: 'text',
     hint_text: {
         success: '',
@@ -119,6 +141,24 @@ TextFieldWithSuffixText.args = {
     disabled: false,
     dark: false,
     readOnly: false,
+};
+
+export const TextFieldWithButton = Template.bind({});
+TextFieldWithButton.args = {
+    button_label: 'Button',
+    label: 'Currency',
+    type: 'number',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    inline_suffix_element: <div>USD</div>,
+    disabled: false,
+    dark: false,
+    readOnly: false,
+    onButtonClickHandler: () => console.log('button'),
+    onChange: (e) => console.log(e),
 };
 
 export const TextFieldWithSuffixIcon = Template.bind({});

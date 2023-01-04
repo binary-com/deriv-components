@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '@core/button/button';
 import { forwardRef, Fragment, InputHTMLAttributes, ReactNode, useState, useRef, useEffect } from 'react';
 import { styled } from 'Styles/stitches.config';
 
@@ -8,11 +9,15 @@ type TPasswordStrengthProps = { user_input: string; disable_meter: boolean; dark
 type THintTextProps = { error: string; success: string; hint: string };
 
 export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {
+    button_label?: string;
+    inline_prefix_element?: ReactNode;
     inline_suffix_element?: ReactNode;
     label?: string;
     type?: InputTypes;
     max_length?: number;
     hint_text?: THintTextProps;
+    onButtonClickHandler?: () => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     dark?: boolean;
     error?: string;
     success?: string;
@@ -122,7 +127,7 @@ const TextFieldWrapper = styled('section', {
     variants: {
         dark: {
             true: {
-                borderColor: '$greyDark400',
+                borderColor: '$greyDark500',
                 backgroundColor: '$greyDark700',
 
                 '&:hover': {
@@ -136,6 +141,11 @@ const TextFieldWrapper = styled('section', {
                 '&:hover': {
                     borderColor: '$greyLight600',
                 },
+            },
+        },
+        enabled: {
+            true: {
+                borderColor: '$greyLight400',
             },
         },
         active: {
@@ -179,6 +189,13 @@ const TextFieldWrapper = styled('section', {
                 color: '$greenDark',
             },
         },
+        {
+            dark: true,
+            enabled: true,
+            css: {
+                borderColor: '$greyDark500',
+            },
+        },
     ],
 });
 
@@ -196,13 +213,19 @@ const LabelSection = styled('label', {
     variants: {
         dark: {
             true: {
-                color: '$greyDark100',
-                backgroundColor: '$greyDark600',
+                color: '$greyDark200',
+                backgroundColor: '$greyDark700',
             },
             false: {
                 color: '$greyLight600',
                 backgroundColor: '$greyLight100',
             },
+        },
+        active: {
+            true: { color: '$blue500' },
+        },
+        enabled: {
+            true: { color: '$greyLight700' },
         },
         error: {
             true: { color: '$coral500' },
@@ -222,6 +245,7 @@ const InputFieldSection = styled('div', {
     width: '100%',
     alignItems: 'center',
     lineHeight: '$lineHeight20',
+    // height: '38px',
 });
 
 /* 
@@ -230,10 +254,28 @@ const InputFieldSection = styled('div', {
 const SupportingInfoSection = styled('div', {
     display: 'block',
     variants: {
+        active: { false: { color: '$greyLight600' } },
         prefix: { true: { paddingLeft: '1rem' } },
         suffix: { true: { paddingRight: '1rem' } },
-        dark: { true: { color: '$greyDark100' } },
+        dark: { true: { color: '$greyDark200' } },
     },
+    compoundVariants: [
+        {
+            suffix: true,
+            active: true,
+            css: {
+                color: '$greyLight700',
+            },
+        },
+        {
+            suffix: true,
+            active: true,
+            dark: true,
+            css: {
+                color: '$greyDark100',
+            },
+        },
+    ],
 });
 
 /* 
@@ -307,7 +349,7 @@ const InputField = styled('input', {
     variants: {
         dark: {
             true: {
-                color: '$greyLight100',
+                color: '$greyDark100',
 
                 '&:readonly': {
                     color: '$greyDark200',
@@ -330,14 +372,32 @@ const InputField = styled('input', {
 });
 
 const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldProps>(
-    ({ inline_suffix_element, label, type, id, max_length, hint_text, dark, ...props }, ref) => {
+    (
+        {
+            button_label,
+            dark,
+            id,
+            hint_text,
+            inline_prefix_element,
+            inline_suffix_element,
+            label,
+            max_length,
+            type,
+            onButtonClickHandler,
+            onChange,
+            ...props
+        },
+        ref,
+    ) => {
         const [is_active, setIsActive] = useState(false);
+        const [is_enabled, setIsEnabled] = useState(false);
         const [value, setValue] = useState('');
         const [count, setCount] = useState(0);
 
         const { error, hint, success } = hint_text ?? {};
 
-        const handleTextChange = (text: string) => {
+        const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            const text = e.target.value;
             if (props.disabled || props.readOnly) {
                 return;
             }
@@ -346,11 +406,8 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             }
             setValue(text);
             setCount(text.length);
-            if (text !== '') {
-                setIsActive(true);
-            } else {
-                setIsActive(false);
-            }
+
+            onChange?.(e);
         };
 
         const generateHintText = () => {
@@ -379,10 +436,13 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             }
         };
 
+        const is_button_disabled = props.disabled || Boolean(error) || (Boolean(success) && !value) || !value;
+
         return (
             <Fragment>
                 <TextFieldWrapper
                     active={is_active}
+                    enabled={is_enabled}
                     error={Boolean(error)}
                     success={Boolean(success)}
                     disabled={props.disabled}
@@ -398,10 +458,13 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                 dark={dark}
                                 readOnly={props.readOnly}
                                 disabled={props.disabled}
-                                onChange={(e) => handleTextChange(e.target.value)}
+                                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleTextChange(e)}
                             />
                         ) : (
                             <Fragment>
+                                {inline_prefix_element && (
+                                    <SupportingInfoSection prefix>{inline_prefix_element}</SupportingInfoSection>
+                                )}
                                 <InputField
                                     {...props}
                                     ref={ref}
@@ -410,18 +473,42 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                     value={value}
                                     readOnly={props.readOnly}
                                     disabled={props.disabled}
-                                    onChange={(e) => handleTextChange(e.target.value)}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleTextChange(e)}
+                                    onFocus={() => {
+                                        setIsActive(true);
+                                        setIsEnabled(false);
+                                    }}
+                                    onBlur={(e) => (!e.target.value ? setIsActive(false) : setIsEnabled(true))}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            !!button_label && !is_button_disabled && onButtonClickHandler?.();
+                                            e.currentTarget.blur();
+                                        }
+                                    }}
                                 />
                                 {inline_suffix_element && (
-                                    <SupportingInfoSection suffix dark={dark}>
+                                    <SupportingInfoSection active={is_active} suffix dark={dark}>
                                         {inline_suffix_element}
                                     </SupportingInfoSection>
+                                )}
+                                {button_label && (
+                                    <Button
+                                        color="primary"
+                                        size="large"
+                                        disabled={is_button_disabled}
+                                        onClick={() => onButtonClickHandler?.()}
+                                        css={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0, marginRight: '-1px' }}
+                                    >
+                                        {button_label}
+                                    </Button>
                                 )}
                             </Fragment>
                         )}
                         {label && (
                             <LabelSection
                                 htmlFor={id}
+                                enabled={is_enabled}
+                                active={is_active}
                                 error={Boolean(error)}
                                 success={Boolean(success)}
                                 dark={dark}
