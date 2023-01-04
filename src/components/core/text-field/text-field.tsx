@@ -12,12 +12,16 @@ export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextArea
     button_label?: string;
     inline_prefix_element?: ReactNode;
     inline_suffix_element?: ReactNode;
+    is_labelless?: boolean;
+    is_borderless?: boolean;
     label?: string;
     type?: InputTypes;
     max_length?: number;
     hint_text?: THintTextProps;
     onButtonClickHandler?: () => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onFocus: (e: React.FocusEvent<HTMLInputElement>) => void;
     dark?: boolean;
     error?: string;
     success?: string;
@@ -29,6 +33,7 @@ export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextArea
 const StyledPasswordMeterWrapper = styled('div', {
     height: '0.25rem',
     width: '100%',
+
     variants: {
         dark: {
             true: { background: '$greyDark500' },
@@ -99,6 +104,7 @@ const HelperSection = styled('section', {
     display: 'inline-flex',
     width: '-webkit-fill-available',
     marginTop: '0.125rem',
+
     variants: {
         dark: {
             true: { color: '$greyDark200' },
@@ -124,6 +130,7 @@ const TextFieldWrapper = styled('section', {
     borderRadius: '$default',
     borderWidth: '$1',
     borderStyle: 'solid',
+
     variants: {
         dark: {
             true: {
@@ -165,13 +172,22 @@ const TextFieldWrapper = styled('section', {
                 color: '$coral500',
             },
         },
+        is_borderless: {
+            true: {
+                borderColor: 'transparent',
+            },
+        },
         success: {
             true: {
                 borderColor: '$greenLight',
                 color: '$greenLight',
             },
         },
+        is_labelless: {
+            true: {},
+        },
     },
+
     compoundVariants: [
         {
             dark: true,
@@ -196,6 +212,21 @@ const TextFieldWrapper = styled('section', {
                 borderColor: '$greyDark500',
             },
         },
+        {
+            active: true,
+            is_borderless: true,
+            css: {
+                borderColor: '$blue500',
+            },
+        },
+        {
+            dark: true,
+            is_labelless: true,
+            disabled: true,
+            css: {
+                opacity: '1',
+            },
+        },
     ],
 });
 
@@ -207,9 +238,9 @@ const LabelSection = styled('label', {
     fontSize: '$xs',
     position: 'absolute',
     pointerEvents: 'none',
-    left: '1rem',
     transition: '0.25s ease all',
     transformOrigin: 'top left',
+
     variants: {
         dark: {
             true: {
@@ -227,13 +258,59 @@ const LabelSection = styled('label', {
         enabled: {
             true: { color: '$greyLight700' },
         },
+        disabled: {
+            true: {},
+        },
+        is_borderless: {
+            true: { color: '$greyLight700' },
+            false: { color: '$greyLight600' },
+        },
         error: {
             true: { color: '$coral500' },
         },
         success: {
             true: { color: '$greenLight' },
         },
+        is_labelless: {
+            false: { left: '1rem' },
+            true: { fontSize: '$2xs' },
+        },
+        prefix: {
+            true: {},
+        },
     },
+
+    compoundVariants: [
+        {
+            is_labelless: true,
+            prefix: true,
+            css: {
+                left: '2rem',
+            },
+        },
+        {
+            is_labelless: true,
+            prefix: false,
+            css: {
+                left: '0.5rem',
+            },
+        },
+        {
+            dark: false,
+            is_labelless: true,
+            css: { color: '$greyLight700' },
+        },
+        {
+            dark: true,
+            is_labelless: true,
+            css: { color: '$greyDark100' },
+        },
+        {
+            is_labelless: true,
+            disabled: true,
+            css: { color: '$greyDark300' },
+        },
+    ],
 });
 
 /* 
@@ -245,7 +322,6 @@ const InputFieldSection = styled('div', {
     width: '100%',
     alignItems: 'center',
     lineHeight: '$lineHeight20',
-    // height: '38px',
 });
 
 /* 
@@ -253,12 +329,19 @@ const InputFieldSection = styled('div', {
 */
 const SupportingInfoSection = styled('div', {
     display: 'block',
+
     variants: {
         active: { false: { color: '$greyLight600' } },
-        prefix: { true: { paddingLeft: '1rem' } },
-        suffix: { true: { paddingRight: '1rem' } },
+        prefix: { true: { paddingLeft: '0.5rem', display: 'flex' } },
+        suffix: { true: { paddingRight: '1rem', display: 'flex' } },
         dark: { true: { color: '$greyDark200' } },
+        is_labelless: {
+            true: {
+                paddingRight: '0.5rem',
+            },
+        },
     },
+
     compoundVariants: [
         {
             suffix: true,
@@ -337,7 +420,7 @@ const InputField = styled('input', {
     fontSize: '$xs',
     fontWeight: '$regular',
     width: '100%',
-    height: '2.5rem',
+    height: '2.375rem',
     display: 'block',
     minWidth: '0',
     boxSizing: 'border-box',
@@ -363,11 +446,13 @@ const InputField = styled('input', {
                 },
             },
         },
-    },
-
-    '&:focus:not(input:read-only) ~ label': {
-        transform: 'translateY(-1.2rem) scale(0.75)',
-        padding: '0 4px',
+        is_labelless: {
+            true: {
+                padding: '0 0.5rem',
+                height: '1.875rem',
+                fontSize: '$2xs',
+            },
+        },
     },
 });
 
@@ -381,10 +466,15 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             inline_prefix_element,
             inline_suffix_element,
             label,
+            is_borderless = false,
+            is_labelless = false,
             max_length,
             type,
-            onButtonClickHandler,
+            onBlur,
             onChange,
+            onFocus,
+            onButtonClickHandler,
+
             ...props
         },
         ref,
@@ -393,8 +483,11 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
         const [is_enabled, setIsEnabled] = useState(false);
         const [value, setValue] = useState('');
         const [count, setCount] = useState(0);
+        const [show_label, setShowLabel] = useState(true);
 
         const { error, hint, success } = hint_text ?? {};
+
+        const is_button_disabled = props.disabled || Boolean(error) || (Boolean(success) && !value) || !value;
 
         const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
             const text = e.target.value;
@@ -408,6 +501,25 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             setCount(text.length);
 
             onChange?.(e);
+        };
+
+        const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
+            if (is_labelless) {
+                setIsActive(false);
+                !e.target.value && setShowLabel(true);
+            } else {
+                !e.target.value ? setIsActive(false) : setIsEnabled(true);
+            }
+
+            onBlur?.(e);
+        };
+
+        const onFocusHandler = (e: React.FocusEvent<HTMLInputElement>) => {
+            setIsActive(true);
+            setIsEnabled(false);
+            is_labelless && setShowLabel(false);
+
+            onFocus?.(e);
         };
 
         const generateHintText = () => {
@@ -436,7 +548,13 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             }
         };
 
-        const is_button_disabled = props.disabled || Boolean(error) || (Boolean(success) && !value) || !value;
+        const styleButton = () => ({
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0,
+            marginRight: '-1px',
+            marginBottom: '-1px',
+            marginTop: '-1px',
+        });
 
         return (
             <Fragment>
@@ -444,6 +562,8 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                     active={is_active}
                     enabled={is_enabled}
                     error={Boolean(error)}
+                    is_borderless={is_borderless}
+                    is_labelless={is_labelless}
                     success={Boolean(success)}
                     disabled={props.disabled}
                     dark={dark}
@@ -467,18 +587,16 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                 )}
                                 <InputField
                                     {...props}
+                                    is_labelless={is_labelless}
                                     ref={ref}
                                     dark={dark}
                                     type={type}
                                     value={value}
                                     readOnly={props.readOnly}
                                     disabled={props.disabled}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleTextChange(e)}
-                                    onFocus={() => {
-                                        setIsActive(true);
-                                        setIsEnabled(false);
-                                    }}
-                                    onBlur={(e) => (!e.target.value ? setIsActive(false) : setIsEnabled(true))}
+                                    onChange={(e) => handleTextChange(e)}
+                                    onFocus={(e) => onFocusHandler(e)}
+                                    onBlur={(e) => onBlurHandler(e)}
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter') {
                                             !!button_label && !is_button_disabled && onButtonClickHandler?.();
@@ -487,7 +605,12 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                     }}
                                 />
                                 {inline_suffix_element && (
-                                    <SupportingInfoSection active={is_active} suffix dark={dark}>
+                                    <SupportingInfoSection
+                                        active={is_active}
+                                        dark={dark}
+                                        is_labelless={is_labelless}
+                                        suffix
+                                    >
                                         {inline_suffix_element}
                                     </SupportingInfoSection>
                                 )}
@@ -497,22 +620,26 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                         size="large"
                                         disabled={is_button_disabled}
                                         onClick={() => onButtonClickHandler?.()}
-                                        css={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0, marginRight: '-1px' }}
+                                        css={styleButton()}
                                     >
                                         {button_label}
                                     </Button>
                                 )}
                             </Fragment>
                         )}
-                        {label && (
+                        {show_label && label && (
                             <LabelSection
+                                disabled={props.disabled}
+                                is_labelless={is_labelless}
                                 htmlFor={id}
                                 enabled={is_enabled}
                                 active={is_active}
+                                is_borderless={is_borderless}
                                 error={Boolean(error)}
                                 success={Boolean(success)}
+                                prefix={!!inline_prefix_element}
                                 dark={dark}
-                                css={styleLabelFloat()}
+                                css={is_labelless ? {} : styleLabelFloat()}
                             >
                                 {label}
                             </LabelSection>

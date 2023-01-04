@@ -19,6 +19,12 @@ export default {
         inline_suffix_element: {
             description: 'Displays the provided inline-suffix element',
         },
+        is_labelless: {
+            description: 'Removes float label',
+        },
+        is_borderless: {
+            description: 'Removes border from labelless textfields',
+        },
         hint: {
             description: 'Displays a hint text',
         },
@@ -86,8 +92,11 @@ SimpleTextField.args = {
     readOnly: false,
 };
 
-export const LabellessTextField = Template.bind({});
-LabellessTextField.args = {
+export const LabellessBorderLessTextField = Template.bind({});
+LabellessBorderLessTextField.args = {
+    label: 'Label',
+    is_labelless: true,
+    is_borderless: false,
     type: 'text',
     hint_text: {
         success: '',
@@ -97,6 +106,8 @@ LabellessTextField.args = {
     disabled: false,
     dark: false,
     readOnly: false,
+    inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
+    inline_prefix_element: <img src={LocationPin} alt="location-icon" />,
 };
 
 export const TextFieldWithHint = Template.bind({});
