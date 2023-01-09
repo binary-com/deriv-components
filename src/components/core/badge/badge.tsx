@@ -1,20 +1,26 @@
+import React from 'react';
 import classNames from 'classnames';
 import { forwardRef, HTMLAttributes } from 'react';
 import { styled } from 'Styles/stitches.config';
 
 type TBadgeSize = 'small' | 'medium' | 'large';
 type TBadgeSpacing = 'tight' | 'loose';
-type TVisiblity = 'icon-only' | 'label-only' | 'icon-and-label';
+type TVisiblity = 'icon-only' | 'label-only' | 'icon-and-label' | 'label-and-icon' | 'icon-and-label-and-icon';
 type TLabel = 'bold' | 'regular';
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-    icon_src?: string;
-    icon_class?: string;
+    prefix_icon_src?: string;
+    suffix_icon_src?: string;
+    prefix_icon_class?: string;
+    suffix_icon_class?: string;
+    prefix_icon_alt?: string;
+    suffix_icon_alt?: string;
+    prefixIconOnClickHandler?: VoidFunction;
+    suffixIconOnClickHandler?: VoidFunction;
     size?: TBadgeSize;
     spacing?: TBadgeSpacing;
     visiblity?: TVisiblity;
     label?: TLabel;
-    iconAlt?: string;
 }
 
 const BadgeContainer = styled('span', {
@@ -27,18 +33,31 @@ const BadgeContainer = styled('span', {
     variants: {
         visiblity: {
             'icon-only': {
-                '& .badge--icon': {
+                '& .badge--prefix-icon': {
                     paddingRight: '0px',
                 },
             },
             'label-only': {
-                '& .badge--icon': {
+                '& .badge--prefix-icon': {
                     paddingRight: '0px',
                 },
             },
             'icon-and-label': {
-                '& .badge--icon': {
+                '& .badge--prefix-icon': {
                     paddingRight: '4px',
+                },
+            },
+            'label-and-icon': {
+                '& .badge--suffix-icon': {
+                    paddingLeft: '4px',
+                },
+            },
+            'icon-and-label-and-icon': {
+                '& .badge--prefix-icon': {
+                    paddingRight: '4px',
+                },
+                '& .badge--suffix-icon': {
+                    paddingLeft: '4px',
                 },
             },
         },
@@ -47,7 +66,11 @@ const BadgeContainer = styled('span', {
                 minHeight: '24px',
                 fontSize: '$4xs',
                 '@mobile': {
-                    '& .badge--icon': {
+                    //refactor
+                    '& .badge--prefix-icon': {
+                        height: '8px',
+                    },
+                    '& .badge--suffix-icon': {
                         height: '8px',
                     },
                     minHeight: '20px',
@@ -93,7 +116,7 @@ const BadgeContainer = styled('span', {
             padding: 'tight',
             visiblity: 'icon-and-label',
             css: {
-                '& .badge--icon': {
+                '& .badge--prefix-icon': {
                     paddingRight: '4px',
                 },
             },
@@ -102,7 +125,7 @@ const BadgeContainer = styled('span', {
             padding: 'tight',
             visiblity: 'label-only',
             css: {
-                '& .badge--icon': {
+                '& .badge--prefix-icon': {
                     paddingRight: '4px',
                 },
             },
@@ -111,7 +134,7 @@ const BadgeContainer = styled('span', {
             padding: 'loose',
             visiblity: 'icon-and-label',
             css: {
-                '& .badge--icon': {
+                '& .badge--prefix-icon': {
                     paddingRight: '8px',
                 },
             },
@@ -120,8 +143,29 @@ const BadgeContainer = styled('span', {
             padding: 'loose',
             visiblity: 'label-only',
             css: {
-                '& .badge--icon': {
+                '& .badge--prefix-icon': {
                     paddingRight: '8px',
+                },
+            },
+        },
+        {
+            padding: 'loose',
+            visiblity: 'label-and-icon',
+            css: {
+                '& .badge--suffix-icon': {
+                    paddingLeft: '8px',
+                },
+            },
+        },
+        {
+            padding: 'loose',
+            visiblity: 'icon-and-label-and-icon',
+            css: {
+                '& .badge--prefix-icon': {
+                    paddingRight: '8px',
+                },
+                '& .badge--suffix-icon': {
+                    paddingLeft: '8px',
                 },
             },
         },
@@ -137,29 +181,55 @@ const BadgeContainer = styled('span', {
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     (
         {
-            icon_src,
-            icon_class,
+            prefix_icon_src,
+            suffix_icon_src,
+            prefix_icon_class,
+            suffix_icon_class,
+            prefixIconOnClickHandler,
+            suffixIconOnClickHandler,
             children,
             size = 'small',
             spacing = 'loose',
             visiblity = 'icon-and-label',
             label = 'regular',
-            iconAlt = 'Badge Icon',
+            prefix_icon_alt = 'Badge Icon',
+            suffix_icon_alt = 'Badge Icon',
         },
         ref,
     ) => {
-        const has_icon = visiblity === 'icon-and-label' || visiblity === 'icon-only';
-        const has_label = visiblity === 'icon-and-label' || visiblity === 'label-only';
+        const has_prefix_icon =
+            visiblity === 'icon-and-label' || visiblity === 'icon-only' || visiblity === 'icon-and-label-and-icon';
+        const has_suffix_icon = visiblity === 'label-and-icon' || visiblity === 'icon-and-label-and-icon';
+        const has_label =
+            visiblity === 'icon-and-label' ||
+            visiblity === 'label-only' ||
+            visiblity === 'label-and-icon' ||
+            visiblity === 'icon-and-label-and-icon';
 
         return (
             <BadgeContainer ref={ref} size={size} padding={spacing} label={label} visiblity={visiblity}>
-                {has_icon && icon_src && (
-                    <img src={icon_src} alt={iconAlt} className={classNames(icon_class, 'badge--icon')} />
+                {has_prefix_icon && prefix_icon_src && (
+                    <img
+                        src={prefix_icon_src}
+                        alt={prefix_icon_alt}
+                        className={classNames(prefix_icon_class, 'badge--prefix-icon')}
+                        onClick={prefixIconOnClickHandler}
+                    />
                 )}
                 {has_label && children}
+                {has_suffix_icon && suffix_icon_src && (
+                    <img
+                        src={suffix_icon_src}
+                        alt={suffix_icon_alt}
+                        className={classNames(suffix_icon_class, 'badge--suffix-icon')}
+                        onClick={suffixIconOnClickHandler}
+                    />
+                )}
             </BadgeContainer>
         );
     },
 );
+
+Badge.displayName = 'Badge';
 
 export default Badge;

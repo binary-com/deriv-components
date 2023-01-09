@@ -10,7 +10,7 @@ describe('Badge Component', () => {
 
     it('Should render both icon and label', () => {
         const { container } = render(
-            <Badge visiblity="icon-and-label" icon_src={CheckIconSVG}>
+            <Badge visiblity="icon-and-label" prefix_icon_src={CheckIconSVG}>
                 Badge Text Content
             </Badge>,
         );
@@ -21,7 +21,7 @@ describe('Badge Component', () => {
 
     it('Should render only the label', () => {
         const { container } = render(
-            <Badge visiblity="label-only" icon_src={CheckIconSVG}>
+            <Badge visiblity="label-only" prefix_icon_src={CheckIconSVG}>
                 Badge Text Content
             </Badge>,
         );
@@ -32,7 +32,7 @@ describe('Badge Component', () => {
 
     it('Should render only the icon', () => {
         const { container } = render(
-            <Badge visiblity="icon-only" icon_src={CheckIconSVG}>
+            <Badge visiblity="icon-only" prefix_icon_src={CheckIconSVG}>
                 Badge Text Content
             </Badge>,
         );

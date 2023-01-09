@@ -30,21 +30,46 @@ export default {
             description: 'controls which parts of the badge component should be visible',
             control: {
                 type: 'radio',
-                options: ['icon-only', 'label-only', 'icon-and-label'],
+                options: ['icon-only', 'label-only', 'icon-and-label', 'label-and-icon', 'icon-and-label-and-icon'],
             },
             defaultValue: 'icon-and-label',
         },
-        icon_src: {
+        prefixIconOnClickHandler: {
             table: {
                 disable: true,
             },
         },
-        icon_class: {
+        suffixIconOnClickHandler: {
             table: {
                 disable: true,
             },
         },
-        iconAlt: {
+        prefix_icon_src: {
+            table: {
+                disable: true,
+            },
+        },
+        suffix_icon_src: {
+            table: {
+                disable: true,
+            },
+        },
+        prefix_icon_class: {
+            table: {
+                disable: true,
+            },
+        },
+        suffix_icon_class: {
+            table: {
+                disable: true,
+            },
+        },
+        prefix_icon_alt: {
+            table: {
+                disable: true,
+            },
+        },
+        suffix_icon_alt: {
             table: {
                 disable: true,
             },
@@ -52,10 +77,22 @@ export default {
     },
 } as ComponentMeta<typeof Badge>;
 
-const Template: ComponentStory<typeof Badge> = (args) => <Badge icon_src={CheckIconSVG} {...args} />;
+const Template: ComponentStory<typeof Badge> = (args) => <Badge prefix_icon_src={CheckIconSVG} {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {};
+
+export const IconLabelIcon = Template.bind({});
+IconLabelIcon.args = {
+    suffix_icon_src: CheckIconSVG,
+    visiblity: 'icon-and-label-and-icon',
+};
+
+export const LabelIcon = Template.bind({});
+LabelIcon.args = {
+    suffix_icon_src: CheckIconSVG,
+    visiblity: 'label-and-icon',
+};
 
 export const IconOnly = Template.bind({});
 IconOnly.args = {
@@ -74,7 +111,6 @@ LongText.args = {
 };
 
 export const TightSpacing = Template.bind({});
-
 TightSpacing.args = {
     children: 'This is a long text for badge just to see how it looks in actual page',
     spacing: 'tight',
