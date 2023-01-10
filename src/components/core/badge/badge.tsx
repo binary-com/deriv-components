@@ -9,14 +9,15 @@ type TVisiblity = 'icon-only' | 'label-only' | 'icon-and-label' | 'label-and-ico
 type TLabel = 'bold' | 'regular';
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+    id?: string;
     prefix_icon_src?: string;
     suffix_icon_src?: string;
     prefix_icon_class?: string;
     suffix_icon_class?: string;
     prefix_icon_alt?: string;
     suffix_icon_alt?: string;
-    prefixIconOnClickHandler?: VoidFunction;
-    suffixIconOnClickHandler?: VoidFunction;
+    prefixIconOnClickHandler?: (e: React.MouseEvent<HTMLImageElement>, id?: string) => void;
+    suffixIconOnClickHandler?: (e: React.MouseEvent<HTMLImageElement>, id?: string) => void;
     size?: TBadgeSize;
     spacing?: TBadgeSpacing;
     visiblity?: TVisiblity;
@@ -30,6 +31,9 @@ const BadgeContainer = styled('span', {
     display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',
+    '& .badge--icon-pointer': {
+        cursor: 'pointer',
+    },
     variants: {
         visiblity: {
             'icon-only': {
@@ -181,6 +185,7 @@ const BadgeContainer = styled('span', {
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     (
         {
+            id,
             prefix_icon_src,
             suffix_icon_src,
             prefix_icon_class,
@@ -212,8 +217,10 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
                     <img
                         src={prefix_icon_src}
                         alt={prefix_icon_alt}
-                        className={classNames(prefix_icon_class, 'badge--prefix-icon')}
-                        onClick={prefixIconOnClickHandler}
+                        className={classNames(prefix_icon_class, 'badge--prefix-icon', {
+                            'badge--icon-pointer': !!suffixIconOnClickHandler,
+                        })}
+                        onClick={(e) => prefixIconOnClickHandler?.(e, id)}
                     />
                 )}
                 {has_label && children}
@@ -221,8 +228,10 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
                     <img
                         src={suffix_icon_src}
                         alt={suffix_icon_alt}
-                        className={classNames(suffix_icon_class, 'badge--suffix-icon')}
-                        onClick={suffixIconOnClickHandler}
+                        className={classNames(suffix_icon_class, 'badge--suffix-icon', {
+                            'badge--icon-pointer': !!suffixIconOnClickHandler,
+                        })}
+                        onClick={(e) => suffixIconOnClickHandler?.(e, id)}
                     />
                 )}
             </BadgeContainer>
