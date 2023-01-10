@@ -19,9 +19,6 @@ export default {
         inline_suffix_element: {
             description: 'Displays the provided inline-suffix element',
         },
-        is_labelless: {
-            description: 'Removes float label',
-        },
         is_borderless: {
             description: 'Removes border from labelless textfields',
         },
@@ -39,9 +36,6 @@ export default {
         },
         onButtonClickHandler: {
             description: 'Runs custom callback when the button is clicked',
-        },
-        onChange: {
-            description: 'On button click',
         },
         type: {
             defaultValue: 'text',
@@ -78,6 +72,20 @@ export default {
 
 const Template: Story<TextFieldProps> = (args) => <TextField {...args}></TextField>;
 
+export const Test = Template.bind({});
+Test.args = {
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    placeholder: 'Search',
+    disabled: false,
+    dark: false,
+    readOnly: false,
+};
+
 export const SimpleTextField = Template.bind({});
 SimpleTextField.args = {
     label: 'Label',
@@ -90,24 +98,6 @@ SimpleTextField.args = {
     disabled: false,
     dark: false,
     readOnly: false,
-};
-
-export const LabellessBorderLessTextField = Template.bind({});
-LabellessBorderLessTextField.args = {
-    label: 'Label',
-    is_labelless: true,
-    is_borderless: false,
-    type: 'text',
-    hint_text: {
-        success: '',
-        error: '',
-        hint: '',
-    },
-    disabled: false,
-    dark: false,
-    readOnly: false,
-    inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
-    inline_prefix_element: <img src={LocationPin} alt="location-icon" />,
 };
 
 export const TextFieldWithHint = Template.bind({});
@@ -141,8 +131,8 @@ TextFieldWithCharacterLimit.args = {
 
 export const TextFieldWithSuffixText = Template.bind({});
 TextFieldWithSuffixText.args = {
-    label: 'Currency',
-    type: 'number',
+    label: 'Label',
+    type: 'text',
     hint_text: {
         success: '',
         error: '',
@@ -154,27 +144,40 @@ TextFieldWithSuffixText.args = {
     readOnly: false,
 };
 
-export const TextFieldWithButton = Template.bind({});
-TextFieldWithButton.args = {
-    button_label: 'Button',
-    label: 'Currency',
-    type: 'number',
+export const TextFieldWithHintAndSuffixText = Template.bind({});
+TextFieldWithHintAndSuffixText.args = {
+    label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: 'Helper message',
+    },
+    inline_suffix_element: <div>USD</div>,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const TextFieldWithCharacterLimitAndSuffixText = Template.bind({});
+TextFieldWithCharacterLimitAndSuffixText.args = {
+    label: 'Label',
+    type: 'text',
     hint_text: {
         success: '',
         error: '',
         hint: '',
     },
     inline_suffix_element: <div>USD</div>,
+    max_length: 10,
     disabled: false,
-    dark: false,
     readOnly: false,
-    onButtonClickHandler: () => console.log('button'),
-    onChange: (e) => console.log(e),
+    dark: false,
 };
 
 export const TextFieldWithSuffixIcon = Template.bind({});
 TextFieldWithSuffixIcon.args = {
-    label: 'Location',
+    label: 'Label',
     type: 'text',
     hint_text: {
         success: '',
@@ -187,12 +190,43 @@ TextFieldWithSuffixIcon.args = {
     dark: false,
 };
 
-export const TextFieldWithSuccess = Template.bind({});
-TextFieldWithSuccess.args = {
+export const TextFieldWithSuffixIconAndHintText = Template.bind({});
+TextFieldWithSuffixIconAndHintText.args = {
     label: 'Label',
     type: 'text',
     hint_text: {
-        success: 'Success message',
+        success: '',
+        error: '',
+        hint: 'Helper message',
+    },
+    inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const TextFieldWithSuffixIconAndCharacterLimit = Template.bind({});
+TextFieldWithSuffixIconAndCharacterLimit.args = {
+    label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
+    max_length: 10,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const SimpleTextAreaField = Template.bind({});
+SimpleTextAreaField.args = {
+    label: 'Label',
+    type: 'textarea',
+    hint_text: {
+        success: '',
         error: '',
         hint: '',
     },
@@ -201,23 +235,154 @@ TextFieldWithSuccess.args = {
     dark: false,
 };
 
-export const TextFieldWithError = Template.bind({});
-TextFieldWithError.args = {
+export const SimpleTextAreaFieldWithHint = Template.bind({});
+SimpleTextAreaFieldWithHint.args = {
     label: 'Label',
-    type: 'text',
+    type: 'textarea',
     hint_text: {
         success: '',
-        error: 'Error message',
-        hint: '',
+        error: '',
+        hint: 'Helper message',
     },
     disabled: false,
     readOnly: false,
     dark: false,
 };
 
-export const PasswordField = Template.bind({});
-PasswordField.args = {
-    label: 'Password',
+export const SimpleTextAreaFieldWithCharacterLimit = Template.bind({});
+SimpleTextAreaFieldWithCharacterLimit.args = {
+    label: 'Label',
+    type: 'textarea',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    max_length: 250,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const SimpleTextAreaFieldWithHintAndCharacterLimit = Template.bind({});
+SimpleTextAreaFieldWithHintAndCharacterLimit.args = {
+    label: 'Label',
+    type: 'textarea',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: 'Helper message',
+    },
+    max_length: 250,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const TextFieldWithButton = Template.bind({});
+TextFieldWithButton.args = {
+    button_label: 'Button',
+    label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    disabled: false,
+    dark: false,
+    readOnly: false,
+    onButtonClickHandler: () => console.log('button_clicked'),
+};
+
+export const TextFieldWithButtonAndHintText = Template.bind({});
+TextFieldWithButtonAndHintText.args = {
+    button_label: 'Button',
+    label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: 'Helper message',
+    },
+    disabled: false,
+    dark: false,
+    readOnly: false,
+    onButtonClickHandler: () => console.log('button_clicked'),
+};
+
+export const TextFieldWithButtonAndCharacterLimit = Template.bind({});
+TextFieldWithButtonAndCharacterLimit.args = {
+    button_label: 'Button',
+    label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    max_length: 10,
+    disabled: false,
+    dark: false,
+    readOnly: false,
+    onButtonClickHandler: () => console.log('button_clicked'),
+};
+
+export const TextFieldWithButtonAndSuffixText = Template.bind({});
+TextFieldWithButtonAndSuffixText.args = {
+    button_label: 'Button',
+    label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    inline_suffix_element: <div>USD</div>,
+    disabled: false,
+    dark: false,
+    readOnly: false,
+    onButtonClickHandler: () => console.log('button_clicked'),
+};
+
+export const TextFieldWithButtonAndHintMessageAndSuffixText = Template.bind({});
+TextFieldWithButtonAndHintMessageAndSuffixText.args = {
+    button_label: 'Button',
+    label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: 'Helper message',
+    },
+    inline_suffix_element: <div>USD</div>,
+    disabled: false,
+    dark: false,
+    readOnly: false,
+    onButtonClickHandler: () => console.log('button_clicked'),
+};
+
+export const TextFieldWithButtonAndCharacterLimitAndSuffixText = Template.bind({});
+TextFieldWithButtonAndCharacterLimitAndSuffixText.args = {
+    button_label: 'Button',
+    label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    max_length: 10,
+    inline_suffix_element: <div>USD</div>,
+    disabled: false,
+    dark: false,
+    readOnly: false,
+    onButtonClickHandler: () => console.log('button_clicked'),
+};
+
+export const SimplePasswordField = Template.bind({});
+SimplePasswordField.args = {
+    label: 'Label',
     type: 'password',
     hint_text: {
         success: '',
@@ -229,16 +394,122 @@ PasswordField.args = {
     dark: false,
 };
 
-export const TextAreaField = Template.bind({});
-TextAreaField.args = {
-    label: 'Instruction',
-    type: 'textarea',
+export const PasswordFieldWithHintMessage = Template.bind({});
+PasswordFieldWithHintMessage.args = {
+    label: 'Label',
+    type: 'password',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: 'Helper message',
+    },
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const PasswordFieldWithCharacterLimit = Template.bind({});
+PasswordFieldWithCharacterLimit.args = {
+    label: 'Label',
+    type: 'password',
     hint_text: {
         success: '',
         error: '',
         hint: '',
     },
-    max_length: 250,
+    max_length: 10,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const PasswordFieldWithSuffixText = Template.bind({});
+PasswordFieldWithSuffixText.args = {
+    label: 'Label',
+    type: 'password',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    inline_suffix_element: <div>USD</div>,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const PasswordFieldWithSuffixTextAndHintMessage = Template.bind({});
+PasswordFieldWithSuffixTextAndHintMessage.args = {
+    label: 'Label',
+    type: 'password',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: 'Helper message',
+    },
+    inline_suffix_element: <div>USD</div>,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const PasswordFieldWithSuffixTextAndCharacterLimit = Template.bind({});
+PasswordFieldWithSuffixTextAndCharacterLimit.args = {
+    label: 'Label',
+    type: 'password',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    max_length: 10,
+    inline_suffix_element: <div>USD</div>,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const PasswordFieldWithSuffixIcon = Template.bind({});
+PasswordFieldWithSuffixIcon.args = {
+    label: 'Label',
+    type: 'password',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const PasswordFieldWithSuffixIconAndHintMessage = Template.bind({});
+PasswordFieldWithSuffixIconAndHintMessage.args = {
+    label: 'Label',
+    type: 'password',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: 'Helper message',
+    },
+    inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const PasswordFieldWithSuffixIconAndCharacterLimit = Template.bind({});
+PasswordFieldWithSuffixIconAndCharacterLimit.args = {
+    label: 'Label',
+    type: 'password',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    max_length: 10,
+    inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
     disabled: false,
     readOnly: false,
     dark: false,
