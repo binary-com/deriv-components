@@ -21,6 +21,10 @@ export default {
         },
         is_borderless: {
             description: 'Removes border from labelless textfields',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+            },
         },
         hint: {
             description: 'Displays a hint text',
@@ -33,6 +37,11 @@ export default {
         },
         max_length: {
             description: 'Max length that the field can accept',
+        },
+        number_of_badges: {
+            description: 'The number of badges a user can add',
+            control: 'number',
+            defaultValue: 0,
         },
         onButtonClickHandler: {
             description: 'Runs custom callback when the button is clicked',
@@ -60,6 +69,13 @@ export default {
                 defaultValue: { summary: false },
             },
         },
+        with_badges: {
+            description: 'Allows to create badges in input field',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+            },
+        },
         dark: {
             description: 'Displays content in dark theme',
             table: {
@@ -71,20 +87,6 @@ export default {
 } as Meta<TextFieldProps>;
 
 const Template: Story<TextFieldProps> = (args) => <TextField {...args}></TextField>;
-
-export const Test = Template.bind({});
-Test.args = {
-    type: 'text',
-    hint_text: {
-        success: '',
-        error: '',
-        hint: '',
-    },
-    placeholder: 'Search',
-    disabled: false,
-    dark: false,
-    readOnly: false,
-};
 
 export const SimpleTextField = Template.bind({});
 SimpleTextField.args = {
@@ -221,6 +223,23 @@ TextFieldWithSuffixIconAndCharacterLimit.args = {
     dark: false,
 };
 
+export const DisabledTextField = Template.bind({});
+DisabledTextField.args = {
+    value: 'George',
+    label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: 'Helper message',
+    },
+    max_length: 10,
+    inline_suffix_element: <div>USD</div>,
+    disabled: true,
+    readOnly: false,
+    dark: false,
+};
+
 export const SimpleTextAreaField = Template.bind({});
 SimpleTextAreaField.args = {
     label: 'Label',
@@ -279,6 +298,21 @@ SimpleTextAreaFieldWithHintAndCharacterLimit.args = {
     dark: false,
 };
 
+export const DisabledTextAreaField = Template.bind({});
+DisabledTextAreaField.args = {
+    value: 'George',
+    label: 'Label',
+    type: 'textarea',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: 'Helper message',
+    },
+    max_length: 250,
+    disabled: true,
+    readOnly: false,
+    dark: false,
+};
 export const TextFieldWithButton = Template.bind({});
 TextFieldWithButton.args = {
     button_label: 'Button',
@@ -378,6 +412,24 @@ TextFieldWithButtonAndCharacterLimitAndSuffixText.args = {
     dark: false,
     readOnly: false,
     onButtonClickHandler: () => console.log('button_clicked'),
+};
+
+export const DisabledTextFieldWithButton = Template.bind({});
+DisabledTextFieldWithButton.args = {
+    button_label: 'Button',
+    value: 'George',
+    label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: 'Helper message',
+    },
+    max_length: 10,
+    inline_suffix_element: <div>USD</div>,
+    disabled: true,
+    readOnly: false,
+    dark: false,
 };
 
 export const SimplePasswordField = Template.bind({});
@@ -513,4 +565,60 @@ PasswordFieldWithSuffixIconAndCharacterLimit.args = {
     disabled: false,
     readOnly: false,
     dark: false,
+};
+
+export const DisabledPasswordTextField = Template.bind({});
+DisabledPasswordTextField.args = {
+    value: 'verylongpassword',
+    label: 'Label',
+    type: 'password',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: 'Helper message',
+    },
+    max_length: 10,
+    inline_suffix_element: <div>USD</div>,
+    disabled: true,
+    readOnly: false,
+    dark: false,
+};
+
+export const TextFieldWithBadges = Template.bind({});
+TextFieldWithBadges.args = {
+    label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    with_badges: true,
+    number_of_badges: 5,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+};
+
+export const LabellessTextFieldWithoutBorder = Template.bind({});
+LabellessTextFieldWithoutBorder.args = {
+    is_borderless: true,
+    placeholder: 'Search',
+    type: 'text',
+    inline_prefix_element: <img src={LocationPin} alt="location-icon" />,
+    inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
+    disabled: false,
+    dark: false,
+    readOnly: false,
+};
+
+export const LabellessTextFieldWithBorderAndTransparentBackground = Template.bind({});
+LabellessTextFieldWithBorderAndTransparentBackground.args = {
+    placeholder: 'Search',
+    type: 'text',
+    inline_prefix_element: <img src={LocationPin} alt="location-icon" />,
+    inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
+    disabled: false,
+    dark: false,
+    readOnly: false,
 };

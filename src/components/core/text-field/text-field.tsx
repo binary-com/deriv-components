@@ -127,8 +127,6 @@ const HelperSection = styled('section', {
         success: {
             true: { color: '$greenLight' },
         },
-        disabled: { true: { opacity: '0.32', pointerEvents: 'none' } },
-        // disabled: { true: { color: '$greyLight500' } },
     },
 
     compoundVariants: [
@@ -153,7 +151,7 @@ const HelperSection = styled('section', {
     TextFieldContainer - This acts as a wrapper and styles the input field section and Helper section
 */
 const TextFieldContainer = styled('div', {
-    width: '200px',
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
 });
@@ -173,7 +171,7 @@ const TextFieldWrapper = styled('section', {
         dark: {
             true: {
                 borderColor: '$greyDark500',
-                backgroundColor: '$greyDark700',
+                backgroundColor: '$greyDark800',
                 color: '$greyDark200',
 
                 '&:hover': {
@@ -196,14 +194,13 @@ const TextFieldWrapper = styled('section', {
         enabled: {
             true: {},
         },
-        // disabled: {
-        //     true: {
-        //         color: '$greyLight500',
-        //         borderColor: 'greyLight400',
-        //         pointerEvents: 'none',
-        //     },
-        // },
-        disabled: { true: { opacity: '0.32', pointerEvents: 'none' } },
+        disabled: {
+            true: {
+                color: '$greyLight500',
+                borderColor: 'greyLight400',
+                pointerEvents: 'none',
+            },
+        },
         error: {
             true: {
                 borderColor: '$redLight',
@@ -216,15 +213,14 @@ const TextFieldWrapper = styled('section', {
                 color: '$greenLight',
             },
         },
-        //sss
-        // is_borderless: {
-        //     true: {
-        //         borderColor: 'transparent',
-        //     },
-        // },
-        // is_labelless: {
-        //     true: {},
-        // },
+        is_borderless: {
+            true: {
+                borderColor: 'transparent',
+            },
+        },
+        is_labelless: {
+            true: {},
+        },
     },
 
     compoundVariants: [
@@ -275,45 +271,45 @@ const TextFieldWrapper = styled('section', {
                 color: '$greyDark100',
             },
         },
-        //dark disabled
-        // {
-        //     dark: true,
-        //     disabled: true,
-        //     css: {
-        //         borderColor: '$greyDark500',
-        //         color: '$greyDark300',
-        //     },
-        // },
-
-        //sss
-        // {
-        //     active: true,
-        //     is_borderless: true,
-        //     css: {
-        //         borderColor: '$blue500',
-        //     },
-        // },
-
-        // {
-        //     dark: true,
-        //     is_labelless: true,
-        //     disabled: true,
-        //     css: {
-        //         opacity: '1',
-        //     },
-        // },
-        // {
-        //     dark: false,
-        //     active: true,
-        //     error: true,
-        //     css: { borderColor: '$coral500' },
-        // },
-        // {
-        //     dark: false,
-        //     active: true,
-        //     success: true,
-        //     css: { borderColor: '$greenLight' },
-        // },
+        {
+            dark: true,
+            disabled: true,
+            css: {
+                borderColor: '$greyDark500',
+                color: '$greyDark300',
+            },
+        },
+        {
+            is_borderless: true,
+            enabled: true,
+            css: {
+                borderColor: 'transparent',
+            },
+        },
+        {
+            dark: true,
+            is_borderless: true,
+            active: false,
+            css: {
+                borderColor: 'transparent',
+            },
+        },
+        {
+            dark: true,
+            is_borderless: true,
+            enabled: true,
+            css: {
+                borderColor: 'transparent',
+                color: '$greyDark100',
+            },
+        },
+        {
+            is_borderless: false,
+            is_labelless: true,
+            css: {
+                backgroundColor: 'transparent',
+            },
+        },
     ],
 });
 
@@ -327,14 +323,13 @@ const LabelSection = styled('label', {
     pointerEvents: 'none',
     transition: '0.25s ease all',
     transformOrigin: 'top left',
-    left: '0.78125rem',
+    left: '1rem',
 
     variants: {
         readonly: { true: { color: '$greyLight700' } },
-        // disabled: { true: { color: '$greyLight500' } },
         dark: {
             true: {
-                backgroundColor: '$greyDark700',
+                backgroundColor: '$greyDark800',
             },
             false: {
                 backgroundColor: '$greyLight100',
@@ -342,10 +337,6 @@ const LabelSection = styled('label', {
         },
         active: { true: {} },
         has_badges: { true: {} },
-        // is_labelless: {
-        //     true: { left: '1rem' },
-        //     false: { fontSize: '$2xs' },
-        // },
     },
 
     compoundVariants: [
@@ -353,7 +344,7 @@ const LabelSection = styled('label', {
             dark: true,
             readonly: true,
             css: {
-                color: '$greyDark100',
+                color: '$greyDark200',
             },
         },
         {
@@ -431,26 +422,16 @@ const SupportingInfoSection = styled('div', {
         active: { true: {} },
         enabled: { true: {} },
         readonly: { true: { color: '$greyLight600' } },
-        // disabled: { true: {} },
         prefix: { true: { paddingLeft: '0.5rem', display: 'flex' } },
         suffix: { true: { paddingRight: '1rem', display: 'flex' } },
-
-        // is_labelless: {
-        //     true: {
-        //         paddingRight: '0.5rem',
-        //     },
-        // },
+        is_labelless: {
+            true: {
+                paddingRight: '0.5rem',
+            },
+        },
     },
 
     compoundVariants: [
-        // {
-        //     dark: false,
-        //     disabled: true,
-        //     suffix: true,
-        //     css: {
-        //         color: '$greyLight500',
-        //     },
-        // },
         {
             dark: false,
             active: true,
@@ -503,14 +484,6 @@ const SupportingInfoSection = styled('div', {
                 color: '$greyDark200',
             },
         },
-        // {
-        //     dark: true,
-        //     disabled: true,
-        //     suffix: true,
-        //     css: {
-        //         color: '$greyDark300',
-        //     },
-        // },
         {
             dark: true,
             active: true,
@@ -553,7 +526,7 @@ const TextAreaField = styled('textarea', {
     fontFamily: '$regular',
 
     variants: {
-        readonly: { true: {} },
+        readonly: { true: { color: '$greyLight600' } },
         dark: {
             true: {
                 color: '$greyDark100',
@@ -562,24 +535,24 @@ const TextAreaField = styled('textarea', {
                 color: '$greyLight700',
             },
         },
-        // disabled: { true: { color: '$greyLight500' } },
+        disabled: { true: { color: '$greyLight500' } },
     },
 
     compoundVariants: [
         {
-            dark: false,
+            dark: true,
             readonly: true,
             css: {
-                color: '$greyLight600',
+                color: '$greyDark200',
             },
         },
-        // {
-        //     dark: true,
-        //     disabled: true,
-        //     css: {
-        //         color: '$greyDark100',
-        //     },
-        // },
+        {
+            dark: true,
+            disabled: true,
+            css: {
+                color: '$greyDark300',
+            },
+        },
     ],
 
     '& ~ label': {
@@ -607,13 +580,19 @@ const InputField = styled('input', {
 
     variants: {
         // if we use readOnly we can put the cursor inside the input
-        readonly: { true: {} },
+        readonly: { true: { color: '$greyLight600' } },
         dark: {
             true: {
                 color: '$greyDark100',
+                '&::placeholder': {
+                    color: '$greyDark100',
+                },
             },
             false: {
                 color: '$greyLight700',
+                '&::placeholder': {
+                    color: '$greyLight700',
+                },
             },
         },
         has_badges: {
@@ -623,28 +602,23 @@ const InputField = styled('input', {
                 height: '20px',
             },
         },
-        // has_badges: {
-        //     true: {
-        //         paddingLeft: '0.5rem',
-        //     },
-        // },
-        // disabled: { true: { color: '$greyLight500' } },
-        // is_labelless: {
-        //     true: {
-        //         padding: '0 0.5rem',
-        //         height: '1.875rem',
-        //         fontSize: '$2xs',
-        //     },
-        // },
-    },
-    compoundVariants: [
-        {
-            dark: false,
-            readonly: true,
-            css: {
-                color: '$greyLight600',
+        disabled: {
+            true: {
+                color: '$greyLight500',
+                '&::placeholder': {
+                    color: '$greyLight500',
+                },
             },
         },
+        is_labelless: {
+            true: {
+                padding: '0 0.5rem',
+                height: '1.875rem',
+                fontSize: '$2xs',
+            },
+        },
+    },
+    compoundVariants: [
         {
             dark: true,
             readonly: true,
@@ -652,17 +626,29 @@ const InputField = styled('input', {
                 color: '$greyDark200',
             },
         },
-        // {
-        //     dark: true,
-        //     disabled: true,
-        //     css: {
-        //         color: '$greyDark300',
-        //     },
-        // },
+        {
+            dark: true,
+            disabled: true,
+            css: {
+                color: '$greyDark300',
+            },
+        },
+        {
+            dark: true,
+            disabled: true,
+            css: {
+                '&::placeholder': {
+                    color: '$greyDark300',
+                },
+            },
+        },
     ],
 });
 
 const getTextWidth = createCanvas();
+
+//TODO: add possibility to render badges from external
+// add possibility to store badges outside
 
 const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldProps>(
     (
@@ -677,8 +663,8 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             label,
             max_length,
             type,
-            with_badges = true,
-            number_of_badges = 10,
+            with_badges,
+            number_of_badges,
             onButtonClickHandler,
 
             ...props
@@ -689,21 +675,20 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
         const [is_enabled, setIsEnabled] = useState(false);
         const [value, setValue] = useState(props.value || '');
         const [count, setCount] = useState(0);
-        const [show_label, setShowLabel] = useState(true);
         const [badges, setBadges] = useState<TBadge[]>([]);
 
         const input_ref = useRef<HTMLInputElement | null>(null);
 
         const { error, hint, success } = hint_text ?? {};
 
-        const is_button_disabled = props.disabled || Boolean(error) || (Boolean(success) && !value) || !value;
+        const is_button_disabled = Boolean(props.disabled) || Boolean(error) || (Boolean(success) && !value) || !value;
         const has_helper_section = Boolean(error) || Boolean(hint) || Boolean(success) || Boolean(max_length);
 
         React.useEffect(() => {
             if (input_ref.current) {
                 if (badges.length) {
                     input_ref.current.style.flexBasis = `${getTextWidth(
-                        value as string,
+                        value.toString(),
                         getCanvasFont(input_ref.current),
                     )}px`;
                 } else {
@@ -714,13 +699,13 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
 
         const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
             const text = e.target.value;
-            if (props.disabled || props.readOnly) {
+            if (Boolean(props.disabled) || Boolean(props.readOnly)) {
                 return;
             }
             if (max_length && text.length > max_length) {
                 return;
             }
-            if (badges.length === number_of_badges) {
+            if (with_badges && badges.length === number_of_badges) {
                 return;
             }
 
@@ -733,13 +718,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
         const onBlurHandler = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
             setIsActive(false);
 
-            // if (is_labelless) {
-            //     !e.target.value && setShowLabel(true);
-            // } else {
-            //     e.target.value && !props.disabled && setIsEnabled(true);
-            // }
-
-            e.target.value && !props.disabled && setIsEnabled(true);
+            e.target.value && !Boolean(props.disabled) && setIsEnabled(true);
             setValue(value.toString().trim());
 
             props.onBlur?.(e);
@@ -748,7 +727,6 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
         const onFocusHandler = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
             setIsActive(true);
             setIsEnabled(false);
-            // is_labelless && setShowLabel(false);
 
             props.onFocus?.(e);
         };
@@ -792,7 +770,8 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                     fontSize: '$4xs',
                     transform: 'translate(0, -1.2rem) scale(0.75)',
                     padding: '0 4px',
-                    top: !!badges.length && '0.75rem',
+                    top: badges.length ? '0.75rem' : '',
+                    left: '0.78125rem',
                 };
             } else if ((is_active || value) && type === 'textarea') {
                 return {
@@ -800,6 +779,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                     fontSize: '$4xs',
                     transform: 'translate(0, -1.05rem) scale(0.75)',
                     padding: '0 4px',
+                    left: '0.78125rem',
                 };
             }
         };
@@ -819,21 +799,21 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                     enabled={is_enabled}
                     error={Boolean(error)}
                     is_borderless={is_borderless}
-                    is_labelless={!!label}
+                    is_labelless={!Boolean(label)}
                     success={Boolean(success)}
-                    disabled={props.disabled}
+                    disabled={Boolean(props.disabled)}
                     dark={dark}
                 >
-                    <InputFieldSection has_badges={!!badges.length} onClick={() => input_ref.current?.focus()}>
+                    <InputFieldSection has_badges={Boolean(badges.length)} onClick={() => input_ref.current?.focus()}>
                         {type === 'textarea' ? (
                             <TextAreaField
                                 {...props}
                                 ref={ref}
                                 value={value}
                                 dark={dark}
-                                readonly={props.readOnly}
-                                readOnly={props.readOnly}
-                                disabled={props.disabled}
+                                readonly={Boolean(props.readOnly)}
+                                readOnly={Boolean(props.readOnly)}
+                                disabled={Boolean(props.disabled)}
                                 onChange={(e) => handleTextChange(e)}
                                 onFocus={(e) => onFocusHandler(e)}
                                 onBlur={(e) => onBlurHandler(e)}
@@ -843,7 +823,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                 {inline_prefix_element && (
                                     <SupportingInfoSection prefix>{inline_prefix_element}</SupportingInfoSection>
                                 )}
-                                {!!badges.length &&
+                                {Boolean(badges.length) &&
                                     badges.map((badge) => {
                                         return (
                                             <Badge
@@ -864,10 +844,11 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                     dark={dark}
                                     type={type}
                                     value={value}
-                                    has_badges={!!badges.length}
-                                    readonly={props.readOnly}
-                                    readOnly={props.readOnly}
-                                    disabled={props.disabled}
+                                    is_labelless={!Boolean(label)}
+                                    has_badges={Boolean(badges.length)}
+                                    readonly={Boolean(props.readOnly)}
+                                    readOnly={Boolean(props.readOnly)}
+                                    disabled={Boolean(props.disabled)}
                                     onChange={handleTextChange}
                                     onFocus={onFocusHandler}
                                     onBlur={onBlurHandler}
@@ -877,11 +858,10 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                 {inline_suffix_element && (
                                     <SupportingInfoSection
                                         active={is_active}
-                                        disabled={props.disabled}
                                         enabled={is_enabled}
                                         dark={dark}
-                                        readonly={props.readOnly}
-                                        is_labelless={!!label}
+                                        readonly={Boolean(props.readOnly)}
+                                        is_labelless={!Boolean(label)}
                                         suffix
                                     >
                                         {inline_suffix_element}
@@ -900,14 +880,11 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                 )}
                             </Fragment>
                         )}
-                        {show_label && label && (
+                        {label && (
                             <LabelSection
                                 active={is_active}
-                                has_badges={!!badges.length}
-                                readonly={props.readOnly}
-                                readOnly={props.readOnly}
-                                disabled={props.disabled}
-                                // is_labelless={!!label}
+                                has_badges={Boolean(badges.length)}
+                                readonly={Boolean(props.readOnly)}
                                 htmlFor={id}
                                 dark={dark}
                                 css={styleLabelFloat()}
@@ -920,17 +897,12 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                         <PasswordStrengthMeter
                             dark={Boolean(dark)}
                             user_input={value.toString()}
-                            disable_meter={(props.readOnly || props.disabled) ?? false}
+                            disable_meter={(Boolean(props.readOnly) || Boolean(props.disabled)) ?? false}
                         />
                     )}
                 </TextFieldWrapper>
                 {has_helper_section && (
-                    <HelperSection
-                        error={Boolean(error)}
-                        success={Boolean(success)}
-                        dark={dark}
-                        disabled={props.disabled}
-                    >
+                    <HelperSection error={Boolean(error)} success={Boolean(success)} dark={dark}>
                         {generateHintText()}
                         {max_length && max_length > 0 && <WordCount count={count} max_length={max_length} />}
                     </HelperSection>
