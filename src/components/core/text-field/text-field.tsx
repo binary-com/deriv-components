@@ -3,6 +3,7 @@ import Button from '@core/button/button';
 import Badge from '@core/badge/badge';
 import CircularCloseIcon from '@assets/svg/circular-close-icon.svg';
 import { forwardRef, Fragment, InputHTMLAttributes, ReactNode, useState, useRef, useEffect } from 'react';
+import { createCanvas, getCanvasFont } from './utils';
 import { styled } from 'Styles/stitches.config';
 
 type InputTypes = 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea';
@@ -22,6 +23,7 @@ export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextArea
     label?: string;
     type?: InputTypes;
     max_length?: number;
+    number_of_badges?: number;
     hint_text?: THintTextProps;
     onButtonClickHandler?: () => void;
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
@@ -112,7 +114,6 @@ const HelperSection = styled('section', {
     fontSize: '$3xs',
     lineHeight: '$lineHeight18',
     display: 'inline-flex',
-    width: '-webkit-fill-available',
     marginTop: '0.125rem',
 
     variants: {
@@ -149,11 +150,19 @@ const HelperSection = styled('section', {
 });
 
 /* 
+    TextFieldContainer - This acts as a wrapper and styles the input field section and Helper section
+*/
+const TextFieldContainer = styled('div', {
+    width: '200px',
+    display: 'flex',
+    flexDirection: 'column',
+});
+
+/* 
     TextFieldWrapper - This acts as a wrapper and styles the input field section
 */
 const TextFieldWrapper = styled('section', {
     position: 'relative',
-    width: '20%',
     display: 'inline-flex',
     flexDirection: 'column',
     borderRadius: '$default',
@@ -609,6 +618,7 @@ const InputField = styled('input', {
         },
         has_badges: {
             true: {
+                flex: 1,
                 padding: 0,
                 height: '20px',
             },
@@ -652,23 +662,23 @@ const InputField = styled('input', {
     ],
 });
 
+const getTextWidth = createCanvas();
+
 const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldProps>(
     (
         {
             button_label,
             dark,
-            id,
             hint_text,
+            id,
             inline_prefix_element,
             inline_suffix_element,
-            label,
             is_borderless = false,
+            label,
             max_length,
             type,
             with_badges = true,
-            onBlur,
-            onChange,
-            onFocus,
+            number_of_badges = 10,
             onButtonClickHandler,
 
             ...props
@@ -682,11 +692,25 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
         const [show_label, setShowLabel] = useState(true);
         const [badges, setBadges] = useState<TBadge[]>([]);
 
-        const input_ref = useRef();
+        const input_ref = useRef<HTMLInputElement | null>(null);
 
         const { error, hint, success } = hint_text ?? {};
 
         const is_button_disabled = props.disabled || Boolean(error) || (Boolean(success) && !value) || !value;
+        const has_helper_section = Boolean(error) || Boolean(hint) || Boolean(success) || Boolean(max_length);
+
+        React.useEffect(() => {
+            if (input_ref.current) {
+                if (badges.length) {
+                    input_ref.current.style.flexBasis = `${getTextWidth(
+                        value as string,
+                        getCanvasFont(input_ref.current),
+                    )}px`;
+                } else {
+                    input_ref.current.style.removeProperty('flex-basis');
+                }
+            }
+        }, [value, badges]);
 
         const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
             const text = e.target.value;
@@ -696,10 +720,14 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             if (max_length && text.length > max_length) {
                 return;
             }
-            setValue(text);
+            if (badges.length === number_of_badges) {
+                return;
+            }
+
+            setValue(with_badges ? text.replaceAll(',', '') : text);
             setCount(text.length);
 
-            onChange?.(e);
+            props.onChange?.(e);
         };
 
         const onBlurHandler = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -712,8 +740,9 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             // }
 
             e.target.value && !props.disabled && setIsEnabled(true);
+            setValue(value.toString().trim());
 
-            onBlur?.(e);
+            props.onBlur?.(e);
         };
 
         const onFocusHandler = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -721,7 +750,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             setIsEnabled(false);
             // is_labelless && setShowLabel(false);
 
-            onFocus?.(e);
+            props.onFocus?.(e);
         };
 
         const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -729,13 +758,25 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                 !!button_label && !is_button_disabled && onButtonClickHandler?.();
                 e.currentTarget.blur();
             }
+
+            props.onKeyDown?.(e);
         };
 
         const onKeyUpHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (with_badges && e.key === ',') {
+            if (with_badges) {
+                if (e.key !== ',') return;
+                if (value.toString().trim().length === 0) return;
+                setBadges([...badges, { id: Date.now().toString(), label: value.toString().trim() }]);
                 setValue('');
-                setBadges([...badges, { id: value.slice(0, -1), label: value.slice(0, -1) }]);
             }
+
+            props.onKeyUp?.(e);
+        };
+
+        const onIconBadgeClickHandler = (_e: React.MouseEvent<HTMLImageElement>, id?: string) => {
+            const filtered_badges = badges.filter((badge) => badge.id !== id);
+            setBadges([...filtered_badges]);
+            input_ref.current?.focus();
         };
 
         const generateHintText = () => {
@@ -771,18 +812,8 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             marginTop: '-1px',
         });
 
-        const onIconBadgeClickHandler = (e: React.MouseEvent<HTMLImageElement>, id: string) => {
-            e.stopPropagation();
-            const filtered_badges = badges.filter((badge) => badge.id !== id);
-            setBadges([...filtered_badges]);
-        };
-
-        const focusInput = () => {
-            !!badges.length && input_ref.current.focus();
-        };
-
         return (
-            <Fragment>
+            <TextFieldContainer>
                 <TextFieldWrapper
                     active={is_active}
                     enabled={is_enabled}
@@ -793,7 +824,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                     disabled={props.disabled}
                     dark={dark}
                 >
-                    <InputFieldSection has_badges={!!badges.length} onClick={focusInput}>
+                    <InputFieldSection has_badges={!!badges.length} onClick={() => input_ref.current?.focus()}>
                         {type === 'textarea' ? (
                             <TextAreaField
                                 {...props}
@@ -816,7 +847,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                     badges.map((badge) => {
                                         return (
                                             <Badge
-                                                key={badge.label}
+                                                key={badge.id}
                                                 id={badge.id}
                                                 suffix_icon_src={CircularCloseIcon}
                                                 suffix_icon_alt="close-icon"
@@ -888,16 +919,23 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                     {type === 'password' && (
                         <PasswordStrengthMeter
                             dark={Boolean(dark)}
-                            user_input={value}
+                            user_input={value.toString()}
                             disable_meter={(props.readOnly || props.disabled) ?? false}
                         />
                     )}
                 </TextFieldWrapper>
-                <HelperSection error={Boolean(error)} success={Boolean(success)} dark={dark} disabled={props.disabled}>
-                    {generateHintText()}
-                    {max_length && max_length > 0 && <WordCount count={count} max_length={max_length} />}
-                </HelperSection>
-            </Fragment>
+                {has_helper_section && (
+                    <HelperSection
+                        error={Boolean(error)}
+                        success={Boolean(success)}
+                        dark={dark}
+                        disabled={props.disabled}
+                    >
+                        {generateHintText()}
+                        {max_length && max_length > 0 && <WordCount count={count} max_length={max_length} />}
+                    </HelperSection>
+                )}
+            </TextFieldContainer>
         );
     },
 );
