@@ -83,6 +83,11 @@ export default {
                 defaultValue: { summary: false },
             },
         },
+        default_badges: {
+            table: {
+                disable: true,
+            },
+        },
     },
 } as Meta<TextFieldProps>;
 
@@ -600,6 +605,27 @@ TextFieldWithBadges.args = {
     dark: false,
 };
 
+export const TextFieldWithPredefinedBadges = Template.bind({});
+TextFieldWithPredefinedBadges.args = {
+    label: 'Label',
+    type: 'text',
+    hint_text: {
+        success: '',
+        error: '',
+        hint: '',
+    },
+    with_badges: true,
+    number_of_badges: 5,
+    disabled: false,
+    readOnly: false,
+    dark: false,
+    default_badges: [
+        { id: '1', label: 'George' },
+        { id: '2', label: 'is' },
+        { id: '3', label: 'occured' },
+    ],
+};
+
 export const LabellessTextFieldWithoutBorder = Template.bind({});
 LabellessTextFieldWithoutBorder.args = {
     is_borderless: true,
@@ -617,7 +643,7 @@ LabellessTextFieldWithBorderAndTransparentBackground.args = {
     placeholder: 'Search',
     type: 'text',
     inline_prefix_element: <img src={LocationPin} alt="location-icon" />,
-    inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
+    inline_suffix_element: <div>USD</div>,
     disabled: false,
     dark: false,
     readOnly: false,

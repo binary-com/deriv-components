@@ -8,8 +8,8 @@ import { styled } from 'Styles/stitches.config';
 
 type InputTypes = 'text' | 'number' | 'email' | 'password' | 'tel' | 'textarea';
 type TWordCountProps = { count: number; max_length: number };
-type TPasswordStrengthProps = { user_input: string; disable_meter: boolean; dark: boolean };
-type THintTextProps = { error: string; success: string; hint: string };
+type TPasswordStrengthProps = { dark: boolean; disable_meter: boolean; user_input: string };
+type THintTextProps = { error: string; hint: string; success: string };
 type TBadge = {
     id: string;
     label: string;
@@ -17,22 +17,24 @@ type TBadge = {
 
 export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {
     button_label?: string;
+    dark?: boolean;
+    default_badges: TBadge[];
+    error?: string;
+    hint_text?: THintTextProps;
     inline_prefix_element?: ReactNode;
     inline_suffix_element?: ReactNode;
     is_borderless?: boolean;
-    label?: string;
-    type?: InputTypes;
     max_length?: number;
     number_of_badges?: number;
-    hint_text?: THintTextProps;
-    onButtonClickHandler?: () => void;
-    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onFocus: (e: React.FocusEvent<HTMLInputElement>) => void;
-    dark?: boolean;
-    error?: string;
+    label?: string;
     success?: string;
+    type?: InputTypes;
     with_badges?: boolean;
+    onBadges?: (badges: TBadge[]) => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    onButtonClickHandler?: () => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
 };
 
 /* 
@@ -354,35 +356,6 @@ const LabelSection = styled('label', {
                 color: '$blue500',
             },
         },
-        // {
-        //     is_labelless: true,
-        //     prefix: true,
-        //     css: {
-        //         left: '2rem',
-        //     },
-        // },
-        // {
-        //     is_labelless: true,
-        //     prefix: false,
-        //     css: {
-        //         left: '0.5rem',
-        //     },
-        // },
-        // {
-        //     dark: false,
-        //     is_labelless: true,
-        //     css: { color: '$greyLight700' },
-        // },
-        // {
-        //     dark: true,
-        //     is_labelless: true,
-        //     css: { color: '$greyDark100' },
-        // },
-        // {
-        //     is_labelless: true,
-        //     disabled: true,
-        //     css: { color: '$greyDark300' },
-        // },
     ],
 });
 
@@ -585,13 +558,13 @@ const InputField = styled('input', {
             true: {
                 color: '$greyDark100',
                 '&::placeholder': {
-                    color: '$greyDark100',
+                    color: '$greyDark200',
                 },
             },
             false: {
                 color: '$greyLight700',
                 '&::placeholder': {
-                    color: '$greyLight700',
+                    color: '$greyLight600',
                 },
             },
         },
@@ -655,6 +628,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
         {
             button_label,
             dark,
+            default_badges,
             hint_text,
             id,
             inline_prefix_element,
@@ -662,11 +636,11 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             is_borderless = false,
             label,
             max_length,
+            number_of_badges,
             type,
             with_badges,
-            number_of_badges,
+            onBadges,
             onButtonClickHandler,
-
             ...props
         },
         ref,
@@ -675,7 +649,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
         const [is_enabled, setIsEnabled] = useState(false);
         const [value, setValue] = useState(props.value || '');
         const [count, setCount] = useState(0);
-        const [badges, setBadges] = useState<TBadge[]>([]);
+        const [badges, setBadges] = useState<TBadge[]>(default_badges || []);
 
         const input_ref = useRef<HTMLInputElement | null>(null);
 
@@ -683,6 +657,10 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
 
         const is_button_disabled = Boolean(props.disabled) || Boolean(error) || (Boolean(success) && !value) || !value;
         const has_helper_section = Boolean(error) || Boolean(hint) || Boolean(success) || Boolean(max_length);
+
+        React.useEffect(() => {
+            onBadges?.(badges);
+        }, [badges]);
 
         React.useEffect(() => {
             if (input_ref.current) {
