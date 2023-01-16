@@ -45,9 +45,6 @@ export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextArea
 const StyledPasswordMeterWrapper = styled('div', {
     height: '0.25rem',
     width: '100%',
-    // edges of strength meter is not align with border ?!?!?
-    // borderBottomLeftRadius: '3px',
-    // borderBottomRightRadius: '3px',
 
     variants: {
         dark: {
@@ -632,9 +629,6 @@ const InputField = styled('input', {
 });
 
 const getTextWidth = createCanvas();
-
-//TODO: add possibility to render badges from external
-// add possibility to store badges outside
 
 const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldProps>(
     (
