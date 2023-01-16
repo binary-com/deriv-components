@@ -14,20 +14,23 @@ type TBadge = {
     id: string;
     label: string;
 };
+type TAlignValue = 'left' | 'center' | 'right';
 
 export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {
+    align_value?: TAlignValue;
     button_label?: string;
     dark?: boolean;
     default_badges: TBadge[];
-    error?: string;
     hint_text?: THintTextProps;
     inline_prefix_element?: ReactNode;
+    // inline_pre_suffix_element?: ReactNode;
     inline_suffix_element?: ReactNode;
     is_borderless?: boolean;
+    label?: string;
     max_length?: number;
     number_of_badges?: number;
-    label?: string;
-    success?: string;
+    prefix_style?: { [key: string]: string };
+    suffix_style?: { [key: string]: string };
     type?: InputTypes;
     with_badges?: boolean;
     onBadges?: (badges: TBadge[]) => void;
@@ -397,6 +400,7 @@ const SupportingInfoSection = styled('div', {
         readonly: { true: { color: '$greyLight600' } },
         prefix: { true: { paddingLeft: '0.5rem', display: 'flex' } },
         suffix: { true: { paddingRight: '1rem', display: 'flex' } },
+        pre_suffix: { true: { paddingRight: '0.5rem', display: 'flex', color: '$greyLight700' } },
         is_labelless: {
             true: {
                 paddingRight: '0.5rem',
@@ -553,6 +557,17 @@ const InputField = styled('input', {
 
     variants: {
         // if we use readOnly we can put the cursor inside the input
+        alignment: {
+            left: {
+                textAlign: 'left',
+            },
+            center: {
+                textAlign: 'center',
+            },
+            right: {
+                textAlign: 'right',
+            },
+        },
         readonly: { true: { color: '$greyLight600' } },
         dark: {
             true: {
@@ -626,17 +641,21 @@ const getTextWidth = createCanvas();
 const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldProps>(
     (
         {
+            align_value = 'left',
             button_label,
             dark,
             default_badges,
             hint_text,
             id,
             inline_prefix_element,
+            // inline_pre_suffix_element,
             inline_suffix_element,
             is_borderless = false,
             label,
             max_length,
             number_of_badges,
+            prefix_style,
+            suffix_style,
             type,
             with_badges,
             onBadges,
@@ -782,7 +801,10 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                     disabled={Boolean(props.disabled)}
                     dark={dark}
                 >
-                    <InputFieldSection has_badges={Boolean(badges.length)} onClick={() => input_ref.current?.focus()}>
+                    <InputFieldSection
+                        has_badges={Boolean(badges.length)}
+                        onClick={() => with_badges && input_ref.current?.focus()}
+                    >
                         {type === 'textarea' ? (
                             <TextAreaField
                                 {...props}
@@ -799,7 +821,9 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                         ) : (
                             <Fragment>
                                 {inline_prefix_element && (
-                                    <SupportingInfoSection prefix>{inline_prefix_element}</SupportingInfoSection>
+                                    <SupportingInfoSection css={prefix_style} prefix>
+                                        {inline_prefix_element}
+                                    </SupportingInfoSection>
                                 )}
                                 {Boolean(badges.length) &&
                                     badges.map((badge) => {
@@ -818,6 +842,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                     })}
                                 <InputField
                                     {...props}
+                                    alignment={align_value}
                                     ref={ref || input_ref}
                                     dark={dark}
                                     type={type}
@@ -833,9 +858,15 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                     onKeyDown={onKeyDownHandler}
                                     onKeyUp={onKeyUpHandler}
                                 />
+                                {/* {inline_pre_suffix_element && (
+                                    <SupportingInfoSection dark={dark} readonly={Boolean(props.readOnly)} pre_suffix>
+                                        {inline_pre_suffix_element}
+                                    </SupportingInfoSection>
+                                )} */}
                                 {inline_suffix_element && (
                                     <SupportingInfoSection
                                         active={is_active}
+                                        css={suffix_style}
                                         enabled={is_enabled}
                                         dark={dark}
                                         readonly={Boolean(props.readOnly)}

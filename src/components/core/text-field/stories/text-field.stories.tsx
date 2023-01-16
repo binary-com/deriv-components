@@ -1,12 +1,23 @@
 import React from 'react';
 import type { Meta, Story } from '@storybook/react';
 import LocationPin from '@assets/svg/location-pin.svg';
+// import MinusLight from '@assets/svg/minus-light.svg';
+// import PlusLight from '@assets/svg/plus-light.svg';
+// import Button from '@core/button/button';
 import type { TextFieldProps } from '../text-field';
 import TextField from '../text-field';
 
 export default {
     title: 'TextField',
     argTypes: {
+        align_value: {
+            defaultValue: 'left',
+            control: {
+                type: 'select',
+                options: ['left', 'center', 'right'],
+            },
+            description: 'Text alignment',
+        },
         label: {
             description: 'Displays a label for the input field',
         },
@@ -16,6 +27,9 @@ export default {
         inline_prefix_element: {
             description: 'Displays the provided inline-prefix element',
         },
+        // inline_pre_suffix_element: {
+        //     description: 'Displays the provided inline-pre-suffix element',
+        // },
         inline_suffix_element: {
             description: 'Displays the provided inline-suffix element',
         },
@@ -648,3 +662,48 @@ LabellessTextFieldWithBorderAndTransparentBackground.args = {
     dark: false,
     readOnly: false,
 };
+
+// export const LabellessTextFieldWithBorder = Template.bind({});
+// LabellessTextFieldWithBorder.args = {
+//     align_value: 'center',
+//     value: 10,
+//     type: 'text',
+//     prefix_style: {
+//         paddingLeft: '0',
+//     },
+//     suffix_style: {
+//         paddingRight: '0',
+//     },
+//     inline_prefix_element: (
+//         <Button
+//             css={{
+//                 backgroundColor: 'transparent',
+//                 padding: '6px 8px',
+//                 '&:hover': {
+//                     background: '#e6e9e9',
+//                     cursor: 'pointer',
+//                 },
+//             }}
+//         >
+//             <img src={MinusLight} alt="minus-icon" width={16} />
+//         </Button>
+//     ),
+//     inline_pre_suffix_element: <div>USD</div>,
+//     inline_suffix_element: (
+//         <Button
+//             css={{
+//                 backgroundColor: 'transparent',
+//                 padding: '6px 8px',
+//                 '&:hover': {
+//                     background: '#e6e9e9',
+//                     cursor: 'pointer',
+//                 },
+//             }}
+//         >
+//             <img src={PlusLight} alt="plus-icon" width={16} height={16} />
+//         </Button>
+//     ),
+//     disabled: false,
+//     dark: false,
+//     readOnly: false,
+// };
