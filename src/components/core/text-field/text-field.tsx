@@ -23,7 +23,6 @@ export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextArea
     default_badges: TBadge[];
     hint_text?: THintTextProps;
     inline_prefix_element?: ReactNode;
-    // inline_pre_suffix_element?: ReactNode;
     inline_suffix_element?: ReactNode;
     is_borderless?: boolean;
     label?: string;
@@ -400,7 +399,6 @@ const SupportingInfoSection = styled('div', {
         readonly: { true: { color: '$greyLight600' } },
         prefix: { true: { paddingLeft: '0.5rem', display: 'flex' } },
         suffix: { true: { paddingRight: '1rem', display: 'flex' } },
-        pre_suffix: { true: { paddingRight: '0.5rem', display: 'flex', color: '$greyLight700' } },
         is_labelless: {
             true: {
                 paddingRight: '0.5rem',
@@ -648,7 +646,6 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             hint_text,
             id,
             inline_prefix_element,
-            // inline_pre_suffix_element,
             inline_suffix_element,
             is_borderless = false,
             label,
@@ -858,11 +855,6 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                     onKeyDown={onKeyDownHandler}
                                     onKeyUp={onKeyUpHandler}
                                 />
-                                {/* {inline_pre_suffix_element && (
-                                    <SupportingInfoSection dark={dark} readonly={Boolean(props.readOnly)} pre_suffix>
-                                        {inline_pre_suffix_element}
-                                    </SupportingInfoSection>
-                                )} */}
                                 {inline_suffix_element && (
                                     <SupportingInfoSection
                                         active={is_active}

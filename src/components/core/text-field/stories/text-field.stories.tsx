@@ -27,9 +27,6 @@ export default {
         inline_prefix_element: {
             description: 'Displays the provided inline-prefix element',
         },
-        // inline_pre_suffix_element: {
-        //     description: 'Displays the provided inline-pre-suffix element',
-        // },
         inline_suffix_element: {
             description: 'Displays the provided inline-suffix element',
         },
@@ -662,48 +659,3 @@ LabellessTextFieldWithBorderAndTransparentBackground.args = {
     dark: false,
     readOnly: false,
 };
-
-// export const LabellessTextFieldWithBorder = Template.bind({});
-// LabellessTextFieldWithBorder.args = {
-//     align_value: 'center',
-//     value: 10,
-//     type: 'text',
-//     prefix_style: {
-//         paddingLeft: '0',
-//     },
-//     suffix_style: {
-//         paddingRight: '0',
-//     },
-//     inline_prefix_element: (
-//         <Button
-//             css={{
-//                 backgroundColor: 'transparent',
-//                 padding: '6px 8px',
-//                 '&:hover': {
-//                     background: '#e6e9e9',
-//                     cursor: 'pointer',
-//                 },
-//             }}
-//         >
-//             <img src={MinusLight} alt="minus-icon" width={16} />
-//         </Button>
-//     ),
-//     inline_pre_suffix_element: <div>USD</div>,
-//     inline_suffix_element: (
-//         <Button
-//             css={{
-//                 backgroundColor: 'transparent',
-//                 padding: '6px 8px',
-//                 '&:hover': {
-//                     background: '#e6e9e9',
-//                     cursor: 'pointer',
-//                 },
-//             }}
-//         >
-//             <img src={PlusLight} alt="plus-icon" width={16} height={16} />
-//         </Button>
-//     ),
-//     disabled: false,
-//     dark: false,
-//     readOnly: false,
-// };
