@@ -805,9 +805,9 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                 readonly={Boolean(props.readOnly)}
                                 readOnly={Boolean(props.readOnly)}
                                 disabled={Boolean(props.disabled)}
-                                onChange={(e) => handleTextChange(e)}
-                                onFocus={(e) => onFocusHandler(e)}
-                                onBlur={(e) => onBlurHandler(e)}
+                                onChange={handleTextChange}
+                                onFocus={onFocusHandler}
+                                onBlur={onBlurHandler}
                             />
                         ) : (
                             <Fragment>
