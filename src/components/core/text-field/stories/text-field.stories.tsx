@@ -27,11 +27,21 @@ export default {
         inline_prefix_element: {
             description: 'Displays the provided inline-prefix element',
         },
+        currency_suffix_element: {
+            description: 'Displays the provided currency-suffix element',
+        },
         inline_suffix_element: {
             description: 'Displays the provided inline-suffix element',
         },
         is_borderless: {
             description: 'Removes border from labelless textfields',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+            },
+        },
+        has_password_meter: {
+            description: 'Adds passowrd strength meter',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: false },
@@ -452,6 +462,7 @@ export const SimplePasswordField = Template.bind({});
 SimplePasswordField.args = {
     label: 'Label',
     type: 'password',
+    has_password_meter: true,
     hint_text: {
         success: '',
         error: '',
@@ -466,6 +477,7 @@ export const PasswordFieldWithHintMessage = Template.bind({});
 PasswordFieldWithHintMessage.args = {
     label: 'Label',
     type: 'password',
+    has_password_meter: true,
     hint_text: {
         success: '',
         error: '',
@@ -480,6 +492,7 @@ export const PasswordFieldWithCharacterLimit = Template.bind({});
 PasswordFieldWithCharacterLimit.args = {
     label: 'Label',
     type: 'password',
+    has_password_meter: true,
     hint_text: {
         success: '',
         error: '',
@@ -495,6 +508,7 @@ export const PasswordFieldWithSuffixText = Template.bind({});
 PasswordFieldWithSuffixText.args = {
     label: 'Label',
     type: 'password',
+    has_password_meter: true,
     hint_text: {
         success: '',
         error: '',
@@ -510,6 +524,7 @@ export const PasswordFieldWithSuffixTextAndHintMessage = Template.bind({});
 PasswordFieldWithSuffixTextAndHintMessage.args = {
     label: 'Label',
     type: 'password',
+    has_password_meter: true,
     hint_text: {
         success: '',
         error: '',
@@ -525,6 +540,7 @@ export const PasswordFieldWithSuffixTextAndCharacterLimit = Template.bind({});
 PasswordFieldWithSuffixTextAndCharacterLimit.args = {
     label: 'Label',
     type: 'password',
+    has_password_meter: true,
     hint_text: {
         success: '',
         error: '',
@@ -541,6 +557,7 @@ export const PasswordFieldWithSuffixIcon = Template.bind({});
 PasswordFieldWithSuffixIcon.args = {
     label: 'Label',
     type: 'password',
+    has_password_meter: true,
     hint_text: {
         success: '',
         error: '',
@@ -556,6 +573,7 @@ export const PasswordFieldWithSuffixIconAndHintMessage = Template.bind({});
 PasswordFieldWithSuffixIconAndHintMessage.args = {
     label: 'Label',
     type: 'password',
+    has_password_meter: true,
     hint_text: {
         success: '',
         error: '',
@@ -571,6 +589,7 @@ export const PasswordFieldWithSuffixIconAndCharacterLimit = Template.bind({});
 PasswordFieldWithSuffixIconAndCharacterLimit.args = {
     label: 'Label',
     type: 'password',
+    has_password_meter: true,
     hint_text: {
         success: '',
         error: '',
@@ -588,6 +607,7 @@ DisabledPasswordTextField.args = {
     value: 'verylongpassword',
     label: 'Label',
     type: 'password',
+    has_password_meter: true,
     hint_text: {
         success: '',
         error: '',
@@ -641,6 +661,20 @@ export const LabellessTextFieldWithoutBorder = Template.bind({});
 LabellessTextFieldWithoutBorder.args = {
     is_borderless: true,
     placeholder: 'Search',
+    type: 'text',
+    inline_prefix_element: <img src={LocationPin} alt="location-icon" />,
+    inline_suffix_element: <img src={LocationPin} alt="location-icon" />,
+    disabled: false,
+    dark: false,
+    readOnly: false,
+};
+
+export const LabellessTextFieldWithoutBorderAndCurrencySuffix = Template.bind({});
+LabellessTextFieldWithoutBorderAndCurrencySuffix.args = {
+    is_borderless: true,
+    value: 10,
+    align_value: 'center',
+    currency_suffix_element: 'USD',
     type: 'text',
     inline_prefix_element: <img src={LocationPin} alt="location-icon" />,
     inline_suffix_element: <img src={LocationPin} alt="location-icon" />,

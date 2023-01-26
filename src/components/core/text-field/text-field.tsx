@@ -19,8 +19,10 @@ type TAlignValue = 'left' | 'center' | 'right';
 export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {
     align_value?: TAlignValue;
     button_label?: string;
+    currency_suffix_element?: string;
     dark?: boolean;
     default_badges: TBadge[];
+    has_password_meter?: boolean;
     hint_text?: THintTextProps;
     inline_prefix_element?: ReactNode;
     inline_suffix_element?: ReactNode;
@@ -393,9 +395,11 @@ const SupportingInfoSection = styled('div', {
         dark: { true: {} },
         active: { true: {} },
         enabled: { true: {} },
+        disabled: { true: {} },
         readonly: { true: { color: '$greyLight600' } },
         prefix: { true: { paddingLeft: '0.5rem', display: 'flex' } },
         suffix: { true: { paddingRight: '1rem', display: 'flex' } },
+        currency_suffix: { true: { paddingRight: '0.5rem', display: 'flex', color: '$greyLight700' } },
         is_labelless: {
             true: {
                 paddingRight: '0.5rem',
@@ -470,6 +474,35 @@ const SupportingInfoSection = styled('div', {
             suffix: true,
             css: {
                 color: '$greyDark100',
+            },
+        },
+        {
+            currency_suffix: true,
+            disabled: true,
+            css: {
+                color: '$greyLight500',
+            },
+        },
+        {
+            dark: true,
+            currency_suffix: true,
+            css: {
+                color: '$greyDark100',
+            },
+        },
+        {
+            dark: true,
+            currency_suffix: true,
+            css: {
+                color: '$greyDark100',
+            },
+        },
+        {
+            dark: true,
+            currency_suffix: true,
+            disabled: true,
+            css: {
+                color: '$greydark300',
             },
         },
     ],
@@ -635,8 +668,10 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
         {
             align_value = 'left',
             button_label,
+            currency_suffix_element,
             dark,
             default_badges,
+            has_password_meter = false,
             hint_text,
             id,
             inline_prefix_element,
@@ -849,6 +884,16 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                     onKeyDown={onKeyDownHandler}
                                     onKeyUp={onKeyUpHandler}
                                 />
+                                {currency_suffix_element && (
+                                    <SupportingInfoSection
+                                        dark={dark}
+                                        disabled={Boolean(props.disabled)}
+                                        readonly={Boolean(props.readOnly)}
+                                        currency_suffix
+                                    >
+                                        {currency_suffix_element}
+                                    </SupportingInfoSection>
+                                )}
                                 {inline_suffix_element && (
                                     <SupportingInfoSection
                                         active={is_active}
@@ -888,7 +933,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                             </LabelSection>
                         )}
                     </InputFieldSection>
-                    {type === 'password' && (
+                    {type === 'password' && has_password_meter && (
                         <PasswordStrengthMeter
                             dark={Boolean(dark)}
                             user_input={value.toString()}
