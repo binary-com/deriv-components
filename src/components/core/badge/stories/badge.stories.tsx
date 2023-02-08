@@ -1,3 +1,4 @@
+import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import Badge from '../badge';
 import CheckIconSVG from '@assets/svg/circular-check-icon.svg';
@@ -34,63 +35,31 @@ export default {
             },
             defaultValue: 'icon-and-label',
         },
-        prefixIconOnClickHandler: {
-            table: {
-                disable: true,
-            },
+        prefix_icon: {
+            description: 'Displays the provided prefix icon',
         },
-        suffixIconOnClickHandler: {
-            table: {
-                disable: true,
-            },
-        },
-        prefix_icon_src: {
-            table: {
-                disable: true,
-            },
-        },
-        suffix_icon_src: {
-            table: {
-                disable: true,
-            },
-        },
-        prefix_icon_class: {
-            table: {
-                disable: true,
-            },
-        },
-        suffix_icon_class: {
-            table: {
-                disable: true,
-            },
-        },
-        prefix_icon_alt: {
-            table: {
-                disable: true,
-            },
-        },
-        suffix_icon_alt: {
-            table: {
-                disable: true,
-            },
+        suffix_icon: {
+            description: 'Displays the provided suffix icon',
         },
     },
 } as ComponentMeta<typeof Badge>;
 
-const Template: ComponentStory<typeof Badge> = (args) => <Badge prefix_icon_src={CheckIconSVG} {...args} />;
+const Template: ComponentStory<typeof Badge> = (args) => (
+    <Badge prefix_icon={<img alt={'check-icon'} src={CheckIconSVG} />} {...args} />
+);
 
 export const Primary = Template.bind({});
 Primary.args = {};
 
 export const IconLabelIcon = Template.bind({});
 IconLabelIcon.args = {
-    suffix_icon_src: CheckIconSVG,
+    suffix_icon: <img alt={'check-icon'} src={CheckIconSVG} />,
     visiblity: 'icon-and-label-and-icon',
 };
 
 export const LabelIcon = Template.bind({});
 LabelIcon.args = {
-    suffix_icon_src: CheckIconSVG,
+    suffix_icon: <img alt={'check-icon'} src={CheckIconSVG} />,
     visiblity: 'label-and-icon',
 };
 

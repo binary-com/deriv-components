@@ -661,6 +661,13 @@ const InputField = styled('input', {
     ],
 });
 
+/* 
+    CloseIcon - Icon to close the badge
+*/
+const CloseIcon = styled('img', {
+    cursor: 'pointer',
+});
+
 const getTextWidth = createCanvas();
 
 const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldProps>(
@@ -856,10 +863,13 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                         return (
                                             <Badge
                                                 key={badge.id}
-                                                id={badge.id}
-                                                suffix_icon_src={CircularCloseIcon}
-                                                suffix_icon_alt="close-icon"
-                                                suffixIconOnClickHandler={onIconBadgeClickHandler}
+                                                suffix_icon={
+                                                    <CloseIcon
+                                                        alt={'close-icon'}
+                                                        onClick={(e) => onIconBadgeClickHandler(e, badge.id)}
+                                                        src={CircularCloseIcon}
+                                                    />
+                                                }
                                                 visiblity="label-and-icon"
                                             >
                                                 {badge.label}

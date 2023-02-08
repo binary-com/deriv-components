@@ -1,5 +1,4 @@
-import React from 'react';
-import classNames from 'classnames';
+import React, { ReactNode } from 'react';
 import { forwardRef, HTMLAttributes } from 'react';
 import { styled } from 'Styles/stitches.config';
 
@@ -9,15 +8,8 @@ type TVisiblity = 'icon-only' | 'label-only' | 'icon-and-label' | 'label-and-ico
 type TLabel = 'bold' | 'regular';
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-    id?: string;
-    prefix_icon_src?: string;
-    suffix_icon_src?: string;
-    prefix_icon_class?: string;
-    suffix_icon_class?: string;
-    prefix_icon_alt?: string;
-    suffix_icon_alt?: string;
-    prefixIconOnClickHandler?: (e: React.MouseEvent<HTMLImageElement>, id?: string) => void;
-    suffixIconOnClickHandler?: (e: React.MouseEvent<HTMLImageElement>, id?: string) => void;
+    prefix_icon?: ReactNode;
+    suffix_icon?: ReactNode;
     size?: TBadgeSize;
     spacing?: TBadgeSpacing;
     visiblity?: TVisiblity;
@@ -31,9 +23,7 @@ const BadgeContainer = styled('span', {
     display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',
-    '& .badge--icon-pointer': {
-        cursor: 'pointer',
-    },
+
     variants: {
         visiblity: {
             'icon-only': {
@@ -70,11 +60,10 @@ const BadgeContainer = styled('span', {
                 minHeight: '24px',
                 fontSize: '$4xs',
                 '@mobile': {
-                    //refactor
-                    '& .badge--prefix-icon': {
+                    '& .badge--prefix-icon img': {
                         height: '8px',
                     },
-                    '& .badge--suffix-icon': {
+                    '& .badge--suffix-icon img': {
                         height: '8px',
                     },
                     minHeight: '20px',
@@ -182,23 +171,22 @@ const BadgeContainer = styled('span', {
     },
 });
 
+const IconWrapper = styled('div', {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+});
+
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     (
         {
-            id,
-            prefix_icon_src,
-            suffix_icon_src,
-            prefix_icon_class,
-            suffix_icon_class,
-            prefixIconOnClickHandler,
-            suffixIconOnClickHandler,
+            prefix_icon,
+            suffix_icon,
             children,
             size = 'small',
             spacing = 'loose',
             visiblity = 'icon-and-label',
             label = 'regular',
-            prefix_icon_alt = 'Badge Icon',
-            suffix_icon_alt = 'Badge Icon',
         },
         ref,
     ) => {
@@ -213,27 +201,9 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
 
         return (
             <BadgeContainer ref={ref} size={size} padding={spacing} label={label} visiblity={visiblity}>
-                {has_prefix_icon && prefix_icon_src && (
-                    <img
-                        src={prefix_icon_src}
-                        alt={prefix_icon_alt}
-                        className={classNames(prefix_icon_class, 'badge--prefix-icon', {
-                            'badge--icon-pointer': !!suffixIconOnClickHandler,
-                        })}
-                        onClick={(e) => prefixIconOnClickHandler?.(e, id)}
-                    />
-                )}
+                {has_prefix_icon && <IconWrapper className="badge--prefix-icon">{prefix_icon}</IconWrapper>}
                 {has_label && children}
-                {has_suffix_icon && suffix_icon_src && (
-                    <img
-                        src={suffix_icon_src}
-                        alt={suffix_icon_alt}
-                        className={classNames(suffix_icon_class, 'badge--suffix-icon', {
-                            'badge--icon-pointer': !!suffixIconOnClickHandler,
-                        })}
-                        onClick={(e) => suffixIconOnClickHandler?.(e, id)}
-                    />
-                )}
+                {has_suffix_icon && <IconWrapper className="badge--suffix-icon">{suffix_icon}</IconWrapper>}
             </BadgeContainer>
         );
     },
