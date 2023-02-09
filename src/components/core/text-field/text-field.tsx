@@ -47,6 +47,8 @@ export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextArea
 const StyledPasswordMeterWrapper = styled('div', {
     height: '0.25rem',
     width: '100%',
+    borderBottomLeftRadius: '3px',
+    borderBottomRightRadius: '3px',
 
     variants: {
         dark: {
@@ -56,6 +58,8 @@ const StyledPasswordMeterWrapper = styled('div', {
     },
 });
 const StyledPasswordMeter = styled(StyledPasswordMeterWrapper, {
+    borderBottomLeftRadius: '3px',
+    borderBottomRightRadius: '3px',
     transition: 'width 0.25s ease-in-out',
 });
 const PasswordStrengthMeter = ({ user_input, disable_meter, dark }: TPasswordStrengthProps) => {
@@ -866,6 +870,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                                 suffix_icon={
                                                     <CloseIcon
                                                         alt={'close-icon'}
+                                                        height="100%"
                                                         onClick={(e) => onIconBadgeClickHandler(e, badge.id)}
                                                         src={CircularCloseIcon}
                                                     />

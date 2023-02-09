@@ -27,30 +27,30 @@ const BadgeContainer = styled('span', {
     variants: {
         visiblity: {
             'icon-only': {
-                '& .badge--prefix-icon': {
+                '& .badge--prefix-icon-container': {
                     paddingRight: '0px',
                 },
             },
             'label-only': {
-                '& .badge--prefix-icon': {
+                '& .badge--prefix-icon-container': {
                     paddingRight: '0px',
                 },
             },
             'icon-and-label': {
-                '& .badge--prefix-icon': {
+                '& .badge--prefix-icon-container': {
                     paddingRight: '4px',
                 },
             },
             'label-and-icon': {
-                '& .badge--suffix-icon': {
+                '& .badge--suffix-icon-container': {
                     paddingLeft: '4px',
                 },
             },
             'icon-and-label-and-icon': {
-                '& .badge--prefix-icon': {
+                '& .badge--prefix-icon-container': {
                     paddingRight: '4px',
                 },
-                '& .badge--suffix-icon': {
+                '& .badge--suffix-icon-container': {
                     paddingLeft: '4px',
                 },
             },
@@ -60,10 +60,10 @@ const BadgeContainer = styled('span', {
                 minHeight: '24px',
                 fontSize: '$4xs',
                 '@mobile': {
-                    '& .badge--prefix-icon img': {
+                    '& .badge--prefix-icon-container': {
                         height: '8px',
                     },
-                    '& .badge--suffix-icon img': {
+                    '& .badge--suffix-icon-container': {
                         height: '8px',
                     },
                     minHeight: '20px',
@@ -109,7 +109,7 @@ const BadgeContainer = styled('span', {
             padding: 'tight',
             visiblity: 'icon-and-label',
             css: {
-                '& .badge--prefix-icon': {
+                '& .badge--prefix-icon-container': {
                     paddingRight: '4px',
                 },
             },
@@ -118,7 +118,7 @@ const BadgeContainer = styled('span', {
             padding: 'tight',
             visiblity: 'label-only',
             css: {
-                '& .badge--prefix-icon': {
+                '& .badge--prefix-icon-container': {
                     paddingRight: '4px',
                 },
             },
@@ -127,7 +127,7 @@ const BadgeContainer = styled('span', {
             padding: 'loose',
             visiblity: 'icon-and-label',
             css: {
-                '& .badge--prefix-icon': {
+                '& .badge--prefix-icon-container': {
                     paddingRight: '8px',
                 },
             },
@@ -136,7 +136,7 @@ const BadgeContainer = styled('span', {
             padding: 'loose',
             visiblity: 'label-only',
             css: {
-                '& .badge--prefix-icon': {
+                '& .badge--prefix-icon-container': {
                     paddingRight: '8px',
                 },
             },
@@ -145,7 +145,7 @@ const BadgeContainer = styled('span', {
             padding: 'loose',
             visiblity: 'label-and-icon',
             css: {
-                '& .badge--suffix-icon': {
+                '& .badge--suffix-icon-container': {
                     paddingLeft: '8px',
                 },
             },
@@ -154,10 +154,10 @@ const BadgeContainer = styled('span', {
             padding: 'loose',
             visiblity: 'icon-and-label-and-icon',
             css: {
-                '& .badge--prefix-icon': {
+                '& .badge--prefix-icon-container': {
                     paddingRight: '8px',
                 },
-                '& .badge--suffix-icon': {
+                '& .badge--suffix-icon-container': {
                     paddingLeft: '8px',
                 },
             },
@@ -171,7 +171,7 @@ const BadgeContainer = styled('span', {
     },
 });
 
-const IconWrapper = styled('div', {
+const IconContainer = styled('div', {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -201,9 +201,13 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
 
         return (
             <BadgeContainer ref={ref} size={size} padding={spacing} label={label} visiblity={visiblity}>
-                {has_prefix_icon && <IconWrapper className="badge--prefix-icon">{prefix_icon}</IconWrapper>}
+                {has_prefix_icon && (
+                    <IconContainer className="badge--prefix-icon-container">{prefix_icon}</IconContainer>
+                )}
                 {has_label && children}
-                {has_suffix_icon && <IconWrapper className="badge--suffix-icon">{suffix_icon}</IconWrapper>}
+                {has_suffix_icon && (
+                    <IconContainer className="badge--suffix-icon-container">{suffix_icon}</IconContainer>
+                )}
             </BadgeContainer>
         );
     },
