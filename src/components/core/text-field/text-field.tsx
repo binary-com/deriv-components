@@ -21,7 +21,7 @@ export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextArea
     button_label?: string;
     currency_suffix_element?: string;
     dark?: boolean;
-    default_badges: TBadge[];
+    default_badges?: TBadge[];
     has_password_meter?: boolean;
     hint_text?: THintTextProps;
     inline_prefix_element?: ReactNode;
