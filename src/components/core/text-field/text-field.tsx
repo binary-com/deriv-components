@@ -34,7 +34,7 @@ export type TextFieldProps = InputHTMLAttributes<HTMLInputElement | HTMLTextArea
     suffix_style?: { [key: string]: string };
     type?: InputTypes;
     with_badges?: boolean;
-    onBadges?: (badges: TBadge[]) => void;
+    onAddBadges?: (badges: TBadge[]) => void;
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
     onButtonClickHandler?: () => void;
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
@@ -695,7 +695,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
             suffix_style,
             type,
             with_badges,
-            onBadges,
+            onAddBadges,
             onButtonClickHandler,
             ...props
         },
@@ -715,7 +715,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
         const has_helper_section = Boolean(error) || Boolean(hint) || Boolean(success) || Boolean(max_length);
 
         React.useEffect(() => {
-            onBadges?.(badges);
+            onAddBadges?.(badges);
         }, [badges]);
 
         React.useEffect(() => {
