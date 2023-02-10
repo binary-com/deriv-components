@@ -875,7 +875,7 @@ const TextField = forwardRef<HTMLInputElement & HTMLTextAreaElement, TextFieldPr
                                                         src={CircularCloseIcon}
                                                     />
                                                 }
-                                                visiblity="label-and-icon"
+                                                visibility="label-and-icon"
                                             >
                                                 {badge.label}
                                             </Badge>

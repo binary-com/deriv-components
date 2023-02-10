@@ -12,7 +12,7 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
     suffix_icon?: ReactNode;
     size?: TBadgeSize;
     spacing?: TBadgeSpacing;
-    visiblity?: TVisiblity;
+    visibility?: TVisiblity;
     label?: TLabel;
 }
 
@@ -25,7 +25,7 @@ const BadgeContainer = styled('span', {
     alignItems: 'center',
 
     variants: {
-        visiblity: {
+        visibility: {
             'icon-only': {
                 '& .badge--prefix-icon-container': {
                     paddingRight: '0px',
@@ -107,7 +107,7 @@ const BadgeContainer = styled('span', {
     compoundVariants: [
         {
             padding: 'tight',
-            visiblity: 'icon-and-label',
+            visibility: 'icon-and-label',
             css: {
                 '& .badge--prefix-icon-container': {
                     paddingRight: '4px',
@@ -116,7 +116,7 @@ const BadgeContainer = styled('span', {
         },
         {
             padding: 'tight',
-            visiblity: 'label-only',
+            visibility: 'label-only',
             css: {
                 '& .badge--prefix-icon-container': {
                     paddingRight: '4px',
@@ -125,7 +125,7 @@ const BadgeContainer = styled('span', {
         },
         {
             padding: 'loose',
-            visiblity: 'icon-and-label',
+            visibility: 'icon-and-label',
             css: {
                 '& .badge--prefix-icon-container': {
                     paddingRight: '8px',
@@ -134,7 +134,7 @@ const BadgeContainer = styled('span', {
         },
         {
             padding: 'loose',
-            visiblity: 'label-only',
+            visibility: 'label-only',
             css: {
                 '& .badge--prefix-icon-container': {
                     paddingRight: '8px',
@@ -143,7 +143,7 @@ const BadgeContainer = styled('span', {
         },
         {
             padding: 'loose',
-            visiblity: 'label-and-icon',
+            visibility: 'label-and-icon',
             css: {
                 '& .badge--suffix-icon-container': {
                     paddingLeft: '8px',
@@ -152,7 +152,7 @@ const BadgeContainer = styled('span', {
         },
         {
             padding: 'loose',
-            visiblity: 'icon-and-label-and-icon',
+            visibility: 'icon-and-label-and-icon',
             css: {
                 '& .badge--prefix-icon-container': {
                     paddingRight: '8px',
@@ -167,7 +167,7 @@ const BadgeContainer = styled('span', {
         size: 'small',
         padding: 'loose',
         label: 'regular',
-        visiblity: 'icon-and-label',
+        visibility: 'icon-and-label',
     },
 });
 
@@ -185,22 +185,19 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
             children,
             size = 'small',
             spacing = 'loose',
-            visiblity = 'icon-and-label',
+            visibility = 'icon-and-label',
             label = 'regular',
         },
         ref,
     ) => {
-        const has_prefix_icon =
-            visiblity === 'icon-and-label' || visiblity === 'icon-only' || visiblity === 'icon-and-label-and-icon';
-        const has_suffix_icon = visiblity === 'label-and-icon' || visiblity === 'icon-and-label-and-icon';
-        const has_label =
-            visiblity === 'icon-and-label' ||
-            visiblity === 'label-only' ||
-            visiblity === 'label-and-icon' ||
-            visiblity === 'icon-and-label-and-icon';
+        const has_prefix_icon = ['icon-and-label', 'icon-only', 'icon-and-label-and-icon'].includes(visibility);
+        const has_suffix_icon = ['label-and-icon', 'icon-and-label-and-icon'].includes(visibility);
+        const has_label = ['icon-and-label', 'label-only', 'label-and-icon', 'icon-and-label-and-icon'].includes(
+            visibility,
+        );
 
         return (
-            <BadgeContainer ref={ref} size={size} padding={spacing} label={label} visiblity={visiblity}>
+            <BadgeContainer ref={ref} size={size} padding={spacing} label={label} visibility={visibility}>
                 {has_prefix_icon && (
                     <IconContainer className="badge--prefix-icon-container">{prefix_icon}</IconContainer>
                 )}

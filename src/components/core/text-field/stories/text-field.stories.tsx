@@ -1,9 +1,6 @@
 import React from 'react';
 import type { Meta, Story } from '@storybook/react';
 import LocationPin from '@assets/svg/location-pin.svg';
-// import MinusLight from '@assets/svg/minus-light.svg';
-// import PlusLight from '@assets/svg/plus-light.svg';
-// import Button from '@core/button/button';
 import type { TextFieldProps } from '../text-field';
 import TextField from '../text-field';
 

@@ -27,7 +27,7 @@ export default {
             control: { type: 'radio', options: ['regular', 'bold'] },
             defaultValue: 'regular',
         },
-        visiblity: {
+        visibility: {
             description: 'controls which parts of the badge component should be visible',
             control: {
                 type: 'radio',
@@ -54,23 +54,23 @@ Primary.args = {};
 export const IconLabelIcon = Template.bind({});
 IconLabelIcon.args = {
     suffix_icon: <img alt={'check-icon'} src={CheckIconSVG} />,
-    visiblity: 'icon-and-label-and-icon',
+    visibility: 'icon-and-label-and-icon',
 };
 
 export const LabelIcon = Template.bind({});
 LabelIcon.args = {
     suffix_icon: <img alt={'check-icon'} src={CheckIconSVG} />,
-    visiblity: 'label-and-icon',
+    visibility: 'label-and-icon',
 };
 
 export const IconOnly = Template.bind({});
 IconOnly.args = {
-    visiblity: 'icon-only',
+    visibility: 'icon-only',
 };
 
 export const LabelOnly = Template.bind({});
 LabelOnly.args = {
-    visiblity: 'label-only',
+    visibility: 'label-only',
 };
 
 export const LongText = Template.bind({});
