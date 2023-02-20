@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import useTheme from '@core/theme-context/use-theme';
 import type * as Stitches from '@stitches/react';
 import React, { HtmlHTMLAttributes } from 'react';
