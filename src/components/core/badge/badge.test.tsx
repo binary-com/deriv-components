@@ -1,3 +1,4 @@
+import React from 'react';
 import { render } from 'test-setup';
 import Badge from './badge';
 import CheckIconSVG from '@assets/svg/circular-check-icon.svg';
@@ -10,7 +11,7 @@ describe('Badge Component', () => {
 
     it('Should render both icon and label', () => {
         const { container } = render(
-            <Badge visiblity="icon-and-label" icon_src={CheckIconSVG}>
+            <Badge visibility="icon-and-label" prefix_icon={<img alt={'check-icon'} src={CheckIconSVG} />}>
                 Badge Text Content
             </Badge>,
         );
@@ -21,7 +22,7 @@ describe('Badge Component', () => {
 
     it('Should render only the label', () => {
         const { container } = render(
-            <Badge visiblity="label-only" icon_src={CheckIconSVG}>
+            <Badge visibility="label-only" prefix_icon={<img alt={'check-icon'} src={CheckIconSVG} />}>
                 Badge Text Content
             </Badge>,
         );
@@ -32,7 +33,7 @@ describe('Badge Component', () => {
 
     it('Should render only the icon', () => {
         const { container } = render(
-            <Badge visiblity="icon-only" icon_src={CheckIconSVG}>
+            <Badge visibility="icon-only" prefix_icon={<img alt={'check-icon'} src={CheckIconSVG} />}>
                 Badge Text Content
             </Badge>,
         );
