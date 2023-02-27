@@ -23,7 +23,7 @@ type TDropdownList = {
     list_size: 'small' | 'medium' | 'large';
     onItemSelection: (item: TListItem) => void;
     setActiveIndex: (index: null | number) => void;
-    value: string;
+    value: string | number | null;
 };
 
 /* 
@@ -72,9 +72,9 @@ const List = styled('div', {
     },
 });
 
-type TRef = {
-    clientHeight?: number;
-    offsetTop?: number;
+export type TRef = {
+    listClientHeight?: number;
+    itemOffsetTop?: number;
     scrollTo:
         | {
               (options?: ScrollToOptions | undefined): void;
@@ -110,8 +110,8 @@ const DropdownList = React.forwardRef<TRef, TDropdownList>(
             ref,
             () => {
                 return {
-                    clientHeight: dropdown_list_ref.current?.clientHeight,
-                    offsetTop: list_item_ref.current?.offsetTop,
+                    listClientHeight: dropdown_list_ref.current?.clientHeight,
+                    itemOffsetTop: list_item_ref.current?.offsetTop,
                     scrollTo: dropdown_list_ref.current?.scrollTo.bind(dropdown_list_ref.current),
                     getBoundingClientRectOfDropdownList: dropdown_list_ref.current?.getBoundingClientRect.bind(
                         dropdown_list_ref.current,

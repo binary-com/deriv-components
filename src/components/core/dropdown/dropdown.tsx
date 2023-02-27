@@ -12,15 +12,17 @@ import { styled } from 'Styles/stitches.config';
 const KEY_CODE = {
     ENTER: 13,
     ESCAPE: 27,
-    TAB: 9,
     KEYDOWN: 40,
     KEYUP: 38,
     SPACE: 32,
+    TAB: 9,
 };
 
 const HintText = ({ children }: { children: React.ReactNode }) => <div>{children}</div>;
 
 type THintTextProps = { error: string; hint: string };
+
+type TDirection = 'up' | 'down';
 
 type TListSize = 'small' | 'medium' | 'large';
 
@@ -305,11 +307,11 @@ const Dropdown = ({
     value,
     list_size = 'small',
 }: TDropdown) => {
-    const container_ref = React.useRef<HTMLDivElement>(null);
+    const direction_ref = React.useRef<string>('');
+    const dropdown_container_ref = React.useRef<HTMLDivElement>(null);
     const dropdown_list_ref = React.useRef<TRef>(null);
     const input_ref = React.useRef<HTMLInputElement>(null);
-    const move_ref = React.useRef<boolean>();
-    const enabled_item_index = React.useRef(0);
+    const last_selected_index = React.useRef<number | null>(null);
 
     const [active_index, setActiveIndex] = React.useState<number | null>(null);
     const [filtered_items, setFilteredItems] = React.useState(list);
@@ -317,7 +319,7 @@ const Dropdown = ({
     const [is_active, setIsActive] = React.useState(false);
     const [is_enabled, setIsEnabled] = React.useState(false);
     const [is_list_visible, setIsListVisible] = React.useState(false);
-    const [selected_item, setSelectedItem] = React.useState('');
+    const [selected_item, setSelectedItem] = React.useState<string | number | null>(null);
     const [should_focus_input, setShouldFocusInput] = React.useState(false);
 
     const is_all_items_disabled = React.useMemo(() => {
@@ -326,16 +328,19 @@ const Dropdown = ({
         return is_disabled;
     }, [filtered_items]);
 
-    const list_with_enabled_items = React.useMemo(() => {
-        return filtered_items.reduce<number[]>((acc, el, idx) => {
-            if (!el.disabled) acc.push(idx);
-            return acc;
-        }, []);
-    }, [filtered_items]);
+    const array_with_enabled_indexes = React.useMemo(
+        () =>
+            filtered_items.reduce<number[]>((acc, el, idx) => {
+                if (!el.disabled) acc.push(idx);
+                return acc;
+            }, []),
+        [filtered_items],
+    );
 
     const { error, hint } = hint_text ?? {};
     const has_helper_section = Boolean(error) || Boolean(hint);
 
+    // Focuses on input field when the user tries to select disabled value
     React.useEffect(() => {
         if (should_focus_input) {
             input_ref.current?.focus();
@@ -347,21 +352,25 @@ const Dropdown = ({
     React.useEffect(() => {
         if (is_list_visible && dropdown_list_ref.current) {
             const item_height = dropdown_list_ref.current.getBoundingClientRectOfListItem?.().height;
+            const item_top = dropdown_list_ref.current.getBoundingClientRectOfListItem?.().top;
+            const item_offset_top = dropdown_list_ref.current.itemOffsetTop;
 
-            const item_top = move_ref.current
-                ? Math.floor(dropdown_list_ref.current.getBoundingClientRectOfListItem?.().top) +
-                  item_height +
-                  item_height / 2
-                : Math.floor(dropdown_list_ref.current.getBoundingClientRectOfListItem?.().top) - item_height / 2;
-            const list_height = dropdown_list_ref.current.clientHeight;
-            if (!isListItemWithinView(item_top) && list_height) {
-                if (move_ref.current) {
+            if (!item_height || !item_top || !item_offset_top) return;
+
+            const item_top_full =
+                direction_ref.current === 'down'
+                    ? Math.floor(item_top) + item_height + item_height / 2
+                    : Math.floor(item_top) - item_height / 2;
+
+            const list_height = dropdown_list_ref.current.listClientHeight;
+
+            if (!isListItemWithinView(item_top_full) && list_height) {
+                if (direction_ref.current === 'down') {
                     const items_above = list_height / item_height - 1;
-                    const bottom_of_list = dropdown_list_ref.current.offsetTop - items_above * item_height;
+                    const bottom_of_list = item_offset_top - items_above * item_height;
                     dropdown_list_ref.current.scrollTo?.({ top: bottom_of_list, behavior: 'smooth' });
                 } else {
-                    const top_of_list = dropdown_list_ref.current.offsetTop;
-                    dropdown_list_ref.current.scrollTo?.({ top: top_of_list, behavior: 'smooth' });
+                    dropdown_list_ref.current.scrollTo?.({ top: item_offset_top, behavior: 'smooth' });
                 }
             }
         }
@@ -370,8 +379,8 @@ const Dropdown = ({
     // Shows selected item when the user uncollapsed the list (when item is not in visible area)
     React.useEffect(() => {
         if (is_list_visible && dropdown_list_ref.current) {
-            const item = dropdown_list_ref.current.offsetTop;
-            dropdown_list_ref.current.scrollTo?.({ top: item, behavior: 'smooth' });
+            const item_offset_top = dropdown_list_ref.current.itemOffsetTop;
+            dropdown_list_ref.current.scrollTo?.({ top: item_offset_top, behavior: 'smooth' });
         }
     }, [is_list_visible]);
 
@@ -380,22 +389,24 @@ const Dropdown = ({
         setIsActive(false);
         // Boolean(input_value || value) && setIsEnabled(true);
         setFilteredItems(list);
+        if (active_index === null) {
+            setInputValue('');
+            onItemSelection?.({ value: '', text: '' });
+        }
 
         onBlurHandler?.();
     };
 
-    useOnClickOutside(container_ref, onClickOutSide);
+    useOnClickOutside(dropdown_container_ref, onClickOutSide);
 
     const isListItemWithinView = (item_top: number) => {
-        let wrapper_top = 0,
-            wrapper_bottom = 0;
+        const list_top = dropdown_list_ref.current?.getBoundingClientRectOfDropdownList?.().top;
+        const list_height = dropdown_list_ref.current?.listClientHeight;
 
-        if (dropdown_list_ref.current) {
-            const list_height = dropdown_list_ref.current.clientHeight;
-            wrapper_top = Math.floor(dropdown_list_ref.current.getBoundingClientRectOfDropdownList?.().top);
-            wrapper_bottom =
-                Math.floor(dropdown_list_ref.current.getBoundingClientRectOfDropdownList?.().top) + list_height;
-        }
+        if (!list_top || !list_height) return;
+
+        const wrapper_top = Math.floor(list_top);
+        const wrapper_bottom = Math.floor(list_top) + list_height;
 
         if (item_top >= wrapper_bottom) return false;
         return item_top > wrapper_top;
@@ -412,8 +423,8 @@ const Dropdown = ({
         const new_filtered_items = getFilteredItems(text, list);
         setFilteredItems(new_filtered_items);
 
-        enabled_item_index.current = 0;
         setActiveIndex(null);
+        last_selected_index.current = null;
     };
 
     const handleVisibility = () => {
@@ -443,15 +454,18 @@ const Dropdown = ({
                 break;
             case KEY_CODE.ESCAPE:
                 e.preventDefault();
-                if (is_list_visible) setIsListVisible(false);
+                if (is_list_visible) {
+                    setIsListVisible(false);
+                    last_selected_index.current = active_index;
+                }
                 break;
             case KEY_CODE.KEYDOWN:
                 if (!is_list_visible) setIsListVisible(true);
-                if (!is_all_items_disabled) setActiveDown();
+                if (!is_all_items_disabled) setActiveDirection('down');
                 break;
             case KEY_CODE.KEYUP:
                 if (!is_list_visible) setIsListVisible(true);
-                if (!is_all_items_disabled) setActiveUp();
+                if (!is_all_items_disabled) setActiveDirection('up');
                 break;
             default:
                 if (dropdown_type === 'combobox' && !is_list_visible) setIsListVisible(true);
@@ -468,57 +482,39 @@ const Dropdown = ({
 
             const index = filtered_items.findIndex((el) => el.value === item_starting_with_char.value);
             setActiveIndex(index);
-            enabled_item_index.current = list_with_enabled_items.findIndex((el) => el === index);
         }
     };
 
-    const setActiveUp = () => {
-        if (list_with_enabled_items.length === 1 || active_index === null) {
-            setActiveIndex(list_with_enabled_items[0]);
+    const getNextEnabledIndex = React.useCallback(
+        (index: number, direction: TDirection) => {
+            if (direction === 'down') {
+                return array_with_enabled_indexes.find((el) => el > index) || array_with_enabled_indexes[0];
+            } else {
+                const reversed_array = [...array_with_enabled_indexes].reverse();
+                return reversed_array.find((el) => el < index) || reversed_array[0];
+            }
+        },
+        [array_with_enabled_indexes],
+    );
+
+    const is_only_one_item_enabled = React.useMemo(() => {
+        return filtered_items.filter((el) => !el.disabled).length === 1;
+    }, [filtered_items]);
+
+    const setActiveDirection = (direction: TDirection) => {
+        if (is_only_one_item_enabled || active_index === null) {
+            setActiveIndex(filtered_items.findIndex((el) => !el.disabled));
             return;
         }
 
-        if (!dropdown_list_ref.current && active_index !== null) {
-            setActiveIndex(active_index > filtered_items.length ? list_with_enabled_items[0] : active_index);
-        } else if (typeof active_index === 'number') {
-            const up = list_with_enabled_items[enabled_item_index.current - 1];
-            enabled_item_index.current -= 1;
-            const should_scroll_to_last = up === undefined || up < 0;
-
-            if (should_scroll_to_last) {
-                enabled_item_index.current = list_with_enabled_items.length - 1;
-                setActiveIndex(list_with_enabled_items[enabled_item_index.current]);
-            } else {
-                setActiveIndex(up);
-            }
-        }
-        move_ref.current = false;
-    };
-
-    console.log('dropdown_list_ref.current', dropdown_list_ref.current);
-
-    const setActiveDown = () => {
-        if (list_with_enabled_items.length === 1 || active_index === null) {
-            setActiveIndex(list_with_enabled_items[0]);
+        if (last_selected_index.current !== null) {
+            setActiveIndex(last_selected_index.current);
+            last_selected_index.current = null;
             return;
         }
 
-        if (!dropdown_list_ref.current && active_index !== null) {
-            enabled_item_index.current;
-            setActiveIndex(active_index > filtered_items.length ? list_with_enabled_items[0] : active_index);
-        } else if (typeof active_index === 'number') {
-            const down = list_with_enabled_items[enabled_item_index.current + 1];
-            enabled_item_index.current += 1;
-            const should_scroll_to_first = enabled_item_index.current >= list_with_enabled_items.length;
-
-            if (should_scroll_to_first) {
-                enabled_item_index.current = 0;
-                setActiveIndex(list_with_enabled_items[enabled_item_index.current]);
-            } else {
-                setActiveIndex(down);
-            }
-        }
-        move_ref.current = true;
+        setActiveIndex(getNextEnabledIndex(active_index, direction));
+        direction_ref.current = direction;
     };
 
     const generateHintText = () => {
@@ -543,28 +539,16 @@ const Dropdown = ({
             setShouldFocusInput(true);
             return;
         }
-        if (!item) return;
-
-        setInputValue(item.text);
 
         setIsListVisible(false);
-        setSelectedItem(item.text);
 
-        const active_index = list.findIndex((el) => item.text === el.text);
+        setInputValue(item.text);
+        setSelectedItem(item.value);
+
+        const active_index = list.findIndex((el) => item.value === el.value);
         setActiveIndex(active_index);
 
-        /*
-            We need to save current enabled_item_index to have right start point,
-            when the user opens list using click and starts move between the items using arrow keys.
-
-            If current_list_with_enabled_items < original_list_with_enabled_items we should save enabled_item_index properly
-            to avoid wrong swithcing between the items when the user opens list using arrows keys and starts move between the items
-        */
-
-        enabled_item_index.current =
-            list_with_enabled_items.length < list.filter((el) => !el.disabled).length
-                ? list.filter((el) => !el.disabled).findIndex((el) => el.value === item.value)
-                : list_with_enabled_items.findIndex((el) => el === active_index);
+        last_selected_index.current = active_index;
         setFilteredItems(list);
 
         if (typeof onItemSelection === 'function') {
@@ -573,7 +557,7 @@ const Dropdown = ({
     };
 
     return (
-        <DropdownContainer className={className} ref={container_ref}>
+        <DropdownContainer className={className} ref={dropdown_container_ref}>
             <DropdownWrapper
                 className={classNames({
                     nohover: is_active || Boolean(error),
@@ -610,11 +594,8 @@ const Dropdown = ({
                         <InputTextField
                             id="dropdown-input-field"
                             onInput={filterList}
-                            value={
-                                // This allows us to let control of value externally (from <Form/>) or internally if used without form
-                                typeof onItemSelection === 'function' ? value : input_value
-                            }
                             ref={input_ref}
+                            value={input_value}
                         />
                     )}
 

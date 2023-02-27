@@ -1,5 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
+import { TListItem } from '../types';
 import QuestionMarkIcon from '@assets/svg/question-mark-icon.svg';
 import Dropdown from '../dropdown';
 
@@ -20,21 +21,21 @@ export default {
 const TemplateWithoutValue: ComponentStory<typeof Dropdown> = (args) => {
     const [value, setValue] = React.useState('');
 
-    const onChange = ({ target }) => {
-        setValue(target.value);
+    const onItemSelection = (item: TListItem) => {
+        setValue(item.value);
     };
 
-    return <Dropdown {...args} value={value} onChange={onChange} />;
+    return <Dropdown {...args} value={value} onItemSelection={onItemSelection} />;
 };
 
 const TemplateWithValue: ComponentStory<typeof Dropdown> = (args) => {
     const [value, setValue] = React.useState('US Dollar');
 
-    const onChange = ({ target }) => {
-        setValue(target.value);
+    const onItemSelection = (item: TListItem) => {
+        setValue(item.value);
     };
 
-    return <Dropdown {...args} value={value} onChange={onChange} />;
+    return <Dropdown {...args} value={value} onItemSelection={onItemSelection} />;
 };
 
 const accounts_list_extended = [
@@ -81,7 +82,7 @@ const accounts_list_simple = [
     {
         text: 'US Dollar',
         value: 'US Dollar',
-        // disabled: true,
+        disabled: true,
     },
     {
         text: 'Litecoin',
@@ -134,19 +135,15 @@ const accounts_list_simple = [
         text: 'Anna',
         value: 'Anna',
     },
-    {
-        text: 'Dima',
-        value: 'Dima',
-    },
-    {
-        text: 'Andrew',
-        value: 'Andrew',
-        disabled: true,
-    },
-    {
-        text: 'Olga',
-        value: 'Olga',
-    },
+    // {
+    //     text: 'Dima',
+    //     value: 'Dima',
+    // },
+    // {
+    //     text: 'Andrew',
+    //     value: 'Andrew',
+    //     disabled: true,
+    // },
     // {
     //     text: 'Kate',
     //     value: 'Kate',
@@ -243,10 +240,10 @@ const accounts_list_simple = [
     //     text: 'George',
     //     value: 'George',
     // },
-    // {
-    //     text: 'Me',
-    //     value: 'Me',
-    // },
+    {
+        text: 'Me',
+        value: 'Me',
+    },
     // {
     //     text: 'Dima',
     //     value: 'Dima',
