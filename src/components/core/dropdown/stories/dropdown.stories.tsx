@@ -81,34 +81,204 @@ const accounts_list_simple = [
     {
         text: 'US Dollar',
         value: 'US Dollar',
+        // disabled: true,
     },
     {
         text: 'Litecoin',
         value: 'Litecoin',
-    },
-    {
-        text: 'USD Coin',
-        value: 'USD Coin',
         disabled: true,
     },
     {
         text: 'Tether Omni',
         value: 'Tether Omni',
+        // disabled: true,
     },
     {
         text: 'Bitcoin',
         value: 'Bitcoin',
+        // disabled: true,
     },
     {
         text: 'Etherium',
         value: 'Etherium',
+        disabled: true,
     },
+    {
+        text: 'Kate',
+        value: 'Kate',
+        disabled: true,
+    },
+    {
+        text: 'Peter',
+        value: 'Peter',
+        disabled: true,
+    },
+    {
+        text: 'George',
+        value: 'George',
+    },
+    {
+        text: 'Dima',
+        value: 'Dima',
+    },
+    {
+        text: 'Andrew',
+        value: 'Andrew',
+        // disabled: true,
+    },
+    {
+        text: 'Olga',
+        value: 'Olga',
+    },
+    {
+        text: 'Anna',
+        value: 'Anna',
+    },
+    {
+        text: 'Dima',
+        value: 'Dima',
+    },
+    {
+        text: 'Andrew',
+        value: 'Andrew',
+        disabled: true,
+    },
+    {
+        text: 'Olga',
+        value: 'Olga',
+    },
+    // {
+    //     text: 'Kate',
+    //     value: 'Kate',
+    // },
+    // {
+    //     text: 'Peter',
+    //     value: 'Peter',
+    // },
+    // {
+    //     text: 'George',
+    //     value: 'George',
+    // },
+    // {
+    //     text: 'Anna',
+    //     value: 'Anna',
+    // },
+    // {
+    //     text: 'Dima',
+    //     value: 'Dima',
+    // },
+    // {
+    //     text: 'Andrew',
+    //     value: 'Andrew',
+    // },
+    // {
+    //     text: 'Olga',
+    //     value: 'Olga',
+    // },
+    // {
+    //     text: 'Kate',
+    //     value: 'Kate',
+    // },
+    // {
+    //     text: 'Peter',
+    //     value: 'Peter',
+    // },
+    // {
+    //     text: 'George',
+    //     value: 'George',
+    // },
+    // {
+    //     text: 'Anna',
+    //     value: 'Anna',
+    // },
+    // {
+    //     text: 'Dima',
+    //     value: 'Dima',
+    // },
+    // {
+    //     text: 'Andrew',
+    //     value: 'Andrew',
+    // },
+    // {
+    //     text: 'Olga',
+    //     value: 'Olga',
+    // },
+    // {
+    //     text: 'Kate',
+    //     value: 'Kate',
+    // },
+    // {
+    //     text: 'Peter',
+    //     value: 'Peter',
+    // },
+    // {
+    //     text: 'George',
+    //     value: 'George',
+    // },
+    // {
+    //     text: 'Anna',
+    //     value: 'Anna',
+    // },
+    // {
+    //     text: 'Dima',
+    //     value: 'Dima',
+    // },
+    // {
+    //     text: 'Andrew',
+    //     value: 'Andrew',
+    // },
+    // {
+    //     text: 'Olga',
+    //     value: 'Olga',
+    // },
+    // {
+    //     text: 'Kate',
+    //     value: 'Kate',
+    // },
+    // {
+    //     text: 'Peter',
+    //     value: 'Peter',
+    // },
+    // {
+    //     text: 'George',
+    //     value: 'George',
+    // },
+    // {
+    //     text: 'Me',
+    //     value: 'Me',
+    // },
+    // {
+    //     text: 'Dima',
+    //     value: 'Dima',
+    // },
+    // {
+    //     text: 'Andrew',
+    //     value: 'Andrew',
+    // },
+    // {
+    //     text: 'Olga',
+    //     value: 'Olga',
+    // },
 ];
 
 export const DefaultDropdown = TemplateWithoutValue.bind({});
 DefaultDropdown.args = {
     dark: false,
     disabled: false,
+    dropdown_type: 'prompt',
+    hint_text: {
+        error: '',
+        hint: '',
+    },
+    label: 'Accounts',
+    list: accounts_list_simple,
+};
+
+export const DefaultDropdownCombo = TemplateWithoutValue.bind({});
+DefaultDropdownCombo.args = {
+    dark: false,
+    disabled: false,
+    dropdown_type: 'combobox',
     hint_text: {
         error: '',
         hint: '',

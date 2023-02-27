@@ -12,17 +12,7 @@ type TDisplayText = {
 };
 
 export const getDisplayText = (list: TListItem[], value?: string): Partial<TListItem> => {
-    const findItemInArray = (arr_list: TListItem[]) => arr_list.find((item) => item.value === value) || {};
-    let item = {};
-    if (Array.isArray(list)) {
-        item = findItemInArray(list);
-    } else {
-        Object.keys(list).some((key) => {
-            item = findItemInArray(list[key]);
-            return item;
-        });
-    }
-    return item;
+    return list.find((item) => item.value === value) || {};
 };
 
 /* 

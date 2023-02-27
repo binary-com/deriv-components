@@ -1,5 +1,5 @@
 import React from 'react';
-import Items from './items';
+import ListItems from './list-items';
 import { TListItem } from './types';
 import { styled } from 'Styles/stitches.config';
 import { CSSTransition } from 'react-transition-group';
@@ -12,17 +12,17 @@ const size = {
 };
 
 type TDropdownList = {
+    active_index: number | null;
     classNameItems?: string;
     dark: boolean;
-    handleSelect: (item: TListItem) => void;
     is_align_text_center: boolean;
     is_alignment_left: boolean;
     is_alignment_top: boolean;
     is_list_visible: boolean;
     list: TListItem[];
     list_size: 'small' | 'medium' | 'large';
-    nodes?: React.MutableRefObject<Map<string, React.MutableRefObject<HTMLDivElement>['current']>>;
-    onKeyPressed: (e: React.KeyboardEvent<HTMLDivElement>, item: TListItem) => void;
+    onItemSelection: (item: TListItem) => void;
+    setActiveIndex: (index: null | number) => void;
     value: string;
 };
 
@@ -30,16 +30,16 @@ type TDropdownList = {
     DropdownListContainer - This acts as a wrapper and styles list of items
 */
 const DropdownListContainer = styled('div', {
-    left: 0,
-    bottom: '-0.4rem',
-    height: 0,
-    width: '100%',
-    position: 'absolute',
+    // position: 'absolute',
+    marginTop: '4px',
+    borderRadius: '4px',
+    zIndex: 1,
+    boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.24)',
+    transformOrigin: 'top',
     transition: 'transform 0.25s ease, opacity 0.25s linear',
-    userSelect: 'none',
-    opacity: 0,
     transform: 'scale(1, 0)',
-    zIndex: 999,
+    cursor: 'pointer',
+    width: '100%',
 
     '&.list-enter, &.list-exit': {
         transform: 'scale(1, 0)',
@@ -72,87 +72,144 @@ const List = styled('div', {
     },
 });
 
-const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, list_ref) => {
-    const {
-        classNameItems,
-        dark,
-        handleSelect,
-        is_align_text_center,
-        is_alignment_left,
-        is_alignment_top,
-        is_list_visible,
-        list,
-        list_size,
-        nodes,
-        onKeyPressed,
-        value,
-    } = props;
+type TRef = {
+    clientHeight?: number;
+    offsetTop?: number;
+    scrollTo:
+        | {
+              (options?: ScrollToOptions | undefined): void;
+              (x: number, y: number): void;
+          }
+        | undefined;
+    getBoundingClientRectOfDropdownList?: () => DOMRect;
+    getBoundingClientRectOfListItem?: () => DOMRect;
+};
 
-    const [list_dimensions, setListDimensions] = React.useState([0, 0]);
+const DropdownList = React.forwardRef<TRef, TDropdownList>(
+    (
+        {
+            active_index,
+            classNameItems,
+            dark,
+            is_align_text_center,
+            is_alignment_left,
+            is_alignment_top,
+            is_list_visible,
+            list,
+            list_size,
+            value,
+            onItemSelection,
+            setActiveIndex,
+        },
+        ref,
+    ) => {
+        const dropdown_list_ref = React.useRef<HTMLDivElement>(null);
+        const list_item_ref = React.useRef<HTMLDivElement>(null);
 
-    /**
-     * Calculate the offset for the dropdown list based on its width
-     *
-     * @return {{transform: string}}
-     */
-    const computed_offset_left = () => {
-        return {
-            transform: `translate3d(calc(-${list_dimensions[0]}px - 12px), 0, 0px)`,
+        React.useImperativeHandle(
+            ref,
+            () => {
+                return {
+                    clientHeight: dropdown_list_ref.current?.clientHeight,
+                    offsetTop: list_item_ref.current?.offsetTop,
+                    scrollTo: dropdown_list_ref.current?.scrollTo.bind(dropdown_list_ref.current),
+                    getBoundingClientRectOfDropdownList: dropdown_list_ref.current?.getBoundingClientRect.bind(
+                        dropdown_list_ref.current,
+                    ),
+                    getBoundingClientRectOfListItem: list_item_ref.current?.getBoundingClientRect.bind(
+                        list_item_ref.current,
+                    ),
+                };
+            },
+            [is_list_visible, active_index],
+        );
+
+        const [list_dimensions, setListDimensions] = React.useState([0, 0]);
+
+        /**
+         * Calculate the offset for the dropdown list based on its width
+         *
+         * @return {{transform: string}}
+         */
+        const computed_offset_left = () => {
+            return {
+                transform: `translate3d(calc(-${list_dimensions[0]}px - 12px), 0, 0px)`,
+            };
         };
-    };
 
-    /**
-     * Calculate the offset for the dropdown list based on its height
-     *
-     * @return {{transform: string}}
-     */
-    const computed_offset_top = () => {
-        return {
-            transform: `translate3d(0, calc(-${list_dimensions[1]}px - 54px), 0px)`,
+        /**
+         * Calculate the offset for the dropdown list based on its height
+         *
+         * @return {{transform: string}}
+         */
+        const computed_offset_top = () => {
+            return {
+                transform: `translate3d(0, calc(-${list_dimensions[1]}px - 54px), 0px)`,
+            };
         };
-    };
 
-    // Upon render via css transition group, we use this as a callback to set the width/height of the dropdown list in the state
-    const setListDimension = () =>
-        setListDimensions([
-            (list_ref as React.MutableRefObject<HTMLDivElement>).current.offsetWidth,
-            (list_ref as React.MutableRefObject<HTMLDivElement>).current.offsetHeight,
-        ]);
+        // Upon render via css transition group, we use this as a callback to set the width/height of the dropdown list in the state
+        const setListDimension = () => {
+            setListDimensions([
+                (dropdown_list_ref as React.MutableRefObject<HTMLDivElement>).current.offsetWidth,
+                (dropdown_list_ref as React.MutableRefObject<HTMLDivElement>).current.offsetHeight,
+            ]);
+        };
 
-    const getDropDownAlignment = () => {
-        if (is_alignment_left) return computed_offset_left();
-        else if (is_alignment_top) return computed_offset_top();
-    };
+        const getDropDownAlignment = () => {
+            if (is_alignment_left) return computed_offset_left();
+            else if (is_alignment_top) return computed_offset_top();
+        };
 
-    const el_dropdown_list = (
-        <CSSTransition in={is_list_visible} timeout={100} classNames="list" onEntered={setListDimension} unmountOnExit>
-            <DropdownListContainer>
-                <List
-                    dark={dark}
-                    style={getDropDownAlignment()}
-                    aria-expanded={is_list_visible}
-                    role="list"
-                    ref={list_ref}
-                >
-                    <Scrollbars style={{ maxHeight: list_dimensions[1] || size[list_size], marginRight: 0 }}>
-                        <Items
-                            className={classNameItems}
-                            dark={dark}
-                            handleSelect={handleSelect}
-                            is_align_text_center={is_align_text_center}
-                            items={list}
-                            nodes={nodes?.current}
-                            onKeyPressed={onKeyPressed}
-                            value={value}
-                        />
+        const is_object = !Array.isArray(list) && typeof list === 'object';
+
+        return (
+            <CSSTransition
+                appear={is_list_visible}
+                in={is_list_visible}
+                onEntered={setListDimension}
+                timeout={100}
+                classNames="list"
+                unmountOnExit
+            >
+                <DropdownListContainer style={getDropDownAlignment()}>
+                    <Scrollbars style={{ maxHeight: size[list_size], marginRight: 0 }} ref={dropdown_list_ref}>
+                        {is_object ? (
+                            Object.keys(list).map((items, idx) => (
+                                <ListItems
+                                    active_index={active_index}
+                                    classNameItems={classNameItems}
+                                    dark={dark}
+                                    is_align_text_center={is_align_text_center}
+                                    key={idx}
+                                    list={list[items]}
+                                    not_found_text="Not found"
+                                    onItemSelection={onItemSelection}
+                                    ref={list_item_ref}
+                                    setActiveIndex={setActiveIndex}
+                                    value={value}
+                                />
+                            ))
+                        ) : (
+                            <ListItems
+                                active_index={active_index}
+                                dark={dark}
+                                classNameItems={classNameItems}
+                                is_align_text_center={is_align_text_center}
+                                list={list}
+                                not_found_text="Not found"
+                                onItemSelection={onItemSelection}
+                                ref={list_item_ref}
+                                setActiveIndex={setActiveIndex}
+                                value={value}
+                            />
+                        )}
                     </Scrollbars>
-                </List>
-            </DropdownListContainer>
-        </CSSTransition>
-    );
-
-    return el_dropdown_list;
-});
+                </DropdownListContainer>
+            </CSSTransition>
+        );
+    },
+);
 
 DropdownList.displayName = 'DropdownList';
 
