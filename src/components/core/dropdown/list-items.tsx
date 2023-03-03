@@ -6,24 +6,24 @@ import { styled } from 'Styles/stitches.config';
 
 type TListItems = {
     active_index: null | number;
-    classNameItems?: string;
+    className?: string;
     dark: boolean;
     is_align_text_center: boolean;
     list: TListItem[];
     not_found_text: string;
-    onItemSelection: (item: TListItem) => void;
-    setActiveIndex: (index: null | number) => void;
-    value: number | string | null;
+    onItemSelection: (item: TListItem, keycode?: number) => void;
+    selected_value: number | string | null;
 };
 
 type TItem = {
     dark: boolean;
-    child_ref: React.ForwardedRef<HTMLDivElement> | null;
-    is_active: boolean;
+    child_ref?: React.ForwardedRef<HTMLDivElement> | null;
+    className?: string;
+    is_active?: boolean;
     is_align_text_center: boolean;
     item: TListItem;
-    onItemSelection: (item: TListItem) => void;
-    value: string | number | null;
+    onItemSelection: (item: TListItem, keycode?: number) => void;
+    selected_value?: string | number | null;
 };
 
 /* 
@@ -39,8 +39,7 @@ const ItemContainer = styled('div', {
         dark: {
             true: {
                 '&:not(.nohover):hover, &:not(.nohover):focus': {
-                    //find color
-                    backgroundColor: '#242828',
+                    backgroundColor: '$greyDark600',
                 },
             },
             false: {
@@ -49,10 +48,9 @@ const ItemContainer = styled('div', {
                 },
             },
         },
-        selected: {
+        active: {
             true: {
-                backgroundColor: '$greyLight400',
-                fontWeight: 'bold',
+                backgroundColor: '$greyLight300',
             },
         },
         disbaled: {
@@ -62,21 +60,27 @@ const ItemContainer = styled('div', {
                 opacity: 0.3,
             },
         },
+        selected: {
+            true: {
+                backgroundColor: '$greyLight400',
+                fontWeight: 'bold',
+            },
+        },
         is_align_text_center: {
             true: {
                 textAlign: 'center',
             },
         },
-        is_active: {
-            true: {
-                //find color
-                backgroundColor: '$greyLight400',
-                // backgroundColor: '#e6e9e9',
-            },
-        },
     },
 
     compoundVariants: [
+        {
+            dark: true,
+            active: true,
+            css: {
+                backgroundColor: '$greyDark600',
+            },
+        },
         {
             dark: true,
             selected: true,
@@ -87,23 +91,32 @@ const ItemContainer = styled('div', {
     ],
 });
 
-const Item = ({ child_ref, dark, is_active, is_align_text_center, item, onItemSelection, value }: TItem) => {
+const Item = ({
+    child_ref,
+    className,
+    dark,
+    is_active,
+    is_align_text_center,
+    item,
+    onItemSelection,
+    selected_value,
+}: TItem) => {
     return (
         <ItemContainer
-            className={classNames({
-                nohover: value === item.value || item.disabled,
+            className={classNames(className, {
+                nohover: selected_value === item.value || item.disabled,
             })}
             dark={dark}
             data-testid="dt_list_item"
             disbaled={item.disabled}
-            is_active={is_active}
+            active={is_active}
             onClick={() => onItemSelection(item)}
             ref={child_ref}
-            // selected={value === item.text}
+            selected={selected_value === item.value}
         >
             <Text
                 align={is_align_text_center ? 'center' : 'left'}
-                color={dark && value === item.value ? 'prominent' : 'general'}
+                color={dark && selected_value === item.value ? 'prominent' : 'general'}
                 css={{ margin: 0 }}
                 type="paragraph-2"
             >
@@ -114,21 +127,34 @@ const Item = ({ child_ref, dark, is_active, is_align_text_center, item, onItemSe
 };
 
 const ListItems = React.forwardRef<React.ElementRef<typeof ItemContainer>, TListItems>(
-    ({ active_index, list, not_found_text, ...props }, ref) => {
+    (
+        { active_index, className, dark, is_align_text_center, list, not_found_text, onItemSelection, selected_value },
+        ref,
+    ) => {
         return (
             <>
                 {list.length ? (
                     list.map((item, item_idx) => (
                         <Item
+                            child_ref={item_idx === active_index ? ref : null}
+                            className={className}
+                            dark={dark}
+                            is_align_text_center={is_align_text_center}
                             key={item_idx}
                             item={item}
                             is_active={item_idx === active_index}
-                            child_ref={item_idx === active_index ? ref : null}
-                            {...props}
+                            onItemSelection={onItemSelection}
+                            selected_value={selected_value}
                         />
                     ))
                 ) : (
-                    <div>{not_found_text}</div>
+                    <Item
+                        className={className}
+                        dark={dark}
+                        is_align_text_center={is_align_text_center}
+                        item={{ value: '', text: not_found_text }}
+                        onItemSelection={() => onItemSelection({ value: '', text: '' })}
+                    />
                 )}
             </>
         );

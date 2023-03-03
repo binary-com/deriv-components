@@ -6,7 +6,7 @@ import DisplayText from './display-text';
 import DropdownList from './dropdown-list';
 import { TListItem } from './types';
 import { useOnClickOutside } from 'hooks';
-import { TRef } from './dropdown-list';
+import { TDropdownListRef } from './dropdown-list';
 import { styled } from 'Styles/stitches.config';
 
 const KEY_CODE = {
@@ -29,25 +29,25 @@ type TListSize = 'small' | 'medium' | 'large';
 type TDropdown = {
     className?: string;
     classNameDisplay?: string;
-    // classNameHint,
+    classNameHint?: string;
     classNameItems?: string;
-    // classNameLabel,
-    // classNameIcon,
     classNamePrefix?: string;
     classNameSuffix?: string;
+    classNameWrapper?: string;
     inline_prefix_element?: ReactNode;
     inline_suffix_element?: ReactNode;
     id?: string;
     dark?: boolean;
     disabled?: boolean;
     dropdown_type?: 'prompt' | 'combobox';
+    has_chevron_icon?: boolean;
     hint_text?: THintTextProps;
     is_align_text_center?: boolean;
-    is_alignment_left?: boolean;
     is_alignment_top?: boolean;
     label?: string;
     list: TListItem[];
     list_size?: TListSize;
+    not_found_text?: string;
     onBlurHandler?: VoidFunction;
     onClickHandler?: VoidFunction;
     onItemSelection?: (item: TListItem) => void;
@@ -145,24 +145,17 @@ const DropdownWrapper = styled('div', {
                 pointerEvents: 'none',
             },
         },
-        enabled: {
-            true: {},
-        },
         error: {
             true: {
                 borderColor: '$redLight',
                 color: '$redLight',
             },
         },
-        has_value: {
-            true: {},
-        },
     },
 
     compoundVariants: [
         {
             active: true,
-            enabled: false,
             error: false,
             css: {
                 borderColor: '$blue500',
@@ -171,18 +164,7 @@ const DropdownWrapper = styled('div', {
         },
         {
             active: false,
-            enabled: true,
             error: false,
-            css: {
-                color: '$greyLight700',
-            },
-        },
-        //needs to show proper color for top label, when Dropdown menu first renders with predefined value
-        {
-            active: false,
-            enabled: false,
-            error: false,
-            has_value: true,
             css: {
                 color: '$greyLight700',
             },
@@ -190,18 +172,7 @@ const DropdownWrapper = styled('div', {
         {
             dark: true,
             active: false,
-            enabled: true,
             error: false,
-            css: {
-                color: '$greyDark100',
-            },
-        },
-        {
-            dark: true,
-            active: false,
-            enabled: false,
-            error: false,
-            has_value: true,
             css: {
                 color: '$greyDark100',
             },
@@ -261,6 +232,15 @@ const InputTextField = styled('input', {
     lineHeight: '$lineHeight20',
     outline: 'none',
     border: 'none',
+
+    variants: {
+        dark: {
+            true: {
+                color: '$greyDark100',
+                backgroundColor: '$greyDark800',
+            },
+        },
+    },
 });
 
 /* 
@@ -281,45 +261,44 @@ const ChevronIcon = styled('img', {
 });
 
 const Dropdown = ({
-    onItemSelection,
     className,
     classNameDisplay,
-    // classNameHint,
-    // classNameIcon,
-    // classNameLabel,
+    classNameHint,
     classNameItems,
     classNamePrefix,
     classNameSuffix,
-    inline_prefix_element,
-    inline_suffix_element,
-    id,
+    classNameWrapper,
     dark,
     disabled,
     dropdown_type = 'prompt',
-    onBlurHandler,
+    has_chevron_icon = true,
     hint_text,
+    id,
+    inline_prefix_element,
+    inline_suffix_element,
     is_align_text_center,
-    is_alignment_left,
     is_alignment_top,
     label,
     list,
-    onClickHandler,
-    value,
     list_size = 'small',
+    not_found_text = 'No results found',
+    onBlurHandler,
+    onClickHandler,
+    onItemSelection,
+    value,
 }: TDropdown) => {
     const direction_ref = React.useRef<string>('');
     const dropdown_container_ref = React.useRef<HTMLDivElement>(null);
-    const dropdown_list_ref = React.useRef<TRef>(null);
+    const dropdown_list_ref = React.useRef<TDropdownListRef>(null);
     const input_ref = React.useRef<HTMLInputElement>(null);
     const last_selected_index = React.useRef<number | null>(null);
 
     const [active_index, setActiveIndex] = React.useState<number | null>(null);
     const [filtered_items, setFilteredItems] = React.useState(list);
-    const [input_value, setInputValue] = React.useState('');
+    const [input_value, setInputValue] = React.useState(value);
     const [is_active, setIsActive] = React.useState(false);
-    const [is_enabled, setIsEnabled] = React.useState(false);
     const [is_list_visible, setIsListVisible] = React.useState(false);
-    const [selected_item, setSelectedItem] = React.useState<string | number | null>(null);
+    const [selected_value, setSelectedValue] = React.useState<string | number | null>(value);
     const [should_focus_input, setShouldFocusInput] = React.useState(false);
 
     const is_all_items_disabled = React.useMemo(() => {
@@ -339,6 +318,9 @@ const Dropdown = ({
 
     const { error, hint } = hint_text ?? {};
     const has_helper_section = Boolean(error) || Boolean(hint);
+
+    console.log('active', is_active);
+    console.log('error', Boolean(error));
 
     // Focuses on input field when the user tries to select disabled value
     React.useEffect(() => {
@@ -387,10 +369,11 @@ const Dropdown = ({
     const onClickOutSide = () => {
         setIsListVisible(false);
         setIsActive(false);
-        // Boolean(input_value || value) && setIsEnabled(true);
         setFilteredItems(list);
-        if (active_index === null) {
+
+        if (selected_value === null) {
             setInputValue('');
+            setActiveIndex(null);
             onItemSelection?.({ value: '', text: '' });
         }
 
@@ -424,16 +407,16 @@ const Dropdown = ({
         setFilteredItems(new_filtered_items);
 
         setActiveIndex(null);
+        setSelectedValue(null);
         last_selected_index.current = null;
     };
 
     const handleVisibility = () => {
+        setShouldFocusInput(true);
         setIsActive(true);
-        setIsEnabled(false);
 
         if (typeof onClickHandler === 'function') {
             setIsActive(true);
-            setIsEnabled(false);
             onClickHandler();
 
             return;
@@ -450,7 +433,7 @@ const Dropdown = ({
             case KEY_CODE.TAB:
                 e.preventDefault();
                 if (is_list_visible) setIsListVisible(false);
-                typeof active_index === 'number' && onSelectItem(filtered_items[active_index]);
+                typeof active_index === 'number' && onSelectItem(filtered_items[active_index], e.keyCode);
                 break;
             case KEY_CODE.ESCAPE:
                 e.preventDefault();
@@ -491,7 +474,7 @@ const Dropdown = ({
                 return array_with_enabled_indexes.find((el) => el > index) || array_with_enabled_indexes[0];
             } else {
                 const reversed_array = [...array_with_enabled_indexes].reverse();
-                return reversed_array.find((el) => el < index) || reversed_array[0];
+                return reversed_array.find((el) => el < index) ?? reversed_array[0];
             }
         },
         [array_with_enabled_indexes],
@@ -507,7 +490,7 @@ const Dropdown = ({
             return;
         }
 
-        if (last_selected_index.current !== null) {
+        if (last_selected_index.current !== null && !is_list_visible) {
             setActiveIndex(last_selected_index.current);
             last_selected_index.current = null;
             return;
@@ -534,7 +517,7 @@ const Dropdown = ({
         }
     };
 
-    const onSelectItem = (item: TListItem) => {
+    const onSelectItem = (item: TListItem, keycode?: number) => {
         if (item.disabled) {
             setShouldFocusInput(true);
             return;
@@ -543,13 +526,17 @@ const Dropdown = ({
         setIsListVisible(false);
 
         setInputValue(item.text);
-        setSelectedItem(item.value);
 
         const active_index = list.findIndex((el) => item.value === el.value);
         setActiveIndex(active_index);
 
+        setSelectedValue(item.value);
         last_selected_index.current = active_index;
         setFilteredItems(list);
+
+        if (![KEY_CODE.ENTER, KEY_CODE.TAB].includes(Number(keycode))) {
+            setIsActive(false);
+        }
 
         if (typeof onItemSelection === 'function') {
             onItemSelection(item);
@@ -559,21 +546,19 @@ const Dropdown = ({
     return (
         <DropdownContainer className={className} ref={dropdown_container_ref}>
             <DropdownWrapper
-                className={classNames({
+                className={classNames(classNameWrapper, {
                     nohover: is_active || Boolean(error),
                 })}
                 active={is_active}
                 dark={dark}
                 data-testid="dt_dropdown_container"
                 disabled={Boolean(disabled)}
-                enabled={is_enabled}
                 error={Boolean(error)}
-                has_value={Boolean(value)}
                 onClick={handleVisibility}
             >
                 <DisplaySection
                     className={classNameDisplay}
-                    data-testid="dti_dropdown_display"
+                    data-testid="dt_dropdown_display"
                     id="dropdown-display"
                     onKeyDown={onKeyPressed}
                     tabIndex={0}
@@ -587,27 +572,30 @@ const Dropdown = ({
                         <DisplayText
                             dark={Boolean(dark)}
                             has_prefix_element={!!inline_prefix_element}
-                            value={(input_value || value) ?? 0}
+                            value={input_value ?? 0}
                             list={list}
                         />
                     ) : (
                         <InputTextField
+                            autoComplete="off"
+                            dark={dark}
                             id="dropdown-input-field"
                             onInput={filterList}
                             ref={input_ref}
                             value={input_value}
                         />
                     )}
-
-                    <SupportingInfoSection className={classNameSuffix}>
-                        {inline_suffix_element || (
-                            <ChevronIcon
-                                alt="chevron-icon"
-                                is_list_visible={is_list_visible}
-                                src={dark ? ChevronDownDark : ChevronDownLight}
-                            />
-                        )}
-                    </SupportingInfoSection>
+                    {(has_chevron_icon || inline_suffix_element) && (
+                        <SupportingInfoSection className={classNameSuffix}>
+                            {inline_suffix_element || (
+                                <ChevronIcon
+                                    alt="chevron-icon"
+                                    is_list_visible={is_list_visible}
+                                    src={dark ? ChevronDownDark : ChevronDownLight}
+                                />
+                            )}
+                        </SupportingInfoSection>
+                    )}
                     {label && (
                         <LabelSection htmlFor={id} dark={dark} css={styleLabelFloat()}>
                             {label}
@@ -620,18 +608,23 @@ const Dropdown = ({
                 classNameItems={classNameItems}
                 dark={Boolean(dark)}
                 is_align_text_center={Boolean(is_align_text_center)}
-                is_alignment_left={Boolean(is_alignment_left)}
-                is_alignment_top={Boolean(is_alignment_top)}
+                is_alignment_top={dropdown_type === 'prompt' && Boolean(is_alignment_top)}
                 is_list_visible={is_list_visible}
                 list={filtered_items}
                 list_size={list_size}
+                not_found_text={not_found_text}
                 onItemSelection={onSelectItem}
                 ref={dropdown_list_ref}
-                value={selected_item}
+                selected_value={selected_value}
                 setActiveIndex={setActiveIndex}
             />
             {!is_list_visible && has_helper_section && (
-                <HelperSection error={Boolean(error)} dark={dark} disabled={Boolean(disabled)}>
+                <HelperSection
+                    className={classNameHint}
+                    dark={dark}
+                    disabled={Boolean(disabled)}
+                    error={Boolean(error)}
+                >
                     {generateHintText()}
                 </HelperSection>
             )}

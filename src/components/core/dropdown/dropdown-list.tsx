@@ -5,7 +5,7 @@ import { styled } from 'Styles/stitches.config';
 import { CSSTransition } from 'react-transition-group';
 import Scrollbars from '@core/scrollbars/scrollbars';
 
-const size = {
+const SIZE = {
     small: 220,
     medium: 420,
     large: 660,
@@ -16,30 +16,29 @@ type TDropdownList = {
     classNameItems?: string;
     dark: boolean;
     is_align_text_center: boolean;
-    is_alignment_left: boolean;
     is_alignment_top: boolean;
     is_list_visible: boolean;
     list: TListItem[];
     list_size: 'small' | 'medium' | 'large';
-    onItemSelection: (item: TListItem) => void;
+    not_found_text: string;
+    onItemSelection: (item: TListItem, keycode?: number) => void;
     setActiveIndex: (index: null | number) => void;
-    value: string | number | null;
+    selected_value: string | number | null;
 };
 
 /* 
     DropdownListContainer - This acts as a wrapper and styles list of items
 */
 const DropdownListContainer = styled('div', {
-    // position: 'absolute',
-    marginTop: '4px',
-    borderRadius: '4px',
-    zIndex: 1,
-    boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.24)',
-    transformOrigin: 'top',
+    position: 'absolute',
+    left: 0,
+    bottom: '-4px',
+    width: '100%',
     transition: 'transform 0.25s ease, opacity 0.25s linear',
     transform: 'scale(1, 0)',
-    cursor: 'pointer',
-    width: '100%',
+    userSelect: 'none',
+    opacity: 0,
+    zIndex: 999,
 
     '&.list-enter, &.list-exit': {
         transform: 'scale(1, 0)',
@@ -59,47 +58,46 @@ const List = styled('div', {
     position: 'absolute',
     zIndex: 2,
     width: '100%',
-    background: '$greyLight100',
     boxShadow: '0px 32px 64px rgba(14, 14, 14, 0.14)',
-    borderRadius: 4,
+    borderRadius: '$default',
 
     variants: {
         dark: {
             true: {
                 backgroundColor: '$greyDark700',
             },
+            false: {
+                backgroundColor: '$greyLight100',
+            },
         },
     },
 });
 
-export type TRef = {
+export type TDropdownListRef = {
     listClientHeight?: number;
     itemOffsetTop?: number;
-    scrollTo:
-        | {
-              (options?: ScrollToOptions | undefined): void;
-              (x: number, y: number): void;
-          }
-        | undefined;
+    scrollTo?: {
+        (options?: ScrollToOptions | undefined): void;
+        (x: number, y: number): void;
+    };
     getBoundingClientRectOfDropdownList?: () => DOMRect;
     getBoundingClientRectOfListItem?: () => DOMRect;
 };
 
-const DropdownList = React.forwardRef<TRef, TDropdownList>(
+const DropdownList = React.forwardRef<TDropdownListRef, TDropdownList>(
     (
         {
             active_index,
             classNameItems,
             dark,
             is_align_text_center,
-            is_alignment_left,
             is_alignment_top,
             is_list_visible,
             list,
             list_size,
-            value,
+            not_found_text,
             onItemSelection,
-            setActiveIndex,
+            selected_value,
         },
         ref,
     ) => {
@@ -121,21 +119,10 @@ const DropdownList = React.forwardRef<TRef, TDropdownList>(
                     ),
                 };
             },
-            [is_list_visible, active_index],
+            [active_index, is_list_visible],
         );
 
         const [list_dimensions, setListDimensions] = React.useState([0, 0]);
-
-        /**
-         * Calculate the offset for the dropdown list based on its width
-         *
-         * @return {{transform: string}}
-         */
-        const computed_offset_left = () => {
-            return {
-                transform: `translate3d(calc(-${list_dimensions[0]}px - 12px), 0, 0px)`,
-            };
-        };
 
         /**
          * Calculate the offset for the dropdown list based on its height
@@ -144,7 +131,7 @@ const DropdownList = React.forwardRef<TRef, TDropdownList>(
          */
         const computed_offset_top = () => {
             return {
-                transform: `translate3d(0, calc(-${list_dimensions[1]}px - 54px), 0px)`,
+                transform: `translate3d(0, calc(-${list_dimensions[1]}px - 50px), 0px)`,
             };
         };
 
@@ -157,11 +144,8 @@ const DropdownList = React.forwardRef<TRef, TDropdownList>(
         };
 
         const getDropDownAlignment = () => {
-            if (is_alignment_left) return computed_offset_left();
-            else if (is_alignment_top) return computed_offset_top();
+            if (is_alignment_top) return computed_offset_top();
         };
-
-        const is_object = !Array.isArray(list) && typeof list === 'object';
 
         return (
             <CSSTransition
@@ -172,39 +156,22 @@ const DropdownList = React.forwardRef<TRef, TDropdownList>(
                 classNames="list"
                 unmountOnExit
             >
-                <DropdownListContainer style={getDropDownAlignment()}>
-                    <Scrollbars style={{ maxHeight: size[list_size], marginRight: 0 }} ref={dropdown_list_ref}>
-                        {is_object ? (
-                            Object.keys(list).map((items, idx) => (
-                                <ListItems
-                                    active_index={active_index}
-                                    classNameItems={classNameItems}
-                                    dark={dark}
-                                    is_align_text_center={is_align_text_center}
-                                    key={idx}
-                                    list={list[items]}
-                                    not_found_text="Not found"
-                                    onItemSelection={onItemSelection}
-                                    ref={list_item_ref}
-                                    setActiveIndex={setActiveIndex}
-                                    value={value}
-                                />
-                            ))
-                        ) : (
+                <DropdownListContainer>
+                    <List dark={dark} aria-expanded={is_list_visible} role="list" style={getDropDownAlignment()}>
+                        <Scrollbars style={{ maxHeight: SIZE[list_size], marginRight: 0 }} ref={dropdown_list_ref}>
                             <ListItems
                                 active_index={active_index}
                                 dark={dark}
-                                classNameItems={classNameItems}
+                                className={classNameItems}
                                 is_align_text_center={is_align_text_center}
                                 list={list}
-                                not_found_text="Not found"
+                                not_found_text={not_found_text}
                                 onItemSelection={onItemSelection}
                                 ref={list_item_ref}
-                                setActiveIndex={setActiveIndex}
-                                value={value}
+                                selected_value={selected_value}
                             />
-                        )}
-                    </Scrollbars>
+                        </Scrollbars>
+                    </List>
                 </DropdownListContainer>
             </CSSTransition>
         );

@@ -7,7 +7,6 @@ type TDisplayText = {
     dark: boolean;
     has_prefix_element?: boolean;
     list: TListItem[];
-    placeholder?: string;
     value?: string;
 };
 
@@ -16,13 +15,12 @@ export const getDisplayText = (list: TListItem[], value?: string): Partial<TList
 };
 
 /* 
-    DisplayTextContainer - This acts as a wrapper and styles item value, subtitle and trailing label
+    DisplayTextContainer - This acts as a wrapper and styles icon, item value, subtitle and trailing label
 */
 const DisplayTextContainer = styled('div', {
     width: '100%',
     display: 'flex',
     columnGap: '0.5rem',
-    justifyContent: 'space-between',
 
     variants: {
         has_prefix_element: {
@@ -65,24 +63,35 @@ const TrailingLabel = styled('div', {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 'auto',
+});
+
+/* 
+    IconWrapper - This acts as an icon wrapper
+*/
+const IconWrapper = styled('div', {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
 });
 
 const DisplayText = ({ dark, has_prefix_element, list, value }: TDisplayText) => {
-    const { subtitle, trailing_label, text } = getDisplayText(list, value);
+    const { icon, subtitle, text, trailing_label } = getDisplayText(list, value);
 
     return (
         <DisplayTextContainer has_prefix_element={has_prefix_element} has_trailing_label={!!trailing_label}>
+            {icon && <IconWrapper>{icon}</IconWrapper>}
             {text && (
                 <DisplaySection>
                     <Text
-                        type="paragraph-2"
                         color={dark && !trailing_label ? 'general' : 'prominent'}
                         css={{ margin: 0 }}
+                        type="paragraph-2"
                     >
                         {text}
                     </Text>
                     {subtitle && (
-                        <Text type="extra-small" color="less-prominent" css={{ margin: 0 }}>
+                        <Text color="less-prominent" css={{ margin: 0 }} type="extra-small">
                             {subtitle}
                         </Text>
                     )}
@@ -90,7 +99,7 @@ const DisplayText = ({ dark, has_prefix_element, list, value }: TDisplayText) =>
             )}
             {trailing_label && (
                 <TrailingLabel>
-                    <Text type="paragraph-2" color="general" css={{ margin: 0 }}>
+                    <Text color="general" css={{ margin: 0 }} type="paragraph-2">
                         {trailing_label}
                     </Text>
                 </TrailingLabel>
