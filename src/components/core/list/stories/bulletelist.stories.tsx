@@ -1,6 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { BulletedList } from '../list-variants/bulleted';
 import { ListStoriesArgTypes, ListStoryDecorator, SimpleListData } from './utils';
+import Dropdown from '@core/dropdown/dropdown';
 
 export default {
     title: 'List Items / Bullet List',

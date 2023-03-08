@@ -48,8 +48,8 @@ const CheckedLi = styled(StyledLi, {
     ],
 });
 
-const CheckListItem = ({ children, checked, crossed, dark = false }: TCheckListItemProps) => (
-    <CheckedLi type={'checklist'} checked={checked} crossed={crossed} dark={dark}>
+const CheckListItem = ({ children, checked, classNameItems, crossed, dark = false }: TCheckListItemProps) => (
+    <CheckedLi type={'checklist'} checked={checked} className={classNameItems} crossed={crossed} dark={dark}>
         {children}
     </CheckedLi>
 );

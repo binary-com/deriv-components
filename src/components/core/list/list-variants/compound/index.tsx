@@ -3,12 +3,12 @@ import { renderCompoundListItems } from '@core/list/render-functions';
 import { TCompoundProps } from '@core/list/types';
 import useTheme from '@core/theme-context/use-theme';
 
-export const CompoundList = ({ items, onClickItem, label = 'default', ...rest }: TCompoundProps) => {
+export const CompoundList = ({ classNameItems, items, onClickItem, label = 'default', ...rest }: TCompoundProps) => {
     const { isDark } = useTheme();
 
     return (
         <BaseList {...rest} type="compound" dark={isDark}>
-            {renderCompoundListItems(items, label, isDark, onClickItem)}
+            {renderCompoundListItems(items, label, isDark, onClickItem, classNameItems)}
         </BaseList>
     );
 };

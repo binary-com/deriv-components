@@ -26,6 +26,8 @@ const checkedListData: ICheckListItem[] = [
     { id: 7, title: 'eighth', checked: false, crossed: true },
 ];
 
+const action_icon_element = <img src={DefaultListActionIconSVG} alt="remove-item-icon" />;
+
 export const compoundListData: ICompoundListItem[] = [
     {
         id: 0,
@@ -33,7 +35,7 @@ export const compoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
     {
         id: 1,
@@ -41,7 +43,7 @@ export const compoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
     {
         id: 2,
@@ -49,7 +51,7 @@ export const compoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
     {
         id: 3,
@@ -57,7 +59,7 @@ export const compoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
     {
         id: 4,
@@ -65,7 +67,7 @@ export const compoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
 ];
 
@@ -179,7 +181,7 @@ describe('List Component', () => {
             // clean up the screen since we are using beforeEach in the describe block. if we don't use it there will be two instances of list
             cleanup();
 
-            let onItemClickMock = jest.fn();
+            const onItemClickMock = jest.fn();
             render(<List.CompoundList items={compoundListData} onClickItem={onItemClickMock} />);
             list = screen.getByRole('list');
             const { getByText } = within(list);

@@ -1,29 +1,15 @@
 import React from 'react';
 import ListItems from './list-items';
-import { TListItem } from './types';
+import { TDropdownList } from '../types';
 import { styled } from 'Styles/stitches.config';
 import { CSSTransition } from 'react-transition-group';
+import { TDropdownListRef } from '../types';
 import Scrollbars from '@core/scrollbars/scrollbars';
 
 const SIZE = {
     small: 220,
     medium: 420,
     large: 660,
-};
-
-type TDropdownList = {
-    active_index: number | null;
-    classNameItems?: string;
-    dark: boolean;
-    is_align_text_center: boolean;
-    is_alignment_top: boolean;
-    is_list_visible: boolean;
-    list: TListItem[];
-    list_size: 'small' | 'medium' | 'large';
-    not_found_text: string;
-    onItemSelection: (item: TListItem, keycode?: number) => void;
-    setActiveIndex: (index: null | number) => void;
-    selected_value: string | number | null;
 };
 
 /* 
@@ -72,17 +58,6 @@ const List = styled('div', {
         },
     },
 });
-
-export type TDropdownListRef = {
-    listClientHeight?: number;
-    itemOffsetTop?: number;
-    scrollTo?: {
-        (options?: ScrollToOptions | undefined): void;
-        (x: number, y: number): void;
-    };
-    getBoundingClientRectOfDropdownList?: () => DOMRect;
-    getBoundingClientRectOfListItem?: () => DOMRect;
-};
 
 const DropdownList = React.forwardRef<TDropdownListRef, TDropdownList>(
     (

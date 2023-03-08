@@ -15,7 +15,7 @@ export interface ICompoundListItem extends ISimpleListItem {
     subtitle?: string;
     label?: string;
     icon_src?: string;
-    action_icon_src?: string;
+    action_icon_element?: ReactNode;
 }
 
 export interface ICheckListItem extends ISimpleListItem {
@@ -29,6 +29,7 @@ export interface ListItemProps extends HTMLAttributes<HTMLUListElement | HTMLLIE
 }
 
 export type TCompoundListItemProps = {
+    classNameItems?: string;
     children?: ReactNode;
     item: ICompoundListItem;
     label?: TLabelType;
@@ -37,23 +38,36 @@ export type TCompoundListItemProps = {
 };
 
 export type TCheckListItemProps = {
+    classNameItems?: string;
     children?: ReactNode;
     checked?: boolean;
     crossed?: boolean;
     dark?: boolean;
 };
 
-export type TSimpleListProps = { items: ISimpleListItem[]; size?: TSizeType; children?: ReactNode };
+export type TSimpleListProps = {
+    classNameItems?: string;
+    items: ISimpleListItem[];
+    size?: TSizeType;
+    children?: ReactNode;
+};
 
-export type TBulletedListProps = { items: ISimpleListItem[]; size?: TSizeType; children?: ReactNode };
+export type TBulletedListProps = {
+    classNameItems?: string;
+    items: ISimpleListItem[];
+    size?: TSizeType;
+    children?: ReactNode;
+};
 
 export type TCheckListProps = {
+    classNameItems?: string;
     items: ICheckListItem[];
     children?: ReactNode;
     size?: TSizeType;
 };
 
 export type TCompoundProps = {
+    classNameItems?: string;
     children?: ReactNode;
     items: ICompoundListItem[];
     label?: TLabelType;

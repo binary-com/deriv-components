@@ -1,30 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import Text from '@core/text/text';
-import { TListItem } from './types';
+import { TListItems, TItem } from '../types';
 import { styled } from 'Styles/stitches.config';
-
-type TListItems = {
-    active_index: null | number;
-    className?: string;
-    dark: boolean;
-    is_align_text_center: boolean;
-    list: TListItem[];
-    not_found_text: string;
-    onItemSelection: (item: TListItem, keycode?: number) => void;
-    selected_value: number | string | null;
-};
-
-type TItem = {
-    dark: boolean;
-    child_ref?: React.ForwardedRef<HTMLDivElement> | null;
-    className?: string;
-    is_active?: boolean;
-    is_align_text_center: boolean;
-    item: TListItem;
-    onItemSelection: (item: TListItem, keycode?: number) => void;
-    selected_value?: string | number | null;
-};
 
 /* 
     ItemContainer - This acts as a wrapper and styles item value
@@ -60,10 +38,11 @@ const ItemContainer = styled('div', {
                 opacity: 0.3,
             },
         },
+        is_text_string_type: { true: {} },
         selected: {
             true: {
                 backgroundColor: '$greyLight400',
-                fontWeight: 'bold',
+                fontWeight: '$bold',
             },
         },
         is_align_text_center: {
@@ -88,6 +67,13 @@ const ItemContainer = styled('div', {
                 backgroundColor: '$greyDark500',
             },
         },
+        {
+            is_text_string_type: false,
+            selected: true,
+            css: {
+                fontWeight: '$regular',
+            },
+        },
     ],
 });
 
@@ -103,13 +89,14 @@ const Item = ({
 }: TItem) => {
     return (
         <ItemContainer
+            active={is_active}
             className={classNames(className, {
                 nohover: selected_value === item.value || item.disabled,
             })}
             dark={dark}
             data-testid="dt_list_item"
             disbaled={item.disabled}
-            active={is_active}
+            is_text_string_type={typeof item.text === 'string'}
             onClick={() => onItemSelection(item)}
             ref={child_ref}
             selected={selected_value === item.value}

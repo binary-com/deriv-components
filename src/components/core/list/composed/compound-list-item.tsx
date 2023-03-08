@@ -1,3 +1,4 @@
+import React from 'react';
 import { styled } from 'Styles/stitches.config';
 import StyledLi from '../base/base-list-item';
 import { TCompoundListItemProps } from '../types';
@@ -84,9 +85,10 @@ const CompoundLi = styled(StyledLi, {
     },
 });
 
-const CompoundListItem = ({ item, dark, onClickItem, label = 'default' }: TCompoundListItemProps) => {
+const CompoundListItem = ({ item, dark, onClickItem, label = 'default', classNameItems }: TCompoundListItemProps) => {
     return (
         <CompoundLi
+            className={classNameItems || ''}
             type={'compound'}
             label={label}
             dark={dark}
@@ -105,7 +107,7 @@ const CompoundListItem = ({ item, dark, onClickItem, label = 'default' }: TCompo
                 <div className="compount--label__text" data-testid={'label'}>
                     {item.label}
                 </div>
-                {item.action_icon_src && <img src={item.action_icon_src} alt="action icon" />}
+                {item.action_icon_element || null}
             </div>
         </CompoundLi>
     );

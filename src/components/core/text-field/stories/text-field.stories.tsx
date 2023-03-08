@@ -44,14 +44,11 @@ export default {
                 defaultValue: { summary: false },
             },
         },
-        hint: {
-            description: 'Displays a hint text',
-        },
-        error: {
-            description: 'Displays an error text',
-        },
-        success: {
-            description: 'Displays a success text',
+        hint_text: {
+            description: 'Displays a hint text, error text and success text',
+            table: {
+                type: { summary: 'object' },
+            },
         },
         max_length: {
             description: 'Max length that the field can accept',
