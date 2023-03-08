@@ -24,6 +24,8 @@ export const CheckListData: ICheckListItem[] = [
     { id: 7, title: 'eighth', checked: false, crossed: true },
 ];
 
+const action_icon_element = <img src={DefaultListActionIconSVG} alt="remove-item-icon" />;
+
 export const CompoundListData: ICompoundListItem[] = [
     {
         id: 0,
@@ -31,7 +33,7 @@ export const CompoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
     {
         id: 1,
@@ -39,7 +41,7 @@ export const CompoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
     {
         id: 2,
@@ -47,7 +49,7 @@ export const CompoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
     {
         id: 3,
@@ -55,7 +57,7 @@ export const CompoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
     {
         id: 4,
@@ -63,7 +65,7 @@ export const CompoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
     {
         id: 5,
@@ -71,7 +73,7 @@ export const CompoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
     {
         id: 6,
@@ -79,7 +81,7 @@ export const CompoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
     {
         id: 7,
@@ -87,7 +89,7 @@ export const CompoundListData: ICompoundListItem[] = [
         subtitle: 'subtitle',
         label: 'label',
         icon_src: DefaultListIconSVG,
-        action_icon_src: DefaultListActionIconSVG,
+        action_icon_element,
     },
 ];
 
