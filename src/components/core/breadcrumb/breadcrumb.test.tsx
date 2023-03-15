@@ -1,7 +1,12 @@
 import { render, screen, within, fireEvent } from 'test-setup';
 import Breadcrumb from './breadcrumb';
 
-const items = ['Home', 'About', 'CFD', 'mt5'];
+const items = [
+    { value: 0, text: 'Home' },
+    { value: 1, text: 'About' },
+    { value: 2, text: 'CFD' },
+    { value: 3, text: 'mt5' },
+];
 
 describe('Breadcrumb Component', () => {
     it('Should render all provided items', () => {
