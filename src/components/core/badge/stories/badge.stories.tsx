@@ -1,3 +1,4 @@
+import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import Badge from '../badge';
 import CheckIconSVG from '@assets/svg/circular-check-icon.svg';
@@ -26,45 +27,50 @@ export default {
             control: { type: 'radio', options: ['regular', 'bold'] },
             defaultValue: 'regular',
         },
-        visiblity: {
+        visibility: {
             description: 'controls which parts of the badge component should be visible',
             control: {
                 type: 'radio',
-                options: ['icon-only', 'label-only', 'icon-and-label'],
+                options: ['icon-only', 'label-only', 'icon-and-label', 'label-and-icon', 'icon-and-label-and-icon'],
             },
             defaultValue: 'icon-and-label',
         },
-        icon_src: {
-            table: {
-                disable: true,
-            },
+        prefix_icon: {
+            description: 'Displays the provided prefix icon',
         },
-        icon_class: {
-            table: {
-                disable: true,
-            },
-        },
-        iconAlt: {
-            table: {
-                disable: true,
-            },
+        suffix_icon: {
+            description: 'Displays the provided suffix icon',
         },
     },
 } as ComponentMeta<typeof Badge>;
 
-const Template: ComponentStory<typeof Badge> = (args) => <Badge icon_src={CheckIconSVG} {...args} />;
+const Template: ComponentStory<typeof Badge> = (args) => (
+    <Badge prefix_icon={<img alt={'check-icon'} src={CheckIconSVG} />} {...args} />
+);
 
 export const Primary = Template.bind({});
 Primary.args = {};
 
+export const IconLabelIcon = Template.bind({});
+IconLabelIcon.args = {
+    suffix_icon: <img alt={'check-icon'} src={CheckIconSVG} />,
+    visibility: 'icon-and-label-and-icon',
+};
+
+export const LabelIcon = Template.bind({});
+LabelIcon.args = {
+    suffix_icon: <img alt={'check-icon'} src={CheckIconSVG} />,
+    visibility: 'label-and-icon',
+};
+
 export const IconOnly = Template.bind({});
 IconOnly.args = {
-    visiblity: 'icon-only',
+    visibility: 'icon-only',
 };
 
 export const LabelOnly = Template.bind({});
 LabelOnly.args = {
-    visiblity: 'label-only',
+    visibility: 'label-only',
 };
 
 export const LongText = Template.bind({});
@@ -74,7 +80,6 @@ LongText.args = {
 };
 
 export const TightSpacing = Template.bind({});
-
 TightSpacing.args = {
     children: 'This is a long text for badge just to see how it looks in actual page',
     spacing: 'tight',
