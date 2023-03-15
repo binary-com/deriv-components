@@ -7,7 +7,12 @@ export default {
     argTypes: {
         items: {
             description: 'Items that need to be sent to breadcrumb to display the list',
-            defaultValue: ['Home', 'About', 'CFD', 'mt5'],
+            defaultValue: [
+                { value: 0, text: 'Home' },
+                { value: 1, text: 'About' },
+                { value: 2, text: 'CFD' },
+                { value: 3, text: 'mt5' },
+            ],
         },
         handleOnClick: {
             control: false,
