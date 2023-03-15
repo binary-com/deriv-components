@@ -3,11 +3,7 @@ import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
 import BreadcrumbSeperatorIcon from '@assets/svg/breadcrumb-seperator.svg';
 import useTheme from '@core/theme-context/use-theme';
-
-type TItem = {
-    value: string | number;
-    text: string;
-};
+import { TItem } from 'types/item.types';
 
 type BreadcrumbProps = {
     items: TItem[];
