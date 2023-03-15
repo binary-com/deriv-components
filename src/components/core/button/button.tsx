@@ -1,5 +1,6 @@
 import useTheme from '@core/theme-context/use-theme';
 import * as Stitches from '@stitches/react';
+import { CSS } from '@stitches/react/types/css-util';
 import React, { forwardRef } from 'react';
 
 import { styled } from 'Styles/stitches.config';
@@ -190,12 +191,14 @@ const StyledButton = styled('button', {
     },
 });
 
-type StyledButtonProps = Omit<Stitches.VariantProps<typeof StyledButton>, 'dark'>;
+type StyledButtonProps = Omit<Stitches.VariantProps<typeof StyledButton>, 'dark'> & CSS;
 type TButtonProps = StyledButtonProps & React.ComponentPropsWithoutRef<'button'>;
 
 const Button = forwardRef<HTMLButtonElement, TButtonProps>((props, ref) => {
     const { isDark } = useTheme();
     return <StyledButton {...props} ref={ref} dark={isDark} />;
 });
+
+Button.displayName = 'Button';
 
 export default Button;
