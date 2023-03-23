@@ -55,6 +55,19 @@ const config = (env: EnvConfig): Configuration => {
                 {
                     test: /\.(png|woff|woff2|eot|ttf|svg)$/,
                     type: 'asset/inline',
+                    resourceQuery: { not: [/svgr/] },
+                },
+                {
+                    test: /\.svg$/i,
+                    resourceQuery: /svgr/,
+                    use: [
+                        {
+                            loader: '@svgr/webpack',
+                            options: {
+                                svgo: true,
+                            },
+                        },
+                    ],
                 },
             ],
         },
