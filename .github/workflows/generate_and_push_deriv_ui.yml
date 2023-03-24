@@ -1,4 +1,9 @@
 name: Generate and push @deriv/ui
+
+permissions:
+    contents: write
+    pull-requests: write
+
 on:
     workflow_dispatch:
 
@@ -49,14 +54,13 @@ jobs:
                   new_version=$(npm show "$package_name" version)
                   npm install
 
-                  sudo apt install gh
-                  gh auth login --with-token <<< ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-                  gh auth setup-git
-
                   # Patch the version with minor patch. It also makes a commit to the git.
                   npm version minor
 
                   git push --set-upstream origin "$package_name" -f
+
+                  sudo apt install gh
+                  gh auth login --with-token <<< ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
                   diff_url="https://diff.intrinsic.com/$package_name/$old_version/$new_version.diff"
                   pr_body=$(curl $diff_url)
