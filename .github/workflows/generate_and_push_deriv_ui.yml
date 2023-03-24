@@ -55,11 +55,12 @@ jobs:
                   rm package-lock.json
                   npm install --package-lock-json
 
-                  git commit -a -m "feat: bump from $old_version to $new_version"
-
-                  git push --set-upstream origin "$package_name" -f
                   sudo apt install gh
                   gh auth login --with-token <<< ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+                  gh auth setup-git
+
+                  git commit -a -m "feat: bump from $old_version to $new_version"
+                  git push --set-upstream origin "$package_name" -f
 
                   diff_url="https://diff.intrinsic.com/$package_name/$old_version/$new_version.diff"
                   pr_body=$(curl $diff_url)
