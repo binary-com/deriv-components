@@ -1,9 +1,9 @@
 import { HTMLAttributes, ReactElement } from 'react';
 import { styled } from 'Styles/stitches.config';
-import AccordionCollapseIcon from '@assets/svg/accordion-collapse.svg';
-import AccordionExpandIcon from '@assets/svg/accordion-expand.svg';
-import AccordionSmallCollapseIcon from '@assets/svg/accordion-small-collapse.svg';
-import AccordionSmallExpandIcon from '@assets/svg/accordion-small-expand.svg';
+import AccordionCollapseIcon from '@assets/svg/accordion-collapse.svg?svgr';
+import AccordionExpandIcon from '@assets/svg/accordion-expand.svg?svgr';
+import AccordionSmallCollapseIcon from '@assets/svg/accordion-small-collapse.svg?svgr';
+import AccordionSmallExpandIcon from '@assets/svg/accordion-small-expand.svg?svgr';
 import useTheme from '@core/theme-context/use-theme';
 
 export interface AccordionTitleProps extends HTMLAttributes<HTMLDivElement> {
@@ -12,27 +12,28 @@ export interface AccordionTitleProps extends HTMLAttributes<HTMLDivElement> {
     size: 'medium' | 'small';
 }
 
-const Svg = styled('svg', {
-    xmlnsXlink: 'http://www.w3.org/1999/xlink',
-    xmlns: 'http://www.w3.org/2000/svg',
-    fill: '$greyLight700',
-    verticalAlign: 'middle',
-    width: 14,
-    height: 8,
-    variants: {
-        size: {
-            small: {
-                width: 12,
-                height: 6.5,
+const getStyledSvg = (element: React.FunctionComponent<React.SVGAttributes<SVGElement>>) =>
+    styled(element, {
+        xmlnsXlink: 'http://www.w3.org/1999/xlink',
+        xmlns: 'http://www.w3.org/2000/svg',
+        fill: '$greyLight700',
+        verticalAlign: 'middle',
+        width: 14,
+        height: 8,
+        variants: {
+            size: {
+                small: {
+                    width: 12,
+                    height: 6.5,
+                },
+            },
+            dark: {
+                true: {
+                    fill: '$greyDark100',
+                },
             },
         },
-        dark: {
-            true: {
-                fill: '$greyDark100',
-            },
-        },
-    },
-});
+    });
 
 const IconDiv = styled('div', {
     float: 'right',
@@ -80,23 +81,32 @@ const HeaderDiv = styled('div', {
     cursor: 'pointer',
 });
 
+const accordion_icons = {
+    collapse: {
+        small: getStyledSvg(AccordionSmallCollapseIcon),
+        medium: getStyledSvg(AccordionCollapseIcon),
+    },
+    expand: {
+        small: getStyledSvg(AccordionSmallExpandIcon),
+        medium: getStyledSvg(AccordionExpandIcon),
+    },
+};
+
 const AccordionTitle = ({ children, expand_section, size, ...props }: AccordionTitleProps) => {
     const { isDark } = useTheme();
     const getAccordionIcon = () => {
         if (expand_section) {
-            if (size === 'small') return AccordionSmallCollapseIcon;
-            return AccordionCollapseIcon;
+            return accordion_icons.collapse[size];
         }
-        return size === 'small' ? AccordionSmallExpandIcon : AccordionExpandIcon;
+        return accordion_icons.expand[size];
     };
+    const Svg = getAccordionIcon();
 
     return (
         <HeaderDiv {...props}>
             <Header size={size}>{children}</Header>
             <IconDiv size={size}>
-                <Svg dark={isDark}>
-                    <use href={`${getAccordionIcon()}#accordion`} />
-                </Svg>
+                <Svg dark={isDark} />
             </IconDiv>
         </HeaderDiv>
     );

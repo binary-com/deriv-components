@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
 import * as Stitches from '@stitches/react';
-import CurvedArrowIcon from '@assets/svg/curved-arrow.svg';
-import StraightArrowIcon from '@assets/svg/straight-arrow.svg';
+import CurvedArrowIcon from '@assets/svg/curved-arrow.svg?svgr';
+import StraightArrowIcon from '@assets/svg/straight-arrow.svg?svgr';
 import useTheme from '@core/theme-context/use-theme';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
@@ -63,88 +63,94 @@ const Icon = styled('img', {
     paddingRight: '1rem',
 });
 
-const ArrowImage = styled('svg', {
-    position: 'absolute',
-    xmlnsXlink: 'http://www.w3.org/1999/xlink',
-    xmlns: 'http://www.w3.org/2000/svg',
-    verticalAlign: 'middle',
-    viewBox: '0 0 38 38',
-    width: 78,
-    height: 78,
-    '@mobile': {
-        width: 38,
-        height: 38,
-    },
-    variants: {
-        arrow_direction: {
-            top_left: {
-                transform: 'rotate(90deg)',
-                bottom: 'calc(100% + 8px)',
-                right: 'calc(100% - 16px)',
-            },
-            top_center: {
-                transform: 'translate(-50%, 0%)',
-                bottom: 'calc(100% + 8px)',
-                left: '50%',
-            },
-            top_right: {
-                transform: ' scaleX(-1) rotate(90deg)',
-                bottom: 'calc(100% + 8px)',
-                left: 'calc(100% - 16px)',
-            },
-            right_top: {
-                transform: 'rotate(180deg)',
-                bottom: 'calc(100% - 16px)',
-                left: 'calc(100% + 8px)',
-            },
-            right_center: {
-                transform: 'rotate(90deg) translate(-50%, 0%)',
-                top: '50%',
-                left: 'calc(100% + 8px)',
-                translateY: '50%',
-            },
-            right_bottom: {
-                transform: 'scaleX(-1)',
-                top: 'calc(100% - 16px)',
-                left: 'calc(100% + 8px)',
-            },
-            bottom_right: {
-                transform: 'rotate(270deg)',
-                top: 'calc(100% + 8px)',
-                left: 'calc(100% - 16px)',
-            },
-            bottom_center: {
-                transform: 'rotate(180deg) translate(-50%, 0%)',
-                top: 'calc(100% + 8px)',
-                right: '50%',
-            },
-            bottom_left: {
-                transform: 'scaleX(-1) rotate(270deg)',
-                top: 'calc(100% + 8px)',
-                right: 'calc(100% - 16px)',
-            },
-            left_top: {
-                transform: 'scaleX(-1) rotate(180deg)',
-                bottom: 'calc(100% - 16px)',
-                right: 'calc(100% + 8px)',
-            },
-            left_center: {
-                transform: 'rotate(270deg) translate(-50%, 0%)',
-                bottom: '50%',
-                right: 'calc(100% + 8px)',
-                translateY: '50%',
-            },
-            left_bottom: {
-                top: 'calc(100% - 16px)',
-                right: 'calc(100% + 8px)',
+const getStyledSvg = (element: React.FunctionComponent<React.SVGAttributes<SVGElement>>) =>
+    styled(element, {
+        position: 'absolute',
+        xmlnsXlink: 'http://www.w3.org/1999/xlink',
+        xmlns: 'http://www.w3.org/2000/svg',
+        verticalAlign: 'middle',
+        viewBox: '0 0 38 38',
+        width: 78,
+        height: 78,
+        '@mobile': {
+            width: 38,
+            height: 38,
+        },
+        variants: {
+            arrow_direction: {
+                top_left: {
+                    transform: 'rotate(90deg)',
+                    bottom: 'calc(100% + 8px)',
+                    right: 'calc(100% - 16px)',
+                },
+                top_center: {
+                    transform: 'translate(-50%, 0%)',
+                    bottom: 'calc(100% + 8px)',
+                    left: '50%',
+                },
+                top_right: {
+                    transform: ' scaleX(-1) rotate(90deg)',
+                    bottom: 'calc(100% + 8px)',
+                    left: 'calc(100% - 16px)',
+                },
+                right_top: {
+                    transform: 'rotate(180deg)',
+                    bottom: 'calc(100% - 16px)',
+                    left: 'calc(100% + 8px)',
+                },
+                right_center: {
+                    transform: 'rotate(90deg) translate(-50%, 0%)',
+                    top: '50%',
+                    left: 'calc(100% + 8px)',
+                    translateY: '50%',
+                },
+                right_bottom: {
+                    transform: 'scaleX(-1)',
+                    top: 'calc(100% - 16px)',
+                    left: 'calc(100% + 8px)',
+                },
+                bottom_right: {
+                    transform: 'rotate(270deg)',
+                    top: 'calc(100% + 8px)',
+                    left: 'calc(100% - 16px)',
+                },
+                bottom_center: {
+                    transform: 'rotate(180deg) translate(-50%, 0%)',
+                    top: 'calc(100% + 8px)',
+                    right: '50%',
+                },
+                bottom_left: {
+                    transform: 'scaleX(-1) rotate(270deg)',
+                    top: 'calc(100% + 8px)',
+                    right: 'calc(100% - 16px)',
+                },
+                left_top: {
+                    transform: 'scaleX(-1) rotate(180deg)',
+                    bottom: 'calc(100% - 16px)',
+                    right: 'calc(100% + 8px)',
+                },
+                left_center: {
+                    transform: 'rotate(270deg) translate(-50%, 0%)',
+                    bottom: '50%',
+                    right: 'calc(100% + 8px)',
+                    translateY: '50%',
+                },
+                left_bottom: {
+                    top: 'calc(100% - 16px)',
+                    right: 'calc(100% + 8px)',
+                },
             },
         },
-    },
-});
+    });
 
 const Flex = styled('div', {
     display: 'flex',
 });
+
+const arrow_icons = {
+    straight: getStyledSvg(StraightArrowIcon),
+    curved: getStyledSvg(CurvedArrowIcon),
+};
 
 const ArrowTooltip = ({
     arrow_direction = 'top_center',
@@ -160,10 +166,11 @@ const ArrowTooltip = ({
     const { isDark } = useTheme();
     const getArrowIcon = () => {
         if (['top_center', 'right_center', 'bottom_center', 'left_center'].includes(arrow_direction))
-            return { icon: StraightArrowIcon, viewBox: '0 0 26 40' };
+            return { icon: arrow_icons.straight, viewBox: '0 0 26 40' };
 
-        return { icon: CurvedArrowIcon, viewBox: '0 0 40 40' };
+        return { icon: arrow_icons.curved, viewBox: '0 0 40 40' };
     };
+    const Svg = getArrowIcon().icon;
     return (
         <>
             {open_tooltip && (
@@ -181,14 +188,12 @@ const ArrowTooltip = ({
                         {icon && <Icon src={icon} />}
                         <div>{children}</div>
                     </Flex>
-                    <ArrowImage
+                    <Svg
                         css={{ stroke: arrow_color, width: arrow_size, height: arrow_size }}
                         arrow_direction={arrow_direction}
                         viewBox={getArrowIcon().viewBox}
                         className={classNames(class_name_arrow)}
-                    >
-                        <use href={`${getArrowIcon().icon}#tooltip`} />
-                    </ArrowImage>
+                    />
                 </TooltipContainer>
             )}
         </>
