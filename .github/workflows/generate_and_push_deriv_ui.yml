@@ -55,7 +55,6 @@ jobs:
 
                   # Patch the version with minor patch. It also makes a commit to the git.
                   npm version minor
-                  new_version=$(npm show "$package_name" version)
 
                   git push --set-upstream origin "$package_name" -f
 
@@ -66,6 +65,7 @@ jobs:
                   npm run clean
                   npm run build_and_publish
 
+                  new_version=$(npm show "$package_name" version)
                   diff_url="https://diff.intrinsic.com/$package_name/$old_version/$new_version.diff"
                   pr_body=$(curl $diff_url)
 
