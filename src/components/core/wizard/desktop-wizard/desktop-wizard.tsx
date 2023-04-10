@@ -11,7 +11,7 @@ import useTheme from '@core/theme-context/use-theme';
 
 const LeftPanel = styled('div', {
     width: '256px',
-    height: '640px',
+    height: '100%',
     backgroundColor: '#F2F3F4',
     padding: '48px 24px',
 
@@ -27,6 +27,14 @@ const LeftPanel = styled('div', {
 const WizardBody = styled('div', {
     width: '784px',
     height: '640px',
+
+    variants: {
+        show_steps: {
+            false: {
+                width: '100%',
+            },
+        },
+    },
 });
 
 const ContentContainer = styled('div', {
@@ -35,6 +43,14 @@ const ContentContainer = styled('div', {
     position: 'relative',
     padding: '48px 24px 24px',
     overflow: 'hidden',
+
+    variants: {
+        show_steps: {
+            false: {
+                width: '100%',
+            },
+        },
+    },
 });
 
 const FixedWidthContainer = styled('div', {
@@ -73,6 +89,34 @@ const Footer = styled('div', {
                 borderTop: '2px solid #323738',
             },
         },
+        show_steps: {
+            false: {
+                width: '100%',
+            },
+        },
+    },
+});
+
+const Header = styled('div', {
+    width: '100%',
+    height: '56px',
+    padding: '16px 24px',
+    borderBottom: '2px solid #F2F3F4',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    boxSizing: 'border-box',
+
+    variants: {
+        dark: {
+            true: {
+                background: `url(${CloseIconDark}) no-repeat center`,
+
+                '&:hover': {
+                    backgroundColor: '#242828',
+                },
+            },
+        },
     },
 });
 
@@ -105,6 +149,13 @@ const CloseIcon = styled('div', {
                 },
             },
         },
+        show_header: {
+            true: {
+                position: 'relative',
+                top: 'unset',
+                right: 'unset',
+            },
+        },
     },
 });
 
@@ -117,6 +168,8 @@ type DesktopWizard = Partial<WizardProps> & {
     prevStep: () => void;
     right_panel: React.ReactElement<RightPanelProps>;
     steps: React.ReactElement<StepProps>[];
+    show_steps?: boolean;
+    show_header?: boolean;
 };
 
 const DesktopWizard = (props: DesktopWizard) => {
@@ -133,6 +186,8 @@ const DesktopWizard = (props: DesktopWizard) => {
         prevStep,
         right_panel,
         steps,
+        show_steps,
+        show_header,
     } = props;
 
     const getStepDetails = (_step: React.ReactElement<StepProps>) => ({
@@ -150,24 +205,31 @@ const DesktopWizard = (props: DesktopWizard) => {
 
     return (
         <>
-            <LeftPanel dark={isDark}>
-                <Text
-                    as="div"
-                    type="subtitle-2"
-                    bold
-                    css={{ marginBottom: '24px', color: isDark ? '$prominent-text' : '#333333' }}
-                >
-                    {wizard_title}
-                </Text>
-                <StepNavigation
-                    steps={steps_config}
-                    current_step_index={current_step_index}
-                    complete_steps_indexes={complete_steps_indexes}
-                    onClick={handleStepClick}
-                />
-            </LeftPanel>
-            <WizardBody>
-                <ContentContainer>
+            {show_steps && (
+                <LeftPanel dark={isDark}>
+                    <Text
+                        as="div"
+                        type="subtitle-2"
+                        bold
+                        css={{ marginBottom: '24px', color: isDark ? '$prominent-text' : '#333333' }}
+                    >
+                        {wizard_title}
+                    </Text>
+                    <StepNavigation
+                        steps={steps_config}
+                        current_step_index={current_step_index}
+                        complete_steps_indexes={complete_steps_indexes}
+                        onClick={handleStepClick}
+                    />
+                </LeftPanel>
+            )}
+            <WizardBody show_steps={show_steps}>
+                {show_header && (
+                    <Header>
+                        <CloseIcon dark={isDark} show_header={show_header} onClick={onClose} />
+                    </Header>
+                )}
+                <ContentContainer show_steps={show_steps}>
                     <FixedWidthContainer is_fullwidth={current_step.props.is_fullwidth}>
                         <DesktopWizardBody
                             animated_div_ref={animated_div_ref}
@@ -176,7 +238,7 @@ const DesktopWizard = (props: DesktopWizard) => {
                     </FixedWidthContainer>
                     {current_step.props.is_fullwidth ? null : right_panel}
                 </ContentContainer>
-                <Footer dark={isDark}>
+                <Footer dark={isDark} show_steps={show_steps}>
                     <Button
                         color="secondary"
                         size="large"
@@ -190,7 +252,7 @@ const DesktopWizard = (props: DesktopWizard) => {
                     </Button>
                 </Footer>
             </WizardBody>
-            <CloseIcon dark={isDark} onClick={onClose} />
+            {!show_header && <CloseIcon dark={isDark} onClick={onClose} />}
         </>
     );
 };

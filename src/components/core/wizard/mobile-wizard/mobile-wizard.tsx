@@ -55,6 +55,29 @@ const ContentContainer = styled('div', {
     alignItems: 'center',
 });
 
+const Header = styled('div', {
+    width: '100%',
+    height: '48px',
+    padding: '16px 24px',
+    borderBottom: '2px solid #F2F3F4',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    boxSizing: 'border-box',
+
+    variants: {
+        dark: {
+            true: {
+                background: `url(${CloseIconDark}) no-repeat center`,
+
+                '&:hover': {
+                    backgroundColor: '#242828',
+                },
+            },
+        },
+    },
+});
+
 const Footer = styled('div', {
     display: 'flex',
     flexDirection: 'row',
@@ -113,6 +136,13 @@ const CloseIcon = styled('div', {
                 },
             },
         },
+        show_header: {
+            true: {
+                position: 'relative',
+                top: 'unset',
+                right: 'unset',
+            },
+        },
     },
 });
 
@@ -126,6 +156,7 @@ type MobileWizard = Partial<WizardProps> & {
     prevStep: () => void;
     right_panel: React.ReactElement<RightPanelProps>;
     steps: React.ReactElement<StepProps>[];
+    show_steps?: boolean;
 };
 
 const MobileWizard = (props: MobileWizard) => {
@@ -142,6 +173,8 @@ const MobileWizard = (props: MobileWizard) => {
         prevStep,
         right_panel,
         steps,
+        show_steps,
+        show_header,
     } = props;
 
     const [content_container_padding_top, setContentContainerPaddingTop] = React.useState('24px');
@@ -169,7 +202,12 @@ const MobileWizard = (props: MobileWizard) => {
 
     return (
         <>
-            {!current_step.props?.hide_steps_panel_in_mobile && !is_right_panel && (
+            {show_header && (
+                <Header>
+                    <CloseIcon dark={isDark} show_header={show_header} onClick={onClose} />
+                </Header>
+            )}
+            {show_steps && !current_step.props?.hide_steps_panel_in_mobile && !is_right_panel && (
                 <TopPanel dark={isDark}>
                     {!is_right_panel && (
                         <StepNavigation
@@ -185,8 +223,8 @@ const MobileWizard = (props: MobileWizard) => {
                 style={{
                     height:
                         is_right_panel || current_step.props?.hide_steps_panel_in_mobile
-                            ? `calc(100% - 72px)`
-                            : `calc(100% - 72px - 88px)`,
+                            ? `calc(100% - 72px - ${show_header ? '48px' : '0px'})`
+                            : `calc(100% - 72px - 88px - ${show_header ? '48px' : '0px'})`,
                     paddingTop: is_right_panel ? '0px' : `${content_container_padding_top}`,
                 }}
                 is_right_panel={is_right_panel}
@@ -219,7 +257,7 @@ const MobileWizard = (props: MobileWizard) => {
                     {primary_button_label}
                 </Button>
             </Footer>
-            {!is_right_panel && !current_step.props?.hide_steps_panel_in_mobile && (
+            {!is_right_panel && !show_header && !current_step.props?.hide_steps_panel_in_mobile && (
                 <CloseIcon dark={isDark} onClick={onClose} />
             )}
         </>

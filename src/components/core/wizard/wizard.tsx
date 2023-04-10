@@ -49,6 +49,11 @@ const DesktopWizardContainer = styled('div', {
                 backgroundColor: '#0E0E0E',
             },
         },
+        show_header: {
+            true: {
+                height: '696px',
+            },
+        },
     },
 });
 
@@ -63,7 +68,6 @@ const MobileWizardContainer = styled('div', {
                 backgroundColor: '#0E0E0E',
             },
         },
-
         is_right_panel: {
             false: {
                 position: 'relative',
@@ -73,11 +77,25 @@ const MobileWizardContainer = styled('div', {
                 overflow: 'hidden',
             },
         },
+        show_header: {
+            true: {
+                height: '688px',
+            },
+        },
     },
 });
 
 const Wizard = (props: WizardProps) => {
-    const { lock_final_step, has_dark_background = true, onComplete, onChangeStep, onClose, children } = props;
+    const {
+        lock_final_step,
+        has_dark_background = true,
+        onComplete,
+        onChangeStep,
+        onClose,
+        children,
+        show_steps = true,
+        show_header,
+    } = props;
 
     const [current_step_index, setCurrentStepIndex] = React.useState<number>(0);
     const [complete_steps_indexes, setCompleteStepsIndexes] = React.useState<number[]>([]);
@@ -269,7 +287,7 @@ const Wizard = (props: WizardProps) => {
     return (
         <DarkBackgroundContainer visible={has_dark_background}>
             {isDesktop() && (
-                <DesktopWizardContainer dark={isDark} data-testid="desktop-wizard">
+                <DesktopWizardContainer dark={isDark} show_header={show_header} data-testid="desktop-wizard">
                     <DesktopWizard
                         {...props}
                         animated_div_ref={animated_div_ref}
@@ -280,6 +298,8 @@ const Wizard = (props: WizardProps) => {
                         nextStep={nextStep}
                         prevStep={prevStep}
                         right_panel={right_panel}
+                        show_steps={show_steps}
+                        show_header={show_header}
                     />
                 </DesktopWizardContainer>
             )}
@@ -296,6 +316,8 @@ const Wizard = (props: WizardProps) => {
                         next_step_index={getNextStepIndex()}
                         prevStep={prevStep}
                         right_panel={right_panel}
+                        show_steps={show_steps}
+                        show_header={show_header}
                     />
                 </MobileWizardContainer>
             )}
