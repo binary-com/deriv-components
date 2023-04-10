@@ -1,12 +1,13 @@
 import * as Stitches from '@stitches/react';
 import { styled } from 'Styles/stitches.config';
 import { modifyVariantsForStory } from 'Styles/type-utils';
-import BreadcrumbSeperatorIcon from '@assets/svg/breadcrumb-seperator.svg';
+import BreadcrumbSeperatorIcon from '@assets/svg/breadcrumb-seperator.svg?svgr';
 import useTheme from '@core/theme-context/use-theme';
+import { TItem } from 'types/item.types';
 
 type BreadcrumbProps = {
-    items: string[];
-    handleOnClick: (item: string) => void;
+    items: TItem[];
+    handleOnClick: (item: TItem) => void;
 };
 
 const BreadcrumbContainer = styled('ul', {
@@ -57,7 +58,7 @@ const ListItem = styled('li', {
     },
 });
 
-const Svg = styled('svg', {
+const Svg = styled(BreadcrumbSeperatorIcon, {
     xmlnsXlink: 'http://www.w3.org/1999/xlink',
     xmlns: 'http://www.w3.org/2000/svg',
     fill: '$greyLight600',
@@ -81,14 +82,10 @@ const Breadcrumb = ({ items, handleOnClick }: BreadcrumbProps) => {
     const { isDark } = useTheme();
     return (
         <BreadcrumbContainer>
-            {items.map((item: string, idx: number) => (
-                <ListItem key={item} active={idx === items.length - 1} dark={isDark}>
-                    <span onClick={() => handleOnClick(item)}>{item}</span>
-                    {idx < items.length - 1 && (
-                        <Svg dark={isDark}>
-                            <use href={`${BreadcrumbSeperatorIcon}#breadcrumb`} />
-                        </Svg>
-                    )}
+            {items.map((item: TItem, idx: number) => (
+                <ListItem key={item.value} active={idx === items.length - 1} dark={isDark}>
+                    <span onClick={() => handleOnClick(item)}>{item.text}</span>
+                    {idx < items.length - 1 && <Svg dark={isDark} />}
                 </ListItem>
             ))}
         </BreadcrumbContainer>

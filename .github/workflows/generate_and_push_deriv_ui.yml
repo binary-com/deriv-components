@@ -1,4 +1,9 @@
 name: Generate and push @deriv/ui
+
+permissions:
+    contents: write
+    pull-requests: write
+
 on:
     workflow_dispatch:
 
@@ -42,29 +47,29 @@ jobs:
                     
                   git checkout -b "$package_name"
                   git reset --hard master
-                  # Patch the version with minor patch
-                  npm version minor
-
-                  npm run clean
-                  npm run build_and_publish
 
                   # this is a cloned repo, need to create PR to update package.json version in master
                   # Wait for the new version to be published
                   sleep 30s
-                  new_version=$(npm show "$package_name" version)
-                  rm package-lock.json
-                  npm install --package-lock-json
+                  npm install
 
-                  git commit -a -m "feat: bump from $old_version to $new_version"
+                  # Patch the version with minor patch. It also makes a commit to the git.
+                  npm version minor
+                  new_version=$(npm show "$package_name" version)
 
                   git push --set-upstream origin "$package_name" -f
+
                   sudo apt install gh
-                  gh auth login --with-token <<< ${{ github.token }}
+                  gh auth login --with-token <<< ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+                  # Publish to npm
+                  npm run clean
+                  npm run build_and_publish
 
                   diff_url="https://diff.intrinsic.com/$package_name/$old_version/$new_version.diff"
                   pr_body=$(curl $diff_url)
 
-                  # close the PR if it already exists and create a new one
+                  # Close the PR if it already exists and create a new one
                   gh pr close "$package_name" || true
                   # Create new PR with diff as body
                   gh pr create --title "Bump $package_name from $old_version to $new_version" --body "\`\`\`diff ${pr_body:0:5000} \`\`\` Diff url: $diff_url" --base "master" --head "binary-com:$package_name"
