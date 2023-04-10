@@ -29,7 +29,7 @@ const WizardBody = styled('div', {
     height: '640px',
 
     variants: {
-        show_steps: {
+        show_steps_sidebar: {
             false: {
                 width: '100%',
             },
@@ -45,7 +45,7 @@ const ContentContainer = styled('div', {
     overflow: 'hidden',
 
     variants: {
-        show_steps: {
+        show_steps_sidebar: {
             false: {
                 width: '100%',
             },
@@ -89,7 +89,7 @@ const Footer = styled('div', {
                 borderTop: '2px solid #323738',
             },
         },
-        show_steps: {
+        show_steps_sidebar: {
             false: {
                 width: '100%',
             },
@@ -168,7 +168,7 @@ type DesktopWizard = Partial<WizardProps> & {
     prevStep: () => void;
     right_panel: React.ReactElement<RightPanelProps>;
     steps: React.ReactElement<StepProps>[];
-    show_steps?: boolean;
+    show_steps_sidebar?: boolean;
     show_header?: boolean;
 };
 
@@ -186,7 +186,7 @@ const DesktopWizard = (props: DesktopWizard) => {
         prevStep,
         right_panel,
         steps,
-        show_steps,
+        show_steps_sidebar,
         show_header,
     } = props;
 
@@ -205,7 +205,7 @@ const DesktopWizard = (props: DesktopWizard) => {
 
     return (
         <>
-            {show_steps && (
+            {show_steps_sidebar && (
                 <LeftPanel dark={isDark}>
                     <Text
                         as="div"
@@ -223,13 +223,13 @@ const DesktopWizard = (props: DesktopWizard) => {
                     />
                 </LeftPanel>
             )}
-            <WizardBody show_steps={show_steps}>
+            <WizardBody show_steps_sidebar={show_steps_sidebar}>
                 {show_header && (
                     <Header>
                         <CloseIcon dark={isDark} show_header={show_header} onClick={onClose} />
                     </Header>
                 )}
-                <ContentContainer show_steps={show_steps}>
+                <ContentContainer show_steps_sidebar={show_steps_sidebar}>
                     <FixedWidthContainer is_fullwidth={current_step.props.is_fullwidth}>
                         <DesktopWizardBody
                             animated_div_ref={animated_div_ref}
@@ -238,7 +238,7 @@ const DesktopWizard = (props: DesktopWizard) => {
                     </FixedWidthContainer>
                     {current_step.props.is_fullwidth ? null : right_panel}
                 </ContentContainer>
-                <Footer dark={isDark} show_steps={show_steps}>
+                <Footer dark={isDark} show_steps_sidebar={show_steps_sidebar}>
                     <Button
                         color="secondary"
                         size="large"

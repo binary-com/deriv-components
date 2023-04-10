@@ -156,7 +156,7 @@ type MobileWizard = Partial<WizardProps> & {
     prevStep: () => void;
     right_panel: React.ReactElement<RightPanelProps>;
     steps: React.ReactElement<StepProps>[];
-    show_steps?: boolean;
+    show_steps_sidebar?: boolean;
 };
 
 const MobileWizard = (props: MobileWizard) => {
@@ -173,7 +173,7 @@ const MobileWizard = (props: MobileWizard) => {
         prevStep,
         right_panel,
         steps,
-        show_steps,
+        show_steps_sidebar,
         show_header,
     } = props;
 
@@ -207,7 +207,7 @@ const MobileWizard = (props: MobileWizard) => {
                     <CloseIcon dark={isDark} show_header={show_header} onClick={onClose} />
                 </Header>
             )}
-            {show_steps && !current_step.props?.hide_steps_panel_in_mobile && !is_right_panel && (
+            {show_steps_sidebar && !current_step.props?.hide_steps_panel_in_mobile && !is_right_panel && (
                 <TopPanel dark={isDark}>
                     {!is_right_panel && (
                         <StepNavigation

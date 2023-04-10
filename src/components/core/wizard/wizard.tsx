@@ -93,7 +93,7 @@ const Wizard = (props: WizardProps) => {
         onChangeStep,
         onClose,
         children,
-        show_steps = true,
+        show_steps_sidebar = true,
         show_header,
     } = props;
 
@@ -298,7 +298,7 @@ const Wizard = (props: WizardProps) => {
                         nextStep={nextStep}
                         prevStep={prevStep}
                         right_panel={right_panel}
-                        show_steps={show_steps}
+                        show_steps_sidebar={show_steps_sidebar}
                         show_header={show_header}
                     />
                 </DesktopWizardContainer>
@@ -316,7 +316,7 @@ const Wizard = (props: WizardProps) => {
                         next_step_index={getNextStepIndex()}
                         prevStep={prevStep}
                         right_panel={right_panel}
-                        show_steps={show_steps}
+                        show_steps_sidebar={show_steps_sidebar}
                         show_header={show_header}
                     />
                 </MobileWizardContainer>

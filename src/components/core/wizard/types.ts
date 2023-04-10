@@ -8,7 +8,7 @@ export type WizardProps = {
     primary_button_label?: string;
     secondary_button_label?: string;
     children: React.ReactElement | React.ReactElement[];
-    show_steps?: boolean;
+    show_steps_sidebar?: boolean;
     show_header?: boolean;
 };
 

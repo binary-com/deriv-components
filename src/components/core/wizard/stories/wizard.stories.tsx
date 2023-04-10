@@ -81,7 +81,7 @@ export default {
                 type: 'text',
             },
         },
-        show_steps: {
+        show_steps_sidebar: {
             description: 'If it is set to true, the wizard will display the steps on the left side of the wizard.',
             defaultValue: true,
             table: {
@@ -201,7 +201,7 @@ LightWizard.args = {
     has_dark_background: true,
     wizard_title: "Let's get you a new app.",
     lock_final_step: true,
-    show_steps: true,
+    show_steps_sidebar: true,
     show_header: false,
 };
 export const LightWizardWithoutDarkBackground = Template.bind({});
@@ -209,7 +209,7 @@ LightWizardWithoutDarkBackground.args = {
     has_dark_background: false,
     wizard_title: "Let's get you a new app.",
     lock_final_step: true,
-    show_steps: true,
+    show_steps_sidebar: true,
     show_header: false,
 };
 
@@ -217,6 +217,6 @@ export const WizardWithoutLockedFinalStep = Template.bind({});
 WizardWithoutLockedFinalStep.args = {
     has_dark_background: false,
     wizard_title: "Let's get you a new app.",
-    show_steps: true,
+    show_steps_sidebar: true,
     show_header: false,
 };
